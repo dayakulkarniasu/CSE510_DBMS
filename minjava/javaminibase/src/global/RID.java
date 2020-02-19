@@ -60,8 +60,7 @@ public class RID{
    */
   public boolean equals(RID rid) {
     
-    if ((this.pageNo.pid==rid.pageNo.pid)
-	&&(this.slotNo==rid.slotNo))
+    if ((this.pageNo.pid==rid.pageNo.pid)&&(this.slotNo==rid.slotNo))
       return true;
     else
       return false;
