@@ -12,9 +12,8 @@ import heap.*;
  * adapted as appropriate
  */
 public class Map implements GlobalConst {
-
     /**
-     * Maximum size of any map
+     * Maximum size of any Map
      */
     public static final int max_size = MINIBASE_PAGESIZE;
 
@@ -24,23 +23,24 @@ public class Map implements GlobalConst {
     private byte[] data;
 
     /**
-     * start position of this map in data[]
+     * start position of this Map in data[]
      */
     private int map_offset;
 
     /**
-     * length of this map
+     * length of this Map
      */
     private int map_length;
 
     /**
-     * private field Number of fields in this map
+     * private field Number of fields in this Map
      */
-    private int fldCnt = 4;
+    private short fldCnt = 4;
 
     /**
      * private field Array of offsets of the fields
      */
+
     private short[] fldOffset;
 
     // /**
@@ -83,6 +83,7 @@ public class Map implements GlobalConst {
         data = fromMap.getMapByteArray();
         map_length = fromMap.getLength();
         map_offset = 0;
+        fldCnt = 4; // fromMap.noOfFlds();
         fldOffset = fromMap.copyFldOffset();
     }
 
@@ -92,12 +93,12 @@ public class Map implements GlobalConst {
      * @return
      * @throws FieldNumberOutOfBoundException
      */
-    public String getRowLabel() throws FieldNumberOutOfBoundException {
+    public String getRowLabel() {
         String tmp = null;
         try {
             tmp = getStrFld(0);
         } catch (Exception e) {
-            throw new FieldNumberOutOfBoundException(e, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+            e.printStackTrace();
         }
         return tmp;
     }
@@ -108,12 +109,12 @@ public class Map implements GlobalConst {
      * @return
      * @throws FieldNumberOutOfBoundException
      */
-    public String getColumnLabel() throws FieldNumberOutOfBoundException {
+    public String getColumnLabel() {
         String tmp = null;
         try {
             tmp = getStrFld(1);
         } catch (Exception e) {
-            throw new FieldNumberOutOfBoundException(e, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+            e.printStackTrace();
         }
         return tmp;
     }
@@ -124,12 +125,12 @@ public class Map implements GlobalConst {
      * @return
      * @throws FieldNumberOutOfBoundException
      */
-    public int getTimeStamp() throws FieldNumberOutOfBoundException {
+    public int getTimeStamp() {
         int tmp = -1;
         try {
             tmp = getIntFld(2);
         } catch (Exception e) {
-            throw new FieldNumberOutOfBoundException(e, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+            e.printStackTrace();
         }
         return tmp;
     }
@@ -140,12 +141,12 @@ public class Map implements GlobalConst {
      * @return
      * @throws FieldNumberOutOfBoundException
      */
-    public String getValue() throws FieldNumberOutOfBoundException {
+    public String getValue() {
         String tmp = null;
         try {
             tmp = getStrFld(3);
         } catch (Exception e) {
-            throw new FieldNumberOutOfBoundException(e, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+            e.printStackTrace();
         }
         return tmp;
     }
@@ -530,7 +531,7 @@ public class Map implements GlobalConst {
             throws IOException, InvalidTypeException, InvalidTupleSizeException {
         if ((numFlds + 2) * 2 > max_size)
             throw new InvalidTupleSizeException(null, "TUPLE: TUPLE_TOOBIG_ERROR");
-
+        numFlds = 4;
         fldCnt = numFlds;
         Convert.setShortValue(numFlds, map_offset, data);
         fldOffset = new short[numFlds + 1];
