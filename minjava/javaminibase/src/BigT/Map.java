@@ -1,10 +1,12 @@
 /* File Map.java */
 
-package heap;
+package BigT;
 
 import java.io.*;
 import java.lang.*;
 import global.*;
+import heap.FieldNumberOutOfBoundException;
+import heap.InvalidTypeException;
 
 
 public class Map implements GlobalConst{
@@ -196,7 +198,7 @@ public class Map implements GlobalConst{
     * @return		the converted integer if success
     *
     * @exception   IOException I/O errors
-    * @exception   FieldNumberOutOfBoundException Map field number out of bound
+    * @exception FieldNumberOutOfBoundException Map field number out of bound
     *
     * For BigDB, the Map has only 4 fields and their locations are also fixed
     * Fld_no : 1 --> RowLabel

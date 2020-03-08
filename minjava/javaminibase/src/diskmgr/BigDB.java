@@ -1,5 +1,4 @@
 /* File DB.java */
-
 package diskmgr;
 
 import java.io.*;
@@ -11,7 +10,7 @@ public class bigDB implements GlobalConst {
 
   private static final int bits_per_page = MAX_SPACE * 8;
 //assume that number of pages is constant
-  private static final int finalnum_pgs = 20;
+private static final int finalnum_pgs = 20;
 
   /** Open the database with the given name.
    *
@@ -91,16 +90,21 @@ public class bigDB implements GlobalConst {
        //initailze big table with the 5 schemes created
      switch (type)
      {
-       case 1: type == 1;
-               break;
-       case 2: type == 2;
-               break;
-       case 3: type == 3;
-               break;
-       case 4: type == 4;
-               break;
-       case 5: type == 5;
-               break;
+       case 1:
+           //type == 1;
+           break;
+       case 2:
+           //type == 2;
+           break;
+       case 3:
+           //type == 3;
+           break;
+       case 4:
+           //type == 4;
+           break;
+       case 5:
+           //type == 5;
+           break;
      }
      //end of indexs
 
@@ -136,7 +140,7 @@ public class bigDB implements GlobalConst {
     int num_map_pages = (num_pages + bits_per_page -1)/bits_per_page;
     //
     set_bits(pageId, 1+num_map_pages, 1);
-
+    PCounter.initialize();
   }
 
   /** Close DB file.
@@ -182,6 +186,7 @@ public class bigDB implements GlobalConst {
     byte [] buffer = apage.getpage();  //new byte[MINIBASE_PAGESIZE];
     try{
       fp.read(buffer);
+      PCounter.readincrement();
     }
     catch (IOException e) {
       throw new FileIOException(e, "DB file I/O error");
@@ -212,6 +217,7 @@ public class bigDB implements GlobalConst {
     // Write the appropriate number of bytes.
     try{
       fp.write(apage.getpage());
+      PCounter.writeIncrement();
     }
     catch (IOException e) {
       throw new FileIOException(e, "DB file I/O error");
@@ -882,8 +888,8 @@ public class bigDB implements GlobalConst {
  */
 interface PageUsedBytes
 {
-  int DIR_PAGE_USED_BYTES = 8 + 8;
-  int FIRST_PAGE_USED_BYTES = DIR_PAGE_USED_BYTES + 4;
+    int DIR_PAGE_USED_BYTES = 8 + 8;
+    int FIRST_PAGE_USED_BYTES = DIR_PAGE_USED_BYTES + 4;
 }
 
 /** Super class of the directory page and first page

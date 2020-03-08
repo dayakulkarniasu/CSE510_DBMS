@@ -6,6 +6,11 @@ import java.io.*;
 import bufmgr.*;
 import global.*;
 
+//TODO: We should move the bigT stuff into this
+public class bigDB implements GlobalConst{
+
+}
+
 public class DB implements GlobalConst {
 
   
