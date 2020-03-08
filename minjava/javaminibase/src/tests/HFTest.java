@@ -2,6 +2,9 @@ package tests;
 
 import java.io.*;
 import java.util.*;
+
+import BigT.Map;
+
 import java.lang.*;
 import heap.*;
 import bufmgr.*;

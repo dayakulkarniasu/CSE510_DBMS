@@ -7,6 +7,8 @@ package heap;
  */
 
 import java.io.*;
+
+import BigT.Map;
 import global.*;
 import bufmgr.*;
 import diskmgr.*;
