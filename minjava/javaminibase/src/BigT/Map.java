@@ -36,7 +36,7 @@ public class Map implements GlobalConst {
     /**
      * private field Number of fields in this map
      */
-    private static final int fldCnt = 4;
+    private int fldCnt = 4;
 
     /**
      * private field Array of offsets of the fields
@@ -239,10 +239,65 @@ public class Map implements GlobalConst {
     }
 
     /**
-     * Print out the map.
+     * Print out the map
+     * 
+     * @param type the types in the map
+     * @Exception IOException I/O exception
      */
-    public void print() {
-        System.out.println("row:" + rowLabel + ", column:" + columnLabel + ", time:" + timeStamp + ", value:" + value);
+    public void print(AttrType type[]) throws IOException {
+        int i, val;
+        float fval;
+        String sval;
+
+        System.out.print("[");
+        for (i = 0; i < fldCnt - 1; i++) {
+            switch (type[i].attrType) {
+
+            case AttrType.attrInteger:
+                val = Convert.getIntValue(fldOffset[i], data);
+                System.out.print(val);
+                break;
+
+            case AttrType.attrReal:
+                fval = Convert.getFloValue(fldOffset[i], data);
+                System.out.print(fval);
+                break;
+
+            case AttrType.attrString:
+                sval = Convert.getStrValue(fldOffset[i], data, fldOffset[i + 1] - fldOffset[i]);
+                System.out.print(sval);
+                break;
+
+            case AttrType.attrNull:
+            case AttrType.attrSymbol:
+                break;
+            }
+            System.out.print(", ");
+        }
+
+        switch (type[fldCnt - 1].attrType) {
+
+        case AttrType.attrInteger:
+            val = Convert.getIntValue(fldOffset[i], data);
+            System.out.print(val);
+            break;
+
+        case AttrType.attrReal:
+            fval = Convert.getFloValue(fldOffset[i], data);
+            System.out.print(fval);
+            break;
+
+        case AttrType.attrString:
+            sval = Convert.getStrValue(fldOffset[i], data, fldOffset[i + 1] - fldOffset[i]);
+            System.out.print(sval);
+            break;
+
+        case AttrType.attrNull:
+        case AttrType.attrSymbol:
+            break;
+        }
+        System.out.println("]");
+
     }
 
     /**
@@ -456,5 +511,89 @@ public class Map implements GlobalConst {
             return this;
         } else
             throw new FieldNumberOutOfBoundException(null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+    }
+
+    /**
+     * setHdr will set the header of this map.
+     *
+     * @param numFlds    number of fields
+     * @param types[]    contains the types that will be in this map
+     * @param strSizes[] contains the sizes of the string
+     * 
+     * @exception IOException               I/O errors
+     * @exception InvalidTypeException      Invalid tupe type
+     * @exception InvalidTupleSizeException map size too big
+     *
+     */
+
+    public void setHdr(short numFlds, AttrType types[], short strSizes[])
+            throws IOException, InvalidTypeException, InvalidTupleSizeException {
+        if ((numFlds + 2) * 2 > max_size)
+            throw new InvalidTupleSizeException(null, "TUPLE: TUPLE_TOOBIG_ERROR");
+
+        fldCnt = numFlds;
+        Convert.setShortValue(numFlds, map_offset, data);
+        fldOffset = new short[numFlds + 1];
+        int pos = map_offset + 2; // start position for fldOffset[]
+
+        // sizeof short =2 +2: array siaze = numFlds +1 (0 - numFilds) and
+        // another 1 for fldCnt
+        fldOffset[0] = (short) ((numFlds + 2) * 2 + map_offset);
+
+        Convert.setShortValue(fldOffset[0], pos, data);
+        pos += 2;
+        short strCount = 0;
+        short incr;
+        int i;
+
+        for (i = 1; i < numFlds; i++) {
+            switch (types[i - 1].attrType) {
+
+            case AttrType.attrInteger:
+                incr = 4;
+                break;
+
+            case AttrType.attrReal:
+                incr = 4;
+                break;
+
+            case AttrType.attrString:
+                incr = (short) (strSizes[strCount] + 2); // strlen in bytes = strlen +2
+                strCount++;
+                break;
+
+            default:
+                throw new InvalidTypeException(null, "TUPLE: TUPLE_TYPE_ERROR");
+            }
+            fldOffset[i] = (short) (fldOffset[i - 1] + incr);
+            Convert.setShortValue(fldOffset[i], pos, data);
+            pos += 2;
+
+        }
+        switch (types[numFlds - 1].attrType) {
+
+        case AttrType.attrInteger:
+            incr = 4;
+            break;
+
+        case AttrType.attrReal:
+            incr = 4;
+            break;
+
+        case AttrType.attrString:
+            incr = (short) (strSizes[strCount] + 2); // strlen in bytes = strlen +2
+            break;
+
+        default:
+            throw new InvalidTypeException(null, "TUPLE: TUPLE_TYPE_ERROR");
+        }
+
+        fldOffset[numFlds] = (short) (fldOffset[i - 1] + incr);
+        Convert.setShortValue(fldOffset[numFlds], pos, data);
+
+        map_length = fldOffset[numFlds] - map_offset;
+
+        if (map_length > max_size)
+            throw new InvalidTupleSizeException(null, "TUPLE: TUPLE_TOOBIG_ERROR");
     }
 }
