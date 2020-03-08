@@ -6,79 +6,88 @@ import heap.*;
 import global.*;
 import java.io.*;
 import java.lang.*;
+import java.lang.reflect.Field;
 
 /**
  *some useful method when processing Tuple
  */
 
-//TODO: This whole class needs to be re-written to use maps
 public class MapUtils
 {
 
     /**
-     * This function compares a tuple with another tuple in respective field, and
+     * This function compares a map with another map in respective field, and
      *  returns:
      *
      *    0        if the two are equal,
      *    1        if the tuple is greater,
      *   -1        if the tuple is smaller,
      *
-     *@param    fldType   the type of the field being compared.
-     *@param    t1        one tuple.
-     *@param    t2        another tuple.
-     *@param    t1_fld_no the field numbers in the tuples to be compared.
-     *@param    t2_fld_no the field numbers in the tuples to be compared.
+     *@param    m1        one map.
+     *@param    m2        another map.
+     *@param    map_fld_no the field numbers in the tuples to be compared.
      *@exception UnknowAttrType don't know the attribute type
      *@exception IOException some I/O fault
-     *@exception TupleUtilsException exception from this class
+     *@exception MapUtilsException exception from this class
      *@return   0        if the two are equal,
      *          1        if the tuple is greater,
      *         -1        if the tuple is smaller,
      */
-    public static int CompareTupleWithTuple(Map m1, Map  m2, int map_fld_no)
+    public static int CompareMapWithMap(Map m1, Map  m2, int map_fld_no)
             throws IOException,
-            UnknowAttrType
-            //TupleUtilsException
+            UnknowAttrType,
+            MapUtilsException
     {
-        int   t1_i,  t2_i;
-        float t1_r,  t2_r;
-        String t1_s, t2_s;
+        int m1_i, m2_i;
+        String m1_s, m2_s;
 
-        switch (fldType.attrType)
+        switch (map_fld_no)
         {
-            case AttrType.attrInteger:                // Compare two integers.
+            case 1:                // Compare rows
                 try {
-                    t1_i = t1.getIntFld(t1_fld_no);
-                    t2_i = t2.getIntFld(t2_fld_no);
+                    m1_s = m1.getRowLabel();
+                    m2_s = m2.getRowLabel();
                 }catch (FieldNumberOutOfBoundException e){
-                    throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
+                    throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
                 }
-                if (t1_i == t2_i) return  0;
-                if (t1_i <  t2_i) return -1;
-                if (t1_i >  t2_i) return  1;
+                if(m1_s.compareTo( m2_s)>0)return 1;
+                if (m1_s.compareTo( m2_s)<0)return -1;
+                return 0;
 
-            case AttrType.attrReal:                // Compare two floats
+            case 2:                // Compare columns
                 try {
-                    t1_r = t1.getFloFld(t1_fld_no);
-                    t2_r = t2.getFloFld(t2_fld_no);
+                    m1_s = m1.getColumnLabel();
+                    m2_s = m2.getColumnLabel();
                 }catch (FieldNumberOutOfBoundException e){
-                    throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
+                    throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
                 }
-                if (t1_r == t2_r) return  0;
-                if (t1_r <  t2_r) return -1;
-                if (t1_r >  t2_r) return  1;
+                if(m1_s.compareTo( m2_s)>0)return 1;
+                if (m1_s.compareTo( m2_s)<0)return -1;
+                return 0;
 
-            case AttrType.attrString:                // Compare two strings
+            case 3:                // Compare TS
                 try {
-                    t1_s = t1.getStrFld(t1_fld_no);
-                    t2_s = t2.getStrFld(t2_fld_no);
+                    m1_i = m1.getTimeStamp();
+                    m2_i = m2.getTimeStamp();
                 }catch (FieldNumberOutOfBoundException e){
-                    throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
+                    throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
                 }
 
                 // Now handle the special case that is posed by the max_values for strings...
-                if(t1_s.compareTo( t2_s)>0)return 1;
-                if (t1_s.compareTo( t2_s)<0)return -1;
+                if (m1_i == m2_i) return  0;
+                if (m1_i <  m2_i) return -1;
+                if (m1_i >  m2_i) return  1;
+            case 4:
+                try {
+                    m1_s = m1.getValue();
+                    m2_s = m2.getValue();
+                }catch (FieldNumberOutOfBoundException e){
+                    throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
+                }
+
+                // Now handle the special case that is posed by the max_values for strings...
+                if(m1_s.compareTo( m2_s)>0)return 1;
+                if (m1_s.compareTo( m2_s)<0)return -1;
                 return 0;
             default:
 
@@ -93,68 +102,96 @@ public class MapUtils
      * This function  compares  tuple1 with another tuple2 whose
      * field number is same as the tuple1
      *
-     *@param    fldType   the type of the field being compared.
-     *@param    t1        one tuple
+     *@param    m1        one tuple
      *@param    value     another tuple.
-     *@param    t1_fld_no the field numbers in the tuples to be compared.
+     *@param    map_fld_no the field numbers in the tuples to be compared.
      *@return   0        if the two are equal,
      *          1        if the tuple is greater,
      *         -1        if the tuple is smaller,
      *@exception UnknowAttrType don't know the attribute type
      *@exception IOException some I/O fault
-     *@exception TupleUtilsException exception from this class
+     *@exception MapUtilsException exception from this class
      */
-    public static int CompareTupleWithValue(AttrType fldType,
-                                            Tuple  t1, int t1_fld_no,
-                                            Tuple  value)
+    public static int CompareMapWithValue(Map  m1, int map_fld_no, Map value)
             throws IOException,
             UnknowAttrType,
-            TupleUtilsException
+            MapUtilsException
     {
-        return CompareTupleWithTuple(fldType, t1, t1_fld_no, value, t1_fld_no);
+        return CompareMapWithMap(m1, value, map_fld_no);
     }
 
     /**
      *This function Compares two Tuple inn all fields
-     * @param t1 the first tuple
-     * @param t2 the secocnd tuple
-     * @param type[] the field types
+     * @param m1 the first map
+     * @param m2 the second map
      * @param len the field numbers
      * @return  0        if the two are not equal,
      *          1        if the two are equal,
      *@exception UnknowAttrType don't know the attribute type
      *@exception IOException some I/O fault
-     *@exception TupleUtilsException exception from this class
+     *@exception MapUtilsException exception from this class
      */
 
-    public static boolean Equal(Tuple t1, Tuple t2, AttrType types[], int len)
-            throws IOException,UnknowAttrType,TupleUtilsException
+    public static boolean Equal(Map m1, Map m2, int len)
+            throws IOException,UnknowAttrType,MapUtilsException
     {
         int i;
 
         for (i = 1; i <= len; i++)
-            if (CompareTupleWithTuple(types[i-1], t1, i, t2, i) != 0)
+            if (CompareMapWithMap(m1, m2, i) != 0)
                 return false;
         return true;
     }
 
     /**
      *get the string specified by the field number
-     *@param tuple the tuple
-     *@param fidno the field number
+     *@param map the tuple
+     *@param map_fld_no the map's field number
      *@return the content of the field number
      *@exception IOException some I/O fault
-     *@exception TupleUtilsException exception from this class
+     *@exception MapUtilsException exception from this class
      */
-    public static String Value(Tuple  tuple, int fldno)
+    public static String Value(Map map, int map_fld_no)
             throws IOException,
-            TupleUtilsException
+            UnknowAttrType,
+            MapUtilsException
     {
         String temp;
-        try{
-            temp = tuple.getStrFld(fldno);
-        }catch (FieldNumberOutOfBoundException e){
-            throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
+        switch (map_fld_no){
+            case 1:
+                try{
+                   temp = map.getRowLabel();
+               }
+               catch (FieldNumberOutOfBoundException e){
+                   throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
+               }
+               break;
+            case 2:
+               try{
+                   temp = map.getColumnLabel();
+               }
+               catch (FieldNumberOutOfBoundException e){
+                   throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
+               }
+               break;
+            case 3:
+               try{
+                   temp = Integer.toString(map.getTimeStamp());
+               }
+               catch (FieldNumberOutOfBoundException e){
+                   throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
+               }
+               break;
+            case 4:
+               try{
+                   temp = map.getValue();
+               }
+               catch (FieldNumberOutOfBoundException e){
+                   throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
+               }
+               break;
+            default:
+                throw new UnknowAttrType(null, "Don't know how to handle attrSymbol, attrNull");
         }
         return temp;
     }
@@ -162,41 +199,47 @@ public class MapUtils
 
     /**
      *set up a tuple in specified field from a tuple
-     *@param value the tuple to be set
-     *@param tuple the given tuple
-     *@param fld_no the field number
-     *@param fldType the tuple attr type
+     *@param value the map to be set
+     *@param map the given map
+     *@param map_fld_no the map's field number
      *@exception UnknowAttrType don't know the attribute type
      *@exception IOException some I/O fault
-     *@exception TupleUtilsException exception from this class
+     *@exception MapUtilsException exception from this class
      */
-    public static void SetValue(Tuple value, Tuple  tuple, int fld_no, AttrType fldType)
+    public static void SetValue(Map value, Map  map, int map_fld_no)
             throws IOException,
             UnknowAttrType,
-            TupleUtilsException
+            MapUtilsException
     {
 
-        switch (fldType.attrType)
+        switch (map_fld_no)
         {
-            case AttrType.attrInteger:
+            case 1:
                 try {
-                    value.setIntFld(fld_no, tuple.getIntFld(fld_no));
+                    value.setRowLabel(map.getRowLabel());
                 }catch (FieldNumberOutOfBoundException e){
-                    throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
+                    throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
                 }
                 break;
-            case AttrType.attrReal:
+            case 2:
                 try {
-                    value.setFloFld(fld_no, tuple.getFloFld(fld_no));
+                    value.setColumnLabel(map.getColumnLabel());
                 }catch (FieldNumberOutOfBoundException e){
-                    throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
+                    throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
                 }
                 break;
-            case AttrType.attrString:
+            case 3:
                 try {
-                    value.setStrFld(fld_no, tuple.getStrFld(fld_no));
+                    value.setTimeStamp(map.getTimeStamp());
                 }catch (FieldNumberOutOfBoundException e){
-                    throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
+                    throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
+                }
+                break;
+            case 4:
+                try {
+                    value.setValue(map.getValue());
+                }catch (FieldNumberOutOfBoundException e){
+                    throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
                 }
                 break;
             default:
@@ -207,7 +250,7 @@ public class MapUtils
         return;
     }
 
-
+    //TODO: Might need to come back to this
     /**
      *set up the Jtuple's attrtype, string size,field number for using join
      *@param Jtuple  reference to an actual tuple  - no memory has been malloced
@@ -221,7 +264,7 @@ public class MapUtils
      *@param proj_list shows what input fields go where in the output tuple
      *@param nOutFlds number of outer relation fileds
      *@exception IOException some I/O fault
-     *@exception TupleUtilsException exception from this class
+     *@exception MapUtilsException exception from this class
      */
     public static short[] setup_op_tuple(Tuple Jtuple, AttrType[] res_attrs,
                                          AttrType in1[], int len_in1, AttrType in2[],
@@ -229,7 +272,7 @@ public class MapUtils
                                          short t2_str_sizes[],
                                          FldSpec proj_list[], int nOutFlds)
             throws IOException,
-            TupleUtilsException
+            MapUtilsException
     {
         short [] sizesT1 = new short [len_in1];
         short [] sizesT2 = new short [len_in2];
@@ -273,7 +316,7 @@ public class MapUtils
         try {
             Jtuple.setHdr((short)nOutFlds, res_attrs, res_str_sizes);
         }catch (Exception e){
-            throw new TupleUtilsException(e,"setHdr() failed");
+            throw new MapUtilsException(e,"setHdr() failed");
         }
         return res_str_sizes;
     }
@@ -289,16 +332,17 @@ public class MapUtils
      *@param proj_list shows what input fields go where in the output tuple
      *@param nOutFlds number of outer relation fileds
      *@exception IOException some I/O fault
-     *@exception TupleUtilsException exception from this class
+     *@exception MapUtilsException exception from this class
      *@exception InvalidRelation invalid relation
      */
 
+    //TODO: Might need to come back to this
     public static short[] setup_op_tuple(Tuple Jtuple, AttrType res_attrs[],
                                          AttrType in1[], int len_in1,
                                          short t1_str_sizes[],
                                          FldSpec proj_list[], int nOutFlds)
             throws IOException,
-            TupleUtilsException,
+            MapUtilsException,
             InvalidRelation
     {
         short [] sizesT1 = new short [len_in1];
@@ -336,7 +380,7 @@ public class MapUtils
         try {
             Jtuple.setHdr((short)nOutFlds, res_attrs, res_str_sizes);
         }catch (Exception e){
-            throw new TupleUtilsException(e,"setHdr() failed");
+            throw new MapUtilsException(e,"setHdr() failed");
         }
         return res_str_sizes;
     }
