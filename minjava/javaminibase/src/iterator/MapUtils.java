@@ -40,46 +40,62 @@ public class MapUtils
             UnknowAttrType
             //TupleUtilsException
     {
-        int   t1_i,  t2_i;
-        float t1_r,  t2_r;
-        String t1_s, t2_s;
+        int   m1_i,  m2_i;
+        //float t1_r,  t2_r;
+        String m1_s, m2_s;
 
-        switch (fldType.attrType)
+        switch (map_fld_no)
         {
-            case AttrType.attrInteger:                // Compare two integers.
+            case 1:                // Compare two strings.
                 try {
-                    t1_i = t1.getIntFld(t1_fld_no);
-                    t2_i = t2.getIntFld(t2_fld_no);
+                    m1_s = m1.getRowLabel();
+                    m2_s = m2.getRowLabel();
                 }catch (FieldNumberOutOfBoundException e){
                     throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
                 }
-                if (t1_i == t2_i) return  0;
-                if (t1_i <  t2_i) return -1;
-                if (t1_i >  t2_i) return  1;
+                if(m1_s.compareTo( m2_s)>0)return 1;
+                if (m1_s.compareTo( m2_s)<0)return -1;
+                return 0;
 
-            case AttrType.attrReal:                // Compare two floats
+
+            case 2:                // Compare two strings
                 try {
-                    t1_r = t1.getFloFld(t1_fld_no);
-                    t2_r = t2.getFloFld(t2_fld_no);
+                    m1_s = m1.getColumnLabel();
+                    m2_s = m2.getColumnLabel();
                 }catch (FieldNumberOutOfBoundException e){
                     throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
                 }
-                if (t1_r == t2_r) return  0;
-                if (t1_r <  t2_r) return -1;
-                if (t1_r >  t2_r) return  1;
+                if(m1_s.compareTo( m2_s)>0)return 1;
+                if (m1_s.compareTo( m2_s)<0)return -1;
+                return 0;
 
-            case AttrType.attrString:                // Compare two strings
+
+            case 3:                // Compare two integers
                 try {
-                    t1_s = t1.getStrFld(t1_fld_no);
-                    t2_s = t2.getStrFld(t2_fld_no);
+                    m1_i = m1.getTimeStamp();
+                    m2_i = m2.getTimeStamp();
                 }catch (FieldNumberOutOfBoundException e){
                     throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
                 }
 
                 // Now handle the special case that is posed by the max_values for strings...
-                if(t1_s.compareTo( t2_s)>0)return 1;
-                if (t1_s.compareTo( t2_s)<0)return -1;
+                if (m1_i == m2_i) return  0;
+                if (m1_i <  m2_i) return -1;
+                if (m1_i >  m2_i) return  1;
+
+            case 4:                 //compare two integers
+                try {
+                    m1_s = m1.getValue();
+                    m2_s = m2.getValue();
+                }catch (FieldNumberOutOfBoundException e){
+                    throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
+                }
+
+                // Now handle the special case that is posed by the max_values for strings...
+                if(m1_s.compareTo( m2_s)>0)return 1;
+                if (m1_s.compareTo( m2_s)<0)return -1;
                 return 0;
+
             default:
 
                 throw new UnknowAttrType(null, "Don't know how to handle attrSymbol, attrNull");
