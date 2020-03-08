@@ -1,6 +1,6 @@
 /* File Map.java */
 
-package heap;
+package BigT;
 
 import java.io.*;
 import java.lang.*;
