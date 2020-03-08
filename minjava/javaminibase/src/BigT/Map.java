@@ -157,7 +157,15 @@ public class Map implements GlobalConst {
      * @return
      */
     public Map setRowLabel(String val) {
-        rowLabel = val;
+        try {
+            this.setStrFld(0, val);
+        } catch (FieldNumberOutOfBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return this;
     }
 
@@ -168,7 +176,15 @@ public class Map implements GlobalConst {
      * @return
      */
     public Map setColumnLabel(String val) {
-        columnLabel = val;
+        try {
+            this.setStrFld(1, val);
+        } catch (FieldNumberOutOfBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return this;
     }
 
@@ -179,7 +195,15 @@ public class Map implements GlobalConst {
      * @return
      */
     public Map setTimeStamp(int val) {
-        timeStamp = val;
+        try {
+            this.setIntFld(2, val);
+        } catch (FieldNumberOutOfBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return this;
     }
 
@@ -190,7 +214,15 @@ public class Map implements GlobalConst {
      * @return
      */
     public Map setValue(String val) {
-        value = val;
+        try {
+            this.setStrFld(3, val);
+        } catch (FieldNumberOutOfBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return this;
     }
 
