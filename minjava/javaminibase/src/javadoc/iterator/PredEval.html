@@ -103,15 +103,15 @@ java.lang.Object
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>static&nbsp;boolean</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../iterator/PredEval.html#Eval(iterator.CondExpr[], heap.Tuple, heap.Tuple, global.AttrType[], global.AttrType[])">Eval</A></B>(<A HREF="../iterator/CondExpr.html">CondExpr</A>[]&nbsp;p,
-     <A HREF="../heap/Tuple.html">Tuple</A>&nbsp;t1,
-     <A HREF="../heap/Tuple.html">Tuple</A>&nbsp;t2,
+<TD><CODE><B><A HREF="../iterator/PredEval.html#Eval(iterator.CondExpr[], heap.Map, heap.Map, global.AttrType[], global.AttrType[])">Eval</A></B>(<A HREF="../iterator/CondExpr.html">CondExpr</A>[]&nbsp;p,
+     <A HREF="../heap/Map.html">Map</A>&nbsp;t1,
+     <A HREF="../heap/Map.html">Map</A>&nbsp;t2,
      <A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;in1,
      <A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;in2)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;predicate evaluate, according to the condition ConExpr, judge if 
-the two tuple can join.</TD>
+the two map can join.</TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
@@ -156,12 +156,12 @@ public <B>PredEval</B>()</PRE>
 </TR>
 </TABLE>
 
-<A NAME="Eval(iterator.CondExpr[], heap.Tuple, heap.Tuple, global.AttrType[], global.AttrType[])"><!-- --></A><H3>
+<A NAME="Eval(iterator.CondExpr[], heap.Map, heap.Map, global.AttrType[], global.AttrType[])"><!-- --></A><H3>
 Eval</H3>
 <PRE>
 public static boolean <B>Eval</B>(<A HREF="../iterator/CondExpr.html">CondExpr</A>[]&nbsp;p,
-                           <A HREF="../heap/Tuple.html">Tuple</A>&nbsp;t1,
-                           <A HREF="../heap/Tuple.html">Tuple</A>&nbsp;t2,
+                           <A HREF="../heap/Map.html">Map</A>&nbsp;t1,
+                           <A HREF="../heap/Map.html">Map</A>&nbsp;t2,
                            <A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;in1,
                            <A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;in2)
                     throws java.io.IOException,
@@ -172,8 +172,8 @@ public static boolean <B>Eval</B>(<A HREF="../iterator/CondExpr.html">CondExpr</
                            <A HREF="../iterator/PredEvalException.html">PredEvalException</A></PRE>
 <DL>
 <DD>predicate evaluate, according to the condition ConExpr, judge if 
-the two tuple can join. if so, return true, otherwise false<DD><DL>
-<DT><B>Parameters:</B><DD><CODE>p[]</CODE> - single select condition array<DD><CODE>t1</CODE> - compared tuple1<DD><CODE>t2</CODE> - compared tuple2<DD><CODE>in1[]</CODE> - the attribute type corespond to the t1<DD><CODE>in2[]</CODE> - the attribute type corespond to the t2<DT><B>Returns:</B><DD>true or false<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - some I/O error<DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - don't know the attribute type<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - size of tuple not valid<DD><CODE><A HREF="../heap/InvalidTypeException.html">InvalidTypeException</A></CODE> - type of tuple not valid<DD><CODE><A HREF="../heap/FieldNumberOutOfBoundException.html">FieldNumberOutOfBoundException</A></CODE> - field number exceeds limit<DD><CODE><A HREF="../iterator/PredEvalException.html">PredEvalException</A></CODE> - exception from this method</DL>
+the two map can join. if so, return true, otherwise false<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>p[]</CODE> - single select condition array<DD><CODE>t1</CODE> - compared tuple1<DD><CODE>t2</CODE> - compared tuple2<DD><CODE>in1[]</CODE> - the attribute type corespond to the t1<DD><CODE>in2[]</CODE> - the attribute type corespond to the t2<DT><B>Returns:</B><DD>true or false<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - some I/O error<DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - don't know the attribute type<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - size of map not valid<DD><CODE><A HREF="../heap/InvalidTypeException.html">InvalidTypeException</A></CODE> - type of map not valid<DD><CODE><A HREF="../heap/FieldNumberOutOfBoundException.html">FieldNumberOutOfBoundException</A></CODE> - field number exceeds limit<DD><CODE><A HREF="../iterator/PredEvalException.html">PredEvalException</A></CODE> - exception from this method</DL>
 </DD>
 </DL>
 <!-- ========= END OF CLASS DATA ========= -->

@@ -27,7 +27,7 @@ public class RelCatalog extends Heapfile
     {
         super(filename);
       
-      tuple = new Tuple(Tuple.max_size);
+      map = new Map(Map.max_size);
       
       attrs = new AttrType[5];
       attrs[0] = new AttrType(AttrType.attrString);
@@ -40,10 +40,10 @@ public class RelCatalog extends Heapfile
       str_sizes[0] = (short)MAXNAME;
       
       try {
-	tuple.setHdr((short)5, attrs, str_sizes);
+	map.setHdr((short)5, attrs, str_sizes);
       }
       catch (Exception e) {
-	System.err.println ("tuple.setHdr"+e);
+	System.err.println ("map.setHdr"+e);
 	throw new RelCatalogException(e, "setHdr() failed");
       }
     };
@@ -75,10 +75,10 @@ public class RelCatalog extends Heapfile
       
       while (true) {
 	try {
-	  tuple = pscan.getNext(rid);
-	  if (tuple == null)
+	  map = pscan.getNext(rid);
+	  if (map == null)
 	    throw new Catalogrelnotfound(null, "Catalog: Relation not Found!");
-	  read_tuple(tuple, record);
+	  read_tuple(map, record);
 	}
 	catch (Exception e4) {
 	  System.err.println ("read_tuple"+e4);
@@ -291,7 +291,7 @@ public class RelCatalog extends Heapfile
       RID rid;
       
       try {
-	make_tuple(tuple, record);
+	make_tuple(map, record);
       }
       catch (Exception e4) {
 	System.err.println ("make_tuple"+e4);
@@ -299,7 +299,7 @@ public class RelCatalog extends Heapfile
       }
       
       try {
-	insertRecord(tuple.getTupleByteArray());
+	insertRecord(map.getTupleByteArray());
       }
       catch (Exception e2) {
 	System.err.println ("insertRecord"+e2);
@@ -332,11 +332,11 @@ public class RelCatalog extends Heapfile
       
       while(true) {
 	try {
-	  tuple = pscan.getNext(rid);
-	  if (tuple == null) 
+	  map = pscan.getNext(rid);
+	  if (map == null) 
 	    throw new Catalogattrnotfound(null,
 					  "Catalog Attribute not Found!");
-	  read_tuple(tuple, record);
+	  read_tuple(map, record);
 	}
 	catch (Exception e4) {
 	  System.err.println ("read_tuple"+e4);
@@ -356,17 +356,17 @@ public class RelCatalog extends Heapfile
       }
     };
   
-  // Converts AttrDesc to tuple.
-  public void make_tuple(Tuple tuple, RelDesc record)
+  // Converts AttrDesc to map.
+  public void make_tuple(Map map, RelDesc record)
     throws IOException, 
 	   RelCatalogException
     {
       try {
-   	tuple.setStrFld(1, record.relName);
-	tuple.setIntFld(2, record.attrCnt);
-	tuple.setIntFld(3, record.indexCnt);
-	tuple.setIntFld(4, record.numTuples);
-	tuple.setIntFld(5, record.numPages);
+   	map.setStrFld(1, record.relName);
+	map.setIntFld(2, record.attrCnt);
+	map.setIntFld(3, record.indexCnt);
+	map.setIntFld(4, record.numTuples);
+	map.setIntFld(5, record.numPages);
       }
       catch (Exception e1) {
 	System.err.println ("setFld"+e1);
@@ -375,16 +375,16 @@ public class RelCatalog extends Heapfile
       
     };
   
-  public void read_tuple(Tuple tuple, RelDesc record)
+  public void read_tuple(Map map, RelDesc record)
     throws IOException, 
 	   RelCatalogException
     {
       try {
-	record.relName = tuple.getStrFld(1);
-	record.attrCnt = tuple.getIntFld(2);
-	record.indexCnt = tuple.getIntFld(3);
-	record.numTuples = tuple.getIntFld(4);
-	record.numPages = tuple.getIntFld(5);
+	record.relName = map.getStrFld(1);
+	record.attrCnt = map.getIntFld(2);
+	record.indexCnt = map.getIntFld(3);
+	record.numTuples = map.getIntFld(4);
+	record.numPages = map.getIntFld(5);
       }
       catch (Exception e1) {
 	System.err.println ("getFld"+e1);
@@ -424,7 +424,7 @@ public class RelCatalog extends Heapfile
   //                    int indexCnt, int attrsize){};
   
   
-  Tuple tuple;
+  Map map;
   short [] str_sizes;
   AttrType [] attrs;
   

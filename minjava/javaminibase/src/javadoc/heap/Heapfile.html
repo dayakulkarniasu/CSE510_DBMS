@@ -161,7 +161,7 @@ java.lang.Object
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../heap/Tuple.html">Tuple</A></CODE></FONT></TD>
+<CODE>&nbsp;<A HREF="../heap/Map.html">Map</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../heap/Heapfile.html#getRecord(global.RID)">getRecord</A></B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid)</CODE>
 
 <BR>
@@ -186,8 +186,8 @@ java.lang.Object
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;boolean</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../heap/Heapfile.html#updateRecord(global.RID, heap.Tuple)">updateRecord</A></B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid,
-             <A HREF="../heap/Tuple.html">Tuple</A>&nbsp;newtuple)</CODE>
+<TD><CODE><B><A HREF="../heap/Heapfile.html#updateRecord(global.RID, heap.Map)">updateRecord</A></B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid,
+             <A HREF="../heap/Map.html">Map</A>&nbsp;newtuple)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Updates the specified record in the heapfile.</TD>
@@ -280,7 +280,7 @@ public int <B>getRecCnt</B>()
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - invalid slot number<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid tuple size<DD><CODE><A HREF="../heap/HFBufMgrException.html">HFBufMgrException</A></CODE> - exception thrown from bufmgr layer<DD><CODE><A HREF="../heap/HFDiskMgrException.html">HFDiskMgrException</A></CODE> - exception thrown from diskmgr layer<DD><CODE>java.io.IOException</CODE> - I/O errors</DL>
+<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - invalid slot number<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid map size<DD><CODE><A HREF="../heap/HFBufMgrException.html">HFBufMgrException</A></CODE> - exception thrown from bufmgr layer<DD><CODE><A HREF="../heap/HFDiskMgrException.html">HFDiskMgrException</A></CODE> - exception thrown from diskmgr layer<DD><CODE>java.io.IOException</CODE> - I/O errors</DL>
 </DD>
 </DL>
 <HR>
@@ -301,7 +301,7 @@ public <A HREF="../global/RID.html">RID</A> <B>insertRecord</B>(byte[]&nbsp;recP
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>recPtr</CODE> - pointer of the record<DD><CODE>recLen</CODE> - the length of the record<DT><B>Returns:</B><DD>the rid of the record<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - invalid slot number<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid tuple size<DD><CODE><A HREF="../heap/SpaceNotAvailableException.html">SpaceNotAvailableException</A></CODE> - no space left<DD><CODE><A HREF="../heap/HFException.html">HFException</A></CODE> - heapfile exception<DD><CODE><A HREF="../heap/HFBufMgrException.html">HFBufMgrException</A></CODE> - exception thrown from bufmgr layer<DD><CODE><A HREF="../heap/HFDiskMgrException.html">HFDiskMgrException</A></CODE> - exception thrown from diskmgr layer<DD><CODE>java.io.IOException</CODE> - I/O errors</DL>
+<DT><B>Parameters:</B><DD><CODE>recPtr</CODE> - pointer of the record<DD><CODE>recLen</CODE> - the length of the record<DT><B>Returns:</B><DD>the rid of the record<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - invalid slot number<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid map size<DD><CODE><A HREF="../heap/SpaceNotAvailableException.html">SpaceNotAvailableException</A></CODE> - no space left<DD><CODE><A HREF="../heap/HFException.html">HFException</A></CODE> - heapfile exception<DD><CODE><A HREF="../heap/HFBufMgrException.html">HFBufMgrException</A></CODE> - exception thrown from bufmgr layer<DD><CODE><A HREF="../heap/HFDiskMgrException.html">HFDiskMgrException</A></CODE> - exception thrown from diskmgr layer<DD><CODE>java.io.IOException</CODE> - I/O errors</DL>
 </DD>
 </DL>
 <HR>
@@ -321,16 +321,16 @@ public boolean <B>deleteRecord</B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Returns:</B><DD>true record deleted  false:record not found<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - invalid slot number<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid tuple size<DD><CODE><A HREF="../heap/HFException.html">HFException</A></CODE> - heapfile exception<DD><CODE><A HREF="../heap/HFBufMgrException.html">HFBufMgrException</A></CODE> - exception thrown from bufmgr layer<DD><CODE><A HREF="../heap/HFDiskMgrException.html">HFDiskMgrException</A></CODE> - exception thrown from diskmgr layer<DD><CODE>java.lang.Exception</CODE> - other exception</DL>
+<DT><B>Returns:</B><DD>true record deleted  false:record not found<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - invalid slot number<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid map size<DD><CODE><A HREF="../heap/HFException.html">HFException</A></CODE> - heapfile exception<DD><CODE><A HREF="../heap/HFBufMgrException.html">HFBufMgrException</A></CODE> - exception thrown from bufmgr layer<DD><CODE><A HREF="../heap/HFDiskMgrException.html">HFDiskMgrException</A></CODE> - exception thrown from diskmgr layer<DD><CODE>java.lang.Exception</CODE> - other exception</DL>
 </DD>
 </DL>
 <HR>
 
-<A NAME="updateRecord(global.RID, heap.Tuple)"><!-- --></A><H3>
+<A NAME="updateRecord(global.RID, heap.Map)"><!-- --></A><H3>
 updateRecord</H3>
 <PRE>
 public boolean <B>updateRecord</B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid,
-                            <A HREF="../heap/Tuple.html">Tuple</A>&nbsp;newtuple)
+                            <A HREF="../heap/Map.html">Map</A>&nbsp;newtuple)
                      throws <A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A>,
                             <A HREF="../heap/InvalidUpdateException.html">InvalidUpdateException</A>,
                             <A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A>,
@@ -343,7 +343,7 @@ public boolean <B>updateRecord</B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>rid:</CODE> - the record which needs update<DD><CODE>newtuple:</CODE> - the new content of the record<DT><B>Returns:</B><DD>ture:update success   false: can't find the record<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - invalid slot number<DD><CODE><A HREF="../heap/InvalidUpdateException.html">InvalidUpdateException</A></CODE> - invalid update on record<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid tuple size<DD><CODE><A HREF="../heap/HFException.html">HFException</A></CODE> - heapfile exception<DD><CODE><A HREF="../heap/HFBufMgrException.html">HFBufMgrException</A></CODE> - exception thrown from bufmgr layer<DD><CODE><A HREF="../heap/HFDiskMgrException.html">HFDiskMgrException</A></CODE> - exception thrown from diskmgr layer<DD><CODE>java.lang.Exception</CODE> - other exception</DL>
+<DT><B>Parameters:</B><DD><CODE>rid:</CODE> - the record which needs update<DD><CODE>newtuple:</CODE> - the new content of the record<DT><B>Returns:</B><DD>ture:update success   false: can't find the record<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - invalid slot number<DD><CODE><A HREF="../heap/InvalidUpdateException.html">InvalidUpdateException</A></CODE> - invalid update on record<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid map size<DD><CODE><A HREF="../heap/HFException.html">HFException</A></CODE> - heapfile exception<DD><CODE><A HREF="../heap/HFBufMgrException.html">HFBufMgrException</A></CODE> - exception thrown from bufmgr layer<DD><CODE><A HREF="../heap/HFDiskMgrException.html">HFDiskMgrException</A></CODE> - exception thrown from diskmgr layer<DD><CODE>java.lang.Exception</CODE> - other exception</DL>
 </DD>
 </DL>
 <HR>
@@ -351,7 +351,7 @@ public boolean <B>updateRecord</B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid
 <A NAME="getRecord(global.RID)"><!-- --></A><H3>
 getRecord</H3>
 <PRE>
-public <A HREF="../heap/Tuple.html">Tuple</A> <B>getRecord</B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid)
+public <A HREF="../heap/Map.html">Map</A> <B>getRecord</B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid)
                 throws <A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A>,
                        <A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A>,
                        <A HREF="../heap/HFException.html">HFException</A>,
@@ -363,7 +363,7 @@ public <A HREF="../heap/Tuple.html">Tuple</A> <B>getRecord</B>(<A HREF="../globa
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>rid</CODE> - Record ID<DT><B>Returns:</B><DD>a Tuple. if Tuple==null, no more tuple<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - invalid slot number<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid tuple size<DD><CODE><A HREF="../heap/SpaceNotAvailableException.html">SpaceNotAvailableException</A></CODE> - no space left<DD><CODE><A HREF="../heap/HFException.html">HFException</A></CODE> - heapfile exception<DD><CODE><A HREF="../heap/HFBufMgrException.html">HFBufMgrException</A></CODE> - exception thrown from bufmgr layer<DD><CODE><A HREF="../heap/HFDiskMgrException.html">HFDiskMgrException</A></CODE> - exception thrown from diskmgr layer<DD><CODE>java.lang.Exception</CODE> - other exception</DL>
+<DT><B>Parameters:</B><DD><CODE>rid</CODE> - Record ID<DT><B>Returns:</B><DD>a Map. if Map==null, no more map<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - invalid slot number<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid map size<DD><CODE><A HREF="../heap/SpaceNotAvailableException.html">SpaceNotAvailableException</A></CODE> - no space left<DD><CODE><A HREF="../heap/HFException.html">HFException</A></CODE> - heapfile exception<DD><CODE><A HREF="../heap/HFBufMgrException.html">HFBufMgrException</A></CODE> - exception thrown from bufmgr layer<DD><CODE><A HREF="../heap/HFDiskMgrException.html">HFDiskMgrException</A></CODE> - exception thrown from diskmgr layer<DD><CODE>java.lang.Exception</CODE> - other exception</DL>
 </DD>
 </DL>
 <HR>
@@ -379,7 +379,7 @@ public <A HREF="../heap/Scan.html">Scan</A> <B>openScan</B>()
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - Invalid tuple size<DD><CODE>java.io.IOException</CODE> - I/O errors</DL>
+<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - Invalid map size<DD><CODE>java.io.IOException</CODE> - I/O errors</DL>
 </DD>
 </DL>
 <HR>
@@ -399,7 +399,7 @@ public void <B>deleteFile</B>()
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - invalid slot number<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid tuple size<DD><CODE><A HREF="../heap/FileAlreadyDeletedException.html">FileAlreadyDeletedException</A></CODE> - file is deleted already<DD><CODE><A HREF="../heap/HFBufMgrException.html">HFBufMgrException</A></CODE> - exception thrown from bufmgr layer<DD><CODE><A HREF="../heap/HFDiskMgrException.html">HFDiskMgrException</A></CODE> - exception thrown from diskmgr layer<DD><CODE>java.io.IOException</CODE> - I/O errors</DL>
+<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - invalid slot number<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid map size<DD><CODE><A HREF="../heap/FileAlreadyDeletedException.html">FileAlreadyDeletedException</A></CODE> - file is deleted already<DD><CODE><A HREF="../heap/HFBufMgrException.html">HFBufMgrException</A></CODE> - exception thrown from bufmgr layer<DD><CODE><A HREF="../heap/HFDiskMgrException.html">HFDiskMgrException</A></CODE> - exception thrown from diskmgr layer<DD><CODE>java.io.IOException</CODE> - I/O errors</DL>
 </DD>
 </DL>
 <!-- ========= END OF CLASS DATA ========= -->

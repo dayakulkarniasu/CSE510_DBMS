@@ -1,4 +1,4 @@
-/* File Tuple.java */
+/* File Map.java */
 
 package heap;
 
@@ -7,11 +7,11 @@ import java.lang.*;
 import global.*;
 
 
-public class Tuple implements GlobalConst{
+public class Map implements GlobalConst{
 
 
  /** 
-  * Maximum size of any tuple
+  * Maximum size of any map
   */
   public static final int max_size = MINIBASE_PAGESIZE;
 
@@ -21,18 +21,18 @@ public class Tuple implements GlobalConst{
   private byte [] data;
 
   /**
-   * start position of this tuple in data[]
+   * start position of this map in data[]
    */
   private int tuple_offset;
 
   /**
-   * length of this tuple
+   * length of this map
    */
   private int tuple_length;
 
   /** 
    * private field
-   * Number of fields in this tuple
+   * Number of fields in this map
    */
   private short fldCnt;
 
@@ -45,24 +45,24 @@ public class Tuple implements GlobalConst{
 
    /**
     * Class constructor
-    * Creat a new tuple with length = max_size,tuple offset = 0.
+    * Creat a new map with length = max_size,map offset = 0.
     */
 
-  public  Tuple()
+  public  Map()
   {
-       // Creat a new tuple
+       // Creat a new map
        data = new byte[max_size];
        tuple_offset = 0;
        tuple_length = max_size;
   }
    
    /** Constructor
-    * @param atuple a byte array which contains the tuple
-    * @param offset the offset of the tuple in the byte array
-    * @param length the length of the tuple
+    * @param atuple a byte array which contains the map
+    * @param offset the offset of the map in the byte array
+    * @param length the length of the map
     */
 
-   public Tuple(byte [] atuple, int offset, int length)
+   public Map(byte [] atuple, int offset, int length)
    {
       data = atuple;
       tuple_offset = offset;
@@ -70,11 +70,11 @@ public class Tuple implements GlobalConst{
     //  fldCnt = getShortValue(offset, data);
    }
    
-   /** Constructor(used as tuple copy)
-    * @param fromTuple   a byte array which contains the tuple
+   /** Constructor(used as map copy)
+    * @param fromTuple   a byte array which contains the map
     * 
     */
-   public Tuple(Tuple fromTuple)
+   public Map(Map fromTuple)
    {
        data = fromTuple.getTupleByteArray();
        tuple_length = fromTuple.getLength();
@@ -85,22 +85,22 @@ public class Tuple implements GlobalConst{
 
    /**  
     * Class constructor
-    * Creat a new tuple with length = size,tuple offset = 0.
+    * Creat a new map with length = size,map offset = 0.
     */
  
-  public  Tuple(int size)
+  public  Map(int size)
   {
-       // Creat a new tuple
+       // Creat a new map
        data = new byte[size];
        tuple_offset = 0;
        tuple_length = size;     
   }
    
-   /** Copy a tuple to the current tuple position
-    *  you must make sure the tuple lengths must be equal
-    * @param fromTuple the tuple being copied
+   /** Copy a map to the current map position
+    *  you must make sure the map lengths must be equal
+    * @param fromTuple the map being copied
     */
-   public void tupleCopy(Tuple fromTuple)
+   public void tupleCopy(Map fromTuple)
    {
        byte [] temparray = fromTuple.getTupleByteArray();
        System.arraycopy(temparray, 0, data, tuple_offset, tuple_length);   
@@ -109,9 +109,9 @@ public class Tuple implements GlobalConst{
    }
 
    /** This is used when you don't want to use the constructor
-    * @param atuple  a byte array which contains the tuple
-    * @param offset the offset of the tuple in the byte array
-    * @param length the length of the tuple
+    * @param atuple  a byte array which contains the map
+    * @param offset the offset of the map in the byte array
+    * @param length the length of the map
     */
 
    public void tupleInit(byte [] atuple, int offset, int length)
@@ -122,10 +122,10 @@ public class Tuple implements GlobalConst{
    }
 
  /**
-  * Set a tuple with the given tuple length and offset
-  * @param	record	a byte array contains the tuple
-  * @param	offset  the offset of the tuple ( =0 by default)
-  * @param	length	the length of the tuple
+  * Set a map with the given map length and offset
+  * @param	record	a byte array contains the map
+  * @param	offset  the offset of the map ( =0 by default)
+  * @param	length	the length of the map
   */
  public void tupleSet(byte [] record, int offset, int length)  
   {
@@ -134,35 +134,35 @@ public class Tuple implements GlobalConst{
       tuple_length = length;
   }
   
- /** get the length of a tuple, call this method if you did not 
+ /** get the length of a map, call this method if you did not 
   *  call setHdr () before
-  * @return 	length of this tuple in bytes
+  * @return 	length of this map in bytes
   */   
   public int getLength()
    {
       return tuple_length;
    }
 
-/** get the length of a tuple, call this method if you did 
+/** get the length of a map, call this method if you did 
   *  call setHdr () before
-  * @return     size of this tuple in bytes
+  * @return     size of this map in bytes
   */
   public short size()
    {
       return ((short) (fldOffset[fldCnt] - tuple_offset));
    }
  
-   /** get the offset of a tuple
-    *  @return offset of the tuple in byte array
+   /** get the offset of a map
+    *  @return offset of the map in byte array
     */   
    public int getOffset()
    {
       return tuple_offset;
    }   
    
-   /** Copy the tuple byte array out
-    *  @return  byte[], a byte array contains the tuple
-    *		the length of byte[] = length of the tuple
+   /** Copy the map byte array out
+    *  @return  byte[], a byte array contains the map
+    *		the length of byte[] = length of the map
     */
     
    public byte [] getTupleByteArray() 
@@ -188,7 +188,7 @@ public class Tuple implements GlobalConst{
     * @return		the converted integer if success
     *			
     * @exception   IOException I/O errors
-    * @exception   FieldNumberOutOfBoundException Tuple field number out of bound
+    * @exception   FieldNumberOutOfBoundException Map field number out of bound
     */
 
   public int getIntFld(int fldNo) 
@@ -201,7 +201,7 @@ public class Tuple implements GlobalConst{
       return val;
      }
     else 
-     throw new FieldNumberOutOfBoundException (null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+     throw new FieldNumberOutOfBoundException (null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
   }
     
    /**
@@ -211,7 +211,7 @@ public class Tuple implements GlobalConst{
     * @return           the converted float number  if success
     *			
     * @exception   IOException I/O errors
-    * @exception   FieldNumberOutOfBoundException Tuple field number out of bound
+    * @exception   FieldNumberOutOfBoundException Map field number out of bound
     */
 
     public float getFloFld(int fldNo) 
@@ -224,7 +224,7 @@ public class Tuple implements GlobalConst{
         return val;
        }
       else 
-       throw new FieldNumberOutOfBoundException (null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+       throw new FieldNumberOutOfBoundException (null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
      }
 
 
@@ -235,7 +235,7 @@ public class Tuple implements GlobalConst{
     * @return           the converted string if success
     *			
     * @exception   IOException I/O errors
-    * @exception   FieldNumberOutOfBoundException Tuple field number out of bound
+    * @exception   FieldNumberOutOfBoundException Map field number out of bound
     */
 
    public String getStrFld(int fldNo) 
@@ -249,7 +249,7 @@ public class Tuple implements GlobalConst{
         return val;
      }
     else 
-     throw new FieldNumberOutOfBoundException (null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+     throw new FieldNumberOutOfBoundException (null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
   }
  
    /**
@@ -259,7 +259,7 @@ public class Tuple implements GlobalConst{
     * @return           the character if success
     *			
     * @exception   IOException I/O errors
-    * @exception   FieldNumberOutOfBoundException Tuple field number out of bound
+    * @exception   FieldNumberOutOfBoundException Map field number out of bound
     */
 
    public char getCharFld(int fldNo) 
@@ -272,7 +272,7 @@ public class Tuple implements GlobalConst{
         return val;
        }
       else 
-       throw new FieldNumberOutOfBoundException (null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+       throw new FieldNumberOutOfBoundException (null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
  
     }
 
@@ -282,10 +282,10 @@ public class Tuple implements GlobalConst{
    * @param	fldNo	the field number
    * @param	val	the integer value
    * @exception   IOException I/O errors
-   * @exception   FieldNumberOutOfBoundException Tuple field number out of bound
+   * @exception   FieldNumberOutOfBoundException Map field number out of bound
    */
 
-  public Tuple setIntFld(int fldNo, int val) 
+  public Map setIntFld(int fldNo, int val) 
   	throws IOException, FieldNumberOutOfBoundException
   { 
     if ( (fldNo > 0) && (fldNo <= fldCnt))
@@ -294,7 +294,7 @@ public class Tuple implements GlobalConst{
 	return this;
      }
     else 
-     throw new FieldNumberOutOfBoundException (null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND"); 
+     throw new FieldNumberOutOfBoundException (null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND"); 
   }
 
   /**
@@ -303,10 +303,10 @@ public class Tuple implements GlobalConst{
    * @param     fldNo   the field number
    * @param     val     the float value
    * @exception   IOException I/O errors
-   * @exception   FieldNumberOutOfBoundException Tuple field number out of bound
+   * @exception   FieldNumberOutOfBoundException Map field number out of bound
    */
 
-  public Tuple setFloFld(int fldNo, float val) 
+  public Map setFloFld(int fldNo, float val) 
   	throws IOException, FieldNumberOutOfBoundException
   { 
    if ( (fldNo > 0) && (fldNo <= fldCnt))
@@ -315,7 +315,7 @@ public class Tuple implements GlobalConst{
      return this;
     }
     else  
-     throw new FieldNumberOutOfBoundException (null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND"); 
+     throw new FieldNumberOutOfBoundException (null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND"); 
      
   }
 
@@ -325,10 +325,10 @@ public class Tuple implements GlobalConst{
    * @param     fldNo   the field number
    * @param     val     the string value
    * @exception   IOException I/O errors
-   * @exception   FieldNumberOutOfBoundException Tuple field number out of bound
+   * @exception   FieldNumberOutOfBoundException Map field number out of bound
    */
 
-   public Tuple setStrFld(int fldNo, String val) 
+   public Map setStrFld(int fldNo, String val) 
 		throws IOException, FieldNumberOutOfBoundException  
    {
      if ( (fldNo > 0) && (fldNo <= fldCnt))        
@@ -337,20 +337,20 @@ public class Tuple implements GlobalConst{
          return this;
       }
      else 
-       throw new FieldNumberOutOfBoundException (null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+       throw new FieldNumberOutOfBoundException (null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
     }
 
 
    /**
-    * setHdr will set the header of this tuple.   
+    * setHdr will set the header of this map.   
     *
     * @param	numFlds	  number of fields
-    * @param	types[]	  contains the types that will be in this tuple
+    * @param	types[]	  contains the types that will be in this map
     * @param	strSizes[]      contains the sizes of the string 
     *				
     * @exception IOException I/O errors
     * @exception InvalidTypeException Invalid tupe type
-    * @exception InvalidTupleSizeException Tuple size too big
+    * @exception InvalidTupleSizeException Map size too big
     *
     */
 
@@ -358,7 +358,7 @@ public void setHdr (short numFlds,  AttrType types[], short strSizes[])
  throws IOException, InvalidTypeException, InvalidTupleSizeException		
 {
   if((numFlds +2)*2 > max_size)
-    throw new InvalidTupleSizeException (null, "TUPLE: TUPLE_TOOBIG_ERROR");
+    throw new InvalidTupleSizeException (null, "MAP: TUPLE_TOOBIG_ERROR");
   
   fldCnt = numFlds;
   Convert.setShortValue(numFlds, tuple_offset, data);
@@ -393,7 +393,7 @@ public void setHdr (short numFlds,  AttrType types[], short strSizes[])
      break;       
  
    default:
-    throw new InvalidTypeException (null, "TUPLE: TUPLE_TYPE_ERROR");
+    throw new InvalidTypeException (null, "MAP: TUPLE_TYPE_ERROR");
    }
   fldOffset[i]  = (short) (fldOffset[i-1] + incr);
   Convert.setShortValue(fldOffset[i], pos, data);
@@ -415,7 +415,7 @@ public void setHdr (short numFlds,  AttrType types[], short strSizes[])
      break;
 
    default:
-    throw new InvalidTypeException (null, "TUPLE: TUPLE_TYPE_ERROR");
+    throw new InvalidTypeException (null, "MAP: TUPLE_TYPE_ERROR");
    }
 
   fldOffset[numFlds] = (short) (fldOffset[i-1] + incr);
@@ -424,14 +424,14 @@ public void setHdr (short numFlds,  AttrType types[], short strSizes[])
   tuple_length = fldOffset[numFlds] - tuple_offset;
 
   if(tuple_length > max_size)
-   throw new InvalidTupleSizeException (null, "TUPLE: TUPLE_TOOBIG_ERROR");
+   throw new InvalidTupleSizeException (null, "MAP: TUPLE_TOOBIG_ERROR");
 }
      
   
   /**
-   * Returns number of fields in this tuple
+   * Returns number of fields in this map
    *
-   * @return the number of fields in this tuple
+   * @return the number of fields in this map
    *
    */
 
@@ -458,8 +458,8 @@ public void setHdr (short numFlds,  AttrType types[], short strSizes[])
    }
 
  /**
-  * Print out the tuple
-  * @param type  the types in the tuple
+  * Print out the map
+  * @param type  the types in the map
   * @Exception IOException I/O exception
   */
  public void print(AttrType type[])
@@ -526,7 +526,7 @@ public void setHdr (short numFlds,  AttrType types[], short strSizes[])
    * Padding must be used when storing different types.
    * 
    * @param	offset
-   * @param type   the type of tuple
+   * @param type   the type of map
    * @return short typle
    */
 

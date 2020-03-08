@@ -166,19 +166,19 @@ class JoinsDriver implements GlobalConst {
     short [] Ssizes = new short [1];
     Ssizes[0] = 30; //first elt. is 30
     
-    Tuple t = new Tuple();
+    Map t = new Map();
     try {
       t.setHdr((short) 4,Stypes, Ssizes);
     }
     catch (Exception e) {
-      System.err.println("*** error in Tuple.setHdr() ***");
+      System.err.println("*** error in Map.setHdr() ***");
       status = FAIL;
       e.printStackTrace();
     }
     
     int size = t.size();
     
-    // inserting the tuple into file "sailors"
+    // inserting the map into file "sailors"
     RID             rid;
     Heapfile        f = null;
     try {
@@ -190,12 +190,12 @@ class JoinsDriver implements GlobalConst {
       e.printStackTrace();
     }
     
-    t = new Tuple(size);
+    t = new Map(size);
     try {
       t.setHdr((short) 4, Stypes, Ssizes);
     }
     catch (Exception e) {
-      System.err.println("*** error in Tuple.setHdr() ***");
+      System.err.println("*** error in Map.setHdr() ***");
       status = FAIL;
       e.printStackTrace();
     }
@@ -208,7 +208,7 @@ class JoinsDriver implements GlobalConst {
 	t.setFloFld(4, (float)((Sailor)sailors.elementAt(i)).age);
       }
       catch (Exception e) {
-	System.err.println("*** Heapfile error in Tuple.setStrFld() ***");
+	System.err.println("*** Heapfile error in Map.setStrFld() ***");
 	status = FAIL;
 	e.printStackTrace();
       }
@@ -238,19 +238,19 @@ class JoinsDriver implements GlobalConst {
     short  []  Bsizes = new short[2];
     Bsizes[0] = 30;
     Bsizes[1] = 20;
-    t = new Tuple();
+    t = new Map();
     try {
       t.setHdr((short) 3,Btypes, Bsizes);
     }
     catch (Exception e) {
-      System.err.println("*** error in Tuple.setHdr() ***");
+      System.err.println("*** error in Map.setHdr() ***");
       status = FAIL;
       e.printStackTrace();
     }
     
     size = t.size();
     
-    // inserting the tuple into file "boats"
+    // inserting the map into file "boats"
     //RID             rid;
     f = null;
     try {
@@ -262,12 +262,12 @@ class JoinsDriver implements GlobalConst {
       e.printStackTrace();
     }
     
-    t = new Tuple(size);
+    t = new Map(size);
     try {
       t.setHdr((short) 3, Btypes, Bsizes);
     }
     catch (Exception e) {
-      System.err.println("*** error in Tuple.setHdr() ***");
+      System.err.println("*** error in Map.setHdr() ***");
       status = FAIL;
       e.printStackTrace();
     }
@@ -279,7 +279,7 @@ class JoinsDriver implements GlobalConst {
 	t.setStrFld(3, ((Boats)boats.elementAt(i)).color);
       }
       catch (Exception e) {
-	System.err.println("*** error in Tuple.setStrFld() ***");
+	System.err.println("*** error in Map.setStrFld() ***");
 	status = FAIL;
 	e.printStackTrace();
       }
@@ -307,19 +307,19 @@ class JoinsDriver implements GlobalConst {
 
     short [] Rsizes = new short [1];
     Rsizes[0] = 15; 
-    t = new Tuple();
+    t = new Map();
     try {
       t.setHdr((short) 3,Rtypes, Rsizes);
     }
     catch (Exception e) {
-      System.err.println("*** error in Tuple.setHdr() ***");
+      System.err.println("*** error in Map.setHdr() ***");
       status = FAIL;
       e.printStackTrace();
     }
     
     size = t.size();
     
-    // inserting the tuple into file "boats"
+    // inserting the map into file "boats"
     //RID             rid;
     f = null;
     try {
@@ -331,12 +331,12 @@ class JoinsDriver implements GlobalConst {
       e.printStackTrace();
     }
     
-    t = new Tuple(size);
+    t = new Map(size);
     try {
       t.setHdr((short) 3, Rtypes, Rsizes);
     }
     catch (Exception e) {
-      System.err.println("*** error in Tuple.setHdr() ***");
+      System.err.println("*** error in Map.setHdr() ***");
       status = FAIL;
       e.printStackTrace();
     }
@@ -349,7 +349,7 @@ class JoinsDriver implements GlobalConst {
 
       }
       catch (Exception e) {
-	System.err.println("*** error in Tuple.setStrFld() ***");
+	System.err.println("*** error in Map.setStrFld() ***");
 	status = FAIL;
 	e.printStackTrace();
       }      
@@ -548,7 +548,7 @@ class JoinsDriver implements GlobalConst {
  
     Query1_CondExpr(outFilter);
  
-    Tuple t = new Tuple();
+    Map t = new Map();
     
     AttrType [] Stypes = new AttrType[4];
     Stypes[0] = new AttrType (AttrType.attrInteger);
@@ -671,7 +671,7 @@ class JoinsDriver implements GlobalConst {
     }
     if (status != OK) {
       //bail out
-      System.err.println ("*** Error in get next tuple ");
+      System.err.println ("*** Error in get next map ");
       Runtime.getRuntime().exit(1);
     }
     
@@ -735,7 +735,7 @@ class JoinsDriver implements GlobalConst {
     outFilter2[2] = new CondExpr();
 
     Query2_CondExpr(outFilter, outFilter2);
-    Tuple t = new Tuple();
+    Map t = new Map();
     t = null;
 
     AttrType [] Stypes = {
@@ -809,8 +809,8 @@ class JoinsDriver implements GlobalConst {
     //_______________________________________________________________
     //*******************create an scan on the heapfile**************
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // create a tuple of appropriate size
-        Tuple tt = new Tuple();
+    // create a map of appropriate size
+        Map tt = new Map();
     try {
       tt.setHdr((short) 4, Stypes, Ssizes);
     }
@@ -820,7 +820,7 @@ class JoinsDriver implements GlobalConst {
     }
 
     int sizett = tt.size();
-    tt = new Tuple(sizett);
+    tt = new Map(sizett);
     try {
       tt.setHdr((short) 4, Stypes, Ssizes);
     }
@@ -861,7 +861,7 @@ class JoinsDriver implements GlobalConst {
     
     RID rid = new RID();
     int key =0;
-    Tuple temp = null;
+    Map temp = null;
     
     try {
       temp = scan.getNext(rid);
@@ -1016,7 +1016,7 @@ class JoinsDriver implements GlobalConst {
  
     Query3_CondExpr(outFilter);
  
-    Tuple t = new Tuple();
+    Map t = new Map();
     t = null;
  
     AttrType Stypes[] = {
@@ -1172,7 +1172,7 @@ class JoinsDriver implements GlobalConst {
  
     Query3_CondExpr(outFilter);
  
-    Tuple t = new Tuple();
+    Map t = new Map();
     t = null;
  
     AttrType Stypes[] = {
@@ -1337,7 +1337,7 @@ class JoinsDriver implements GlobalConst {
     CondExpr [] outFilter;
     outFilter = Query5_CondExpr();
  
-    Tuple t = new Tuple();
+    Map t = new Map();
     t = null;
  
     AttrType Stypes[] = {
@@ -1444,7 +1444,7 @@ class JoinsDriver implements GlobalConst {
     }
 
     QueryCheck qcheck5 = new QueryCheck(5);
-    //Tuple t = new Tuple();
+    //Map t = new Map();
     t = null;
  
     try {
@@ -1502,7 +1502,7 @@ class JoinsDriver implements GlobalConst {
       outFilter2[2] = new CondExpr();
       
       Query6_CondExpr(outFilter, outFilter2);
-      Tuple t = new Tuple();
+      Map t = new Map();
       t = null;
       
       AttrType [] Stypes = {
@@ -1650,7 +1650,7 @@ class JoinsDriver implements GlobalConst {
 	  qcheck6.Check(t);
 	}
       }catch (Exception e) {
-	System.err.println ("*** Error preparing for get_next tuple");
+	System.err.println ("*** Error preparing for get_next map");
 	System.err.println (""+e);
 	Runtime.getRuntime().exit(1);
       }

@@ -106,30 +106,30 @@ Jtuple has the appropriate types.
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>static&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../iterator/Projection.html#Join(heap.Tuple, global.AttrType[], heap.Tuple, global.AttrType[], heap.Tuple, iterator.FldSpec[], int)">Join</A></B>(<A HREF="../heap/Tuple.html">Tuple</A>&nbsp;t1,
+<TD><CODE><B><A HREF="../iterator/Projection.html#Join(heap.Map, global.AttrType[], heap.Map, global.AttrType[], heap.Map, iterator.FldSpec[], int)">Join</A></B>(<A HREF="../heap/Map.html">Map</A>&nbsp;t1,
      <A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;type1,
-     <A HREF="../heap/Tuple.html">Tuple</A>&nbsp;t2,
+     <A HREF="../heap/Map.html">Map</A>&nbsp;t2,
      <A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;type2,
-     <A HREF="../heap/Tuple.html">Tuple</A>&nbsp;Jtuple,
+     <A HREF="../heap/Map.html">Map</A>&nbsp;Jtuple,
      <A HREF="../iterator/FldSpec.html">FldSpec</A>[]&nbsp;perm_mat,
      int&nbsp;nOutFlds)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tuple t1 and Tuple t2 will be joined, and the result 
-will be stored in Tuple Jtuple,before calling this mehtod.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Map t1 and Map t2 will be joined, and the result 
+will be stored in Map Jtuple,before calling this mehtod.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>static&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../iterator/Projection.html#Project(heap.Tuple, global.AttrType[], heap.Tuple, iterator.FldSpec[], int)">Project</A></B>(<A HREF="../heap/Tuple.html">Tuple</A>&nbsp;t1,
+<TD><CODE><B><A HREF="../iterator/Projection.html#Project(heap.Map, global.AttrType[], heap.Map, iterator.FldSpec[], int)">Project</A></B>(<A HREF="../heap/Map.html">Map</A>&nbsp;t1,
         <A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;type1,
-        <A HREF="../heap/Tuple.html">Tuple</A>&nbsp;Jtuple,
+        <A HREF="../heap/Map.html">Map</A>&nbsp;Jtuple,
         <A HREF="../iterator/FldSpec.html">FldSpec</A>[]&nbsp;perm_mat,
         int&nbsp;nOutFlds)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tuple t1 will be projected  
-the result will be stored in Tuple Jtuple</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Map t1 will be projected  
+the result will be stored in Map Jtuple</TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
@@ -174,34 +174,34 @@ public <B>Projection</B>()</PRE>
 </TR>
 </TABLE>
 
-<A NAME="Join(heap.Tuple, global.AttrType[], heap.Tuple, global.AttrType[], heap.Tuple, iterator.FldSpec[], int)"><!-- --></A><H3>
+<A NAME="Join(heap.Map, global.AttrType[], heap.Map, global.AttrType[], heap.Map, iterator.FldSpec[], int)"><!-- --></A><H3>
 Join</H3>
 <PRE>
-public static void <B>Join</B>(<A HREF="../heap/Tuple.html">Tuple</A>&nbsp;t1,
+public static void <B>Join</B>(<A HREF="../heap/Map.html">Map</A>&nbsp;t1,
                         <A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;type1,
-                        <A HREF="../heap/Tuple.html">Tuple</A>&nbsp;t2,
+                        <A HREF="../heap/Map.html">Map</A>&nbsp;t2,
                         <A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;type2,
-                        <A HREF="../heap/Tuple.html">Tuple</A>&nbsp;Jtuple,
+                        <A HREF="../heap/Map.html">Map</A>&nbsp;Jtuple,
                         <A HREF="../iterator/FldSpec.html">FldSpec</A>[]&nbsp;perm_mat,
                         int&nbsp;nOutFlds)
                  throws <A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A>,
                         <A HREF="../heap/FieldNumberOutOfBoundException.html">FieldNumberOutOfBoundException</A>,
                         java.io.IOException</PRE>
 <DL>
-<DD>Tuple t1 and Tuple t2 will be joined, and the result 
-will be stored in Tuple Jtuple,before calling this mehtod.
-we know that this two tuple can join in the common field<DD><DL>
-<DT><B>Parameters:</B><DD><CODE>t1</CODE> - The Tuple will be joined with t2<DD><CODE>type1[]</CODE> - The array used to store the each attribute type<DD><CODE>t2</CODE> - The Tuple will be joined with t1<DD><CODE>type2[]</CODE> - The array used to store the each attribute type<DD><CODE>Jtuple</CODE> - the returned Tuple<DD><CODE>perm_mat[]</CODE> - shows what input fields go where in the output tuple<DD><CODE>nOutFlds</CODE> - number of outer relation field<DT><B>Throws:</B><DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - attrbute type does't match<DD><CODE><A HREF="../heap/FieldNumberOutOfBoundException.html">FieldNumberOutOfBoundException</A></CODE> - field number exceeds limit<DD><CODE>java.io.IOException</CODE> - some I/O fault</DL>
+<DD>Map t1 and Map t2 will be joined, and the result 
+will be stored in Map Jtuple,before calling this mehtod.
+we know that this two map can join in the common field<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>t1</CODE> - The Map will be joined with t2<DD><CODE>type1[]</CODE> - The array used to store the each attribute type<DD><CODE>t2</CODE> - The Map will be joined with t1<DD><CODE>type2[]</CODE> - The array used to store the each attribute type<DD><CODE>Jtuple</CODE> - the returned Map<DD><CODE>perm_mat[]</CODE> - shows what input fields go where in the output map<DD><CODE>nOutFlds</CODE> - number of outer relation field<DT><B>Throws:</B><DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - attrbute type does't match<DD><CODE><A HREF="../heap/FieldNumberOutOfBoundException.html">FieldNumberOutOfBoundException</A></CODE> - field number exceeds limit<DD><CODE>java.io.IOException</CODE> - some I/O fault</DL>
 </DD>
 </DL>
 <HR>
 
-<A NAME="Project(heap.Tuple, global.AttrType[], heap.Tuple, iterator.FldSpec[], int)"><!-- --></A><H3>
+<A NAME="Project(heap.Map, global.AttrType[], heap.Map, iterator.FldSpec[], int)"><!-- --></A><H3>
 Project</H3>
 <PRE>
-public static void <B>Project</B>(<A HREF="../heap/Tuple.html">Tuple</A>&nbsp;t1,
+public static void <B>Project</B>(<A HREF="../heap/Map.html">Map</A>&nbsp;t1,
                            <A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;type1,
-                           <A HREF="../heap/Tuple.html">Tuple</A>&nbsp;Jtuple,
+                           <A HREF="../heap/Map.html">Map</A>&nbsp;Jtuple,
                            <A HREF="../iterator/FldSpec.html">FldSpec</A>[]&nbsp;perm_mat,
                            int&nbsp;nOutFlds)
                     throws <A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A>,
@@ -209,9 +209,9 @@ public static void <B>Project</B>(<A HREF="../heap/Tuple.html">Tuple</A>&nbsp;t1
                            <A HREF="../heap/FieldNumberOutOfBoundException.html">FieldNumberOutOfBoundException</A>,
                            java.io.IOException</PRE>
 <DL>
-<DD>Tuple t1 will be projected  
-the result will be stored in Tuple Jtuple<DD><DL>
-<DT><B>Parameters:</B><DD><CODE>t1</CODE> - The Tuple will be projected<DD><CODE>type1[]</CODE> - The array used to store the each attribute type<DD><CODE>Jtuple</CODE> - the returned Tuple<DD><CODE>perm_mat[]</CODE> - shows what input fields go where in the output tuple<DD><CODE>nOutFlds</CODE> - number of outer relation field<DT><B>Throws:</B><DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - attrbute type doesn't match<DD><CODE><A HREF="../iterator/WrongPermat.html">WrongPermat</A></CODE> - wrong FldSpec argument<DD><CODE><A HREF="../heap/FieldNumberOutOfBoundException.html">FieldNumberOutOfBoundException</A></CODE> - field number exceeds limit<DD><CODE>java.io.IOException</CODE> - some I/O fault</DL>
+<DD>Map t1 will be projected  
+the result will be stored in Map Jtuple<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>t1</CODE> - The Map will be projected<DD><CODE>type1[]</CODE> - The array used to store the each attribute type<DD><CODE>Jtuple</CODE> - the returned Map<DD><CODE>perm_mat[]</CODE> - shows what input fields go where in the output map<DD><CODE>nOutFlds</CODE> - number of outer relation field<DT><B>Throws:</B><DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - attrbute type doesn't match<DD><CODE><A HREF="../iterator/WrongPermat.html">WrongPermat</A></CODE> - wrong FldSpec argument<DD><CODE><A HREF="../heap/FieldNumberOutOfBoundException.html">FieldNumberOutOfBoundException</A></CODE> - field number exceeds limit<DD><CODE>java.io.IOException</CODE> - some I/O fault</DL>
 </DD>
 </DL>
 <!-- ========= END OF CLASS DATA ========= -->

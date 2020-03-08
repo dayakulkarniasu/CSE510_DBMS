@@ -158,7 +158,7 @@ to finish cleaning up</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../heap/Tuple.html">Tuple</A></CODE></FONT></TD>
+<CODE>&nbsp;<A HREF="../heap/Map.html">Map</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../iterator/FileScan.html#get_next()">get_next</A></B>()</CODE>
 
 <BR>
@@ -237,7 +237,7 @@ public <B>FileScan</B>(java.lang.String&nbsp;file_name,
                 <A HREF="../iterator/InvalidRelation.html">InvalidRelation</A></PRE>
 <DL>
 <DD>constructor<DD><DL>
-<DT><B>Parameters:</B><DD><CODE>file_name</CODE> - heapfile to be opened<DD><CODE>in1[]</CODE> - array showing what the attributes of the input fields are.<DD><CODE>s1_sizes[]</CODE> - shows the length of the string fields.<DD><CODE>len_in1</CODE> - number of attributes in the input tuple<DD><CODE>n_out_flds</CODE> - number of fields in the out tuple<DD><CODE>proj_list</CODE> - shows what input fields go where in the output tuple<DD><CODE>outFilter</CODE> - select expressions<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - some I/O fault<DD><CODE><A HREF="../iterator/FileScanException.html">FileScanException</A></CODE> - exception from this class<DD><CODE><A HREF="../iterator/TupleUtilsException.html">TupleUtilsException</A></CODE> - exception from this class<DD><CODE><A HREF="../iterator/InvalidRelation.html">InvalidRelation</A></CODE> - invalid relation</DL>
+<DT><B>Parameters:</B><DD><CODE>file_name</CODE> - heapfile to be opened<DD><CODE>in1[]</CODE> - array showing what the attributes of the input fields are.<DD><CODE>s1_sizes[]</CODE> - shows the length of the string fields.<DD><CODE>len_in1</CODE> - number of attributes in the input map<DD><CODE>n_out_flds</CODE> - number of fields in the out map<DD><CODE>proj_list</CODE> - shows what input fields go where in the output map<DD><CODE>outFilter</CODE> - select expressions<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - some I/O fault<DD><CODE><A HREF="../iterator/FileScanException.html">FileScanException</A></CODE> - exception from this class<DD><CODE><A HREF="../iterator/TupleUtilsException.html">TupleUtilsException</A></CODE> - exception from this class<DD><CODE><A HREF="../iterator/InvalidRelation.html">InvalidRelation</A></CODE> - invalid relation</DL>
 </DD>
 </DL>
 
@@ -257,7 +257,7 @@ show</H3>
 public <A HREF="../iterator/FldSpec.html">FldSpec</A>[] <B>show</B>()</PRE>
 <DL>
 <DD><DL>
-<DT><B>Returns:</B><DD>shows what input fields go where in the output tuple</DL>
+<DT><B>Returns:</B><DD>shows what input fields go where in the output map</DL>
 </DD>
 </DL>
 <HR>
@@ -265,7 +265,7 @@ public <A HREF="../iterator/FldSpec.html">FldSpec</A>[] <B>show</B>()</PRE>
 <A NAME="get_next()"><!-- --></A><H3>
 get_next</H3>
 <PRE>
-public <A HREF="../heap/Tuple.html">Tuple</A> <B>get_next</B>()
+public <A HREF="../heap/Map.html">Map</A> <B>get_next</B>()
                throws <A HREF="../iterator/JoinsException.html">JoinsException</A>,
                       java.io.IOException,
                       <A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A>,
@@ -281,7 +281,7 @@ public <A HREF="../heap/Tuple.html">Tuple</A> <B>get_next</B>()
 <DT><B>Overrides:</B><DD><CODE><A HREF="../iterator/Iterator.html#get_next()">get_next</A></CODE> in class <CODE><A HREF="../iterator/Iterator.html">Iterator</A></CODE></DL>
 </DD>
 <DD><DL>
-<DT><B>Returns:</B><DD>the result tuple<DT><B>Throws:</B><DD><CODE><A HREF="../iterator/JoinsException.html">JoinsException</A></CODE> - some join exception<DD><CODE>java.io.IOException</CODE> - I/O errors<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid tuple size<DD><CODE><A HREF="../heap/InvalidTypeException.html">InvalidTypeException</A></CODE> - tuple type not valid<DD><CODE><A HREF="../bufmgr/PageNotReadException.html">PageNotReadException</A></CODE> - exception from lower layer<DD><CODE><A HREF="../iterator/PredEvalException.html">PredEvalException</A></CODE> - exception from PredEval class<DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - attribute type unknown<DD><CODE><A HREF="../heap/FieldNumberOutOfBoundException.html">FieldNumberOutOfBoundException</A></CODE> - array out of bounds<DD><CODE><A HREF="../iterator/WrongPermat.html">WrongPermat</A></CODE> - exception for wrong FldSpec argument</DL>
+<DT><B>Returns:</B><DD>the result map<DT><B>Throws:</B><DD><CODE><A HREF="../iterator/JoinsException.html">JoinsException</A></CODE> - some join exception<DD><CODE>java.io.IOException</CODE> - I/O errors<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid map size<DD><CODE><A HREF="../heap/InvalidTypeException.html">InvalidTypeException</A></CODE> - map type not valid<DD><CODE><A HREF="../bufmgr/PageNotReadException.html">PageNotReadException</A></CODE> - exception from lower layer<DD><CODE><A HREF="../iterator/PredEvalException.html">PredEvalException</A></CODE> - exception from PredEval class<DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - attribute type unknown<DD><CODE><A HREF="../heap/FieldNumberOutOfBoundException.html">FieldNumberOutOfBoundException</A></CODE> - array out of bounds<DD><CODE><A HREF="../iterator/WrongPermat.html">WrongPermat</A></CODE> - exception for wrong FldSpec argument</DL>
 </DD>
 </DL>
 <HR>

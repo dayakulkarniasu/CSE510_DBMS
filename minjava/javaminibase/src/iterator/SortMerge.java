@@ -29,15 +29,15 @@ public class SortMerge extends Iterator implements GlobalConst
   private  boolean        process_next_block;
   private  short     inner_str_sizes[];
   private  IoBuf    io_buf1,  io_buf2;
-  private  Tuple     TempTuple1,  TempTuple2;
-  private  Tuple     tuple1,  tuple2;
+  private  Map     TempTuple1,  TempTuple2;
+  private  Map     tuple1,  tuple2;
   private  boolean       done;
   private  byte    _bufs1[][],_bufs2[][];
   private  int        _n_pages; 
   private  Heapfile temp_file_fd1, temp_file_fd2;
   private  AttrType   sortFldType;
   private  int        t1_size, t2_size;
-  private  Tuple     Jtuple;
+  private  Map     Jtuple;
   private  FldSpec   perm_mat[];
   private  int        nOutFlds;
   
@@ -58,14 +58,14 @@ public class SortMerge extends Iterator implements GlobalConst
    *@param am2  access method for right input to join
    *@param in1_sorted  is am1 sorted?
    *@param in2_sorted  is am2 sorted?
-   *@param order the order of the tuple: assending or desecnding?
+   *@param order the order of the map: assending or desecnding?
    *@param outFilter[]  Ptr to the output filter
-   *@param proj_list shows what input fields go where in the output tuple
+   *@param proj_list shows what input fields go where in the output map
    *@param n_out_flds number of outer relation fileds
    *@exception JoinNewFailed allocate failed
    *@exception JoinLowMemory memory not enough
 	 *@exception SortException exception from sorting
-	 *@exception TupleUtilsException exception from using tuple utils
+	 *@exception TupleUtilsException exception from using map utils
    *@exception IOException some I/O fault
    */
   public SortMerge(AttrType    in1[],               
@@ -106,7 +106,7 @@ public class SortMerge extends Iterator implements GlobalConst
       in1_len = len_in1;
       in2_len = len_in2;
       
-      Jtuple = new Tuple();
+      Jtuple = new Map();
       AttrType[] Jtypes = new AttrType[n_out_flds];
       short[]    ts_size = null;
       perm_mat = proj_list;
@@ -160,10 +160,10 @@ public class SortMerge extends Iterator implements GlobalConst
       io_buf2 = new IoBuf();
       
       // Allocate memory for the temporary tuples
-      TempTuple1 = new Tuple();
-      TempTuple2 =  new Tuple();
-      tuple1 = new Tuple();
-      tuple2 =  new Tuple();
+      TempTuple1 = new Map();
+      TempTuple2 =  new Map();
+      tuple1 = new Map();
+      tuple2 =  new Map();
       
       
       if (io_buf1  == null || io_buf2  == null ||
@@ -212,22 +212,22 @@ public class SortMerge extends Iterator implements GlobalConst
     }
   
   /**
-   *  The tuple is returned
-   * All this function has to do is to get 1 tuple from one of the Iterators
+   *  The map is returned
+   * All this function has to do is to get 1 map from one of the Iterators
    * (from both initially), use the sorting order to determine which one
    * gets sent up. Amit)
    * Hmmm it seems that some thing more has to be done in order to account
    * for duplicates.... => I am following Raghu's 564 notes in order to
    * obtain an algorithm for this merging. Some funda about 
    *"equivalence classes"
-   *@return the joined tuple is returned
+   *@return the joined map is returned
    *@exception IOException I/O errors
    *@exception JoinsException some join exception
    *@exception IndexException exception from super class
-   *@exception InvalidTupleSizeException invalid tuple size
-   *@exception InvalidTypeException tuple type not valid
+   *@exception InvalidTupleSizeException invalid map size
+   *@exception InvalidTypeException map type not valid
    *@exception PageNotReadException exception from lower layer
-   *@exception TupleUtilsException exception from using tuple utilities
+   *@exception TupleUtilsException exception from using map utilities
    *@exception PredEvalException exception from PredEval class
    *@exception SortException sort exception
    *@exception LowMemException memory error
@@ -236,7 +236,7 @@ public class SortMerge extends Iterator implements GlobalConst
    *@exception Exception other exceptions
    */
 
-  public Tuple get_next() 
+  public Map get_next() 
     throws IOException,
 	   JoinsException ,
 	   IndexException,
@@ -253,7 +253,7 @@ public class SortMerge extends Iterator implements GlobalConst
     {
       
       int    comp_res;
-      Tuple _tuple1,_tuple2;
+      Map _tuple1,_tuple2;
       if (done) return null;
       
       while (true)

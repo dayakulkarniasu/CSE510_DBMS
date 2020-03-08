@@ -28,7 +28,7 @@ public class AttrCatalog extends Heapfile
       
       int sizeOfInt = 4;
       int sizeOfFloat = 4;
-      tuple = new Tuple(Tuple.max_size);
+      map = new Map(Map.max_size);
       attrs = new AttrType[9];
       
       attrs[0] = new AttrType(AttrType.attrString);
@@ -44,7 +44,7 @@ public class AttrCatalog extends Heapfile
       attrs[8] = new AttrType(AttrType.attrString);   // ?????  BK ?????
       
       
-      // Find the largest possible tuple for values attrs[7] & attrs[8]
+      // Find the largest possible map for values attrs[7] & attrs[8]
       //   str_sizes[2] & str_sizes[3]
       max = 10;   // comes from attrData char strVal[10]
       if (sizeOfInt > max)
@@ -60,7 +60,7 @@ public class AttrCatalog extends Heapfile
       str_sizes[3] = max;
       
       try {
-	tuple.setHdr((short)9, attrs, str_sizes);
+	map.setHdr((short)9, attrs, str_sizes);
       }
       catch (Exception e) {
 	throw new AttrCatalogException(e, "setHdr() failed");
@@ -98,10 +98,10 @@ public class AttrCatalog extends Heapfile
       
       while (true){
 	try {
-	  tuple = pscan.getNext(rid);
-	  if (tuple == null)
+	  map = pscan.getNext(rid);
+	  if (map == null)
 	    throw new Catalogattrnotfound(null,"Catalog: Attribute not Found!");
-	  read_tuple(tuple, record);
+	  read_tuple(map, record);
 	}
 	catch (Exception e4) {
 	  throw new AttrCatalogException(e4, "read_tuple failed");
@@ -187,11 +187,11 @@ public class AttrCatalog extends Heapfile
       while(true) 
 	{
 	  try {
-	    tuple = pscan.getNext(rid);
-	    if (tuple == null) 
+	    map = pscan.getNext(rid);
+	    if (map == null) 
 	      throw new Catalogindexnotfound(null,
 					     "Catalog: Index not Found!");
-	    read_tuple(tuple, attrRec);
+	    read_tuple(map, attrRec);
 	  }
 	  catch (Exception e4) {
 	    throw new AttrCatalogException(e4, "read_tuple failed");
@@ -305,14 +305,14 @@ public class AttrCatalog extends Heapfile
       RID rid;
       
       try {
-	make_tuple(tuple, record);
+	make_tuple(map, record);
       }
       catch (Exception e4) {
 	throw new AttrCatalogException(e4, "make_tuple failed");
       }
       
       try {
-	insertRecord(tuple.getTupleByteArray());
+	insertRecord(map.getTupleByteArray());
       }
       catch (Exception e2) {
 	throw new AttrCatalogException(e2, "insertRecord failed");
@@ -350,11 +350,11 @@ public class AttrCatalog extends Heapfile
       // SCAN FILE
       while (true) {
 	try {
-	  tuple = pscan.getNext(rid);
-	  if (tuple == null) 
+	  map = pscan.getNext(rid);
+	  if (map == null) 
 	    throw new Catalogattrnotfound(null,
 					  "Catalog: Attribute not Found!");
-	  read_tuple(tuple, record);
+	  read_tuple(map, record);
 	}
 	catch (Exception e4) {
 	  throw new AttrCatalogException(e4, "read_tuple failed");
@@ -378,36 +378,36 @@ public class AttrCatalog extends Heapfile
   //--------------------------------------------------
   // MAKE_TUPLE
   //--------------------------------------------------
-  // Tuple must have been initialized properly in the 
+  // Map must have been initialized properly in the 
   // constructor
-  // Converts AttrDesc to tuple. 
-  public void make_tuple(Tuple tuple, AttrDesc record)
+  // Converts AttrDesc to map. 
+  public void make_tuple(Map map, AttrDesc record)
     throws IOException, 
 	   AttrCatalogException
     {
       try {
-	tuple.setStrFld(1, record.relName);
-	tuple.setStrFld(2, record.attrName);
-	tuple.setIntFld(3, record.attrOffset);
-	tuple.setIntFld(4, record.attrPos);
+	map.setStrFld(1, record.relName);
+	map.setStrFld(2, record.attrName);
+	map.setIntFld(3, record.attrOffset);
+	map.setIntFld(4, record.attrPos);
 	
 	if (record.attrType.attrType == AttrType.attrString) {
-	  tuple.setIntFld(5, 0);
-	  tuple.setStrFld(8, record.minVal.strVal);
-	  tuple.setStrFld(9, record.maxVal.strVal);
+	  map.setIntFld(5, 0);
+	  map.setStrFld(8, record.minVal.strVal);
+	  map.setStrFld(9, record.maxVal.strVal);
 	} else
 	  if (record.attrType.attrType== AttrType.attrReal) {
-	    tuple.setIntFld(5, 1);
-	    tuple.setFloFld(8,record.minVal.floatVal);
-	    tuple.setFloFld(9,record.minVal.floatVal);
+	    map.setIntFld(5, 1);
+	    map.setFloFld(8,record.minVal.floatVal);
+	    map.setFloFld(9,record.minVal.floatVal);
 	  } else {
-	    tuple.setIntFld(5, 2);
-	    tuple.setIntFld(8,record.minVal.intVal);
-	    tuple.setIntFld(9,record.maxVal.intVal);
+	    map.setIntFld(5, 2);
+	    map.setIntFld(8,record.minVal.intVal);
+	    map.setIntFld(9,record.maxVal.intVal);
 	  }
 	
-	tuple.setIntFld(6, record.attrLen);
-	tuple.setIntFld(7, record.indexCnt);
+	map.setIntFld(6, record.attrLen);
+	map.setIntFld(7, record.indexCnt);
       }
       catch (Exception e1) {
 	throw new AttrCatalogException(e1, "make_tuple failed");
@@ -419,45 +419,45 @@ public class AttrCatalog extends Heapfile
   // READ_TUPLE
   //--------------------------------------------------
   
-  public void read_tuple(Tuple tuple, AttrDesc record)
+  public void read_tuple(Map map, AttrDesc record)
     throws IOException, 
 	   AttrCatalogException
     {
       try {
-	record.relName = tuple.getStrFld(1);
-	record.attrName = tuple.getStrFld(2);
-	record.attrOffset = tuple.getIntFld(3);
-	record.attrPos = tuple.getIntFld(4);
+	record.relName = map.getStrFld(1);
+	record.attrName = map.getStrFld(2);
+	record.attrOffset = map.getIntFld(3);
+	record.attrPos = map.getIntFld(4);
 	
 	int temp;
-	temp = tuple.getIntFld(5);
+	temp = map.getIntFld(5);
 	if (temp == 0)
 	  {
 	    record.attrType = new AttrType(AttrType.attrString);
-	    record.minVal.strVal = tuple.getStrFld(8);
-	    record.maxVal.strVal = tuple.getStrFld(9);
+	    record.minVal.strVal = map.getStrFld(8);
+	    record.maxVal.strVal = map.getStrFld(9);
 	  }
 	else
 	  if (temp == 1)
 	    {
 	      record.attrType = new AttrType(AttrType.attrReal);
-	      record.minVal.floatVal = tuple.getFloFld(8);
-	      record.maxVal.floatVal = tuple.getFloFld(9);
+	      record.minVal.floatVal = map.getFloFld(8);
+	      record.maxVal.floatVal = map.getFloFld(9);
 	    }
 	  else
 	    if (temp == 2)
 	      {
 		record.attrType = new AttrType(AttrType.attrInteger);
-		record.minVal.intVal = tuple.getIntFld(8);
-		record.maxVal.intVal = tuple.getIntFld(9);
+		record.minVal.intVal = map.getIntFld(8);
+		record.maxVal.intVal = map.getIntFld(9);
 	      }
 	    else
 	      {
 		return;
 	      }
 	
-	record.attrLen = tuple.getIntFld(6);
-	record.indexCnt = tuple.getIntFld(7);
+	record.attrLen = map.getIntFld(6);
+	record.indexCnt = map.getIntFld(7);
       }
       catch (Exception e1) {
 	throw new AttrCatalogException(e1, "read_tuple failed");
@@ -473,7 +473,7 @@ public class AttrCatalog extends Heapfile
 		       IndexType accessType){};
   
   
-  Tuple tuple;
+  Map map;
   short [] str_sizes;
   AttrType [] attrs;
   short max;

@@ -168,12 +168,12 @@ to finish cleaning up</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../heap/Tuple.html">Tuple</A></CODE></FONT></TD>
+<CODE>&nbsp;<A HREF="../heap/Map.html">Map</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../iterator/SortMerge.html#get_next()">get_next</A></B>()</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The tuple is returned
- All this function has to do is to get 1 tuple from one of the Iterators
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The map is returned
+ All this function has to do is to get 1 map from one of the Iterators
  (from both initially), use the sorting order to determine which one
  gets sent up.</TD>
 </TR>
@@ -241,7 +241,7 @@ public <B>SortMerge</B>(<A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;in
                  java.io.IOException</PRE>
 <DL>
 <DD>constructor,initialization<DD><DL>
-<DT><B>Parameters:</B><DD><CODE>in1[]</CODE> - Array containing field types of R<DD><CODE>len_in1</CODE> - # of columns in R<DD><CODE>s1_sizes</CODE> - shows the length of the string fields in R.<DD><CODE>in2[]</CODE> - Array containing field types of S<DD><CODE>len_in2</CODE> - # of columns in S<DD><CODE>s2_sizes</CODE> - shows the length of the string fields in S<DD><CODE>sortFld1Len</CODE> - the length of sorted field in R<DD><CODE>sortFld2Len</CODE> - the length of sorted field in S<DD><CODE>join_col_in1</CODE> - The col of R to be joined with S<DD><CODE>join_col_in2</CODE> - the col of S to be joined with R<DD><CODE>amt_of_mem</CODE> - IN PAGES<DD><CODE>am1</CODE> - access method for left input to join<DD><CODE>am2</CODE> - access method for right input to join<DD><CODE>in1_sorted</CODE> - is am1 sorted?<DD><CODE>in2_sorted</CODE> - is am2 sorted?<DD><CODE>order</CODE> - the order of the tuple: assending or desecnding?<DD><CODE>outFilter[]</CODE> - Ptr to the output filter<DD><CODE>proj_list</CODE> - shows what input fields go where in the output tuple<DD><CODE>n_out_flds</CODE> - number of outer relation fileds<DT><B>Throws:</B><DD><CODE><A HREF="../iterator/JoinNewFailed.html">JoinNewFailed</A></CODE> - allocate failed<DD><CODE><A HREF="../iterator/JoinLowMemory.html">JoinLowMemory</A></CODE> - memory not enough<DD><CODE><A HREF="../iterator/SortException.html">SortException</A></CODE> - exception from sorting<DD><CODE><A HREF="../iterator/TupleUtilsException.html">TupleUtilsException</A></CODE> - exception from using tuple utils<DD><CODE>java.io.IOException</CODE> - some I/O fault</DL>
+<DT><B>Parameters:</B><DD><CODE>in1[]</CODE> - Array containing field types of R<DD><CODE>len_in1</CODE> - # of columns in R<DD><CODE>s1_sizes</CODE> - shows the length of the string fields in R.<DD><CODE>in2[]</CODE> - Array containing field types of S<DD><CODE>len_in2</CODE> - # of columns in S<DD><CODE>s2_sizes</CODE> - shows the length of the string fields in S<DD><CODE>sortFld1Len</CODE> - the length of sorted field in R<DD><CODE>sortFld2Len</CODE> - the length of sorted field in S<DD><CODE>join_col_in1</CODE> - The col of R to be joined with S<DD><CODE>join_col_in2</CODE> - the col of S to be joined with R<DD><CODE>amt_of_mem</CODE> - IN PAGES<DD><CODE>am1</CODE> - access method for left input to join<DD><CODE>am2</CODE> - access method for right input to join<DD><CODE>in1_sorted</CODE> - is am1 sorted?<DD><CODE>in2_sorted</CODE> - is am2 sorted?<DD><CODE>order</CODE> - the order of the map: assending or desecnding?<DD><CODE>outFilter[]</CODE> - Ptr to the output filter<DD><CODE>proj_list</CODE> - shows what input fields go where in the output map<DD><CODE>n_out_flds</CODE> - number of outer relation fileds<DT><B>Throws:</B><DD><CODE><A HREF="../iterator/JoinNewFailed.html">JoinNewFailed</A></CODE> - allocate failed<DD><CODE><A HREF="../iterator/JoinLowMemory.html">JoinLowMemory</A></CODE> - memory not enough<DD><CODE><A HREF="../iterator/SortException.html">SortException</A></CODE> - exception from sorting<DD><CODE><A HREF="../iterator/TupleUtilsException.html">TupleUtilsException</A></CODE> - exception from using map utils<DD><CODE>java.io.IOException</CODE> - some I/O fault</DL>
 </DD>
 </DL>
 
@@ -258,7 +258,7 @@ public <B>SortMerge</B>(<A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;in
 <A NAME="get_next()"><!-- --></A><H3>
 get_next</H3>
 <PRE>
-public <A HREF="../heap/Tuple.html">Tuple</A> <B>get_next</B>()
+public <A HREF="../heap/Map.html">Map</A> <B>get_next</B>()
                throws java.io.IOException,
                       <A HREF="../iterator/JoinsException.html">JoinsException</A>,
                       <A HREF="../index/IndexException.html">IndexException</A>,
@@ -273,8 +273,8 @@ public <A HREF="../heap/Tuple.html">Tuple</A> <B>get_next</B>()
                       <A HREF="../iterator/UnknownKeyTypeException.html">UnknownKeyTypeException</A>,
                       java.lang.Exception</PRE>
 <DL>
-<DD>The tuple is returned
- All this function has to do is to get 1 tuple from one of the Iterators
+<DD>The map is returned
+ All this function has to do is to get 1 map from one of the Iterators
  (from both initially), use the sorting order to determine which one
  gets sent up. Amit)
  Hmmm it seems that some thing more has to be done in order to account
@@ -284,7 +284,7 @@ public <A HREF="../heap/Tuple.html">Tuple</A> <B>get_next</B>()
 <DT><B>Overrides:</B><DD><CODE><A HREF="../iterator/Iterator.html#get_next()">get_next</A></CODE> in class <CODE><A HREF="../iterator/Iterator.html">Iterator</A></CODE></DL>
 </DD>
 <DD><DL>
-<DT><B>Returns:</B><DD>the joined tuple is returned<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - I/O errors<DD><CODE><A HREF="../iterator/JoinsException.html">JoinsException</A></CODE> - some join exception<DD><CODE><A HREF="../index/IndexException.html">IndexException</A></CODE> - exception from super class<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid tuple size<DD><CODE><A HREF="../heap/InvalidTypeException.html">InvalidTypeException</A></CODE> - tuple type not valid<DD><CODE><A HREF="../bufmgr/PageNotReadException.html">PageNotReadException</A></CODE> - exception from lower layer<DD><CODE><A HREF="../iterator/TupleUtilsException.html">TupleUtilsException</A></CODE> - exception from using tuple utilities<DD><CODE><A HREF="../iterator/PredEvalException.html">PredEvalException</A></CODE> - exception from PredEval class<DD><CODE><A HREF="../iterator/SortException.html">SortException</A></CODE> - sort exception<DD><CODE><A HREF="../iterator/LowMemException.html">LowMemException</A></CODE> - memory error<DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - attribute type unknown<DD><CODE><A HREF="../iterator/UnknownKeyTypeException.html">UnknownKeyTypeException</A></CODE> - key type unknown<DD><CODE>java.lang.Exception</CODE> - other exceptions</DL>
+<DT><B>Returns:</B><DD>the joined map is returned<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - I/O errors<DD><CODE><A HREF="../iterator/JoinsException.html">JoinsException</A></CODE> - some join exception<DD><CODE><A HREF="../index/IndexException.html">IndexException</A></CODE> - exception from super class<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid map size<DD><CODE><A HREF="../heap/InvalidTypeException.html">InvalidTypeException</A></CODE> - map type not valid<DD><CODE><A HREF="../bufmgr/PageNotReadException.html">PageNotReadException</A></CODE> - exception from lower layer<DD><CODE><A HREF="../iterator/TupleUtilsException.html">TupleUtilsException</A></CODE> - exception from using map utilities<DD><CODE><A HREF="../iterator/PredEvalException.html">PredEvalException</A></CODE> - exception from PredEval class<DD><CODE><A HREF="../iterator/SortException.html">SortException</A></CODE> - sort exception<DD><CODE><A HREF="../iterator/LowMemException.html">LowMemException</A></CODE> - memory error<DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - attribute type unknown<DD><CODE><A HREF="../iterator/UnknownKeyTypeException.html">UnknownKeyTypeException</A></CODE> - key type unknown<DD><CODE>java.lang.Exception</CODE> - other exceptions</DL>
 </DD>
 </DL>
 <HR>

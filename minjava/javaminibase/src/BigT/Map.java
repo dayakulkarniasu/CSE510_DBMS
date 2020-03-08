@@ -6,7 +6,7 @@ import global.*;
 import heap.*;
 
 /**
- * You will need to create a class BigT.Map, similar to heap.Tuple but having a
+ * You will need to create a class BigT.Map, similar to heap.Map but having a
  * ﬁxed structure (and thus a ﬁxed header) as described above. Thus, the
  * constructor and get/set methods associated with the BigT.Map should be
  * adapted as appropriate
@@ -304,7 +304,7 @@ public class Map implements GlobalConst {
     /**
      * get the length of a map, call this method if you did call setHdr () before
      * 
-     * @return size of this tuple in bytes
+     * @return size of this map in bytes
      */
     public short size() {
         return ((short) (fldOffset[fldCnt] - map_offset));
@@ -396,7 +396,7 @@ public class Map implements GlobalConst {
      * @return the converted integer if success
      * 
      * @exception IOException                    I/O errors
-     * @exception FieldNumberOutOfBoundException Tuple field number out of bound
+     * @exception FieldNumberOutOfBoundException Map field number out of bound
      */
     public int getIntFld(int fldNo) throws IOException, FieldNumberOutOfBoundException {
         int val;
@@ -404,7 +404,7 @@ public class Map implements GlobalConst {
             val = Convert.getIntValue(fldOffset[fldNo - 1], data);
             return val;
         } else
-            throw new FieldNumberOutOfBoundException(null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+            throw new FieldNumberOutOfBoundException(null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
     }
 
     /**
@@ -414,7 +414,7 @@ public class Map implements GlobalConst {
      * @return the converted float number if success
      * 
      * @exception IOException                    I/O errors
-     * @exception FieldNumberOutOfBoundException Tuple field number out of bound
+     * @exception FieldNumberOutOfBoundException Map field number out of bound
      */
     public float getFloFld(int fldNo) throws IOException, FieldNumberOutOfBoundException {
         float val;
@@ -422,7 +422,7 @@ public class Map implements GlobalConst {
             val = Convert.getFloValue(fldOffset[fldNo - 1], data);
             return val;
         } else
-            throw new FieldNumberOutOfBoundException(null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+            throw new FieldNumberOutOfBoundException(null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
     }
 
     /**
@@ -432,7 +432,7 @@ public class Map implements GlobalConst {
      * @return the converted string if success
      * 
      * @exception IOException                    I/O errors
-     * @exception FieldNumberOutOfBoundException Tuple field number out of bound
+     * @exception FieldNumberOutOfBoundException Map field number out of bound
      */
     public String getStrFld(int fldNo) throws IOException, FieldNumberOutOfBoundException {
         String val;
@@ -440,7 +440,7 @@ public class Map implements GlobalConst {
             val = Convert.getStrValue(fldOffset[fldNo - 1], data, fldOffset[fldNo] - fldOffset[fldNo - 1]); // strlen+2
             return val;
         } else
-            throw new FieldNumberOutOfBoundException(null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+            throw new FieldNumberOutOfBoundException(null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
     }
 
     /**
@@ -450,7 +450,7 @@ public class Map implements GlobalConst {
      * @return the character if success
      * 
      * @exception IOException                    I/O errors
-     * @exception FieldNumberOutOfBoundException Tuple field number out of bound
+     * @exception FieldNumberOutOfBoundException Map field number out of bound
      */
     public char getCharFld(int fldNo) throws IOException, FieldNumberOutOfBoundException {
         char val;
@@ -458,7 +458,7 @@ public class Map implements GlobalConst {
             val = Convert.getCharValue(fldOffset[fldNo - 1], data);
             return val;
         } else
-            throw new FieldNumberOutOfBoundException(null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+            throw new FieldNumberOutOfBoundException(null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
 
     }
 
@@ -468,7 +468,7 @@ public class Map implements GlobalConst {
      * @param fldNo the field number
      * @param val   the integer value
      * @exception IOException                    I/O errors
-     * @exception FieldNumberOutOfBoundException Tuple field number out of bound
+     * @exception FieldNumberOutOfBoundException Map field number out of bound
      */
 
     public Map setIntFld(int fldNo, int val) throws IOException, FieldNumberOutOfBoundException {
@@ -476,7 +476,7 @@ public class Map implements GlobalConst {
             Convert.setIntValue(val, fldOffset[fldNo - 1], data);
             return this;
         } else
-            throw new FieldNumberOutOfBoundException(null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+            throw new FieldNumberOutOfBoundException(null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
     }
 
     /**
@@ -485,7 +485,7 @@ public class Map implements GlobalConst {
      * @param fldNo the field number
      * @param val   the float value
      * @exception IOException                    I/O errors
-     * @exception FieldNumberOutOfBoundException Tuple field number out of bound
+     * @exception FieldNumberOutOfBoundException Map field number out of bound
      */
 
     public Map setFloFld(int fldNo, float val) throws IOException, FieldNumberOutOfBoundException {
@@ -493,7 +493,7 @@ public class Map implements GlobalConst {
             Convert.setFloValue(val, fldOffset[fldNo - 1], data);
             return this;
         } else
-            throw new FieldNumberOutOfBoundException(null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+            throw new FieldNumberOutOfBoundException(null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
 
     }
 
@@ -503,7 +503,7 @@ public class Map implements GlobalConst {
      * @param fldNo the field number
      * @param val   the string value
      * @exception IOException                    I/O errors
-     * @exception FieldNumberOutOfBoundException Tuple field number out of bound
+     * @exception FieldNumberOutOfBoundException Map field number out of bound
      */
 
     public Map setStrFld(int fldNo, String val) throws IOException, FieldNumberOutOfBoundException {
@@ -511,7 +511,7 @@ public class Map implements GlobalConst {
             Convert.setStrValue(val, fldOffset[fldNo - 1], data);
             return this;
         } else
-            throw new FieldNumberOutOfBoundException(null, "TUPLE:TUPLE_FLDNO_OUT_OF_BOUND");
+            throw new FieldNumberOutOfBoundException(null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
     }
 
     /**
@@ -530,7 +530,7 @@ public class Map implements GlobalConst {
     public void setHdr(short numFlds, AttrType types[], short strSizes[])
             throws IOException, InvalidTypeException, InvalidTupleSizeException {
         if ((numFlds + 2) * 2 > max_size)
-            throw new InvalidTupleSizeException(null, "TUPLE: TUPLE_TOOBIG_ERROR");
+            throw new InvalidTupleSizeException(null, "MAP: TUPLE_TOOBIG_ERROR");
         numFlds = 4;
         fldCnt = numFlds;
         Convert.setShortValue(numFlds, map_offset, data);
@@ -564,7 +564,7 @@ public class Map implements GlobalConst {
                 break;
 
             default:
-                throw new InvalidTypeException(null, "TUPLE: TUPLE_TYPE_ERROR");
+                throw new InvalidTypeException(null, "MAP: TUPLE_TYPE_ERROR");
             }
             fldOffset[i] = (short) (fldOffset[i - 1] + incr);
             Convert.setShortValue(fldOffset[i], pos, data);
@@ -586,7 +586,7 @@ public class Map implements GlobalConst {
             break;
 
         default:
-            throw new InvalidTypeException(null, "TUPLE: TUPLE_TYPE_ERROR");
+            throw new InvalidTypeException(null, "MAP: TUPLE_TYPE_ERROR");
         }
 
         fldOffset[numFlds] = (short) (fldOffset[i - 1] + incr);
@@ -595,6 +595,6 @@ public class Map implements GlobalConst {
         map_length = fldOffset[numFlds] - map_offset;
 
         if (map_length > max_size)
-            throw new InvalidTupleSizeException(null, "TUPLE: TUPLE_TOOBIG_ERROR");
+            throw new InvalidTupleSizeException(null, "MAP: TUPLE_TOOBIG_ERROR");
     }
 }

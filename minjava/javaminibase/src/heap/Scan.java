@@ -59,7 +59,7 @@ public class Scan implements GlobalConst{
      * and initializes its private data members from the private
      * data member from hf
      *
-     * @exception InvalidTupleSizeException Invalid tuple size
+     * @exception InvalidTupleSizeException Invalid map size
      * @exception IOException I/O errors
      *
      * @param hf A HeapFile object
@@ -75,17 +75,17 @@ public class Scan implements GlobalConst{
   
   /** Retrieve the next record in a sequential scan
    *
-   * @exception InvalidTupleSizeException Invalid tuple size
+   * @exception InvalidTupleSizeException Invalid map size
    * @exception IOException I/O errors
    *
    * @param rid Record ID of the record
-   * @return the Tuple of the retrieved record.
+   * @return the Map of the retrieved record.
    */
-  public Tuple getNext(RID rid) 
+  public Map getNext(RID rid) 
     throws InvalidTupleSizeException,
 	   IOException
   {
-    Tuple recptrtuple = null;
+    Map recptrtuple = null;
     
     if (nextUserStatus != true) {
         nextDataPage();
@@ -116,7 +116,7 @@ public class Scan implements GlobalConst{
 
     /** Position the scan cursor to the record with the given rid.
      * 
-     * @exception InvalidTupleSizeException Invalid tuple size
+     * @exception InvalidTupleSizeException Invalid map size
      * @exception IOException I/O errors
      * @param rid Record ID of the given record
      * @return 	true if successful, 
@@ -182,7 +182,7 @@ public class Scan implements GlobalConst{
 
     /** Do all the constructor work
      *
-     * @exception InvalidTupleSizeException Invalid tuple size
+     * @exception InvalidTupleSizeException Invalid map size
      * @exception IOException I/O errors
      *
      * @param hf A HeapFile object
@@ -239,7 +239,7 @@ public class Scan implements GlobalConst{
  
  
   /** Move to the first data page in the file. 
-   * @exception InvalidTupleSizeException Invalid tuple size
+   * @exception InvalidTupleSizeException Invalid map size
    * @exception IOException I/O errors
    * @return true if successful
    *         false otherwise
@@ -249,7 +249,7 @@ public class Scan implements GlobalConst{
 	   IOException
   {
     DataPageInfo dpinfo;
-    Tuple        rectuple = null;
+    Map        rectuple = null;
     Boolean      bst;
 
     /** copy data about first directory page */
@@ -402,7 +402,7 @@ public class Scan implements GlobalConst{
     
     boolean nextDataPageStatus;
     PageId nextDirPageId = new PageId();
-    Tuple rectuple = null;
+    Map rectuple = null;
 
   // ASSERTIONS:
   // - this->dirpageId has Id of current directory page

@@ -7,34 +7,34 @@ import java.io.*;
 import java.lang.*;
 
 /**
- *some useful method when processing Tuple 
+ *some useful method when processing Map 
  */
 public class TupleUtils
 {
   
   /**
-   * This function compares a tuple with another tuple in respective field, and
+   * This function compares a map with another map in respective field, and
    *  returns:
    *
    *    0        if the two are equal,
-   *    1        if the tuple is greater,
-   *   -1        if the tuple is smaller,
+   *    1        if the map is greater,
+   *   -1        if the map is smaller,
    *
    *@param    fldType   the type of the field being compared.
-   *@param    t1        one tuple.
-   *@param    t2        another tuple.
+   *@param    t1        one map.
+   *@param    t2        another map.
    *@param    t1_fld_no the field numbers in the tuples to be compared.
    *@param    t2_fld_no the field numbers in the tuples to be compared. 
    *@exception UnknowAttrType don't know the attribute type
    *@exception IOException some I/O fault
    *@exception TupleUtilsException exception from this class
    *@return   0        if the two are equal,
-   *          1        if the tuple is greater,
-   *         -1        if the tuple is smaller,                              
+   *          1        if the map is greater,
+   *         -1        if the map is smaller,                              
    */
   public static int CompareTupleWithTuple(AttrType fldType,
-					  Tuple  t1, int t1_fld_no,
-					  Tuple  t2, int t2_fld_no)
+					  Map  t1, int t1_fld_no,
+					  Map  t2, int t2_fld_no)
     throws IOException,
 	   UnknowAttrType,
 	   TupleUtilsException
@@ -93,19 +93,19 @@ public class TupleUtils
    * field number is same as the tuple1
    *
    *@param    fldType   the type of the field being compared.
-   *@param    t1        one tuple
-   *@param    value     another tuple.
+   *@param    t1        one map
+   *@param    value     another map.
    *@param    t1_fld_no the field numbers in the tuples to be compared.  
    *@return   0        if the two are equal,
-   *          1        if the tuple is greater,
-   *         -1        if the tuple is smaller,  
+   *          1        if the map is greater,
+   *         -1        if the map is smaller,  
    *@exception UnknowAttrType don't know the attribute type   
    *@exception IOException some I/O fault
    *@exception TupleUtilsException exception from this class   
    */            
   public static int CompareTupleWithValue(AttrType fldType,
-					  Tuple  t1, int t1_fld_no,
-					  Tuple  value)
+					  Map  t1, int t1_fld_no,
+					  Map  value)
     throws IOException,
 	   UnknowAttrType,
 	   TupleUtilsException
@@ -114,9 +114,9 @@ public class TupleUtils
     }
   
   /**
-   *This function Compares two Tuple inn all fields 
-   * @param t1 the first tuple
-   * @param t2 the secocnd tuple
+   *This function Compares two Map inn all fields 
+   * @param t1 the first map
+   * @param t2 the secocnd map
    * @param type[] the field types
    * @param len the field numbers
    * @return  0        if the two are not equal,
@@ -126,7 +126,7 @@ public class TupleUtils
    *@exception TupleUtilsException exception from this class
    */            
   
-  public static boolean Equal(Tuple t1, Tuple t2, AttrType types[], int len)
+  public static boolean Equal(Map t1, Map t2, AttrType types[], int len)
     throws IOException,UnknowAttrType,TupleUtilsException
     {
       int i;
@@ -139,19 +139,19 @@ public class TupleUtils
   
   /**
    *get the string specified by the field number
-   *@param tuple the tuple 
+   *@param map the map 
    *@param fidno the field number
    *@return the content of the field number
    *@exception IOException some I/O fault
    *@exception TupleUtilsException exception from this class
    */
-  public static String Value(Tuple  tuple, int fldno)
+  public static String Value(Map  map, int fldno)
     throws IOException,
 	   TupleUtilsException
     {
       String temp;
       try{
-	temp = tuple.getStrFld(fldno);
+	temp = map.getStrFld(fldno);
       }catch (FieldNumberOutOfBoundException e){
 	throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
       }
@@ -160,16 +160,16 @@ public class TupleUtils
   
  
   /**
-   *set up a tuple in specified field from a tuple
-   *@param value the tuple to be set 
-   *@param tuple the given tuple
+   *set up a map in specified field from a map
+   *@param value the map to be set 
+   *@param map the given map
    *@param fld_no the field number
-   *@param fldType the tuple attr type
+   *@param fldType the map attr type
    *@exception UnknowAttrType don't know the attribute type
    *@exception IOException some I/O fault
    *@exception TupleUtilsException exception from this class
    */  
-  public static void SetValue(Tuple value, Tuple  tuple, int fld_no, AttrType fldType)
+  public static void SetValue(Map value, Map  map, int fld_no, AttrType fldType)
     throws IOException,
 	   UnknowAttrType,
 	   TupleUtilsException
@@ -179,21 +179,21 @@ public class TupleUtils
 	{
 	case AttrType.attrInteger:
 	  try {
-	    value.setIntFld(fld_no, tuple.getIntFld(fld_no));
+	    value.setIntFld(fld_no, map.getIntFld(fld_no));
 	  }catch (FieldNumberOutOfBoundException e){
 	    throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
 	  }
 	  break;
 	case AttrType.attrReal:
 	  try {
-	    value.setFloFld(fld_no, tuple.getFloFld(fld_no));
+	    value.setFloFld(fld_no, map.getFloFld(fld_no));
 	  }catch (FieldNumberOutOfBoundException e){
 	    throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
 	  }
 	  break;
 	case AttrType.attrString:
 	  try {
-	    value.setStrFld(fld_no, tuple.getStrFld(fld_no));
+	    value.setStrFld(fld_no, map.getStrFld(fld_no));
 	  }catch (FieldNumberOutOfBoundException e){
 	    throw new TupleUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
 	  }
@@ -209,20 +209,20 @@ public class TupleUtils
   
   /**
    *set up the Jtuple's attrtype, string size,field number for using join
-   *@param Jtuple  reference to an actual tuple  - no memory has been malloced
-   *@param res_attrs  attributes type of result tuple
-   *@param in1  array of the attributes of the tuple (ok)
+   *@param Jtuple  reference to an actual map  - no memory has been malloced
+   *@param res_attrs  attributes type of result map
+   *@param in1  array of the attributes of the map (ok)
    *@param len_in1  num of attributes of in1
-   *@param in2  array of the attributes of the tuple (ok)
+   *@param in2  array of the attributes of the map (ok)
    *@param len_in2  num of attributes of in2
    *@param t1_str_sizes shows the length of the string fields in S
    *@param t2_str_sizes shows the length of the string fields in R
-   *@param proj_list shows what input fields go where in the output tuple
+   *@param proj_list shows what input fields go where in the output map
    *@param nOutFlds number of outer relation fileds
    *@exception IOException some I/O fault
    *@exception TupleUtilsException exception from this class
    */
-  public static short[] setup_op_tuple(Tuple Jtuple, AttrType[] res_attrs,
+  public static short[] setup_op_tuple(Map Jtuple, AttrType[] res_attrs,
 				       AttrType in1[], int len_in1, AttrType in2[], 
 				       int len_in2, short t1_str_sizes[], 
 				       short t2_str_sizes[], 
@@ -280,19 +280,19 @@ public class TupleUtils
  
    /**
    *set up the Jtuple's attrtype, string size,field number for using project
-   *@param Jtuple  reference to an actual tuple  - no memory has been malloced
-   *@param res_attrs  attributes type of result tuple
-   *@param in1  array of the attributes of the tuple (ok)
+   *@param Jtuple  reference to an actual map  - no memory has been malloced
+   *@param res_attrs  attributes type of result map
+   *@param in1  array of the attributes of the map (ok)
    *@param len_in1  num of attributes of in1
    *@param t1_str_sizes shows the length of the string fields in S
-   *@param proj_list shows what input fields go where in the output tuple
+   *@param proj_list shows what input fields go where in the output map
    *@param nOutFlds number of outer relation fileds
    *@exception IOException some I/O fault
    *@exception TupleUtilsException exception from this class
    *@exception InvalidRelation invalid relation 
    */
 
-  public static short[] setup_op_tuple(Tuple Jtuple, AttrType res_attrs[],
+  public static short[] setup_op_tuple(Map Jtuple, AttrType res_attrs[],
 				       AttrType in1[], int len_in1,
 				       short t1_str_sizes[], 
 				       FldSpec proj_list[], int nOutFlds)

@@ -157,11 +157,11 @@ The Sort class sorts a file. All necessary information are passed as
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../heap/Tuple.html">Tuple</A></CODE></FONT></TD>
+<CODE>&nbsp;<A HREF="../heap/Map.html">Map</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../iterator/Sort.html#get_next()">get_next</A></B>()</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the next tuple in sorted order.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the next map in sorted order.</TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_iterator.Iterator"><!-- --></A>
@@ -231,7 +231,7 @@ public <B>Sort</B>(<A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;in,
 <A NAME="get_next()"><!-- --></A><H3>
 get_next</H3>
 <PRE>
-public <A HREF="../heap/Tuple.html">Tuple</A> <B>get_next</B>()
+public <A HREF="../heap/Map.html">Map</A> <B>get_next</B>()
                throws java.io.IOException,
                       <A HREF="../iterator/SortException.html">SortException</A>,
                       <A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A>,
@@ -239,13 +239,13 @@ public <A HREF="../heap/Tuple.html">Tuple</A> <B>get_next</B>()
                       <A HREF="../iterator/JoinsException.html">JoinsException</A>,
                       java.lang.Exception</PRE>
 <DL>
-<DD>Returns the next tuple in sorted order.
- Note: You need to copy out the content of the tuple, otherwise it
+<DD>Returns the next map in sorted order.
+ Note: You need to copy out the content of the map, otherwise it
        will be overwritten by the next <code>get_next()</code> call.<DD><DL>
 <DT><B>Overrides:</B><DD><CODE><A HREF="../iterator/Iterator.html#get_next()">get_next</A></CODE> in class <CODE><A HREF="../iterator/Iterator.html">Iterator</A></CODE></DL>
 </DD>
 <DD><DL>
-<DT><B>Returns:</B><DD>the next tuple, null if all tuples exhausted<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - from lower layers<DD><CODE><A HREF="../iterator/SortException.html">SortException</A></CODE> - something went wrong in the lower layer.<DD><CODE><A HREF="../iterator/JoinsException.html">JoinsException</A></CODE> - from <code>generate_runs()</code>.<DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - attribute type unknown<DD><CODE><A HREF="../iterator/LowMemException.html">LowMemException</A></CODE> - memory low exception<DD><CODE>java.lang.Exception</CODE> - other exceptions</DL>
+<DT><B>Returns:</B><DD>the next map, null if all tuples exhausted<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - from lower layers<DD><CODE><A HREF="../iterator/SortException.html">SortException</A></CODE> - something went wrong in the lower layer.<DD><CODE><A HREF="../iterator/JoinsException.html">JoinsException</A></CODE> - from <code>generate_runs()</code>.<DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - attribute type unknown<DD><CODE><A HREF="../iterator/LowMemException.html">LowMemException</A></CODE> - memory low exception<DD><CODE>java.lang.Exception</CODE> - other exceptions</DL>
 </DD>
 </DL>
 <HR>

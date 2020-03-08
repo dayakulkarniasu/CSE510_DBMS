@@ -23,15 +23,15 @@ public class DuplElim extends Iterator
   
   private AttrType  sortFldType;
   private int       sortFldLen;
-  private Tuple    Jtuple;
+  private Map    Jtuple;
   
-  private Tuple TempTuple1, TempTuple2;
+  private Map TempTuple1, TempTuple2;
   
   /**
    *Constructor to set up some information.
    *@param in[]  Array containing field types of R.
    *@param len_in # of columns in R.
-   *@param s_sizes[] store the length of string appeared in tuple
+   *@param s_sizes[] store the length of string appeared in map
    *@param am input relation iterator, access method for left input to join,
    *@param amt_of_mem the page numbers required IN PAGES
    *@exception IOException some I/O fault
@@ -50,7 +50,7 @@ public class DuplElim extends Iterator
       System.arraycopy(in,0,_in,0,in.length);
       in_len = len_in;
      
-      Jtuple =  new Tuple();
+      Jtuple =  new Map();
       try {
 	Jtuple.setHdr(len_in, _in, s_sizes);
       }catch (Exception e){
@@ -88,8 +88,8 @@ public class DuplElim extends Iterator
 	}
 
       // Allocate memory for the temporary tuples
-      TempTuple1 =  new Tuple();
-      TempTuple2 = new Tuple();
+      TempTuple1 =  new Map();
+      TempTuple2 = new Map();
       try{
 	TempTuple1.setHdr(in_len, _in, s_sizes);
 	TempTuple2.setHdr(in_len, _in, s_sizes);
@@ -100,15 +100,15 @@ public class DuplElim extends Iterator
     }
 
   /**
-   * The tuple is returned.
-   *@return call this function to get the tuple
+   * The map is returned.
+   *@return call this function to get the map
    *@exception JoinsException some join exception
    *@exception IndexException exception from super class    
    *@exception IOException I/O errors
-   *@exception InvalidTupleSizeException invalid tuple size
-   *@exception InvalidTypeException tuple type not valid
+   *@exception InvalidTupleSizeException invalid map size
+   *@exception InvalidTypeException map type not valid
    *@exception PageNotReadException exception from lower layer
-   *@exception TupleUtilsException exception from using tuple utilities
+   *@exception TupleUtilsException exception from using map utilities
    *@exception PredEvalException exception from PredEval class
    *@exception SortException sort exception
    *@exception LowMemException memory error
@@ -116,7 +116,7 @@ public class DuplElim extends Iterator
    *@exception UnknownKeyTypeException key type unknown
    *@exception Exception other exceptions
    */
-  public Tuple get_next() 
+  public Map get_next() 
     throws IOException,
 	   JoinsException ,
 	   IndexException,
@@ -131,7 +131,7 @@ public class DuplElim extends Iterator
 	   UnknownKeyTypeException,
 	   Exception
     {
-      Tuple t;
+      Map t;
       
       if (done)
         return null;
@@ -145,7 +145,7 @@ public class DuplElim extends Iterator
 	TempTuple2.tupleCopy(t);
       } while (TupleUtils.Equal(TempTuple1, TempTuple2, _in, in_len));
       
-      // Now copy the the TempTuple2 (new o/p tuple) into TempTuple1.
+      // Now copy the the TempTuple2 (new o/p map) into TempTuple1.
       TempTuple1.tupleCopy(TempTuple2);
       Jtuple.tupleCopy(TempTuple2);
       return Jtuple ;

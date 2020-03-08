@@ -23,7 +23,7 @@ public abstract class IndexFile
   /**
    * Insert entry into the index file.
    * @param data the key for the entry
-   * @param rid the rid of the tuple with the key
+   * @param rid the rid of the map with the key
    * @exception IOException from lower layers
    * @exception KeyTooLongException the key is too long
    * @exception KeyNotMatchException the keys do not match
@@ -60,7 +60,7 @@ public abstract class IndexFile
   /**
    * Delete entry from the index file.
    * @param data the key for the entry
-   * @param rid the rid of the tuple with the key
+   * @param rid the rid of the map with the key
    * @exception IOException from lower layers
    * @exception DeleteFashionException delete fashion undefined
    * @exception LeafRedistributeException failed to redistribute leaf page

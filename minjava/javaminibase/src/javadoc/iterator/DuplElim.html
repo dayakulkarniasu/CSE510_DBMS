@@ -141,11 +141,11 @@ to finish cleaning up</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../heap/Tuple.html">Tuple</A></CODE></FONT></TD>
+<CODE>&nbsp;<A HREF="../heap/Map.html">Map</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../iterator/DuplElim.html#get_next()">get_next</A></B>()</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The tuple is returned.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The map is returned.</TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_iterator.Iterator"><!-- --></A>
@@ -195,7 +195,7 @@ public <B>DuplElim</B>(<A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;in,
                 <A HREF="../iterator/DuplElimException.html">DuplElimException</A></PRE>
 <DL>
 <DD>Constructor to set up some information.<DD><DL>
-<DT><B>Parameters:</B><DD><CODE>in[]</CODE> - Array containing field types of R.<DD><CODE>len_in</CODE> - # of columns in R.<DD><CODE>s_sizes[]</CODE> - store the length of string appeared in tuple<DD><CODE>am</CODE> - input relation iterator, access method for left input to join,<DD><CODE>amt_of_mem</CODE> - the page numbers required IN PAGES<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - some I/O fault<DD><CODE><A HREF="../iterator/DuplElimException.html">DuplElimException</A></CODE> - the exception from DuplElim.java</DL>
+<DT><B>Parameters:</B><DD><CODE>in[]</CODE> - Array containing field types of R.<DD><CODE>len_in</CODE> - # of columns in R.<DD><CODE>s_sizes[]</CODE> - store the length of string appeared in map<DD><CODE>am</CODE> - input relation iterator, access method for left input to join,<DD><CODE>amt_of_mem</CODE> - the page numbers required IN PAGES<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - some I/O fault<DD><CODE><A HREF="../iterator/DuplElimException.html">DuplElimException</A></CODE> - the exception from DuplElim.java</DL>
 </DD>
 </DL>
 
@@ -212,7 +212,7 @@ public <B>DuplElim</B>(<A HREF="../global/AttrType.html">AttrType</A>[]&nbsp;in,
 <A NAME="get_next()"><!-- --></A><H3>
 get_next</H3>
 <PRE>
-public <A HREF="../heap/Tuple.html">Tuple</A> <B>get_next</B>()
+public <A HREF="../heap/Map.html">Map</A> <B>get_next</B>()
                throws java.io.IOException,
                       <A HREF="../iterator/JoinsException.html">JoinsException</A>,
                       <A HREF="../index/IndexException.html">IndexException</A>,
@@ -227,11 +227,11 @@ public <A HREF="../heap/Tuple.html">Tuple</A> <B>get_next</B>()
                       <A HREF="../iterator/UnknownKeyTypeException.html">UnknownKeyTypeException</A>,
                       java.lang.Exception</PRE>
 <DL>
-<DD>The tuple is returned.<DD><DL>
+<DD>The map is returned.<DD><DL>
 <DT><B>Overrides:</B><DD><CODE><A HREF="../iterator/Iterator.html#get_next()">get_next</A></CODE> in class <CODE><A HREF="../iterator/Iterator.html">Iterator</A></CODE></DL>
 </DD>
 <DD><DL>
-<DT><B>Returns:</B><DD>call this function to get the tuple<DT><B>Throws:</B><DD><CODE><A HREF="../iterator/JoinsException.html">JoinsException</A></CODE> - some join exception<DD><CODE><A HREF="../index/IndexException.html">IndexException</A></CODE> - exception from super class<DD><CODE>java.io.IOException</CODE> - I/O errors<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid tuple size<DD><CODE><A HREF="../heap/InvalidTypeException.html">InvalidTypeException</A></CODE> - tuple type not valid<DD><CODE><A HREF="../bufmgr/PageNotReadException.html">PageNotReadException</A></CODE> - exception from lower layer<DD><CODE><A HREF="../iterator/TupleUtilsException.html">TupleUtilsException</A></CODE> - exception from using tuple utilities<DD><CODE><A HREF="../iterator/PredEvalException.html">PredEvalException</A></CODE> - exception from PredEval class<DD><CODE><A HREF="../iterator/SortException.html">SortException</A></CODE> - sort exception<DD><CODE><A HREF="../iterator/LowMemException.html">LowMemException</A></CODE> - memory error<DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - attribute type unknown<DD><CODE><A HREF="../iterator/UnknownKeyTypeException.html">UnknownKeyTypeException</A></CODE> - key type unknown<DD><CODE>java.lang.Exception</CODE> - other exceptions</DL>
+<DT><B>Returns:</B><DD>call this function to get the map<DT><B>Throws:</B><DD><CODE><A HREF="../iterator/JoinsException.html">JoinsException</A></CODE> - some join exception<DD><CODE><A HREF="../index/IndexException.html">IndexException</A></CODE> - exception from super class<DD><CODE>java.io.IOException</CODE> - I/O errors<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid map size<DD><CODE><A HREF="../heap/InvalidTypeException.html">InvalidTypeException</A></CODE> - map type not valid<DD><CODE><A HREF="../bufmgr/PageNotReadException.html">PageNotReadException</A></CODE> - exception from lower layer<DD><CODE><A HREF="../iterator/TupleUtilsException.html">TupleUtilsException</A></CODE> - exception from using map utilities<DD><CODE><A HREF="../iterator/PredEvalException.html">PredEvalException</A></CODE> - exception from PredEval class<DD><CODE><A HREF="../iterator/SortException.html">SortException</A></CODE> - sort exception<DD><CODE><A HREF="../iterator/LowMemException.html">LowMemException</A></CODE> - memory error<DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - attribute type unknown<DD><CODE><A HREF="../iterator/UnknownKeyTypeException.html">UnknownKeyTypeException</A></CODE> - key type unknown<DD><CODE>java.lang.Exception</CODE> - other exceptions</DL>
 </DD>
 </DL>
 <HR>

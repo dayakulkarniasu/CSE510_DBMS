@@ -9,7 +9,7 @@ import java.io.*;
 
 
 /**
- * Index Scan iterator will directly access the required tuple using
+ * Index Scan iterator will directly access the required map using
  * the provided key. It will also perform selections and projections.
  * information about the tuples and the index are passed to the constructor,
  * then the user calls <code>get_next()</code> to get the tuples.
@@ -23,15 +23,15 @@ public class IndexScan extends Iterator {
    * @param indName name of the input index
    * @param types array of types in this relation
    * @param str_sizes array of string sizes (for attributes that are string)
-   * @param noInFlds number of fields in input tuple
-   * @param noOutFlds number of fields in output tuple
+   * @param noInFlds number of fields in input map
+   * @param noOutFlds number of fields in output map
    * @param outFlds fields to project
    * @param selects conditions to apply, first one is primary
    * @param fldNum field number of the indexed field
-   * @param indexOnly whether the answer requires only the key or the tuple
+   * @param indexOnly whether the answer requires only the key or the map
    * @exception IndexException error from the lower layer
-   * @exception InvalidTypeException tuple type not valid
-   * @exception InvalidTupleSizeException tuple size not valid
+   * @exception InvalidTypeException map type not valid
+   * @exception InvalidTupleSizeException map size not valid
    * @exception UnknownIndexTypeException index type unknown
    * @exception IOException from the lower layer
    */
@@ -61,7 +61,7 @@ public class IndexScan extends Iterator {
     
     AttrType[] Jtypes = new AttrType[noOutFlds];
     short[] ts_sizes;
-    Jtuple = new Tuple();
+    Jtuple = new Map();
     
     try {
       ts_sizes = TupleUtils.setup_op_tuple(Jtuple, Jtypes, types, noInFlds, str_sizes, outFlds, noOutFlds);
@@ -76,7 +76,7 @@ public class IndexScan extends Iterator {
     _selects = selects;
     perm_mat = outFlds;
     _noOutFlds = noOutFlds;
-    tuple1 = new Tuple();    
+    tuple1 = new Map();    
     try {
       tuple1.setHdr((short) noInFlds, types, str_sizes);
     }
@@ -124,16 +124,16 @@ public class IndexScan extends Iterator {
   }
   
   /**
-   * returns the next tuple.
+   * returns the next map.
    * if <code>index_only</code>, only returns the key value 
-   * (as the first field in a tuple)
-   * otherwise, retrive the tuple and returns the whole tuple
-   * @return the tuple
+   * (as the first field in a map)
+   * otherwise, retrive the map and returns the whole map
+   * @return the map
    * @exception IndexException error from the lower layer
    * @exception UnknownKeyTypeException key type unknown
    * @exception IOException from the lower layer
    */
-  public Tuple get_next() 
+  public Map get_next() 
     throws IndexException, 
 	   UnknownKeyTypeException,
 	   IOException
@@ -204,7 +204,7 @@ public class IndexScan extends Iterator {
 	return Jtuple;
       }
       
-      // not index_only, need to return the whole tuple
+      // not index_only, need to return the whole map
       rid = ((LeafData)nextentry.data).getData();
       try {
 	tuple1 = f.getRecord(rid);
@@ -282,8 +282,8 @@ public class IndexScan extends Iterator {
   private int           _noInFlds;
   private int           _noOutFlds;
   private Heapfile      f;
-  private Tuple         tuple1;
-  private Tuple         Jtuple;
+  private Map         tuple1;
+  private Map         Jtuple;
   private int           t1_size;
   private int           _fldNum;       
   private boolean       index_only;    

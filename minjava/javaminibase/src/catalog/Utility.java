@@ -22,7 +22,7 @@ public class Utility implements Catalogglobal{
  void deleteRecUT(String relation, attrNode item){};
 
  // DELETES INDEX ENRIES FOR RECORDS
- void deleteRecIndexesUT(String relation, RID rid, Tuple tuple){};
+ void deleteRecIndexesUT(String relation, RID rid, Map map){};
 
  // WRAPS INSERT UTILITY  IN TX
  public static void insertRecordUT(String relation, int attrCnt, attrNode [] attrList)
@@ -53,7 +53,7 @@ public class Utility implements Catalogglobal{
 //   3. array of attribute names and values
 // - does
 //   1. typechecks
-//   2. creates tuple
+//   2. creates map
 //   3. inserts into datafile
 //   4. inserts into each indexfile
 //---------------------------------------------------
@@ -93,7 +93,7 @@ public static void insertRecUT(String relation, int attrCnt, attrNode [] attrLis
  // DELETE FOLLOWING ON RETURN 
  AttrDesc  [] attrRecs = null;
  IndexDesc [] indexRecs = null;
- Tuple     tuple = null;
+ Map     map = null;
  String    indexName = null;
  BTreeFile btree = null;
  AttrType  [] typeArray = null;
@@ -158,17 +158,17 @@ ExtendedSystemDefs.MINIBASE_RELCAT.getInfo(relation, relRec);
  }
 
    
-// CREATE TUPLE  
+// CREATE MAP  
 
-  tuple = new Tuple(Tuple.max_size);
+  map = new Map(Map.max_size);
 
   count = ExtendedSystemDefs.MINIBASE_ATTRCAT.getTupleStructure(relation,
         count, typeArray,sizeArray);
 
-  tuple.setHdr((short)count, typeArray, sizeArray);
+  map.setHdr((short)count, typeArray, sizeArray);
 
 
-// CONVERT DATA STRINGS TO VARIABLE VALUES & INSERT INTO TUPLE
+// CONVERT DATA STRINGS TO VARIABLE VALUES & INSERT INTO MAP
 
  for (int i = 0; i < relRec.attrCnt; i++) {
       switch (attrRecs[i].attrType.attrType) {
@@ -176,17 +176,17 @@ ExtendedSystemDefs.MINIBASE_RELCAT.getInfo(relation, relRec);
       case(AttrType.attrInteger):
           Integer integerVal = new Integer(attrList[i].attrValue);
           intVal = integerVal.intValue();
-          tuple.setIntFld(attrRecs[i].attrPos, intVal);
+          map.setIntFld(attrRecs[i].attrPos, intVal);
           break;
 
       case (AttrType.attrReal):
           Float floatVal1 = new Float(attrList[i].attrValue);
           float fVal = floatVal1.floatValue();
-          tuple.setFloFld(attrRecs[i].attrPos, fVal);
+          map.setFloFld(attrRecs[i].attrPos, fVal);
           break;
 
       case (AttrType.attrString):
-        tuple.setStrFld(attrRecs[i].attrPos, attrList[i].attrValue);
+        map.setStrFld(attrRecs[i].attrPos, attrList[i].attrValue);
         break;
 
       default:
@@ -194,7 +194,7 @@ ExtendedSystemDefs.MINIBASE_RELCAT.getInfo(relation, relRec);
      }
  }
 
- recSize = tuple.size();
+ recSize = map.size();
 
 // GET DATAFILE
  
@@ -202,7 +202,7 @@ ExtendedSystemDefs.MINIBASE_RELCAT.getInfo(relation, relRec);
 
 
 // INSERT INTO DATAFILE
-	heap.insertRecord(tuple.getTupleByteArray());
+	heap.insertRecord(map.getTupleByteArray());
 
 // NOW INSERT INTO EACH INDEX FOR RELATION
 
@@ -227,19 +227,19 @@ ExtendedSystemDefs.MINIBASE_RELCAT.getInfo(relation, relRec);
      switch(attrType.attrType)
       {
         case AttrType.attrInteger  : 
-			    intVal = tuple.getIntFld(attrPos);
+			    intVal = map.getIntFld(attrPos);
                             IntegerKey k1 = new IntegerKey(intVal);
 			    key = k1;
                             break;
 
         case AttrType.attrReal     : 
-			    floatVal = tuple.getFloFld(attrPos);
+			    floatVal = map.getFloFld(attrPos);
                             IntegerKey k2 = new IntegerKey((int)floatVal); // no FloatKey  
                             key = k2;
 			    break;
 
         case AttrType.attrString   : 
-			    strVal = tuple.getStrFld(attrPos);
+			    strVal = map.getStrFld(attrPos);
                             StringKey k3 = new StringKey(strVal);
 			    key = k3;
                             break;
@@ -275,7 +275,7 @@ ExtendedSystemDefs.MINIBASE_RELCAT.getInfo(relation, relRec);
  void loadRecordsUT(String relation, String fileName){};
 
  // LOADS INDEXES
- void loadIndexesUT(Tuple tuple, int attrCnt, int indexCnt,
+ void loadIndexesUT(Map map, int attrCnt, int indexCnt,
      AttrDesc [] attrs, IndexDesc [] indexes, void [] iFiles, RID rid ){};
 
 //-------------------------------

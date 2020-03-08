@@ -21,8 +21,8 @@ public class FileScan extends  Iterator
   private short[] s_sizes; 
   private Heapfile f;
   private Scan scan;
-  private Tuple     tuple1;
-  private Tuple    Jtuple;
+  private Map     tuple1;
+  private Map    Jtuple;
   private int        t1_size;
   private int nOutFlds;
   private CondExpr[]  OutputFilter;
@@ -35,9 +35,9 @@ public class FileScan extends  Iterator
    *@param file_name heapfile to be opened
    *@param in1[]  array showing what the attributes of the input fields are. 
    *@param s1_sizes[]  shows the length of the string fields.
-   *@param len_in1  number of attributes in the input tuple
-   *@param n_out_flds  number of fields in the out tuple
-   *@param proj_list  shows what input fields go where in the output tuple
+   *@param len_in1  number of attributes in the input map
+   *@param n_out_flds  number of fields in the out map
+   *@param proj_list  shows what input fields go where in the output map
    *@param outFilter  select expressions
    *@exception IOException some I/O fault
    *@exception FileScanException exception from this class
@@ -61,7 +61,7 @@ public class FileScan extends  Iterator
       in1_len = len_in1;
       s_sizes = s1_sizes;
       
-      Jtuple =  new Tuple();
+      Jtuple =  new Map();
       AttrType[] Jtypes = new AttrType[n_out_flds];
       short[]    ts_size;
       ts_size = TupleUtils.setup_op_tuple(Jtuple, Jtypes, in1, len_in1, s1_sizes, proj_list, n_out_flds);
@@ -69,7 +69,7 @@ public class FileScan extends  Iterator
       OutputFilter = outFilter;
       perm_mat = proj_list;
       nOutFlds = n_out_flds; 
-      tuple1 =  new Tuple();
+      tuple1 =  new Map();
 
       try {
 	tuple1.setHdr(in1_len, _in1, s1_sizes);
@@ -95,7 +95,7 @@ public class FileScan extends  Iterator
     }
   
   /**
-   *@return shows what input fields go where in the output tuple
+   *@return shows what input fields go where in the output map
    */
   public FldSpec[] show()
     {
@@ -103,18 +103,18 @@ public class FileScan extends  Iterator
     }
   
   /**
-   *@return the result tuple
+   *@return the result map
    *@exception JoinsException some join exception
    *@exception IOException I/O errors
-   *@exception InvalidTupleSizeException invalid tuple size
-   *@exception InvalidTypeException tuple type not valid
+   *@exception InvalidTupleSizeException invalid map size
+   *@exception InvalidTypeException map type not valid
    *@exception PageNotReadException exception from lower layer
    *@exception PredEvalException exception from PredEval class
    *@exception UnknowAttrType attribute type unknown
    *@exception FieldNumberOutOfBoundException array out of bounds
    *@exception WrongPermat exception for wrong FldSpec argument
    */
-  public Tuple get_next()
+  public Map get_next()
     throws JoinsException,
 	   IOException,
 	   InvalidTupleSizeException,

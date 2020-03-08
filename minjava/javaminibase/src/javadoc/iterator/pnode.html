@@ -67,8 +67,8 @@ java.lang.Object
 <DT>public class <B>pnode</B><DT>extends java.lang.Object</DL>
 
 <P>
-A structure describing a tuple.
- include a run number and the tuple
+A structure describing a map.
+ include a run number and the map
 <P>
 <HR>
 
@@ -90,15 +90,15 @@ A structure describing a tuple.
 <TD><CODE><B><A HREF="../iterator/pnode.html#run_num">run_num</A></B></CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;which run does this tuple belong</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;which run does this map belong</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../heap/Tuple.html">Tuple</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../iterator/pnode.html#tuple">tuple</A></B></CODE>
+<CODE>&nbsp;<A HREF="../heap/Map.html">Map</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../iterator/pnode.html#map">map</A></B></CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the tuple reference</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the map reference</TD>
 </TR>
 </TABLE>
 &nbsp;
@@ -114,15 +114,15 @@ A structure describing a tuple.
 <TD><CODE><B><A HREF="../iterator/pnode.html#pnode()">pnode</A></B>()</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class constructor, sets <code>run_num</code> to 0 and <code>tuple</code>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class constructor, sets <code>run_num</code> to 0 and <code>map</code>
  to null.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../iterator/pnode.html#pnode(int, heap.Tuple)">pnode</A></B>(int&nbsp;runNum,
-      <A HREF="../heap/Tuple.html">Tuple</A>&nbsp;t)</CODE>
+<TD><CODE><B><A HREF="../iterator/pnode.html#pnode(int, heap.Map)">pnode</A></B>(int&nbsp;runNum,
+      <A HREF="../heap/Map.html">Map</A>&nbsp;t)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class constructor, sets <code>run_num</code> and <code>tuple</code>.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class constructor, sets <code>run_num</code> and <code>map</code>.</TD>
 </TR>
 </TABLE>
 &nbsp;
@@ -155,15 +155,15 @@ run_num</H3>
 <PRE>
 public int <B>run_num</B></PRE>
 <DL>
-<DD>which run does this tuple belong</DL>
+<DD>which run does this map belong</DL>
 <HR>
 
-<A NAME="tuple"><!-- --></A><H3>
-tuple</H3>
+<A NAME="map"><!-- --></A><H3>
+map</H3>
 <PRE>
-public <A HREF="../heap/Tuple.html">Tuple</A> <B>tuple</B></PRE>
+public <A HREF="../heap/Map.html">Map</A> <B>map</B></PRE>
 <DL>
-<DD>the tuple reference</DL>
+<DD>the map reference</DL>
 
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 
@@ -180,18 +180,18 @@ pnode</H3>
 <PRE>
 public <B>pnode</B>()</PRE>
 <DL>
-<DD>class constructor, sets <code>run_num</code> to 0 and <code>tuple</code>
+<DD>class constructor, sets <code>run_num</code> to 0 and <code>map</code>
  to null.</DL>
 <HR>
 
-<A NAME="pnode(int, heap.Tuple)"><!-- --></A><H3>
+<A NAME="pnode(int, heap.Map)"><!-- --></A><H3>
 pnode</H3>
 <PRE>
 public <B>pnode</B>(int&nbsp;runNum,
-             <A HREF="../heap/Tuple.html">Tuple</A>&nbsp;t)</PRE>
+             <A HREF="../heap/Map.html">Map</A>&nbsp;t)</PRE>
 <DL>
-<DD>class constructor, sets <code>run_num</code> and <code>tuple</code>.<DD><DL>
-<DT><B>Parameters:</B><DD><CODE>runNum</CODE> - the run number<DD><CODE>t</CODE> - the tuple</DL>
+<DD>class constructor, sets <code>run_num</code> and <code>map</code>.<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>runNum</CODE> - the run number<DD><CODE>t</CODE> - the map</DL>
 </DD>
 </DL>
 

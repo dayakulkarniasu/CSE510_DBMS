@@ -24,9 +24,9 @@ public class SpoofIbuf implements GlobalConst  {
    *object, and call init to finish intantiation
    *@param bufs[][] the I/O buffer
    *@param n_pages the numbers of page of this buffer
-   *@param tSize the tuple size
+   *@param tSize the map size
    *@param fd the reference to an Heapfile
-   *@param Ntuples the tuple numbers of the page
+   *@param Ntuples the map numbers of the page
    *@exception IOException some I/O fault
    *@exception Exception other exceptions
    */
@@ -60,14 +60,14 @@ public class SpoofIbuf implements GlobalConst  {
     }
   
    /** 
-   *get a tuple from current buffer,pass reference buf to this method
-   *usage:temp_tuple = tuple.Get(buf); 
+   *get a map from current buffer,pass reference buf to this method
+   *usage:temp_tuple = map.Get(buf); 
    *@param buf write the result to buf
-   *@return the result tuple
+   *@return the result map
    *@exception IOException some I/O fault
    *@exception Exception other exceptions
    */
-  public  Tuple Get(Tuple  buf)throws IOException, Exception
+  public  Map Get(Map  buf)throws IOException, Exception
     {
       if (tot_t_proc == n_tuples) done = true;
       
@@ -119,7 +119,7 @@ public class SpoofIbuf implements GlobalConst  {
   private int readin()throws IOException,InvalidTupleSizeException
     {
       int   t_read = 0, tot_read = 0;
-      Tuple t      = new Tuple ();
+      Map t      = new Map ();
       byte[] t_copy;
       
       curr_page = 0;

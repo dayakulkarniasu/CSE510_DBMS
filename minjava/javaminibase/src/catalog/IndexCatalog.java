@@ -27,7 +27,7 @@ public class IndexCatalog extends Heapfile
     {
       super(filename);
       
-      tuple = new Tuple(Tuple.max_size);
+      map = new Map(Map.max_size);
       attrs = new AttrType[7];
       
       attrs[0] = new AttrType(AttrType.attrString);
@@ -50,7 +50,7 @@ public class IndexCatalog extends Heapfile
       str_sizes[1] = (short)MAXNAME;
       
       try {
-	tuple.setHdr((short)7, attrs, str_sizes);
+	map.setHdr((short)7, attrs, str_sizes);
       }
       catch (Exception e) {
 	throw new IndexCatalogException(e, "setHdr() failed");
@@ -129,11 +129,11 @@ public class IndexCatalog extends Heapfile
       while(true) 
 	{
 	  try {
-	    tuple = pscan.getNext(rid);
-	    if (tuple == null) 
+	    map = pscan.getNext(rid);
+	    if (map == null) 
 	      throw new Catalogindexnotfound(null,
 					     "Catalog: Index not Found!");
-	    read_tuple(tuple, indexes[count]);
+	    read_tuple(map, indexes[count]);
 	  }
 	  catch (Exception e4) {
 	    throw new IndexCatalogException(e4," read_tuple() failed");
@@ -186,10 +186,10 @@ public class IndexCatalog extends Heapfile
       while (true)
 	{
 	  try {
-	    tuple = pscan.getNext(rid);
-	    if (tuple == null)
+	    map = pscan.getNext(rid);
+	    if (map == null)
 	      throw new Catalogattrnotfound(null,"Catalog: Attribute not Found!");
-	    read_tuple(tuple, record);
+	    read_tuple(map, record);
 	  }
 	  catch (Exception e4) {
 	    throw new IndexCatalogException(e4, "read_tuple failed");
@@ -270,11 +270,11 @@ public class IndexCatalog extends Heapfile
       while(true) 
 	{
 	  try {
-	    tuple = pscan.getNext(rid);
-	    if (tuple == null) 
+	    map = pscan.getNext(rid);
+	    if (map == null) 
 	      throw new Catalogindexnotfound(null,
 					     "Catalog: Index not Found!");
-	    read_tuple(tuple, indexes[count]);
+	    read_tuple(map, indexes[count]);
 	  }
 	  catch (Exception e4) {
 	    throw new IndexCatalogException(e4, "pascan.getNext() failed");
@@ -334,14 +334,14 @@ public class IndexCatalog extends Heapfile
       RID rid;
       
       try {
-	make_tuple(tuple, record);
+	make_tuple(map, record);
       }
       catch (Exception e4) {
 	throw new IndexCatalogException(e4, "make_tuple failed");
       }
       
       try {
-	insertRecord(tuple.getTupleByteArray());
+	insertRecord(map.getTupleByteArray());
       }
       catch (Exception e) {
 	throw new IndexCatalogException(e, "insertRecord() failed");
@@ -377,11 +377,11 @@ public class IndexCatalog extends Heapfile
       while (true)
 	{
 	  try {
-	    tuple = pscan.getNext(rid);
-	    if (tuple == null) 
+	    map = pscan.getNext(rid);
+	    if (map == null) 
 	      throw new Catalogattrnotfound(null,
 					    "Catalog: Attribute not Found!");
-	    read_tuple(tuple, record);
+	    read_tuple(map, record);
 	  }
 	  catch (Exception e4) {
 	    throw new IndexCatalogException(e4, "read_tuple failed");
@@ -430,7 +430,7 @@ public class IndexCatalog extends Heapfile
       
       Heapfile datafile = null;
       String	indexName = null;
-      Tuple 	tuple = null;
+      Map 	map = null;
       BTreeFile btree = null;
       Scan 	pscan = null;
       AttrType [] typeArray = null;
@@ -550,7 +550,7 @@ public class IndexCatalog extends Heapfile
       }
       
       
-      // PREPARE TUPLE
+      // PREPARE MAP
       
       try {
 	ExtendedSystemDefs.MINIBASE_ATTRCAT.getTupleStructure(relation, attrCnt, typeArray, sizeArray);
@@ -559,26 +559,26 @@ public class IndexCatalog extends Heapfile
 	throw new IndexCatalogException(e,"getTupleStructure");
       }
       
-      tuple = new Tuple(Tuple.max_size);
-      if (tuple == null)
+      map = new Map(Map.max_size);
+      if (map == null)
 	throw new Catalognomem(null, "Catalog, No Enough Memory!");
       
       try {
-	tuple.setHdr((short)attrCnt, typeArray, sizeArray);
+	map.setHdr((short)attrCnt, typeArray, sizeArray);
       }
       catch (Exception e) {
 	throw new IndexCatalogException(e, "setHdr() failed");
       }
 
-      recSize = tuple.size();
+      recSize = map.size();
       
       
       // NOW PROCESS THE HEAPFILE AND INSERT KEY,RID INTO INDEX
       
       while(true) {
 	try {
-	  tuple = pscan.getNext(rid);
-	  if (tuple == null) 
+	  map = pscan.getNext(rid);
+	  if (map == null) 
 	    return;
 	}
 	catch (Exception e) {
@@ -589,17 +589,17 @@ public class IndexCatalog extends Heapfile
 	
 	if (attrRec.attrType.attrType == AttrType.attrInteger)
 	  {
-	    intKey = tuple.getIntFld(attrRec.attrPos);
+	    intKey = map.getIntFld(attrRec.attrPos);
 	    key = new IntegerKey(intKey);
 	  }
 	else if (attrRec.attrType.attrType == AttrType.attrReal)
 	  {
-	    floatKey = tuple.getFloFld(attrRec.attrPos);
+	    floatKey = map.getFloFld(attrRec.attrPos);
 	    key = new IntegerKey((int)floatKey);
 	  }
 	else if (attrRec.attrType.attrType == AttrType.attrString)
 	  {
-	    charKey = new String(tuple.getStrFld(attrRec.attrPos));
+	    charKey = new String(map.getStrFld(attrRec.attrPos));
 	    key = new StringKey(charKey);
 	  }
 	
@@ -625,39 +625,39 @@ public class IndexCatalog extends Heapfile
   void dropRelation(String relation){};
   
   
-  void make_tuple(Tuple tuple, IndexDesc record)
+  void make_tuple(Map map, IndexDesc record)
     throws IOException,
 	   IndexCatalogException
     {
       try {
-	tuple.setStrFld(1, record.relName);
-	tuple.setStrFld(2, record.attrName);
+	map.setStrFld(1, record.relName);
+	map.setStrFld(2, record.attrName);
 	
 	if (record.accessType.indexType == IndexType.None)
-	  tuple.setIntFld(3, 0);
+	  map.setIntFld(3, 0);
 	else
 	  if (record.accessType.indexType == IndexType.B_Index)
-	    tuple.setIntFld(3, 1);
+	    map.setIntFld(3, 1);
 	  else
 	    if (record.accessType.indexType == IndexType.Hash)
-	      tuple.setIntFld(3, 2);
+	      map.setIntFld(3, 2);
 	    else
 	      System.out.println("Invalid accessType in IndexCatalog::make_tupl");
 	
 	if (record.order.tupleOrder == TupleOrder.Ascending)
-	  tuple.setIntFld(4, 0);
+	  map.setIntFld(4, 0);
 	else
 	  if (record.order.tupleOrder == TupleOrder.Descending)
-	    tuple.setIntFld(4, 1);
+	    map.setIntFld(4, 1);
 	  else
 	    if (record.order.tupleOrder == TupleOrder.Random)
-	      tuple.setIntFld(4, 2);
+	      map.setIntFld(4, 2);
 	    else
 	      System.out.println("Invalid order in IndexCatalog::make_tuple");
 	
-	tuple.setIntFld(5, record.clustered);
-	tuple.setIntFld(6, record.distinctKeys);
-	tuple.setIntFld(7, record.indexPages);
+	map.setIntFld(5, record.clustered);
+	map.setIntFld(6, record.distinctKeys);
+	map.setIntFld(7, record.indexPages);
       }        
       catch (Exception e) {
 	throw new IndexCatalogException(e,"make_tuple failed");
@@ -666,16 +666,16 @@ public class IndexCatalog extends Heapfile
       return;
     };
   
-  void read_tuple(Tuple tuple, IndexDesc record)
+  void read_tuple(Map map, IndexDesc record)
     throws IOException,
 	   IndexCatalogException
     {
       try {
-	record.relName = tuple.getStrFld(1);
-	record.attrName = tuple.getStrFld(2);
+	record.relName = map.getStrFld(1);
+	record.attrName = map.getStrFld(2);
 	
 	int temp;
-	temp = tuple.getIntFld(3);
+	temp = map.getIntFld(3);
 	if (temp == 0)
 	  record.accessType = new IndexType(IndexType.None);
 	else
@@ -687,7 +687,7 @@ public class IndexCatalog extends Heapfile
 	    else
 	      System.out.println("111Error in IndexCatalog::read_tuple");
 	
-	temp = tuple.getIntFld(4);
+	temp = map.getIntFld(4);
 	if (temp == 0)
 	  record.order = new TupleOrder(TupleOrder.Ascending);
 	else
@@ -699,9 +699,9 @@ public class IndexCatalog extends Heapfile
 	    else
 	      System.out.println("222Error in IndexCatalog::read_tuple");
 	
-	record.clustered = tuple.getIntFld(5);
-	record.distinctKeys = tuple.getIntFld(6);
-	record.indexPages = tuple.getIntFld(7);
+	record.clustered = map.getIntFld(5);
+	record.distinctKeys = map.getIntFld(6);
+	record.indexPages = map.getIntFld(7);
       }        
       catch (Exception e) {
 	throw new IndexCatalogException(e,"read_tuple failed");
@@ -712,7 +712,7 @@ public class IndexCatalog extends Heapfile
     };
   
   
-  Tuple tuple;
+  Map map;
   short [] str_sizes;
   AttrType [] attrs;
   

@@ -49,7 +49,7 @@ public abstract class pnodePQ
    * @exception IOException from lower layers
    * @exception UnknowAttrType <code>attrSymbol</code> or
    *                           <code>attrNull</code> encountered
-   * @exception TupleUtilsException error in tuple compare routines
+   * @exception TupleUtilsException error in map compare routines
    */
   abstract public void  enq(pnode  item) 
            throws IOException, UnknowAttrType, TupleUtilsException;      
@@ -72,11 +72,11 @@ public abstract class pnodePQ
    * @exception IOException from lower layers
    * @exception UnknowAttrType <code>attrSymbol</code> or 
    *                           <code>attrNull</code> encountered
-   * @exception TupleUtilsException error in tuple compare routines
+   * @exception TupleUtilsException error in map compare routines
    */
   public int pnodeCMP(pnode a, pnode b) 
          throws IOException, UnknowAttrType, TupleUtilsException {
-    int ans = TupleUtils.CompareTupleWithTuple(fld_type, a.tuple, fld_no, b.tuple, fld_no);
+    int ans = TupleUtils.CompareTupleWithTuple(fld_type, a.map, fld_no, b.map, fld_no);
     return ans;
   }
 
@@ -89,7 +89,7 @@ public abstract class pnodePQ
    * @exception IOException from lower layers
    * @exception UnknowAttrType <code>attrSymbol</code> or 
    *                           <code>attrNull</code> encountered
-   * @exception TupleUtilsException error in tuple compare routines
+   * @exception TupleUtilsException error in map compare routines
    */  
   public boolean pnodeEQ(pnode a, pnode b) throws IOException, UnknowAttrType, TupleUtilsException {
     return pnodeCMP(a, b) == 0;
@@ -103,7 +103,7 @@ public abstract class pnodePQ
    *         <code>false</code> otherwise
    * @exception IOException from lower layers
    * @exception UnknowAttrType attrSymbol or attrNull encountered
-   * @exception TupleUtilsException error in tuple compare routines
+   * @exception TupleUtilsException error in map compare routines
    */  
   /*
   public boolean pnodeLE(pnode a, pnode b)throws IOException, UnknowAttrType, TupleUtilsException {
