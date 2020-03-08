@@ -96,7 +96,7 @@ public class Map implements GlobalConst {
     public String getRowLabel() {
         String tmp = null;
         try {
-            tmp = getStrFld(0);
+            tmp = getStrFld(1);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -112,7 +112,7 @@ public class Map implements GlobalConst {
     public String getColumnLabel() {
         String tmp = null;
         try {
-            tmp = getStrFld(1);
+            tmp = getStrFld(2);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,7 +128,7 @@ public class Map implements GlobalConst {
     public int getTimeStamp() {
         int tmp = -1;
         try {
-            tmp = getIntFld(2);
+            tmp = getIntFld(3);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -144,7 +144,7 @@ public class Map implements GlobalConst {
     public String getValue() {
         String tmp = null;
         try {
-            tmp = getStrFld(3);
+            tmp = getStrFld(4);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -159,7 +159,7 @@ public class Map implements GlobalConst {
      */
     public Map setRowLabel(String val) {
         try {
-            this.setStrFld(0, val);
+            this.setStrFld(1, val);
         } catch (FieldNumberOutOfBoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -178,7 +178,7 @@ public class Map implements GlobalConst {
      */
     public Map setColumnLabel(String val) {
         try {
-            this.setStrFld(1, val);
+            this.setStrFld(2, val);
         } catch (FieldNumberOutOfBoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -197,7 +197,7 @@ public class Map implements GlobalConst {
      */
     public Map setTimeStamp(int val) {
         try {
-            this.setIntFld(2, val);
+            this.setIntFld(3, val);
         } catch (FieldNumberOutOfBoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -216,7 +216,7 @@ public class Map implements GlobalConst {
      */
     public Map setValue(String val) {
         try {
-            this.setStrFld(3, val);
+            this.setStrFld(4, val);
         } catch (FieldNumberOutOfBoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
