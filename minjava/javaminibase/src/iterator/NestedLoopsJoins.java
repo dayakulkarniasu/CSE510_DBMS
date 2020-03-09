@@ -14,8 +14,8 @@ import java.io.*;
  *  algorithm as described in the Shapiro paper.
  *  The algorithm is extremely simple:
  *
- *      foreach map r in R do
- *          foreach map s in S do
+ *      foreach tuple r in R do
+ *          foreach tuple s in S do
  *              if (ri == sj) then add (r, s) to the result.
  */
 
@@ -29,9 +29,9 @@ public class NestedLoopsJoins  extends Iterator
   private   CondExpr RightFilter[];
   private   int        n_buf_pgs;        // # of buffer pages available.
   private   boolean        done,         // Is the join complete
-    get_from_outer;                 // if TRUE, a map is got from outer
-  private   Map     outer_tuple, inner_tuple;
-  private   Map     Jtuple;           // Joined map
+    get_from_outer;                 // if TRUE, a tuple is got from outer
+  private   Tuple     outer_tuple, inner_tuple;
+  private   Tuple     Jtuple;           // Joined tuple
   private   FldSpec   perm_mat[];
   private   int        nOutFlds;
   private   Heapfile  hf;
@@ -51,7 +51,7 @@ public class NestedLoopsJoins  extends Iterator
    *@param relationName  access hfapfile for right i/p to join
    *@param outFilter   select expressions
    *@param rightFilter reference to filter applied on right i/p
-   *@param proj_list shows what input fields go where in the output map
+   *@param proj_list shows what input fields go where in the output tuple
    *@param n_out_flds number of outer relation fileds
    *@exception IOException some I/O fault
    *@exception NestedLoopException exception from this class
@@ -82,8 +82,8 @@ public class NestedLoopsJoins  extends Iterator
       
       outer = am1;
       t2_str_sizescopy =  t2_str_sizes;
-      inner_tuple = new Map();
-      Jtuple = new Map();
+      inner_tuple = new Tuple();
+      Jtuple = new Tuple();
       OutputFilter = outFilter;
       RightFilter  = rightFilter;
       
@@ -118,14 +118,14 @@ public class NestedLoopsJoins  extends Iterator
     }
   
   /**  
-   *@return The joined map is returned
+   *@return The joined tuple is returned
    *@exception IOException I/O errors
    *@exception JoinsException some join exception
    *@exception IndexException exception from super class
-   *@exception InvalidTupleSizeException invalid map size
-   *@exception InvalidTypeException map type not valid
+   *@exception InvalidTupleSizeException invalid tuple size
+   *@exception InvalidTypeException tuple type not valid
    *@exception PageNotReadException exception from lower layer
-   *@exception TupleUtilsException exception from using map utilities
+   *@exception TupleUtilsException exception from using tuple utilities
    *@exception PredEvalException exception from PredEval class
    *@exception SortException sort exception
    *@exception LowMemException memory error
@@ -134,7 +134,7 @@ public class NestedLoopsJoins  extends Iterator
    *@exception Exception other exceptions
 
    */
-  public Map get_next()
+  public Tuple get_next()
     throws IOException,
 	   JoinsException ,
 	   IndexException,
@@ -157,7 +157,7 @@ public class NestedLoopsJoins  extends Iterator
       
       do
 	{
-	  // If get_from_outer is true, Get a map from the outer, delete
+	  // If get_from_outer is true, Get a tuple from the outer, delete
 	  // an existing scan on the file, and reopen a new scan on the file.
 	  // If a get_next on the outer returns DONE?, then the nested loops
 	  //join is done too.
@@ -192,9 +192,9 @@ public class NestedLoopsJoins  extends Iterator
 	    }  // ENDS: if (get_from_outer == TRUE)
 	 
 	  
-	  // The next step is to get a map from the inner,
+	  // The next step is to get a tuple from the inner,
 	  // while the inner is not completely scanned && there
-	  // is no match (with pred),get a map from the inner.
+	  // is no match (with pred),get a tuple from the inner.
 	  
 	 
 	      RID rid = new RID();
@@ -218,7 +218,7 @@ public class NestedLoopsJoins  extends Iterator
 	      //returned from t//he while loop. Hence, inner is 
 	      //exhausted, => set get_from_outer = TRUE, go to top of loop
 	      
-	      get_from_outer = true; // Loop back to top and get next outer map.	      
+	      get_from_outer = true; // Loop back to top and get next outer tuple.	      
 	} while (true);
     } 
  

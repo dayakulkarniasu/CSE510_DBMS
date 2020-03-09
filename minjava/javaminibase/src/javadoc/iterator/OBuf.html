@@ -139,11 +139,11 @@ a temporary HeapFile.
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../heap/Map.html">Map</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../iterator/OBuf.html#Put(heap.Map)">Put</A></B>(<A HREF="../heap/Map.html">Map</A>&nbsp;buf)</CODE>
+<CODE>&nbsp;<A HREF="../heap/Tuple.html">Tuple</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../iterator/OBuf.html#Put(heap.Tuple)">Put</A></B>(<A HREF="../heap/Tuple.html">Tuple</A>&nbsp;buf)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Writes a map to the output buffer</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Writes a tuple to the output buffer</TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
@@ -202,24 +202,24 @@ public void <B>init</B>(byte[][]&nbsp;bufs,
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>bufs</CODE> - temporary buffer to pages.(EACH ELEMENT IS A SINGLE BUFFER PAGE).<DD><CODE>n_pages</CODE> - the number of pages<DD><CODE>tSize</CODE> - map size<DD><CODE>temp_fd</CODE> - fd of a  HeapFile<DD><CODE>buffer</CODE> - true => it is used as a buffer => if it is flushed, print
+<DT><B>Parameters:</B><DD><CODE>bufs</CODE> - temporary buffer to pages.(EACH ELEMENT IS A SINGLE BUFFER PAGE).<DD><CODE>n_pages</CODE> - the number of pages<DD><CODE>tSize</CODE> - tuple size<DD><CODE>temp_fd</CODE> - fd of a  HeapFile<DD><CODE>buffer</CODE> - true => it is used as a buffer => if it is flushed, print
                       a nasty message. it is false by default.</DL>
 </DD>
 </DL>
 <HR>
 
-<A NAME="Put(heap.Map)"><!-- --></A><H3>
+<A NAME="Put(heap.Tuple)"><!-- --></A><H3>
 Put</H3>
 <PRE>
-public <A HREF="../heap/Map.html">Map</A> <B>Put</B>(<A HREF="../heap/Map.html">Map</A>&nbsp;buf)
+public <A HREF="../heap/Tuple.html">Tuple</A> <B>Put</B>(<A HREF="../heap/Tuple.html">Tuple</A>&nbsp;buf)
           throws java.io.IOException,
                  java.lang.Exception</PRE>
 <DL>
-<DD>Writes a map to the output buffer<DD><DL>
+<DD>Writes a tuple to the output buffer<DD><DL>
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>buf</CODE> - the map written to buffer<DT><B>Returns:</B><DD>the position of map which is in buffer<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - some I/O fault<DD><CODE>java.lang.Exception</CODE> - other exceptions</DL>
+<DT><B>Parameters:</B><DD><CODE>buf</CODE> - the tuple written to buffer<DT><B>Returns:</B><DD>the position of tuple which is in buffer<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - some I/O fault<DD><CODE>java.lang.Exception</CODE> - other exceptions</DL>
 </DD>
 </DL>
 <HR>

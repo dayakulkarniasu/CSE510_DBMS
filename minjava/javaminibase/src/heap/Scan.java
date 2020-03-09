@@ -7,8 +7,6 @@ package heap;
  */
 
 import java.io.*;
-
-import BigT.Map;
 import global.*;
 import bufmgr.*;
 import diskmgr.*;
@@ -61,7 +59,7 @@ public class Scan implements GlobalConst{
      * and initializes its private data members from the private
      * data member from hf
      *
-     * @exception InvalidTupleSizeException Invalid map size
+     * @exception InvalidTupleSizeException Invalid tuple size
      * @exception IOException I/O errors
      *
      * @param hf A HeapFile object
@@ -77,17 +75,17 @@ public class Scan implements GlobalConst{
   
   /** Retrieve the next record in a sequential scan
    *
-   * @exception InvalidTupleSizeException Invalid map size
+   * @exception InvalidTupleSizeException Invalid tuple size
    * @exception IOException I/O errors
    *
    * @param rid Record ID of the record
-   * @return the Map of the retrieved record.
+   * @return the Tuple of the retrieved record.
    */
-  public Map getNext(RID rid) 
+  public Tuple getNext(RID rid) 
     throws InvalidTupleSizeException,
 	   IOException
   {
-    Map recptrtuple = null;
+    Tuple recptrtuple = null;
     
     if (nextUserStatus != true) {
         nextDataPage();
@@ -118,7 +116,7 @@ public class Scan implements GlobalConst{
 
     /** Position the scan cursor to the record with the given rid.
      * 
-     * @exception InvalidTupleSizeException Invalid map size
+     * @exception InvalidTupleSizeException Invalid tuple size
      * @exception IOException I/O errors
      * @param rid Record ID of the given record
      * @return 	true if successful, 
@@ -184,7 +182,7 @@ public class Scan implements GlobalConst{
 
     /** Do all the constructor work
      *
-     * @exception InvalidTupleSizeException Invalid map size
+     * @exception InvalidTupleSizeException Invalid tuple size
      * @exception IOException I/O errors
      *
      * @param hf A HeapFile object
@@ -241,7 +239,7 @@ public class Scan implements GlobalConst{
  
  
   /** Move to the first data page in the file. 
-   * @exception InvalidTupleSizeException Invalid map size
+   * @exception InvalidTupleSizeException Invalid tuple size
    * @exception IOException I/O errors
    * @return true if successful
    *         false otherwise
@@ -251,7 +249,7 @@ public class Scan implements GlobalConst{
 	   IOException
   {
     DataPageInfo dpinfo;
-    Map        rectuple = null;
+    Tuple        rectuple = null;
     Boolean      bst;
 
     /** copy data about first directory page */
@@ -404,7 +402,7 @@ public class Scan implements GlobalConst{
     
     boolean nextDataPageStatus;
     PageId nextDirPageId = new PageId();
-    Map rectuple = null;
+    Tuple rectuple = null;
 
   // ASSERTIONS:
   // - this->dirpageId has Id of current directory page

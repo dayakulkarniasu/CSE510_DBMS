@@ -122,12 +122,12 @@ java.lang.Object
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../heap/Map.html">Map</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../iterator/SpoofIbuf.html#Get(heap.Map)">Get</A></B>(<A HREF="../heap/Map.html">Map</A>&nbsp;buf)</CODE>
+<CODE>&nbsp;<A HREF="../heap/Tuple.html">Tuple</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../iterator/SpoofIbuf.html#Get(heap.Tuple)">Get</A></B>(<A HREF="../heap/Tuple.html">Tuple</A>&nbsp;buf)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get a map from current buffer,pass reference buf to this method
-usage:temp_tuple = map.Get(buf);</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get a tuple from current buffer,pass reference buf to this method
+usage:temp_tuple = tuple.Get(buf);</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -220,24 +220,24 @@ object, and call init to finish intantiation<DD><DL>
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>bufs[][]</CODE> - the I/O buffer<DD><CODE>n_pages</CODE> - the numbers of page of this buffer<DD><CODE>tSize</CODE> - the map size<DD><CODE>fd</CODE> - the reference to an Heapfile<DD><CODE>Ntuples</CODE> - the map numbers of the page<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - some I/O fault<DD><CODE>java.lang.Exception</CODE> - other exceptions</DL>
+<DT><B>Parameters:</B><DD><CODE>bufs[][]</CODE> - the I/O buffer<DD><CODE>n_pages</CODE> - the numbers of page of this buffer<DD><CODE>tSize</CODE> - the tuple size<DD><CODE>fd</CODE> - the reference to an Heapfile<DD><CODE>Ntuples</CODE> - the tuple numbers of the page<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - some I/O fault<DD><CODE>java.lang.Exception</CODE> - other exceptions</DL>
 </DD>
 </DL>
 <HR>
 
-<A NAME="Get(heap.Map)"><!-- --></A><H3>
+<A NAME="Get(heap.Tuple)"><!-- --></A><H3>
 Get</H3>
 <PRE>
-public <A HREF="../heap/Map.html">Map</A> <B>Get</B>(<A HREF="../heap/Map.html">Map</A>&nbsp;buf)
+public <A HREF="../heap/Tuple.html">Tuple</A> <B>Get</B>(<A HREF="../heap/Tuple.html">Tuple</A>&nbsp;buf)
           throws java.io.IOException,
                  java.lang.Exception</PRE>
 <DL>
-<DD>get a map from current buffer,pass reference buf to this method
-usage:temp_tuple = map.Get(buf);<DD><DL>
+<DD>get a tuple from current buffer,pass reference buf to this method
+usage:temp_tuple = tuple.Get(buf);<DD><DL>
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>buf</CODE> - write the result to buf<DT><B>Returns:</B><DD>the result map<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - some I/O fault<DD><CODE>java.lang.Exception</CODE> - other exceptions</DL>
+<DT><B>Parameters:</B><DD><CODE>buf</CODE> - write the result to buf<DT><B>Returns:</B><DD>the result tuple<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - some I/O fault<DD><CODE>java.lang.Exception</CODE> - other exceptions</DL>
 </DD>
 </DL>
 <HR>

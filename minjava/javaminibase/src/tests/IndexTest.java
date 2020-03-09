@@ -131,8 +131,8 @@ class IndexDriver extends TestDriver
     attrSize[0] = REC_LEN2;
     attrSize[1] = REC_LEN1;
     
-    // create a map of appropriate size
-    Map t = new Map();
+    // create a tuple of appropriate size
+    Tuple t = new Tuple();
     try {
       t.setHdr((short) 2, attrType, attrSize);
     }
@@ -154,7 +154,7 @@ class IndexDriver extends TestDriver
       e.printStackTrace();
     }
     
-    t = new Map(size);
+    t = new Tuple(size);
     try {
       t.setHdr((short) 2, attrType, attrSize);
     }
@@ -208,7 +208,7 @@ class IndexDriver extends TestDriver
     
     rid = new RID();
     String key = null;
-    Map temp = null;
+    Tuple temp = null;
     
     try {
       temp = scan.getNext(rid);
@@ -348,8 +348,8 @@ class IndexDriver extends TestDriver
     attrSize[0] = REC_LEN2;
     attrSize[1] = REC_LEN1;
     
-    // create a map of appropriate size
-    Map t = new Map();
+    // create a tuple of appropriate size
+    Tuple t = new Tuple();
     try {
       t.setHdr((short) 2, attrType, attrSize);
     }
@@ -372,7 +372,7 @@ class IndexDriver extends TestDriver
       e.printStackTrace();
     }
     
-    t = new Map(size);
+    t = new Tuple(size);
     try {
       t.setHdr((short) 2, attrType, attrSize);
     }
@@ -395,7 +395,7 @@ class IndexDriver extends TestDriver
     
     rid = new RID();
     String key = null;
-    Map temp = null;
+    Tuple temp = null;
     
 
     FldSpec[] projlist = new FldSpec[2];
@@ -593,13 +593,13 @@ class IndexDriver extends TestDriver
     attrSize[0] = REC_LEN1;
     attrSize[1] = REC_LEN1;
     
-    Map t = new Map();
+    Tuple t = new Tuple();
 
     try {
       t.setHdr((short) 4, attrType, attrSize);
     }
     catch (Exception e) {
-      System.err.println("*** error in Map.setHdr() ***");
+      System.err.println("*** error in Tuple.setHdr() ***");
       status = FAIL;
       e.printStackTrace();
     }
@@ -616,7 +616,7 @@ class IndexDriver extends TestDriver
       e.printStackTrace();
     }
     
-    t = new Map(size);
+    t = new Tuple(size);
     try {
       t.setHdr((short) 4, attrType, attrSize);
     }
@@ -679,7 +679,7 @@ class IndexDriver extends TestDriver
     
     rid = new RID();
     int key = 0;
-    Map temp = null;
+    Tuple temp = null;
     
     try {
       temp = scan.getNext(rid);

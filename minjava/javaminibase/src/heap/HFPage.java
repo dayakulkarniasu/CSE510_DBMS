@@ -535,12 +535,12 @@ public class HFPage extends Page
    * <br>
    * Status getRecord(RID rid, char *recPtr, int& recLen)
    * @param	rid 	the record ID
-   * @return 	a map contains the record
+   * @return 	a tuple contains the record
    * @exception   InvalidSlotNumberException Invalid slot number
    * @exception  	IOException I/O errors
-   * @see 	Map
+   * @see 	Tuple
    */
-  public Map getRecord ( RID rid ) 
+  public Tuple getRecord ( RID rid ) 
     throws IOException,  
 	   InvalidSlotNumberException
     {
@@ -561,8 +561,8 @@ public class HFPage extends Page
 	  offset = getSlotOffset (slotNo);
 	  record = new byte[recLen];
 	  System.arraycopy(data, offset, record, 0, recLen);
-	  Map map = new Map(record, 0, recLen);
-	  return map;
+	  Tuple tuple = new Tuple(record, 0, recLen);
+	  return tuple;
 	}
       
       else {
@@ -573,16 +573,16 @@ public class HFPage extends Page
     }
   
   /**
-   * returns a map in a byte array[pageSize] with given RID rid.
+   * returns a tuple in a byte array[pageSize] with given RID rid.
    * <br>
    * in C++	Status returnRecord(RID rid, char*& recPtr, int& recLen)
    * @param       rid     the record ID
-   * @return      a map  with its length and offset in the byte array
+   * @return      a tuple  with its length and offset in the byte array
    * @exception   InvalidSlotNumberException Invalid slot number
    * @exception   IOException I/O errors
-   * @see 	Map
+   * @see 	Tuple
    */  
-  public Map returnRecord ( RID rid )
+  public Tuple returnRecord ( RID rid )
     throws IOException, 
 	   InvalidSlotNumberException
     {
@@ -603,8 +603,8 @@ public class HFPage extends Page
 	{
 	  
 	  offset = getSlotOffset (slotNo);
-	  Map map = new Map(data, offset, recLen);
-	  return map;
+	  Tuple tuple = new Tuple(data, offset, recLen);
+	  return tuple;
 	}
       
       else {   

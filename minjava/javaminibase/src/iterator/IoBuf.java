@@ -43,13 +43,13 @@ public class IoBuf implements GlobalConst{
   
   
   /**
-   * Writes a map to the output buffer
-   *@param buf the map written to buffer
+   * Writes a tuple to the output buffer
+   *@param buf the tuple written to buffer
    *@exception NoOutputBuffer the buffer is a input bufer now
    *@exception IOException  some I/O fault
    *@exception Exception  other exceptions
    */
-  public void Put(Map buf)
+  public void Put(Tuple buf)
     throws NoOutputBuffer,
 	   IOException,
 	   Exception
@@ -78,18 +78,18 @@ public class IoBuf implements GlobalConst{
     }
 
   /**
-   *get a map from current buffer,pass reference buf to this method
-   *usage:temp_tuple = map.Get(buf); 
+   *get a tuple from current buffer,pass reference buf to this method
+   *usage:temp_tuple = tuple.Get(buf); 
    *@param buf write the result to buf
-   *@return the result map
+   *@return the result tuple
    *@exception IOException some I/O fault
    *@exception Exception other exceptions
    */
-  public Map Get(Map  buf)
+  public Tuple Get(Tuple  buf)
     throws IOException,
 	   Exception
     {
-      Map temptuple;
+      Tuple temptuple;
       if (done){
 	buf =null;
 	return null;
@@ -201,7 +201,7 @@ public class IoBuf implements GlobalConst{
   private  int  curr_page;            // Current page being written to.
   private  byte _bufs[][];            // Array of pointers to buffer pages.
   private  int  _n_pages;             // number of pages in array
-  private  int  t_size;               // Size of a map
+  private  int  t_size;               // Size of a tuple
   private  long t_written;           // # of tuples written so far
   private  int  _TEST_temp_fd;       // fd of a temporary file
   private  Heapfile _temp_fd;

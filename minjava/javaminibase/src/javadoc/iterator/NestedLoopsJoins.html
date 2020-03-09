@@ -76,8 +76,8 @@ This file contains an implementation of the nested loops join
   algorithm as described in the Shapiro paper.
   The algorithm is extremely simple:
 
-      foreach map r in R do
-          foreach map s in S do
+      foreach tuple r in R do
+          foreach tuple s in S do
               if (ri == sj) then add (r, s) to the result.
 <P>
 <HR>
@@ -155,7 +155,7 @@ to finish cleaning up</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../heap/Map.html">Map</A></CODE></FONT></TD>
+<CODE>&nbsp;<A HREF="../heap/Tuple.html">Tuple</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../iterator/NestedLoopsJoins.html#get_next()">get_next</A></B>()</CODE>
 
 <BR>
@@ -217,7 +217,7 @@ public <B>NestedLoopsJoins</B>(<A HREF="../global/AttrType.html">AttrType</A>[]&
 <DL>
 <DD>constructor
 Initialize the two relations which are joined, including relation type,<DD><DL>
-<DT><B>Parameters:</B><DD><CODE>in1</CODE> - Array containing field types of R.<DD><CODE>len_in1</CODE> - # of columns in R.<DD><CODE>t1_str_sizes</CODE> - shows the length of the string fields.<DD><CODE>in2</CODE> - Array containing field types of S<DD><CODE>len_in2</CODE> - # of columns in S<DD><CODE>t2_str_sizes</CODE> - shows the length of the string fields.<DD><CODE>amt_of_mem</CODE> - IN PAGES<DD><CODE>am1</CODE> - access method for left i/p to join<DD><CODE>relationName</CODE> - access hfapfile for right i/p to join<DD><CODE>outFilter</CODE> - select expressions<DD><CODE>rightFilter</CODE> - reference to filter applied on right i/p<DD><CODE>proj_list</CODE> - shows what input fields go where in the output map<DD><CODE>n_out_flds</CODE> - number of outer relation fileds<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - some I/O fault<DD><CODE><A HREF="../iterator/NestedLoopException.html">NestedLoopException</A></CODE> - exception from this class</DL>
+<DT><B>Parameters:</B><DD><CODE>in1</CODE> - Array containing field types of R.<DD><CODE>len_in1</CODE> - # of columns in R.<DD><CODE>t1_str_sizes</CODE> - shows the length of the string fields.<DD><CODE>in2</CODE> - Array containing field types of S<DD><CODE>len_in2</CODE> - # of columns in S<DD><CODE>t2_str_sizes</CODE> - shows the length of the string fields.<DD><CODE>amt_of_mem</CODE> - IN PAGES<DD><CODE>am1</CODE> - access method for left i/p to join<DD><CODE>relationName</CODE> - access hfapfile for right i/p to join<DD><CODE>outFilter</CODE> - select expressions<DD><CODE>rightFilter</CODE> - reference to filter applied on right i/p<DD><CODE>proj_list</CODE> - shows what input fields go where in the output tuple<DD><CODE>n_out_flds</CODE> - number of outer relation fileds<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - some I/O fault<DD><CODE><A HREF="../iterator/NestedLoopException.html">NestedLoopException</A></CODE> - exception from this class</DL>
 </DD>
 </DL>
 
@@ -234,7 +234,7 @@ Initialize the two relations which are joined, including relation type,<DD><DL>
 <A NAME="get_next()"><!-- --></A><H3>
 get_next</H3>
 <PRE>
-public <A HREF="../heap/Map.html">Map</A> <B>get_next</B>()
+public <A HREF="../heap/Tuple.html">Tuple</A> <B>get_next</B>()
                throws java.io.IOException,
                       <A HREF="../iterator/JoinsException.html">JoinsException</A>,
                       <A HREF="../index/IndexException.html">IndexException</A>,
@@ -254,7 +254,7 @@ public <A HREF="../heap/Map.html">Map</A> <B>get_next</B>()
 <DT><B>Overrides:</B><DD><CODE><A HREF="../iterator/Iterator.html#get_next()">get_next</A></CODE> in class <CODE><A HREF="../iterator/Iterator.html">Iterator</A></CODE></DL>
 </DD>
 <DD><DL>
-<DT><B>Returns:</B><DD>The joined map is returned<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - I/O errors<DD><CODE><A HREF="../iterator/JoinsException.html">JoinsException</A></CODE> - some join exception<DD><CODE><A HREF="../index/IndexException.html">IndexException</A></CODE> - exception from super class<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid map size<DD><CODE><A HREF="../heap/InvalidTypeException.html">InvalidTypeException</A></CODE> - map type not valid<DD><CODE><A HREF="../bufmgr/PageNotReadException.html">PageNotReadException</A></CODE> - exception from lower layer<DD><CODE><A HREF="../iterator/TupleUtilsException.html">TupleUtilsException</A></CODE> - exception from using map utilities<DD><CODE><A HREF="../iterator/PredEvalException.html">PredEvalException</A></CODE> - exception from PredEval class<DD><CODE><A HREF="../iterator/SortException.html">SortException</A></CODE> - sort exception<DD><CODE><A HREF="../iterator/LowMemException.html">LowMemException</A></CODE> - memory error<DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - attribute type unknown<DD><CODE><A HREF="../iterator/UnknownKeyTypeException.html">UnknownKeyTypeException</A></CODE> - key type unknown<DD><CODE>java.lang.Exception</CODE> - other exceptions</DL>
+<DT><B>Returns:</B><DD>The joined tuple is returned<DT><B>Throws:</B><DD><CODE>java.io.IOException</CODE> - I/O errors<DD><CODE><A HREF="../iterator/JoinsException.html">JoinsException</A></CODE> - some join exception<DD><CODE><A HREF="../index/IndexException.html">IndexException</A></CODE> - exception from super class<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - invalid tuple size<DD><CODE><A HREF="../heap/InvalidTypeException.html">InvalidTypeException</A></CODE> - tuple type not valid<DD><CODE><A HREF="../bufmgr/PageNotReadException.html">PageNotReadException</A></CODE> - exception from lower layer<DD><CODE><A HREF="../iterator/TupleUtilsException.html">TupleUtilsException</A></CODE> - exception from using tuple utilities<DD><CODE><A HREF="../iterator/PredEvalException.html">PredEvalException</A></CODE> - exception from PredEval class<DD><CODE><A HREF="../iterator/SortException.html">SortException</A></CODE> - sort exception<DD><CODE><A HREF="../iterator/LowMemException.html">LowMemException</A></CODE> - memory error<DD><CODE><A HREF="../iterator/UnknowAttrType.html">UnknowAttrType</A></CODE> - attribute type unknown<DD><CODE><A HREF="../iterator/UnknownKeyTypeException.html">UnknownKeyTypeException</A></CODE> - key type unknown<DD><CODE>java.lang.Exception</CODE> - other exceptions</DL>
 </DD>
 </DL>
 <HR>

@@ -266,15 +266,15 @@ Variable in class iterator.<A HREF="iterator/Iterator.html">Iterator</A>
 <DT><A HREF="heap/Scan.html#closescan()"><B>closescan()</B></A> - 
 Method in class heap.<A HREF="heap/Scan.html">Scan</A>
 <DD>Closes the Scan object
-<DT><A HREF="iterator/TupleUtils.html#CompareTupleWithTuple(global.AttrType, heap.Map, int, heap.Map, int)"><B>CompareTupleWithTuple(AttrType, Map, int, Map, int)</B></A> - 
+<DT><A HREF="iterator/TupleUtils.html#CompareTupleWithTuple(global.AttrType, heap.Tuple, int, heap.Tuple, int)"><B>CompareTupleWithTuple(AttrType, Tuple, int, Tuple, int)</B></A> - 
 Static method in class iterator.<A HREF="iterator/TupleUtils.html">TupleUtils</A>
-<DD>This function compares a map with another map in respective field, and
+<DD>This function compares a tuple with another tuple in respective field, and
   returns:
 
     0        if the two are equal,
-    1        if the map is greater,
-   -1        if the map is smaller,
-<DT><A HREF="iterator/TupleUtils.html#CompareTupleWithValue(global.AttrType, heap.Map, int, heap.Map)"><B>CompareTupleWithValue(AttrType, Map, int, Map)</B></A> - 
+    1        if the tuple is greater,
+   -1        if the tuple is smaller,
+<DT><A HREF="iterator/TupleUtils.html#CompareTupleWithValue(global.AttrType, heap.Tuple, int, heap.Tuple)"><B>CompareTupleWithValue(AttrType, Tuple, int, Tuple)</B></A> - 
 Static method in class iterator.<A HREF="iterator/TupleUtils.html">TupleUtils</A>
 <DD>This function  compares  tuple1 with another tuple2 whose
  field number is same as the tuple1
@@ -304,8 +304,8 @@ Constructor for class btree.<A HREF="btree/ConvertException.html">ConvertExcepti
 <DT><A HREF="btree/ConvertException.html#ConvertException(java.lang.String)"><B>ConvertException(String)</B></A> - 
 Constructor for class btree.<A HREF="btree/ConvertException.html">ConvertException</A>
 <DD>&nbsp;
-<DT><A HREF="heap/Map.html#copyFldOffset()"><B>copyFldOffset()</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
+<DT><A HREF="heap/Tuple.html#copyFldOffset()"><B>copyFldOffset()</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
 <DD>Makes a copy of the fldOffset array
 <DT><A HREF="global/PageId.html#copyPageId(global.PageId)"><B>copyPageId(PageId)</B></A> - 
 Method in class global.<A HREF="global/PageId.html">PageId</A>
@@ -484,19 +484,19 @@ Method in class iterator.<A HREF="iterator/pnodePQ.html">pnodePQ</A>
 <DT><A HREF="iterator/pnodeSplayPQ.html#enq(iterator.pnode)"><B>enq(pnode)</B></A> - 
 Method in class iterator.<A HREF="iterator/pnodeSplayPQ.html">pnodeSplayPQ</A>
 <DD>Inserts an element into the binary tree.
-<DT><A HREF="iterator/TupleUtils.html#Equal(heap.Map, heap.Map, global.AttrType[], int)"><B>Equal(Map, Map, AttrType[], int)</B></A> - 
+<DT><A HREF="iterator/TupleUtils.html#Equal(heap.Tuple, heap.Tuple, global.AttrType[], int)"><B>Equal(Tuple, Tuple, AttrType[], int)</B></A> - 
 Static method in class iterator.<A HREF="iterator/TupleUtils.html">TupleUtils</A>
-<DD>This function Compares two Map inn all fields
+<DD>This function Compares two Tuple inn all fields
 <DT><A HREF="btree/KeyDataEntry.html#equals(btree.KeyDataEntry)"><B>equals(KeyDataEntry)</B></A> - 
 Method in class btree.<A HREF="btree/KeyDataEntry.html">KeyDataEntry</A>
 <DD>shallow equal.
 <DT><A HREF="global/RID.html#equals(global.RID)"><B>equals(RID)</B></A> - 
 Method in class global.<A HREF="global/RID.html">RID</A>
 <DD>Compares two RID object, i.e, this to the rid
-<DT><A HREF="iterator/PredEval.html#Eval(iterator.CondExpr[], heap.Map, heap.Map, global.AttrType[], global.AttrType[])"><B>Eval(CondExpr[], Map, Map, AttrType[], AttrType[])</B></A> - 
+<DT><A HREF="iterator/PredEval.html#Eval(iterator.CondExpr[], heap.Tuple, heap.Tuple, global.AttrType[], global.AttrType[])"><B>Eval(CondExpr[], Tuple, Tuple, AttrType[], AttrType[])</B></A> - 
 Static method in class iterator.<A HREF="iterator/PredEval.html">PredEval</A>
 <DD>predicate evaluate, according to the condition ConExpr, judge if 
-the two map can join.
+the two tuple can join.
 <DT><A HREF="global/ExtendedSystemDefs.html"><B>ExtendedSystemDefs</B></A> - class global.<A HREF="global/ExtendedSystemDefs.html">ExtendedSystemDefs</A>.<DD>&nbsp;<DT><A HREF="global/ExtendedSystemDefs.html#ExtendedSystemDefs(java.lang.String, int, int, java.lang.String)"><B>ExtendedSystemDefs(String, int, int, String)</B></A> - 
 Constructor for class global.<A HREF="global/ExtendedSystemDefs.html">ExtendedSystemDefs</A>
 <DD>&nbsp;
@@ -604,11 +604,11 @@ Method in class iterator.<A HREF="iterator/Iterator.html">Iterator</A>
 <DD>abstract method, every subclass must implement it.
 <DT><A HREF="iterator/DuplElim.html#get_next()"><B>get_next()</B></A> - 
 Method in class iterator.<A HREF="iterator/DuplElim.html">DuplElim</A>
-<DD>The map is returned.
+<DD>The tuple is returned.
 <DT><A HREF="iterator/SortMerge.html#get_next()"><B>get_next()</B></A> - 
 Method in class iterator.<A HREF="iterator/SortMerge.html">SortMerge</A>
-<DD>The map is returned
- All this function has to do is to get 1 map from one of the Iterators
+<DD>The tuple is returned
+ All this function has to do is to get 1 tuple from one of the Iterators
  (from both initially), use the sorting order to determine which one
  gets sent up.
 <DT><A HREF="iterator/FileScan.html#get_next()"><B>get_next()</B></A> - 
@@ -619,20 +619,20 @@ Method in class iterator.<A HREF="iterator/NestedLoopsJoins.html">NestedLoopsJoi
 <DD>&nbsp;
 <DT><A HREF="iterator/Sort.html#get_next()"><B>get_next()</B></A> - 
 Method in class iterator.<A HREF="iterator/Sort.html">Sort</A>
-<DD>Returns the next map in sorted order.
+<DD>Returns the next tuple in sorted order.
 <DT><A HREF="index/IndexScan.html#get_next()"><B>get_next()</B></A> - 
 Method in class index.<A HREF="index/IndexScan.html">IndexScan</A>
-<DD>returns the next map.
-<DT><A HREF="iterator/SpoofIbuf.html#Get(heap.Map)"><B>Get(Map)</B></A> - 
+<DD>returns the next tuple.
+<DT><A HREF="iterator/SpoofIbuf.html#Get(heap.Tuple)"><B>Get(Tuple)</B></A> - 
 Method in class iterator.<A HREF="iterator/SpoofIbuf.html">SpoofIbuf</A>
-<DD>get a map from current buffer,pass reference buf to this method
-usage:temp_tuple = map.Get(buf);
-<DT><A HREF="iterator/IoBuf.html#Get(heap.Map)"><B>Get(Map)</B></A> - 
+<DD>get a tuple from current buffer,pass reference buf to this method
+usage:temp_tuple = tuple.Get(buf);
+<DT><A HREF="iterator/IoBuf.html#Get(heap.Tuple)"><B>Get(Tuple)</B></A> - 
 Method in class iterator.<A HREF="iterator/IoBuf.html">IoBuf</A>
-<DD>get a map from current buffer,pass reference buf to this method
-usage:temp_tuple = map.Get(buf);
-<DT><A HREF="heap/Map.html#getCharFld(int)"><B>getCharFld(int)</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
+<DD>get a tuple from current buffer,pass reference buf to this method
+usage:temp_tuple = tuple.Get(buf);
+<DT><A HREF="heap/Tuple.html#getCharFld(int)"><B>getCharFld(int)</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
 <DD>Convert this field into a character
 <DT><A HREF="global/Convert.html#getCharValue(int, byte[])"><B>getCharValue(int, byte[])</B></A> - 
 Static method in class global.<A HREF="global/Convert.html">Convert</A>
@@ -663,8 +663,8 @@ Method in class btree.<A HREF="btree/BTIndexPage.html">BTIndexPage</A>
 <DT><A HREF="btree/BTLeafPage.html#getFirst(global.RID)"><B>getFirst(RID)</B></A> - 
 Method in class btree.<A HREF="btree/BTLeafPage.html">BTLeafPage</A>
 <DD>Iterators.
-<DT><A HREF="heap/Map.html#getFloFld(int)"><B>getFloFld(int)</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
+<DT><A HREF="heap/Tuple.html#getFloFld(int)"><B>getFloFld(int)</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
 <DD>Convert this field in to float
 <DT><A HREF="global/Convert.html#getFloValue(int, byte[])"><B>getFloValue(int, byte[])</B></A> - 
 Static method in class global.<A HREF="global/Convert.html">Convert</A>
@@ -676,8 +676,8 @@ Method in class btree.<A HREF="btree/BTreeFile.html">BTreeFile</A>
 <DT><A HREF="heap/HFPage.html#getHFpageArray()"><B>getHFpageArray()</B></A> - 
 Method in class heap.<A HREF="heap/HFPage.html">HFPage</A>
 <DD>&nbsp;
-<DT><A HREF="heap/Map.html#getIntFld(int)"><B>getIntFld(int)</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
+<DT><A HREF="heap/Tuple.html#getIntFld(int)"><B>getIntFld(int)</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
 <DD>Convert this field into integer
 <DT><A HREF="global/Convert.html#getIntValue(int, byte[])"><B>getIntValue(int, byte[])</B></A> - 
 Static method in class global.<A HREF="global/Convert.html">Convert</A>
@@ -689,9 +689,9 @@ Method in class btree.<A HREF="btree/IntegerKey.html">IntegerKey</A>
 <DT><A HREF="btree/StringKey.html#getKey()"><B>getKey()</B></A> - 
 Method in class btree.<A HREF="btree/StringKey.html">StringKey</A>
 <DD>get a copy of the istring key
-<DT><A HREF="heap/Map.html#getLength()"><B>getLength()</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
-<DD>get the length of a map, call this method if you did not 
+<DT><A HREF="heap/Tuple.html#getLength()"><B>getLength()</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
+<DD>get the length of a tuple, call this method if you did not 
   call setHdr () before
 <DT><A HREF="heap/Scan.html#getNext(global.RID)"><B>getNext(RID)</B></A> - 
 Method in class heap.<A HREF="heap/Scan.html">Scan</A>
@@ -711,9 +711,9 @@ Method in class bufmgr.<A HREF="bufmgr/BufMgr.html">BufMgr</A>
 <DT><A HREF="bufmgr/BufMgr.html#getNumUnpinnedBuffers()"><B>getNumUnpinnedBuffers()</B></A> - 
 Method in class bufmgr.<A HREF="bufmgr/BufMgr.html">BufMgr</A>
 <DD>Gets the total number of unpinned buffer frames.
-<DT><A HREF="heap/Map.html#getOffset()"><B>getOffset()</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
-<DD>get the offset of a map
+<DT><A HREF="heap/Tuple.html#getOffset()"><B>getOffset()</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
+<DD>get the offset of a tuple
 <DT><A HREF="diskmgr/Page.html#getpage()"><B>getpage()</B></A> - 
 Method in class diskmgr.<A HREF="diskmgr/Page.html">Page</A>
 <DD>return the data byte array
@@ -742,16 +742,16 @@ Method in class heap.<A HREF="heap/HFPage.html">HFPage</A>
 <DT><A HREF="heap/HFPage.html#getSlotOffset(int)"><B>getSlotOffset(int)</B></A> - 
 Method in class heap.<A HREF="heap/HFPage.html">HFPage</A>
 <DD>&nbsp;
-<DT><A HREF="heap/Map.html#getStrFld(int)"><B>getStrFld(int)</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
+<DT><A HREF="heap/Tuple.html#getStrFld(int)"><B>getStrFld(int)</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
 <DD>Convert this field into String
 <DT><A HREF="global/Convert.html#getStrValue(int, byte[], int)"><B>getStrValue(int, byte[], int)</B></A> - 
 Static method in class global.<A HREF="global/Convert.html">Convert</A>
 <DD>reads a string that has been encoded using a modified UTF-8 format from
  the given byte array at the specified position
-<DT><A HREF="heap/Map.html#getTupleByteArray()"><B>getTupleByteArray()</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
-<DD>Copy the map byte array out
+<DT><A HREF="heap/Tuple.html#getTupleByteArray()"><B>getTupleByteArray()</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
+<DD>Copy the tuple byte array out
 <DT><A HREF="heap/HFPage.html#getType()"><B>getType()</B></A> - 
 Method in class heap.<A HREF="heap/HFPage.html">HFPage</A>
 <DD>&nbsp;
@@ -844,7 +844,7 @@ Constructor for class btree.<A HREF="btree/IndexInsertRecException.html">IndexIn
 <DT><A HREF="global/Catalogglobal.html#INDEXPAGES"><B>INDEXPAGES</B></A> - 
 Static variable in interface global.<A HREF="global/Catalogglobal.html">Catalogglobal</A>
 <DD>&nbsp;
-<DT><A HREF="index/IndexScan.html"><B>IndexScan</B></A> - class index.<A HREF="index/IndexScan.html">IndexScan</A>.<DD>Index Scan iterator will directly access the required map using
+<DT><A HREF="index/IndexScan.html"><B>IndexScan</B></A> - class index.<A HREF="index/IndexScan.html">IndexScan</A>.<DD>Index Scan iterator will directly access the required tuple using
  the provided key.<DT><A HREF="index/IndexScan.html#IndexScan(global.IndexType, java.lang.String, java.lang.String, global.AttrType[], short[], int, int, iterator.FldSpec[], iterator.CondExpr[], int, boolean)"><B>IndexScan(IndexType, String, String, AttrType[], short[], int, int, FldSpec[], CondExpr[], int, boolean)</B></A> - 
 Constructor for class index.<A HREF="index/IndexScan.html">IndexScan</A>
 <DD>class constructor.
@@ -1045,10 +1045,10 @@ Static variable in class global.<A HREF="global/SystemDefs.html">SystemDefs</A>
 <DT><A HREF="global/SystemDefs.html#JavabaseLogName"><B>JavabaseLogName</B></A> - 
 Static variable in class global.<A HREF="global/SystemDefs.html">SystemDefs</A>
 <DD>&nbsp;
-<DT><A HREF="iterator/Projection.html#Join(heap.Map, global.AttrType[], heap.Map, global.AttrType[], heap.Map, iterator.FldSpec[], int)"><B>Join(Map, AttrType[], Map, AttrType[], Map, FldSpec[], int)</B></A> - 
+<DT><A HREF="iterator/Projection.html#Join(heap.Tuple, global.AttrType[], heap.Tuple, global.AttrType[], heap.Tuple, iterator.FldSpec[], int)"><B>Join(Tuple, AttrType[], Tuple, AttrType[], Tuple, FldSpec[], int)</B></A> - 
 Static method in class iterator.<A HREF="iterator/Projection.html">Projection</A>
-<DD>Map t1 and Map t2 will be joined, and the result 
-will be stored in Map Jtuple,before calling this mehtod.
+<DD>Tuple t1 and Tuple t2 will be joined, and the result 
+will be stored in Tuple Jtuple,before calling this mehtod.
 <DT><A HREF="iterator/JoinLowMemory.html"><B>JoinLowMemory</B></A> - exception iterator.<A HREF="iterator/JoinLowMemory.html">JoinLowMemory</A>.<DD>&nbsp;<DT><A HREF="iterator/JoinLowMemory.html#JoinLowMemory(java.lang.Exception, java.lang.String)"><B>JoinLowMemory(Exception, String)</B></A> - 
 Constructor for class iterator.<A HREF="iterator/JoinLowMemory.html">JoinLowMemory</A>
 <DD>&nbsp;
@@ -1205,9 +1205,9 @@ Variable in class iterator.<A HREF="iterator/pnodeSplayNode.html">pnodeSplayNode
 <DT><A HREF="global/GlobalConst.html#MAX_NAME"><B>MAX_NAME</B></A> - 
 Static variable in interface global.<A HREF="global/GlobalConst.html">GlobalConst</A>
 <DD>&nbsp;
-<DT><A HREF="heap/Map.html#max_size"><B>max_size</B></A> - 
-Static variable in class heap.<A HREF="heap/Map.html">Map</A>
-<DD>Maximum size of any map
+<DT><A HREF="heap/Tuple.html#max_size"><B>max_size</B></A> - 
+Static variable in class heap.<A HREF="heap/Tuple.html">Tuple</A>
+<DD>Maximum size of any tuple
 <DT><A HREF="global/GlobalConst.html#MAX_SPACE"><B>MAX_SPACE</B></A> - 
 Static variable in interface global.<A HREF="global/GlobalConst.html">GlobalConst</A>
 <DD>&nbsp;
@@ -1340,9 +1340,9 @@ Constructor for class btree.<A HREF="btree/NodeType.html">NodeType</A>
 <DT><A HREF="global/IndexType.html#None"><B>None</B></A> - 
 Static variable in class global.<A HREF="global/IndexType.html">IndexType</A>
 <DD>&nbsp;
-<DT><A HREF="heap/Map.html#noOfFlds()"><B>noOfFlds()</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
-<DD>Returns number of fields in this map
+<DT><A HREF="heap/Tuple.html#noOfFlds()"><B>noOfFlds()</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
+<DD>Returns number of fields in this tuple
 <DT><A HREF="iterator/NoOutputBuffer.html"><B>NoOutputBuffer</B></A> - exception iterator.<A HREF="iterator/NoOutputBuffer.html">NoOutputBuffer</A>.<DD>&nbsp;<DT><A HREF="iterator/NoOutputBuffer.html#NoOutputBuffer(java.lang.Exception, java.lang.String)"><B>NoOutputBuffer(Exception, String)</B></A> - 
 Constructor for class iterator.<A HREF="iterator/NoOutputBuffer.html">NoOutputBuffer</A>
 <DD>&nbsp;
@@ -1462,13 +1462,13 @@ Constructor for class btree.<A HREF="btree/PinPageException.html">PinPageExcepti
 <DT><A HREF="btree/PinPageException.html#PinPageException(java.lang.String)"><B>PinPageException(String)</B></A> - 
 Constructor for class btree.<A HREF="btree/PinPageException.html">PinPageException</A>
 <DD>&nbsp;
-<DT><A HREF="iterator/pnode.html"><B>pnode</B></A> - class iterator.<A HREF="iterator/pnode.html">pnode</A>.<DD>A structure describing a map.<DT><A HREF="iterator/pnode.html#pnode()"><B>pnode()</B></A> - 
+<DT><A HREF="iterator/pnode.html"><B>pnode</B></A> - class iterator.<A HREF="iterator/pnode.html">pnode</A>.<DD>A structure describing a tuple.<DT><A HREF="iterator/pnode.html#pnode()"><B>pnode()</B></A> - 
 Constructor for class iterator.<A HREF="iterator/pnode.html">pnode</A>
-<DD>class constructor, sets <code>run_num</code> to 0 and <code>map</code>
+<DD>class constructor, sets <code>run_num</code> to 0 and <code>tuple</code>
  to null.
-<DT><A HREF="iterator/pnode.html#pnode(int, heap.Map)"><B>pnode(int, Map)</B></A> - 
+<DT><A HREF="iterator/pnode.html#pnode(int, heap.Tuple)"><B>pnode(int, Tuple)</B></A> - 
 Constructor for class iterator.<A HREF="iterator/pnode.html">pnode</A>
-<DD>class constructor, sets <code>run_num</code> and <code>map</code>.
+<DD>class constructor, sets <code>run_num</code> and <code>tuple</code>.
 <DT><A HREF="iterator/pnodePQ.html#pnodeCMP(iterator.pnode, iterator.pnode)"><B>pnodeCMP(pnode, pnode)</B></A> - 
 Method in class iterator.<A HREF="iterator/pnodePQ.html">pnodePQ</A>
 <DD>compares two elements.
@@ -1508,9 +1508,9 @@ Variable in class chainexception.<A HREF="chainexception/ChainException.html">Ch
 <DT><A HREF="heap/HFPage.html#PREV_PAGE"><B>PREV_PAGE</B></A> - 
 Static variable in class heap.<A HREF="heap/HFPage.html">HFPage</A>
 <DD>&nbsp;
-<DT><A HREF="heap/Map.html#print(global.AttrType[])"><B>print(AttrType[])</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
-<DD>Print out the map
+<DT><A HREF="heap/Tuple.html#print(global.AttrType[])"><B>print(AttrType[])</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
+<DD>Print out the tuple
 <DT><A HREF="btree/BT.html#printAllLeafPages(btree.BTreeHeaderPage)"><B>printAllLeafPages(BTreeHeaderPage)</B></A> - 
 Static method in class btree.<A HREF="btree/BT.html">BT</A>
 <DD>For debug.
@@ -1523,19 +1523,19 @@ Static method in class btree.<A HREF="btree/BT.html">BT</A>
 <DT><A HREF="chainexception/ChainException.html#printStackTrace()"><B>printStackTrace()</B></A> - 
 Method in class chainexception.<A HREF="chainexception/ChainException.html">ChainException</A>
 <DD>Print out all the exceptions caught across layers.
-<DT><A HREF="iterator/Projection.html#Project(heap.Map, global.AttrType[], heap.Map, iterator.FldSpec[], int)"><B>Project(Map, AttrType[], Map, FldSpec[], int)</B></A> - 
+<DT><A HREF="iterator/Projection.html#Project(heap.Tuple, global.AttrType[], heap.Tuple, iterator.FldSpec[], int)"><B>Project(Tuple, AttrType[], Tuple, FldSpec[], int)</B></A> - 
 Static method in class iterator.<A HREF="iterator/Projection.html">Projection</A>
-<DD>Map t1 will be projected  
-the result will be stored in Map Jtuple
+<DD>Tuple t1 will be projected  
+the result will be stored in Tuple Jtuple
 <DT><A HREF="iterator/Projection.html"><B>Projection</B></A> - class iterator.<A HREF="iterator/Projection.html">Projection</A>.<DD>Jtuple has the appropriate types.<DT><A HREF="iterator/Projection.html#Projection()"><B>Projection()</B></A> - 
 Constructor for class iterator.<A HREF="iterator/Projection.html">Projection</A>
 <DD>&nbsp;
-<DT><A HREF="iterator/OBuf.html#Put(heap.Map)"><B>Put(Map)</B></A> - 
+<DT><A HREF="iterator/OBuf.html#Put(heap.Tuple)"><B>Put(Tuple)</B></A> - 
 Method in class iterator.<A HREF="iterator/OBuf.html">OBuf</A>
-<DD>Writes a map to the output buffer
-<DT><A HREF="iterator/IoBuf.html#Put(heap.Map)"><B>Put(Map)</B></A> - 
+<DD>Writes a tuple to the output buffer
+<DT><A HREF="iterator/IoBuf.html#Put(heap.Tuple)"><B>Put(Tuple)</B></A> - 
 Method in class iterator.<A HREF="iterator/IoBuf.html">IoBuf</A>
-<DD>Writes a map to the output buffer
+<DD>Writes a tuple to the output buffer
 </DL>
 <HR>
 <A NAME="_R_"><!-- --></A><H2>
@@ -1591,9 +1591,9 @@ Method in class iterator.<A HREF="iterator/IoBuf.html">IoBuf</A>
 <DD>if WRITE_BUFFER is true, call this mehtod to switch to read buffer.
 <DT><A HREF="heap/HFPage.html#returnRecord(global.RID)"><B>returnRecord(RID)</B></A> - 
 Method in class heap.<A HREF="heap/HFPage.html">HFPage</A>
-<DD>returns a map in a byte array[pageSize] with given RID rid.
-<DT><A HREF="heap/Map.html#returnTupleByteArray()"><B>returnTupleByteArray()</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
+<DD>returns a tuple in a byte array[pageSize] with given RID rid.
+<DT><A HREF="heap/Tuple.html#returnTupleByteArray()"><B>returnTupleByteArray()</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
 <DD>return the data byte array
 <DT><A HREF="global/RID.html"><B>RID</B></A> - class global.<A HREF="global/RID.html">RID</A>.<DD>class RID<DT><A HREF="global/RID.html#RID()"><B>RID()</B></A> - 
 Constructor for class global.<A HREF="global/RID.html">RID</A>
@@ -1606,7 +1606,7 @@ Variable in class iterator.<A HREF="iterator/pnodeSplayNode.html">pnodeSplayNode
 <DD>the right child pointer
 <DT><A HREF="iterator/pnode.html#run_num"><B>run_num</B></A> - 
 Variable in class iterator.<A HREF="iterator/pnode.html">pnode</A>
-<DD>which run does this map belong
+<DD>which run does this tuple belong
 </DL>
 <HR>
 <A NAME="_S_"><!-- --></A><H2>
@@ -1671,17 +1671,17 @@ Method in class heap.<A HREF="heap/HFPage.html">HFPage</A>
 <DT><A HREF="btree/LeafData.html#setData(global.RID)"><B>setData(RID)</B></A> - 
 Method in class btree.<A HREF="btree/LeafData.html">LeafData</A>
 <DD>set the rid
-<DT><A HREF="heap/Map.html#setFloFld(int, float)"><B>setFloFld(int, float)</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
+<DT><A HREF="heap/Tuple.html#setFloFld(int, float)"><B>setFloFld(int, float)</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
 <DD>Set this field to float value
 <DT><A HREF="global/Convert.html#setFloValue(float, int, byte[])"><B>setFloValue(float, int, byte[])</B></A> - 
 Static method in class global.<A HREF="global/Convert.html">Convert</A>
 <DD>update a float value in the given byte array at the specified position
-<DT><A HREF="heap/Map.html#setHdr(short, global.AttrType[], short[])"><B>setHdr(short, AttrType[], short[])</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
-<DD>setHdr will set the header of this map.
-<DT><A HREF="heap/Map.html#setIntFld(int, int)"><B>setIntFld(int, int)</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
+<DT><A HREF="heap/Tuple.html#setHdr(short, global.AttrType[], short[])"><B>setHdr(short, AttrType[], short[])</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
+<DD>setHdr will set the header of this tuple.
+<DT><A HREF="heap/Tuple.html#setIntFld(int, int)"><B>setIntFld(int, int)</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
 <DD>Set this field to integer value
 <DT><A HREF="global/Convert.html#setIntValue(int, int, byte[])"><B>setIntValue(int, int, byte[])</B></A> - 
 Static method in class global.<A HREF="global/Convert.html">Convert</A>
@@ -1707,8 +1707,8 @@ Static method in class global.<A HREF="global/Convert.html">Convert</A>
 <DT><A HREF="heap/HFPage.html#setSlot(int, int, int)"><B>setSlot(int, int, int)</B></A> - 
 Method in class heap.<A HREF="heap/HFPage.html">HFPage</A>
 <DD>sets slot contents
-<DT><A HREF="heap/Map.html#setStrFld(int, java.lang.String)"><B>setStrFld(int, String)</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
+<DT><A HREF="heap/Tuple.html#setStrFld(int, java.lang.String)"><B>setStrFld(int, String)</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
 <DD>Set this field to String value
 <DT><A HREF="global/Convert.html#setStrValue(java.lang.String, int, byte[])"><B>setStrValue(String, int, byte[])</B></A> - 
 Static method in class global.<A HREF="global/Convert.html">Convert</A>
@@ -1717,24 +1717,24 @@ Static method in class global.<A HREF="global/Convert.html">Convert</A>
 <DT><A HREF="heap/HFPage.html#setType(short)"><B>setType(short)</B></A> - 
 Method in class heap.<A HREF="heap/HFPage.html">HFPage</A>
 <DD>sets value of type
-<DT><A HREF="iterator/TupleUtils.html#setup_op_tuple(heap.Map, global.AttrType[], global.AttrType[], int, global.AttrType[], int, short[], short[], iterator.FldSpec[], int)"><B>setup_op_tuple(Map, AttrType[], AttrType[], int, AttrType[], int, short[], short[], FldSpec[], int)</B></A> - 
+<DT><A HREF="iterator/TupleUtils.html#setup_op_tuple(heap.Tuple, global.AttrType[], global.AttrType[], int, global.AttrType[], int, short[], short[], iterator.FldSpec[], int)"><B>setup_op_tuple(Tuple, AttrType[], AttrType[], int, AttrType[], int, short[], short[], FldSpec[], int)</B></A> - 
 Static method in class iterator.<A HREF="iterator/TupleUtils.html">TupleUtils</A>
 <DD>set up the Jtuple's attrtype, string size,field number for using join
-<DT><A HREF="iterator/TupleUtils.html#setup_op_tuple(heap.Map, global.AttrType[], global.AttrType[], int, short[], iterator.FldSpec[], int)"><B>setup_op_tuple(Map, AttrType[], AttrType[], int, short[], FldSpec[], int)</B></A> - 
+<DT><A HREF="iterator/TupleUtils.html#setup_op_tuple(heap.Tuple, global.AttrType[], global.AttrType[], int, short[], iterator.FldSpec[], int)"><B>setup_op_tuple(Tuple, AttrType[], AttrType[], int, short[], FldSpec[], int)</B></A> - 
 Static method in class iterator.<A HREF="iterator/TupleUtils.html">TupleUtils</A>
 <DD>set up the Jtuple's attrtype, string size,field number for using project
-<DT><A HREF="iterator/TupleUtils.html#SetValue(heap.Map, heap.Map, int, global.AttrType)"><B>SetValue(Map, Map, int, AttrType)</B></A> - 
+<DT><A HREF="iterator/TupleUtils.html#SetValue(heap.Tuple, heap.Tuple, int, global.AttrType)"><B>SetValue(Tuple, Tuple, int, AttrType)</B></A> - 
 Static method in class iterator.<A HREF="iterator/TupleUtils.html">TupleUtils</A>
-<DD>set up a map in specified field from a map
+<DD>set up a tuple in specified field from a tuple
 <DT><A HREF="iterator/FileScan.html#show()"><B>show()</B></A> - 
 Method in class iterator.<A HREF="iterator/FileScan.html">FileScan</A>
 <DD>&nbsp;
 <DT><A HREF="heap/HFPage.html#SIZE_OF_SLOT"><B>SIZE_OF_SLOT</B></A> - 
 Static variable in class heap.<A HREF="heap/HFPage.html">HFPage</A>
 <DD>&nbsp;
-<DT><A HREF="heap/Map.html#size()"><B>size()</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
-<DD>get the length of a map, call this method if you did 
+<DT><A HREF="heap/Tuple.html#size()"><B>size()</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
+<DD>get the length of a tuple, call this method if you did 
   call setHdr () before
 <DT><A HREF="heap/HFPage.html#SLOT_CNT"><B>SLOT_CNT</B></A> - 
 Static variable in class heap.<A HREF="heap/HFPage.html">HFPage</A>
@@ -1827,29 +1827,29 @@ Method in class btree.<A HREF="btree/StringKey.html">StringKey</A>
 Static method in class btree.<A HREF="btree/BTreeFile.html">BTreeFile</A>
 <DD>It causes a structured trace to be written to a
  file.
-<DT><A HREF="iterator/pnode.html#map"><B>map</B></A> - 
+<DT><A HREF="iterator/pnode.html#tuple"><B>tuple</B></A> - 
 Variable in class iterator.<A HREF="iterator/pnode.html">pnode</A>
-<DD>the map reference
-<DT><A HREF="heap/Map.html"><B>Map</B></A> - class heap.<A HREF="heap/Map.html">Map</A>.<DD>&nbsp;<DT><A HREF="heap/Map.html#Map()"><B>Map()</B></A> - 
-Constructor for class heap.<A HREF="heap/Map.html">Map</A>
+<DD>the tuple reference
+<DT><A HREF="heap/Tuple.html"><B>Tuple</B></A> - class heap.<A HREF="heap/Tuple.html">Tuple</A>.<DD>&nbsp;<DT><A HREF="heap/Tuple.html#Tuple()"><B>Tuple()</B></A> - 
+Constructor for class heap.<A HREF="heap/Tuple.html">Tuple</A>
 <DD>Class constructor
- Creat a new map with length = max_size,map offset = 0.
-<DT><A HREF="heap/Map.html#Map(byte[], int, int)"><B>Map(byte[], int, int)</B></A> - 
-Constructor for class heap.<A HREF="heap/Map.html">Map</A>
+ Creat a new tuple with length = max_size,tuple offset = 0.
+<DT><A HREF="heap/Tuple.html#Tuple(byte[], int, int)"><B>Tuple(byte[], int, int)</B></A> - 
+Constructor for class heap.<A HREF="heap/Tuple.html">Tuple</A>
 <DD>Constructor
-<DT><A HREF="heap/Map.html#Map(int)"><B>Map(int)</B></A> - 
-Constructor for class heap.<A HREF="heap/Map.html">Map</A>
+<DT><A HREF="heap/Tuple.html#Tuple(int)"><B>Tuple(int)</B></A> - 
+Constructor for class heap.<A HREF="heap/Tuple.html">Tuple</A>
 <DD>Class constructor
- Creat a new map with length = size,map offset = 0.
-<DT><A HREF="heap/Map.html#Map(heap.Map)"><B>Map(Map)</B></A> - 
-Constructor for class heap.<A HREF="heap/Map.html">Map</A>
-<DD>Constructor(used as map copy)
-<DT><A HREF="heap/Map.html#tupleCopy(heap.Map)"><B>tupleCopy(Map)</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
-<DD>Copy a map to the current map position
-  you must make sure the map lengths must be equal
-<DT><A HREF="heap/Map.html#tupleInit(byte[], int, int)"><B>tupleInit(byte[], int, int)</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
+ Creat a new tuple with length = size,tuple offset = 0.
+<DT><A HREF="heap/Tuple.html#Tuple(heap.Tuple)"><B>Tuple(Tuple)</B></A> - 
+Constructor for class heap.<A HREF="heap/Tuple.html">Tuple</A>
+<DD>Constructor(used as tuple copy)
+<DT><A HREF="heap/Tuple.html#tupleCopy(heap.Tuple)"><B>tupleCopy(Tuple)</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
+<DD>Copy a tuple to the current tuple position
+  you must make sure the tuple lengths must be equal
+<DT><A HREF="heap/Tuple.html#tupleInit(byte[], int, int)"><B>tupleInit(byte[], int, int)</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
 <DD>This is used when you don't want to use the constructor
 <DT><A HREF="global/TupleOrder.html#tupleOrder"><B>tupleOrder</B></A> - 
 Variable in class global.<A HREF="global/TupleOrder.html">TupleOrder</A>
@@ -1858,17 +1858,17 @@ Variable in class global.<A HREF="global/TupleOrder.html">TupleOrder</A>
 Constructor for class global.<A HREF="global/TupleOrder.html">TupleOrder</A>
 <DD>TupleOrder Constructor
  <br>
- A map ordering can be defined as 
+ A tuple ordering can be defined as 
  
     TupleOrder tupleOrder = new TupleOrder(TupleOrder.Random);
  
  and subsequently used as
  
     if (tupleOrder.tupleOrder == TupleOrder.Random) ....
-<DT><A HREF="heap/Map.html#tupleSet(byte[], int, int)"><B>tupleSet(byte[], int, int)</B></A> - 
-Method in class heap.<A HREF="heap/Map.html">Map</A>
-<DD>Set a map with the given map length and offset
-<DT><A HREF="iterator/TupleUtils.html"><B>TupleUtils</B></A> - class iterator.<A HREF="iterator/TupleUtils.html">TupleUtils</A>.<DD>some useful method when processing Map<DT><A HREF="iterator/TupleUtils.html#TupleUtils()"><B>TupleUtils()</B></A> - 
+<DT><A HREF="heap/Tuple.html#tupleSet(byte[], int, int)"><B>tupleSet(byte[], int, int)</B></A> - 
+Method in class heap.<A HREF="heap/Tuple.html">Tuple</A>
+<DD>Set a tuple with the given tuple length and offset
+<DT><A HREF="iterator/TupleUtils.html"><B>TupleUtils</B></A> - class iterator.<A HREF="iterator/TupleUtils.html">TupleUtils</A>.<DD>some useful method when processing Tuple<DT><A HREF="iterator/TupleUtils.html#TupleUtils()"><B>TupleUtils()</B></A> - 
 Constructor for class iterator.<A HREF="iterator/TupleUtils.html">TupleUtils</A>
 <DD>&nbsp;
 <DT><A HREF="iterator/TupleUtilsException.html"><B>TupleUtilsException</B></A> - exception iterator.<A HREF="iterator/TupleUtilsException.html">TupleUtilsException</A>.<DD>&nbsp;<DT><A HREF="iterator/TupleUtilsException.html#TupleUtilsException(java.lang.Exception, java.lang.String)"><B>TupleUtilsException(Exception, String)</B></A> - 
@@ -1928,7 +1928,7 @@ Constructor for class btree.<A HREF="btree/UnpinPageException.html">UnpinPageExc
 <DT><A HREF="btree/UnpinPageException.html#UnpinPageException(java.lang.String)"><B>UnpinPageException(String)</B></A> - 
 Constructor for class btree.<A HREF="btree/UnpinPageException.html">UnpinPageException</A>
 <DD>&nbsp;
-<DT><A HREF="heap/Heapfile.html#updateRecord(global.RID, heap.Map)"><B>updateRecord(RID, Map)</B></A> - 
+<DT><A HREF="heap/Heapfile.html#updateRecord(global.RID, heap.Tuple)"><B>updateRecord(RID, Tuple)</B></A> - 
 Method in class heap.<A HREF="heap/Heapfile.html">Heapfile</A>
 <DD>Updates the specified record in the heapfile.
 <DT><A HREF="heap/HFPage.html#USED_PTR"><B>USED_PTR</B></A> - 
@@ -1939,7 +1939,7 @@ Static variable in class heap.<A HREF="heap/HFPage.html">HFPage</A>
 <A NAME="_V_"><!-- --></A><H2>
 <B>V</B></H2>
 <DL>
-<DT><A HREF="iterator/TupleUtils.html#Value(heap.Map, int)"><B>Value(Map, int)</B></A> - 
+<DT><A HREF="iterator/TupleUtils.html#Value(heap.Tuple, int)"><B>Value(Tuple, int)</B></A> - 
 Static method in class iterator.<A HREF="iterator/TupleUtils.html">TupleUtils</A>
 <DD>get the string specified by the field number
 </DL>

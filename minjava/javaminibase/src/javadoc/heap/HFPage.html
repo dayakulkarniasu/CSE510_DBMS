@@ -297,7 +297,7 @@ Class heap file page.
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../heap/Map.html">Map</A></CODE></FONT></TD>
+<CODE>&nbsp;<A HREF="../heap/Tuple.html">Tuple</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../heap/HFPage.html#getRecord(global.RID)">getRecord</A></B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid)</CODE>
 
 <BR>
@@ -372,11 +372,11 @@ Class heap file page.
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../heap/Map.html">Map</A></CODE></FONT></TD>
+<CODE>&nbsp;<A HREF="../heap/Tuple.html">Tuple</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../heap/HFPage.html#returnRecord(global.RID)">returnRecord</A></B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns a map in a byte array[pageSize] with given RID rid.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns a tuple in a byte array[pageSize] with given RID rid.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -890,7 +890,7 @@ public <A HREF="../global/RID.html">RID</A> <B>nextRecord</B>(<A HREF="../global
 <A NAME="getRecord(global.RID)"><!-- --></A><H3>
 getRecord</H3>
 <PRE>
-public <A HREF="../heap/Map.html">Map</A> <B>getRecord</B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid)
+public <A HREF="../heap/Tuple.html">Tuple</A> <B>getRecord</B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid)
                 throws java.io.IOException,
                        <A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></PRE>
 <DL>
@@ -900,7 +900,7 @@ public <A HREF="../heap/Map.html">Map</A> <B>getRecord</B>(<A HREF="../global/RI
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>rid</CODE> - the record ID<DT><B>Returns:</B><DD>a map contains the record<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - Invalid slot number<DD><CODE>java.io.IOException</CODE> - I/O errors<DT><B>See Also: </B><DD><A HREF="../heap/Map.html"><CODE>Map</CODE></A></DL>
+<DT><B>Parameters:</B><DD><CODE>rid</CODE> - the record ID<DT><B>Returns:</B><DD>a tuple contains the record<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - Invalid slot number<DD><CODE>java.io.IOException</CODE> - I/O errors<DT><B>See Also: </B><DD><A HREF="../heap/Tuple.html"><CODE>Tuple</CODE></A></DL>
 </DD>
 </DL>
 <HR>
@@ -908,17 +908,17 @@ public <A HREF="../heap/Map.html">Map</A> <B>getRecord</B>(<A HREF="../global/RI
 <A NAME="returnRecord(global.RID)"><!-- --></A><H3>
 returnRecord</H3>
 <PRE>
-public <A HREF="../heap/Map.html">Map</A> <B>returnRecord</B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid)
+public <A HREF="../heap/Tuple.html">Tuple</A> <B>returnRecord</B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid)
                    throws java.io.IOException,
                           <A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></PRE>
 <DL>
-<DD>returns a map in a byte array[pageSize] with given RID rid.
+<DD>returns a tuple in a byte array[pageSize] with given RID rid.
  <br>
  in C++	Status returnRecord(RID rid, char*& recPtr, int& recLen)<DD><DL>
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>rid</CODE> - the record ID<DT><B>Returns:</B><DD>a map  with its length and offset in the byte array<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - Invalid slot number<DD><CODE>java.io.IOException</CODE> - I/O errors<DT><B>See Also: </B><DD><A HREF="../heap/Map.html"><CODE>Map</CODE></A></DL>
+<DT><B>Parameters:</B><DD><CODE>rid</CODE> - the record ID<DT><B>Returns:</B><DD>a tuple  with its length and offset in the byte array<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidSlotNumberException.html">InvalidSlotNumberException</A></CODE> - Invalid slot number<DD><CODE>java.io.IOException</CODE> - I/O errors<DT><B>See Also: </B><DD><A HREF="../heap/Tuple.html"><CODE>Tuple</CODE></A></DL>
 </DD>
 </DL>
 <HR>

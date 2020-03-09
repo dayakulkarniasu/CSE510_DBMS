@@ -22,14 +22,14 @@ public abstract class Iterator implements Flags {
 
   /**
    *abstract method, every subclass must implement it.
-   *@return the result map
+   *@return the result tuple
    *@exception IOException I/O errors
    *@exception JoinsException some join exception
    *@exception IndexException exception from super class    
-   *@exception InvalidTupleSizeException invalid map size
-   *@exception InvalidTypeException map type not valid
+   *@exception InvalidTupleSizeException invalid tuple size
+   *@exception InvalidTypeException tuple type not valid
    *@exception PageNotReadException exception from lower layer
-   *@exception TupleUtilsException exception from using map utilities
+   *@exception TupleUtilsException exception from using tuple utilities
    *@exception PredEvalException exception from PredEval class
    *@exception SortException sort exception
    *@exception LowMemException memory error
@@ -37,7 +37,7 @@ public abstract class Iterator implements Flags {
    *@exception UnknownKeyTypeException key type unknown
    *@exception Exception other exceptions
    */
-  public abstract Map get_next() 
+  public abstract Tuple get_next() 
     throws IOException,
 	   JoinsException ,
 	   IndexException,

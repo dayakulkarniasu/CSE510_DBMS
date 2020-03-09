@@ -8,7 +8,7 @@ public class PredEval
 {
   /**
    *predicate evaluate, according to the condition ConExpr, judge if 
-   *the two map can join. if so, return true, otherwise false
+   *the two tuple can join. if so, return true, otherwise false
    *@return true or false
    *@param p[] single select condition array
    *@param t1 compared tuple1
@@ -17,12 +17,12 @@ public class PredEval
    *@param in2[] the attribute type corespond to the t2
    *@exception IOException  some I/O error
    *@exception UnknowAttrType don't know the attribute type
-   *@exception InvalidTupleSizeException size of map not valid
-   *@exception InvalidTypeException type of map not valid
+   *@exception InvalidTupleSizeException size of tuple not valid
+   *@exception InvalidTypeException type of tuple not valid
    *@exception FieldNumberOutOfBoundException field number exceeds limit
    *@exception PredEvalException exception from this method
    */
-  public static boolean Eval(CondExpr p[], Map t1, Map t2, AttrType in1[], 
+  public static boolean Eval(CondExpr p[], Tuple t1, Tuple t2, AttrType in1[], 
 			     AttrType in2[])
     throws IOException,
 	   UnknowAttrType,
@@ -33,9 +33,9 @@ public class PredEval
     {
       CondExpr temp_ptr;
       int       i = 0;
-      Map    tuple1 = null, tuple2 = null;
+      Tuple    tuple1 = null, tuple2 = null;
       int      fld1, fld2;
-      Map    value =   new Map();
+      Tuple    value =   new Tuple();
       short[]     str_size = new short[1];
       AttrType[]  val_type = new AttrType[1];
       

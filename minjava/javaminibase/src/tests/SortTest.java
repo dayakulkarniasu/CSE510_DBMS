@@ -134,8 +134,8 @@ class SORTDriver extends TestDriver
     order[0] = new TupleOrder(TupleOrder.Ascending);
     order[1] = new TupleOrder(TupleOrder.Descending);
     
-    // create a map of appropriate size
-    Map t = new Map();
+    // create a tuple of appropriate size
+    Tuple t = new Tuple();
     try {
       t.setHdr((short) 2, attrType, attrSize);
     }
@@ -157,7 +157,7 @@ class SORTDriver extends TestDriver
       e.printStackTrace();
     }
     
-    t = new Map(size);
+    t = new Tuple(size);
     try {
       t.setHdr((short) 2, attrType, attrSize);
     }
@@ -294,8 +294,8 @@ class SORTDriver extends TestDriver
     order[0] = new TupleOrder(TupleOrder.Ascending);
     order[1] = new TupleOrder(TupleOrder.Descending);
     
-    // create a map of appropriate size
-    Map t = new Map();
+    // create a tuple of appropriate size
+    Tuple t = new Tuple();
     try {
       t.setHdr((short) 1, attrType, attrSize);
     }
@@ -316,7 +316,7 @@ class SORTDriver extends TestDriver
       e.printStackTrace();
     }
     
-    t = new Map(size);
+    t = new Tuple(size);
     try {
       t.setHdr((short) 1, attrType, attrSize);
     }
@@ -457,13 +457,13 @@ class SORTDriver extends TestDriver
     order[0] = new TupleOrder(TupleOrder.Ascending);
     order[1] = new TupleOrder(TupleOrder.Descending);
     
-    Map t = new Map();
+    Tuple t = new Tuple();
 
     try {
       t.setHdr((short) 4, attrType, attrSize);
     }
     catch (Exception e) {
-      System.err.println("*** error in Map.setHdr() ***");
+      System.err.println("*** error in Tuple.setHdr() ***");
       status = FAIL;
       e.printStackTrace();
     }
@@ -481,7 +481,7 @@ class SORTDriver extends TestDriver
       e.printStackTrace();
     }
     
-    t = new Map(size);
+    t = new Tuple(size);
     try {
       t.setHdr((short) 4, attrType, attrSize);
     }
@@ -744,8 +744,8 @@ class SORTDriver extends TestDriver
     order[0] = new TupleOrder(TupleOrder.Ascending);
     order[1] = new TupleOrder(TupleOrder.Descending);
     
-    // create a map of appropriate size
-    Map t = new Map();
+    // create a tuple of appropriate size
+    Tuple t = new Tuple();
     try {
       t.setHdr((short) 2, attrType, attrSize);
     }
@@ -768,7 +768,7 @@ class SORTDriver extends TestDriver
       e.printStackTrace();
     }
     
-    t = new Map(size);
+    t = new Tuple(size);
     try {
       t.setHdr((short) 2, attrType, attrSize);
     }
@@ -830,8 +830,8 @@ class SORTDriver extends TestDriver
     
 
     int count = 0;
-    Map t1 = null;
-    Map t2 = null; 
+    Tuple t1 = null;
+    Tuple t2 = null; 
     String outval = null;
     
     try {

@@ -2,9 +2,6 @@ package tests;
 
 import java.io.*;
 import java.util.*;
-
-import BigT.Map;
-
 import java.lang.*;
 import heap.*;
 import bufmgr.*;
@@ -185,13 +182,13 @@ public boolean runTests () {
     if ( status == OK ) {
       int len, i = 0;
       DummyRecord rec = null;
-      Map map = new Map();
+      Tuple tuple = new Tuple();
       
       boolean done = false;
       while (!done) { 
 	try {
-	  map = scan.getNext(rid);
-	  if (map == null) {
+	  tuple = scan.getNext(rid);
+	  if (tuple == null) {
 	    done = true;
 	    break;
 	  }
@@ -203,14 +200,14 @@ public boolean runTests () {
 
 	if (status == OK && !done) {
 	  try {
-	    rec = new DummyRecord(map);
+	    rec = new DummyRecord(tuple);
 	  }
 	  catch (Exception e) {
 	    System.err.println (""+e);
 	    e.printStackTrace();
 	  }
 	  
-	  len = map.getLength();
+	  len = tuple.getLength();
 	  if ( len != reclen ) {
 	    System.err.println ("*** Record " + i + " had unexpected length " 
 				+ len + "\n");
@@ -301,13 +298,13 @@ public boolean runTests () {
     
     if ( status == OK ) {
       int len, i = 0;
-      Map map = new Map();
+      Tuple tuple = new Tuple();
       boolean done = false;
 
       while (!done) { 
 	try {
-	  map = scan.getNext(rid);
-	  if (map == null) {
+	  tuple = scan.getNext(rid);
+	  if (tuple == null) {
 	    done = true;
 	  }
 	}
@@ -365,13 +362,13 @@ public boolean runTests () {
     if ( status == OK ) {
       int len, i = 0;
       DummyRecord rec = null;
-      Map map = new Map();
+      Tuple tuple = new Tuple();
       boolean done = false;
 
       while ( !done ) {
 	try {
-	  map = scan.getNext(rid);
-	  if (map == null) {
+	  tuple = scan.getNext(rid);
+	  if (tuple == null) {
 	    done = true;
 	  }
 	}
@@ -382,7 +379,7 @@ public boolean runTests () {
 
 	if (!done && status == OK) {
 	  try {
-	    rec = new DummyRecord(map);
+	    rec = new DummyRecord(tuple);
 	  }
 	  catch (Exception e) {
 	    System.err.println (""+e);
@@ -445,13 +442,13 @@ public boolean runTests () {
 
       int len, i = 0;
       DummyRecord rec = null; 
-      Map map = new Map();
+      Tuple tuple = new Tuple();
       boolean done = false;
       
       while ( !done ) {
 	try {
-	  map = scan.getNext(rid);
-	  if (map == null) {
+	  tuple = scan.getNext(rid);
+	  if (tuple == null) {
 	    done = true;
 	  }
 	}
@@ -462,7 +459,7 @@ public boolean runTests () {
 	
 	if (!done && status == OK) {
 	  try {
-	    rec = new DummyRecord(map);
+	    rec = new DummyRecord(tuple);
 	  }
 	  catch (Exception e) {
 	    System.err.println (""+e);
@@ -471,9 +468,9 @@ public boolean runTests () {
 
 	  rec.fval =(float) 7*i;     // We'll check that i==rec.ival below.
 
-	  Map newTuple = null; 
+	  Tuple newTuple = null; 
 	  try {
-	    newTuple = new Map (rec.toByteArray(),0,rec.getRecLength()); 
+	    newTuple = new Tuple (rec.toByteArray(),0,rec.getRecLength()); 
 	  }
 	  catch (Exception e) {
 	    status = FAIL;
@@ -529,14 +526,14 @@ public boolean runTests () {
       int len, i = 0;
       DummyRecord rec = null;
       DummyRecord rec2 = null;
-      Map map = new Map(); 
-      Map tuple2 = new Map(); 
+      Tuple tuple = new Tuple(); 
+      Tuple tuple2 = new Tuple(); 
       boolean done = false;
       
       while ( !done ) {
 	try {
-	  map = scan.getNext(rid);
-	  if (map == null) {
+	  tuple = scan.getNext(rid);
+	  if (tuple == null) {
 	    done = true;
 	    break;
 	  }
@@ -548,7 +545,7 @@ public boolean runTests () {
 	
 	if (!done && status == OK) {
 	  try {
-	    rec = new DummyRecord(map);
+	    rec = new DummyRecord(tuple);
 	  }
 	  catch (Exception e) {
 	    System.err.println (""+e);
@@ -639,11 +636,11 @@ public boolean runTests () {
     if ( status == OK ) {
       int len;
       DummyRecord rec = null;
-      Map map = new Map();
+      Tuple tuple = new Tuple();
       
       try {
-	map = scan.getNext(rid);
-	if (map == null) {
+	tuple = scan.getNext(rid);
+	if (tuple == null) {
 	  status = FAIL;
 	}
       }
@@ -657,16 +654,16 @@ public boolean runTests () {
       
       if (status == OK) {
 	try {
-	  rec = new DummyRecord(map);
+	  rec = new DummyRecord(tuple);
 	}
 	catch (Exception e) {
 	  System.err.println (""+e);
 	  status = FAIL;
 	}
-	len = map.getLength();
-	  Map newTuple = null;
+	len = tuple.getLength();
+	  Tuple newTuple = null;
 	try {
-	  newTuple = new Map(rec.toByteArray(), 0, len-1);
+	  newTuple = new Tuple(rec.toByteArray(), 0, len-1);
 	}
 	catch (Exception e) {
 	  System.err.println (""+e);
@@ -697,17 +694,17 @@ public boolean runTests () {
 
       if (status == OK) {
 	try {
-	  rec = new DummyRecord(map);
+	  rec = new DummyRecord(tuple);
 	}
 	catch (Exception e) {
 	  System.err.println (""+e);
 	  e.printStackTrace();
 	}
 	
-	len = map.getLength();
-	Map newTuple = null;
+	len = tuple.getLength();
+	Tuple newTuple = null;
 	try {
-	  newTuple = new Map(rec.toByteArray(), 0, len+1);
+	  newTuple = new Tuple(rec.toByteArray(), 0, len+1);
 	}
 	catch (Exception e) {
 	  System.err.println( ""+e );
@@ -831,11 +828,11 @@ class DummyRecord  {
     setRecLen(name.length());
   }
 
-  /** constructor: translate a map to a DummyRecord object
-   *  it will make a copy of the data in the map
-   * @param atuple: the input map
+  /** constructor: translate a tuple to a DummyRecord object
+   *  it will make a copy of the data in the tuple
+   * @param atuple: the input tuple
    */
-  public DummyRecord(Map _atuple) 
+  public DummyRecord(Tuple _atuple) 
 	throws java.io.IOException{   
     data = new byte[_atuple.getLength()];
     data = _atuple.getTupleByteArray();

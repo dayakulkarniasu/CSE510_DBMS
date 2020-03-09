@@ -21,11 +21,11 @@ class Order {
   
 /*
   struct Group{
-  int len;                 // The num of map in the group.
+  int len;                 // The num of tuple in the group.
   int count;               // The count for correct answers in the group.
   Order order;             // order of tuples in the group
-  int   mark[Max_answer];  // 1:map correct. 0:not yet checked
-  Map * mytuple[Max_answer]; // The answer in the group.
+  int   mark[Max_answer];  // 1:tuple correct. 0:not yet checked
+  Tuple * mytuple[Max_answer]; // The answer in the group.
   };
 */
 
@@ -35,23 +35,23 @@ class Group {
   int count;
   Order order;
   int [] mark;
-  Map [] mytuple;
+  Tuple [] mytuple;
 
   public Group () {
     mark = new int[Max_answer];
-    mytuple = new Map[Max_answer];
+    mytuple = new Tuple[Max_answer];
   }
 }
 
 /*
   struct TupleList{
-  Map *       map;
+  Tuple *       tuple;
   TupleList *   next;
   };
 */
 
 class TupleList {
-  Map map;
+  Tuple tuple;
   TupleList next;
 
   public TupleList(){};
@@ -92,8 +92,8 @@ public class QueryCheck {
   public static final int Max_answer = 15;
 
   private AttrType [] types; 
-  private short[] sizes;// sizes of attributes in answer map
-  private short    columnum;     // number of attributes in answer map
+  private short[] sizes;// sizes of attributes in answer tuple
+  private short    columnum;     // number of attributes in answer tuple
   private int      curGroup;     // current group number
   private int      tuplenum;     // total number of answer tuples
   private int      groupnum;     // number of groups in answer tuples
@@ -106,7 +106,7 @@ public class QueryCheck {
   
   private int      total;        // total number of correct answers
   private int      G_O_flag;     // error flag for group order wrong
-  // error flag for map order wrong
+  // error flag for tuple order wrong
   private int[] T_O_flag;  
   
   private TupleList missing;
@@ -128,7 +128,7 @@ public class QueryCheck {
   public QueryCheck(int q_index) {
 
     types = new AttrType[10];    
-    sizes = new short[10];// sizes of attributes in answer map
+    sizes = new short[10];// sizes of attributes in answer tuple
     mygroup = new Group[Max_group_num];
     gmark = new int[Max_group_num];    
     T_O_flag = new int[Max_group_num];  
@@ -202,10 +202,10 @@ public class QueryCheck {
       grouporder = new Order(Order.SORT);
       mygroup[0].len = 3;              // each group length.
       mygroup[0].count = 0;           // count for correct answers
-      mygroup[0].order = new Order(Order.UNSORT); // the map in group is sorted or not
-      for(int i=0; i<mygroup[0].len;i++)  {// set map value. 
+      mygroup[0].order = new Order(Order.UNSORT); // the tuple in group is sorted or not
+      for(int i=0; i<mygroup[0].len;i++)  {// set tuple value. 
 	try {
-          mygroup[0].mytuple[i] = new Map();
+          mygroup[0].mytuple[i] = new Tuple();
           mygroup[0].mytuple[i].setHdr(columnum, types, sizes); 
           mygroup[0].mytuple[i].setStrFld(1,((S1)Q1result.elementAt(i)).sname);  
           mygroup[0].mytuple[i].setStrFld(2,((S1)Q1result.elementAt(i)).date);  
@@ -226,9 +226,9 @@ public class QueryCheck {
       mygroup[0].len = 4;
       mygroup[0].count = 0;           // count for correct answers
       mygroup[0].order = new Order(Order.SORT);
-      for(int i=0; i<mygroup[0].len;i++)  {// set map value.
+      for(int i=0; i<mygroup[0].len;i++)  {// set tuple value.
         try {
-          mygroup[0].mytuple[i] = new Map();
+          mygroup[0].mytuple[i] = new Tuple();
           mygroup[0].mytuple[i].setHdr(columnum, types, sizes);
           mygroup[0].mytuple[i].setStrFld(1,((S2)Q2result.elementAt(i)).sname);
 	}
@@ -250,7 +250,7 @@ public class QueryCheck {
         mygroup[0].order = new Order(Order.UNSORT);
         for(int i=0; i<mygroup[0].len;i++) {
 	  try {
-	    mygroup[0].mytuple[i] = new Map();
+	    mygroup[0].mytuple[i] = new Tuple();
 	    mygroup[0].mytuple[i].setHdr(columnum, types, sizes);
 	    mygroup[0].mytuple[i].setStrFld(1,((S2)Q3result.elementAt(i)).sname);
 	  }
@@ -270,9 +270,9 @@ public class QueryCheck {
         mygroup[0].len = 6;
         mygroup[0].count = 0;           // count for correct answers
         mygroup[0].order = new Order(Order.UNSORT);
-        for(int i=0; i<mygroup[0].len;i++)  {// set map value.
+        for(int i=0; i<mygroup[0].len;i++)  {// set tuple value.
 	  try {
-	    mygroup[0].mytuple[i] = new Map();
+	    mygroup[0].mytuple[i] = new Tuple();
 	    mygroup[0].mytuple[i].setHdr(columnum, types, sizes);
 	    mygroup[0].mytuple[i].setStrFld(1,((S2)Q4result.elementAt(i)).sname);
 	  }
@@ -294,9 +294,9 @@ public class QueryCheck {
         mygroup[0].len = 7;
         mygroup[0].count = 0;           // count for correct answers
         mygroup[0].order = new Order(Order.UNSORT);
-        for(int i=0; i<mygroup[0].len;i++)  {// set map value.
+        for(int i=0; i<mygroup[0].len;i++)  {// set tuple value.
 	  try {
-	    mygroup[0].mytuple[i] = new Map();
+	    mygroup[0].mytuple[i] = new Tuple();
 	    mygroup[0].mytuple[i].setHdr(columnum, types, sizes);
 	    mygroup[0].mytuple[i].setStrFld(1,((S5)Q5result.elementAt(i)).sname);
 	    mygroup[0].mytuple[i].setIntFld(2,((S5)Q5result.elementAt(i)).rating);
@@ -318,9 +318,9 @@ public class QueryCheck {
         mygroup[0].len = 4;
         mygroup[0].count = 0;           // count for correct answers
         mygroup[0].order = new Order(Order.SORT);
-        for(int i=0; i<mygroup[0].len;i++) { // set map value.
+        for(int i=0; i<mygroup[0].len;i++) { // set tuple value.
 	  try {
-            mygroup[0].mytuple[i] = new Map();
+            mygroup[0].mytuple[i] = new Tuple();
             mygroup[0].mytuple[i].setHdr(columnum, types, sizes);
             mygroup[0].mytuple[i].setStrFld(1,((S2)Q6result.elementAt(i)).sname);
 	  }
@@ -358,22 +358,22 @@ public class QueryCheck {
   }
   
   
-  void AddtoList(TupleList list, Map t) {        
+  void AddtoList(TupleList list, Tuple t) {        
 
     TupleList cur = new TupleList();
-    cur.map = new Map();
+    cur.tuple = new Tuple();
     try {
-      cur.map.setHdr(columnum, types, sizes);
+      cur.tuple.setHdr(columnum, types, sizes);
     }
     catch (Exception e) {
       System.err.println ("**** Error setting up the tuples");
     }
-    TupleCopy(cur.map, t, (int)columnum, types); 
+    TupleCopy(cur.tuple, t, (int)columnum, types); 
     cur.next = list;
     list = cur;
   }
   
-  void TupleCopy(Map to, Map from, int fldnum, AttrType []type) {
+  void TupleCopy(Tuple to, Tuple from, int fldnum, AttrType []type) {
 
     int   temp_i;
     float temp_f;
@@ -418,7 +418,7 @@ public class QueryCheck {
     }
   }
   
-  public void Check(Map t) {
+  public void Check(Tuple t) {
     
     // first find curGroup
     if( curGroup == -1 ) {
@@ -468,7 +468,7 @@ public class QueryCheck {
     }
     else {   // no order inside curGroup
       
-      // look for map t inside curGroup
+      // look for tuple t inside curGroup
       for( int i=0; i<mygroup[curGroup].len; i++ ) {
 	try {
 	  TupleUtils tUtil = new TupleUtils();
@@ -491,7 +491,7 @@ public class QueryCheck {
     }
   }
   
-  void MisMatch(Map t) {
+  void MisMatch(Tuple t) {
     int t_num[] = new int[1];
     
     t_num[0] = -1;
@@ -505,18 +505,18 @@ public class QueryCheck {
     else if( tempGroup == curGroup ) {   
       if( mygroup[curGroup].order.order == Order.UNSORT ) {
 	// this should not happen
-	System.out.print ("*****Map in current group, but "
+	System.out.print ("*****Tuple in current group, but "
 			  + "checking failed to find it.\n\n");
 	return;
       }
-      else {  // map sorted order in curGroup is wrong
+      else {  // tuple sorted order in curGroup is wrong
 	System.out.print ("\n*****Tuples in group " + curGroup 
 			  + " should be sorted.\n\n");
 	
 	// change order to UNSORT to facilitate further checking.
 	mygroup[curGroup].order.order = Order.UNSORT;
 	
-	// set map order error flag
+	// set tuple order error flag
 	T_O_flag[curGroup] = 1;
 	
 	MarkTuple(curGroup, t_num[0]);
@@ -529,7 +529,7 @@ public class QueryCheck {
       // sorted when they are suppose to         
       // Leave curGroup open for further checking           
       if( mygroup[curGroup].count != 0 ) {    
-	// add remaining map in curGroup to missing list
+	// add remaining tuple in curGroup to missing list
 	if( mygroup[curGroup].count < mygroup[curGroup].len ) {
 	  System.out.print ("\n*****Group " + curGroup 
 			    + " has missing tuples.\n\n");
@@ -566,19 +566,19 @@ public class QueryCheck {
       if(mygroup[curGroup].order.order == Order.UNSORT ) {
 	MarkTuple(curGroup, t_num[0]);
       }
-      // map should be sorted, check whether it's the first map of group
+      // tuple should be sorted, check whether it's the first tuple of group
       else if(t_num[0] == 0) {
 	MarkTuple(curGroup, t_num[0]);
       }
-      // map in new curGroup not in correct sorted order
+      // tuple in new curGroup not in correct sorted order
       else {
 	System.out.print ("\n*****Tuples in group " + curGroup 
 			  + " should be sorted.\n\n");
 	
-	// set map sort order error flag
+	// set tuple sort order error flag
 	T_O_flag[curGroup] = 1;
 	
-	// reset map order to UNSORT to facilitate further checking
+	// reset tuple order to UNSORT to facilitate further checking
 	mygroup[curGroup].order.order = Order.UNSORT;
 	
 	MarkTuple(curGroup, t_num[0]);
@@ -587,7 +587,7 @@ public class QueryCheck {
     }
   }
   
-  // MarkTuple will mark the map in current group 
+  // MarkTuple will mark the tuple in current group 
   void MarkTuple(int groupNum, int tupleNum) {
     mygroup[groupNum].mark[tupleNum] = 1;
     mygroup[groupNum].count ++;
@@ -611,9 +611,9 @@ public class QueryCheck {
     return;
   }   
   
-  // Search() will look for a map and return the group number 
-  // and map number if found
-  int Search(Map t, int [] t_num) {
+  // Search() will look for a tuple and return the group number 
+  // and tuple number if found
+  int Search(Tuple t, int [] t_num) {
     for( int i=0; i<groupnum; i++) {
       if(gmark[i] == 0) {
 	for( int j=0; j<mygroup[i].len; j++) {
@@ -651,7 +651,7 @@ public class QueryCheck {
 			  + "from your answer:\n");
 	temp = missing;
 	while(temp != null ) {
-	  temp.map.print(types);
+	  temp.tuple.print(types);
 	  temp = temp.next;
 	}
       }
@@ -661,7 +661,7 @@ public class QueryCheck {
 			  + "are incorrect:\n" );
 	temp = extra;
 	while(temp != null ) {
-	  temp.map.print(types);
+	  temp.tuple.print(types);
 	  temp = temp.next;
 	}
       } 
@@ -682,12 +682,12 @@ public class QueryCheck {
     if( G_O_flag != 0 )
       System.out.print ("\n*****Your group ordering is wrong.\n\n");
     
-    // check map order error flag
+    // check tuple order error flag
     int t_order_error = 0;   
     for( int j=0; j<groupnum; j++) {
       if( T_O_flag[j] == 1) {
 	t_order_error =1;
-	System.out.print ("\n*****Your map order in group " + j 
+	System.out.print ("\n*****Your tuple order in group " + j 
 			  + " is wrong.\n\n");
       }
     }

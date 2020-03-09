@@ -25,7 +25,7 @@ public class OBuf implements GlobalConst{
    * O_buf is an output buffer. It takes as input:
    *@param bufs  temporary buffer to pages.(EACH ELEMENT IS A SINGLE BUFFER PAGE).
    *@param n_pages the number of pages
-   *@param tSize   map size
+   *@param tSize   tuple size
    *@param temp_fd  fd of a  HeapFile
    *@param buffer  true => it is used as a buffer => if it is flushed, print
    *                      a nasty message. it is false by default.
@@ -49,13 +49,13 @@ public class OBuf implements GlobalConst{
     }
   
   /**
-   * Writes a map to the output buffer
-   *@param buf the map written to buffer
-   *@return the position of map which is in buffer 
+   * Writes a tuple to the output buffer
+   *@param buf the tuple written to buffer
+   *@return the position of tuple which is in buffer 
    *@exception IOException  some I/O fault
    *@exception Exception other exceptions
    */
-  public Map  Put(Map buf)
+  public Tuple  Put(Tuple buf)
     throws IOException,
 	   Exception
     {
@@ -63,7 +63,7 @@ public class OBuf implements GlobalConst{
       byte[] copybuf;
       copybuf = buf.getTupleByteArray();
       System.arraycopy(copybuf,0,_bufs[curr_page],t_wr_to_pg*t_size,t_size); 
-      Map tuple_ptr = new Map(_bufs[curr_page] , t_wr_to_pg * t_size,t_size);
+      Tuple tuple_ptr = new Tuple(_bufs[curr_page] , t_wr_to_pg * t_size,t_size);
       
       t_written++; t_wr_to_pg++; t_wr_to_buf++; dirty = true;
       
@@ -142,7 +142,7 @@ public class OBuf implements GlobalConst{
   private  int  curr_page;                        // Current page being written to.
   private  byte[][]_bufs;                        // Array of pointers to buffer pages.
   private  int  _n_pages;                        // number of pages in array
-  private  int  t_size;                                // Size of a map
+  private  int  t_size;                                // Size of a tuple
   private  long t_written;                        // # of tuples written so far.
   private  int  TEST_temp_fd;                        // fd of a temporary file
   private  Heapfile _temp_fd;

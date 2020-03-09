@@ -68,16 +68,16 @@ class DataPageInfo implements GlobalConst{
    }
       
       
-  /** constructor: translate a map to a DataPageInfo object
-   *  it will make a copy of the data in the map
-   * @param atuple: the input map
+  /** constructor: translate a tuple to a DataPageInfo object
+   *  it will make a copy of the data in the tuple
+   * @param atuple: the input tuple
    */
-  public DataPageInfo(Map _atuple)
+  public DataPageInfo(Tuple _atuple)
        throws InvalidTupleSizeException, IOException
   {   
      // need check _atuple size == this.size ?otherwise, throw new exception
     if (_atuple.getLength()!=12){
-      throw new InvalidTupleSizeException(null, "HEAPFILE: MAP SIZE ERROR");
+      throw new InvalidTupleSizeException(null, "HEAPFILE: TUPLE SIZE ERROR");
     }
 
     else{
@@ -93,11 +93,11 @@ class DataPageInfo implements GlobalConst{
   }
   
   
-  /** convert this class objcet to a map(like cast a DataPageInfo to Map)
+  /** convert this class objcet to a tuple(like cast a DataPageInfo to Tuple)
    *  
    *
    */
-  public Map convertToTuple()
+  public Tuple convertToTuple()
        throws IOException
   {
 
@@ -107,10 +107,10 @@ class DataPageInfo implements GlobalConst{
     Convert.setIntValue(pageId.pid, offset+8, data);
 
 
-    // 2) creat a Map object using this array
-    Map atuple = new Map(data, offset, size); 
+    // 2) creat a Tuple object using this array
+    Tuple atuple = new Tuple(data, offset, size); 
  
-    // 3) return map object
+    // 3) return tuple object
     return atuple;
 
   }

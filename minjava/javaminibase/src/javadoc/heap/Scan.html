@@ -36,7 +36,7 @@
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
 &nbsp;<A HREF="../heap/HFPage.html"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../heap/Map.html"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../heap/Tuple.html"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../index.html" TARGET="_top"><B>FRAMES</B></A>  &nbsp;
 &nbsp;<A HREF="Scan.html" TARGET="_top"><B>NO FRAMES</B></A></FONT></TD>
@@ -131,7 +131,7 @@ A Scan object is created ONLY through the function openScan
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../heap/Map.html">Map</A></CODE></FONT></TD>
+<CODE>&nbsp;<A HREF="../heap/Tuple.html">Tuple</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../heap/Scan.html#getNext(global.RID)">getNext</A></B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid)</CODE>
 
 <BR>
@@ -181,7 +181,7 @@ public <B>Scan</B>(<A HREF="../heap/Heapfile.html">Heapfile</A>&nbsp;hf)
 <DD>The constructor pins the first directory page in the file
  and initializes its private data members from the private
  data member from hf<DD><DL>
-<DT><B>Parameters:</B><DD><CODE>hf</CODE> - A HeapFile object<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - Invalid map size<DD><CODE>java.io.IOException</CODE> - I/O errors</DL>
+<DT><B>Parameters:</B><DD><CODE>hf</CODE> - A HeapFile object<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - Invalid tuple size<DD><CODE>java.io.IOException</CODE> - I/O errors</DL>
 </DD>
 </DL>
 
@@ -198,7 +198,7 @@ public <B>Scan</B>(<A HREF="../heap/Heapfile.html">Heapfile</A>&nbsp;hf)
 <A NAME="getNext(global.RID)"><!-- --></A><H3>
 getNext</H3>
 <PRE>
-public <A HREF="../heap/Map.html">Map</A> <B>getNext</B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid)
+public <A HREF="../heap/Tuple.html">Tuple</A> <B>getNext</B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid)
               throws <A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A>,
                      java.io.IOException</PRE>
 <DL>
@@ -206,7 +206,7 @@ public <A HREF="../heap/Map.html">Map</A> <B>getNext</B>(<A HREF="../global/RID.
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>rid</CODE> - Record ID of the record<DT><B>Returns:</B><DD>the Map of the retrieved record.<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - Invalid map size<DD><CODE>java.io.IOException</CODE> - I/O errors</DL>
+<DT><B>Parameters:</B><DD><CODE>rid</CODE> - Record ID of the record<DT><B>Returns:</B><DD>the Tuple of the retrieved record.<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - Invalid tuple size<DD><CODE>java.io.IOException</CODE> - I/O errors</DL>
 </DD>
 </DL>
 <HR>
@@ -223,7 +223,7 @@ public boolean <B>position</B>(<A HREF="../global/RID.html">RID</A>&nbsp;rid)
 </DD>
 <DD><DL>
 <DT><B>Parameters:</B><DD><CODE>rid</CODE> - Record ID of the given record<DT><B>Returns:</B><DD>true if successful, 
-			false otherwise.<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - Invalid map size<DD><CODE>java.io.IOException</CODE> - I/O errors</DL>
+			false otherwise.<DT><B>Throws:</B><DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - Invalid tuple size<DD><CODE>java.io.IOException</CODE> - I/O errors</DL>
 </DD>
 </DL>
 <HR>
@@ -266,7 +266,7 @@ public void <B>closescan</B>()</PRE>
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
 &nbsp;<A HREF="../heap/HFPage.html"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../heap/Map.html"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../heap/Tuple.html"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../index.html" TARGET="_top"><B>FRAMES</B></A>  &nbsp;
 &nbsp;<A HREF="Scan.html" TARGET="_top"><B>NO FRAMES</B></A></FONT></TD>

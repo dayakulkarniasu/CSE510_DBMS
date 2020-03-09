@@ -72,7 +72,7 @@ java.lang.Object
 <DT>public class <B>IndexScan</B><DT>extends <A HREF="../iterator/Iterator.html">Iterator</A></DL>
 
 <P>
-Index Scan iterator will directly access the required map using
+Index Scan iterator will directly access the required tuple using
  the provided key. It will also perform selections and projections.
  information about the tuples and the index are passed to the constructor,
  then the user calls <code>get_next()</code> to get the tuples.
@@ -164,11 +164,11 @@ Index Scan iterator will directly access the required map using
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../heap/Map.html">Map</A></CODE></FONT></TD>
+<CODE>&nbsp;<A HREF="../heap/Tuple.html">Tuple</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../index/IndexScan.html#get_next()">get_next</A></B>()</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns the next map.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns the next tuple.</TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_iterator.Iterator"><!-- --></A>
@@ -240,7 +240,7 @@ public <B>IndexScan</B>(<A HREF="../global/IndexType.html">IndexType</A>&nbsp;in
                  java.io.IOException</PRE>
 <DL>
 <DD>class constructor. set up the index scan.<DD><DL>
-<DT><B>Parameters:</B><DD><CODE>index</CODE> - type of the index (B_Index, Hash)<DD><CODE>relName</CODE> - name of the input relation<DD><CODE>indName</CODE> - name of the input index<DD><CODE>types</CODE> - array of types in this relation<DD><CODE>str_sizes</CODE> - array of string sizes (for attributes that are string)<DD><CODE>noInFlds</CODE> - number of fields in input map<DD><CODE>noOutFlds</CODE> - number of fields in output map<DD><CODE>outFlds</CODE> - fields to project<DD><CODE>selects</CODE> - conditions to apply, first one is primary<DD><CODE>fldNum</CODE> - field number of the indexed field<DD><CODE>indexOnly</CODE> - whether the answer requires only the key or the map<DT><B>Throws:</B><DD><CODE><A HREF="../index/IndexException.html">IndexException</A></CODE> - error from the lower layer<DD><CODE><A HREF="../heap/InvalidTypeException.html">InvalidTypeException</A></CODE> - map type not valid<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - map size not valid<DD><CODE><A HREF="../index/UnknownIndexTypeException.html">UnknownIndexTypeException</A></CODE> - index type unknown<DD><CODE>java.io.IOException</CODE> - from the lower layer</DL>
+<DT><B>Parameters:</B><DD><CODE>index</CODE> - type of the index (B_Index, Hash)<DD><CODE>relName</CODE> - name of the input relation<DD><CODE>indName</CODE> - name of the input index<DD><CODE>types</CODE> - array of types in this relation<DD><CODE>str_sizes</CODE> - array of string sizes (for attributes that are string)<DD><CODE>noInFlds</CODE> - number of fields in input tuple<DD><CODE>noOutFlds</CODE> - number of fields in output tuple<DD><CODE>outFlds</CODE> - fields to project<DD><CODE>selects</CODE> - conditions to apply, first one is primary<DD><CODE>fldNum</CODE> - field number of the indexed field<DD><CODE>indexOnly</CODE> - whether the answer requires only the key or the tuple<DT><B>Throws:</B><DD><CODE><A HREF="../index/IndexException.html">IndexException</A></CODE> - error from the lower layer<DD><CODE><A HREF="../heap/InvalidTypeException.html">InvalidTypeException</A></CODE> - tuple type not valid<DD><CODE><A HREF="../heap/InvalidTupleSizeException.html">InvalidTupleSizeException</A></CODE> - tuple size not valid<DD><CODE><A HREF="../index/UnknownIndexTypeException.html">UnknownIndexTypeException</A></CODE> - index type unknown<DD><CODE>java.io.IOException</CODE> - from the lower layer</DL>
 </DD>
 </DL>
 
@@ -257,19 +257,19 @@ public <B>IndexScan</B>(<A HREF="../global/IndexType.html">IndexType</A>&nbsp;in
 <A NAME="get_next()"><!-- --></A><H3>
 get_next</H3>
 <PRE>
-public <A HREF="../heap/Map.html">Map</A> <B>get_next</B>()
+public <A HREF="../heap/Tuple.html">Tuple</A> <B>get_next</B>()
                throws <A HREF="../index/IndexException.html">IndexException</A>,
                       <A HREF="../iterator/UnknownKeyTypeException.html">UnknownKeyTypeException</A>,
                       java.io.IOException</PRE>
 <DL>
-<DD>returns the next map.
+<DD>returns the next tuple.
  if <code>index_only</code>, only returns the key value 
- (as the first field in a map)
- otherwise, retrive the map and returns the whole map<DD><DL>
+ (as the first field in a tuple)
+ otherwise, retrive the tuple and returns the whole tuple<DD><DL>
 <DT><B>Overrides:</B><DD><CODE><A HREF="../iterator/Iterator.html#get_next()">get_next</A></CODE> in class <CODE><A HREF="../iterator/Iterator.html">Iterator</A></CODE></DL>
 </DD>
 <DD><DL>
-<DT><B>Returns:</B><DD>the map<DT><B>Throws:</B><DD><CODE><A HREF="../index/IndexException.html">IndexException</A></CODE> - error from the lower layer<DD><CODE><A HREF="../iterator/UnknownKeyTypeException.html">UnknownKeyTypeException</A></CODE> - key type unknown<DD><CODE>java.io.IOException</CODE> - from the lower layer</DL>
+<DT><B>Returns:</B><DD>the tuple<DT><B>Throws:</B><DD><CODE><A HREF="../index/IndexException.html">IndexException</A></CODE> - error from the lower layer<DD><CODE><A HREF="../iterator/UnknownKeyTypeException.html">UnknownKeyTypeException</A></CODE> - key type unknown<DD><CODE>java.io.IOException</CODE> - from the lower layer</DL>
 </DD>
 </DL>
 <HR>

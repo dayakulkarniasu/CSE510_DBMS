@@ -20,8 +20,8 @@ hf:Heapfile.java
 hp:HFPage.java
 	$(JAVAC) HFPage.java
 
-map:Map.java
-	$(JAVAC) Map.java
+tuple:Tuple.java
+	$(JAVAC) Tuple.java
 
 scan:Scan.java
 	$(JAVAC) Scan.java
