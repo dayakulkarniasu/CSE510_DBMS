@@ -50,7 +50,7 @@ public class bigt {
      * results are ﬁrst ordered in column label, then time stamp · 5, then results
      * are ordered in time stamp
      */
-    public Stream openStream(int orderType, String rowFilter, String columnFilter,String valueFilter) {
+    public Stream openStream(int orderType, String rowFilter, String columnFilter, String valueFilter) {
         return null;
     }
 }
