@@ -1,7 +1,7 @@
 package iterator;
 
 
-import BigT.Map;
+import BigT.*;
 import heap.*;
 import global.*;
 import java.io.*;
@@ -47,7 +47,7 @@ public class MapUtils
                 try {
                     m1_s = m1.getRowLabel();
                     m2_s = m2.getRowLabel();
-                }catch (FieldNumberOutOfBoundException e){
+                }catch (Exception e){
                     throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
                 }
                 if(m1_s.compareTo( m2_s)>0)return 1;
@@ -58,7 +58,7 @@ public class MapUtils
                 try {
                     m1_s = m1.getColumnLabel();
                     m2_s = m2.getColumnLabel();
-                }catch (FieldNumberOutOfBoundException e){
+                }catch (Exception e){
                     throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
                 }
                 if(m1_s.compareTo( m2_s)>0)return 1;
@@ -69,7 +69,7 @@ public class MapUtils
                 try {
                     m1_i = m1.getTimeStamp();
                     m2_i = m2.getTimeStamp();
-                }catch (FieldNumberOutOfBoundException e){
+                }catch (Exception e){
                     throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
                 }
 
@@ -81,7 +81,7 @@ public class MapUtils
                 try {
                     m1_s = m1.getValue();
                     m2_s = m2.getValue();
-                }catch (FieldNumberOutOfBoundException e){
+                }catch (Exception e){
                     throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
                 }
 
@@ -162,7 +162,7 @@ public class MapUtils
                 try{
                    temp = map.getRowLabel();
                }
-               catch (FieldNumberOutOfBoundException e){
+               catch (Exception e){
                    throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
                }
                break;
@@ -170,7 +170,7 @@ public class MapUtils
                try{
                    temp = map.getColumnLabel();
                }
-               catch (FieldNumberOutOfBoundException e){
+               catch (Exception e){
                    throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
                }
                break;
@@ -178,7 +178,7 @@ public class MapUtils
                try{
                    temp = Integer.toString(map.getTimeStamp());
                }
-               catch (FieldNumberOutOfBoundException e){
+               catch (Exception e){
                    throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
                }
                break;
@@ -186,7 +186,7 @@ public class MapUtils
                try{
                    temp = map.getValue();
                }
-               catch (FieldNumberOutOfBoundException e){
+               catch (Exception e){
                    throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by MapUtils.java");
                }
                break;

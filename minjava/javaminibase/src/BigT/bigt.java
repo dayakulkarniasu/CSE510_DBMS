@@ -1,5 +1,6 @@
 package BigT;
 
+import global.*;
 /**
  * BigT.bigt, which creates and maintains all the relevant heapﬁles 
  *(and index ﬁles of your choice to organize the data)

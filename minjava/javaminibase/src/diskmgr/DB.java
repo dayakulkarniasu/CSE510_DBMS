@@ -7,7 +7,49 @@ import bufmgr.*;
 import global.*;
 
 //TODO: We should move the bigT stuff into this
-public class bigDB implements GlobalConst{
+class bigDB implements GlobalConst{
+    private RandomAccessFile fp;
+    private static int dbType;
+
+
+    public void openDB()
+            throws IOException,
+            InvalidPageNumberException,
+            FileIOException,
+            DiskMgrException {
+
+        // Creaat a random access file
+        fp = new RandomAccessFile(fname, "rw");
+
+        PageId pageId = new PageId();
+        Page apage = new Page();
+        pageId.pid = 0;
+
+        num_pages = 1;	//temporary num_page value for pinpage to work
+
+        pinPage(pageId, apage, false /*read disk*/);
+
+
+        DBFirstPage firstpg = new DBFirstPage();
+        firstpg.openPage(apage);
+        num_pages = firstpg.getNumDBPages();
+
+        unpinPage(pageId, false /* undirty*/);
+    }
+
+    /** default constructor.
+     */
+    public bigDB(int type) {
+        dbType = type;
+    }
+
+    /** Close DB file.
+     * @exception IOException I/O errors.
+     */
+
+    public void closeDB() throws IOException {
+        fp.close();
+    }
 
 }
 
@@ -114,10 +156,10 @@ public class DB implements GlobalConst {
   /** Close DB file.
    * @exception IOException I/O errors.
    */
-  public void closeDB() throws IOException {
-    fp.close();
-  }
-  
+
+    public void closeDB() throws IOException {
+        fp.close();
+    }
   
   /** Destroy the database, removing the file that stores it. 
    * @exception IOException I/O errors.
