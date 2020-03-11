@@ -9,16 +9,16 @@ public class bigt{
     // Initialize the big table. 
     // type is an integer between 1 and 5 and the different types will correspond 
     // to different clustering and indexing strategies you will use for the bigtable.
-    bigt(java.lang.String name, int type){}
+    public bigt(java.lang.String name, int type){}
 
     //Delete the bigtable from the database.
     void deleteBigt(){}
 
     //Return number of maps in the bigtable.
-    int getMapCnt(){}
+    public int getMapCnt(){}
 
     //Return number of distinct row labels in the bigtable.
-    int getRowCnt(){}
+    public int getRowCnt(){}
 
     //Return number of distinct column labels in the bigtable.
     int getColumnCnt(){}

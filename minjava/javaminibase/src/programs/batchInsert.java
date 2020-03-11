@@ -1,7 +1,11 @@
 package programs;
 
+import btree.BTreeFile;
+import global.*;
+import BigT.*;
+import heap.Tuple;
+
 import java.io.*;
-import java.util.StringTokenizer;
 //import global.*;
 
 public class batchInsert{
@@ -26,30 +30,79 @@ public class batchInsert{
                 System.out.println("row label: "+ rowLabel + " col label: " + columnLabel + " TS: " + timeStamp  + " val: " + value);
 
                 //TODO Map
-
+                Map m = new Map();
                 //TODO insert into big table
 
                 //TODO take big table, scan it and index based on type
 
-                /*TODO
-                * switch(type):
-                * case 1:
-                * case 2: BTREE RowLabel
-                *       BTreeFile btf = null;
-                         btf = new BTreeFile("Name of the btree index file", AttrType.attrString, REC_LEN1   , 1/*delete);
-                         mid = new MID();
+                // TODO
+                //At this point we're going to make indexes for our
+                //maps. (The indexes should probabally be inside of the bigT constructor
+                // but for now I am putting it here)
+                // when we create an index we need to give it a name to find it
+                // I think we should use the following names
+                // Index File Nmes
+                // type 1 - no index
+                // type 2 - type2Idx
+                // type 3 - type3Idx
+                // type 4 - type4CombKeyIdx & type4TSIdx
+                // type 5 - type5CombKeyIdx & type5TSIdx
+
+                // putting this here for now
+                bigt big = new bigt(bigTableName, type);
+                BTreeFile btf = null;
+                switch (type){
+                    case DBType.type1:
+                        //TODO need to research this one a little more
+                        //no index
+                        break;
+                    case DBType.type2:
+                        //one btree to index row labels
+                        try {
+                            btf = new BTreeFile("type2Idx", AttrType.attrString, big.getRowCnt(), 1/*delete*/);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                            Runtime.getRuntime().exit(1);
+                        }
+
+                        mid = new MID();
                         String key = null;
-                        Tuple temp = null;
-                         while ( temp != null) {
-                            m.tupleCopy(temp);
-	                         key = m.getrowlabel();
-      }
+                        Map temp = null;
 
-                 Case 3: BTREE Column label
-                        ...
-                 	     key = m.getcolumnlabel();
+                        try {
+                            temp = Stream.getNext(mid);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        while ( temp != null) {
+                            m.mapCopy(temp);
 
-                 */
+                            try {
+                                key = t.getStrFld(2);
+                            }
+                            catch (Exception e) {
+                                status = FAIL;
+                                e.printStackTrace();
+                            }
+
+                        break;
+                    case DBType.type3:
+                        // one btree to index column labels
+                        break;
+                    case DBType.type4:
+                        // one btree to index column label and row label (combined key)
+                        // one btree to index time stamps
+                        break;
+                    case DBType.type5:
+                        // one btree to index row label and value (combined key)
+                        // one btree to index time stamps
+                        break;
+                    default:
+
+                }
+            }
 
 
             }
