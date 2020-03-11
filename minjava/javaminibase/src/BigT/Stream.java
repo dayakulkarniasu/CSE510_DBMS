@@ -1,11 +1,15 @@
 package BigT;
 
 import global.*;
+import iterator.*;
 
 /**
  * This class will be similar to heap.Scan, however, will provide different types of accesses to the bigtable
  */
 public class Stream{
+
+    /** in-core copy (pinned) of the same */
+    private bigt bigTable;
     /**
      * Initialize a stream of maps on bigtable.
      * @param bigtable
@@ -63,24 +67,64 @@ public class Stream{
         // type 3 - type3Idx
         // type 4 - type4CombKeyIdx & type4TSIdx
         // type 5 - type5CombKeyIdx & type5TSIdx
+
+        // create an iterator by open a file scan
+        //TODO don't totally understand hte projlist stuff
+        FldSpec[] projlist = new FldSpec[2];
+        RelSpec rel = new RelSpec(RelSpec.outer);
+        projlist[0] = new FldSpec(rel, 1);
+        projlist[1] = new FldSpec(rel, 2);
+
+        FileScan fscan = null;
+
+        try {
+            fscan = new FileScan("test1.in", attrType, attrSize, (short) 2, 2, projlist, null);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Sort "test1.in"
+        Sort sort = null;
+        try {
+
+            //TODO we need to make modifications to the sort to work with maps instead of tuples
+            sort = new Sort(attrType, (short) 2, attrSize, fscan, 1, order[0], REC_LEN1, SORTPGNUM);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        int count = 0;
+        t = null;
+        String outval = null;
+
+        try {
+            t = sort.get_next();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        boolean flag = true;
+
         switch (orderType){
-            case DBType.type1:
+            case OrderType.type1:
                 //TODO need to research this one a little more
-                //no index
+                //results ordered by rowLabel then columnLabel then time stamp
                 break;
-            case DBType.type2:
-                //one btree to index row labels
+            case OrderType.type2:
+                //ordered columnLabel, rowLabel, timestamp
                 break;
-            case DBType.type3:
-                // one btree to index column labels
+            case OrderType.type3:
+                //row label then timestamp
                 break;
-            case DBType.type4:
-                // one btree to index column label and row label (combined key)
-                // one btree to index time stamps
+            case OrderType.type4:
+                //column label then time stamp
                 break;
-            case DBType.type5:
-                // one btree to index row label and value (combined key)
-                // one btree to index time stamps
+            case OrderType.type5:
+                //time stamp
                 break;
             default:
 
@@ -90,7 +134,37 @@ public class Stream{
     /**
      * Closes the stream object.
      */
-    void closestream(){}
+    //TODO need to refactor to work with maps
+    // we still need to pin/unpin data from buffer manager (i think)
+    void closestream(){
+        if (bigTable != null) {
+
+            try{
+                unpinPage(datapageId, false);
+            }
+            catch (Exception e){
+                // 	System.err.println("SCAN: Error in Scan" + e);
+                e.printStackTrace();
+            }
+        }
+        datapageId.pid = 0;
+        bigTable = null;
+
+        if (dirpage != null) {
+
+            try{
+                unpinPage(dirpageId, false);
+            }
+            catch (Exception e){
+                //     System.err.println("SCAN: Error in Scan: " + e);
+                e.printStackTrace();
+            }
+        }
+        dirpage = null;
+
+        nextUserStatus = true;
+
+    }
 
     /**
      * Retrieve the next map in the stream.

@@ -1,6 +1,6 @@
 package programs;
 
-import btree.BTreeFile;
+import btree.*;
 import global.*;
 import BigT.*;
 import heap.Tuple;
@@ -76,16 +76,39 @@ public class batchInsert{
                         catch (Exception e) {
                             e.printStackTrace();
                         }
+                        // itterate through all the maps
                         while ( temp != null) {
                             m.mapCopy(temp);
 
                             try {
-                                key = t.getStrFld(2);
+                                // the key for Type 2 is the row
+                                key = m.getRowLabel();
                             }
                             catch (Exception e) {
-                                status = FAIL;
                                 e.printStackTrace();
                             }
+
+                            try {
+                                // insert the key and the 'pointer' Map Id into btree index
+                                btf.insert(new StringKey(key), mid);
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                // get next map
+                                temp = Stream.getNext(mid);
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        // close the file scan
+                        scan.closescan();
+
+                        //BTreeIndex file created successfully
 
                         break;
                     case DBType.type3:
