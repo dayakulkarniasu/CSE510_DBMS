@@ -2,3 +2,4 @@
 
 - Bigt.Map 
 - global.MID
+- HFPage --> replaced tuple with map

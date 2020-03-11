@@ -62,15 +62,17 @@ public class Map implements GlobalConst {
     }
 
     /**
+     * 
      * Construct a map from a byte array.
      * 
      * @param amap   a byte array which contains the map
      * @param offset the offset of the map in the byte array
+     * @param length
      */
-    public Map(byte[] amap, int offset) {
+    public Map(byte[] amap, int offset, int length) { //length needs to be declared
         data = amap;
         map_offset = offset;
-        map_length = amap.length;
+        map_length = length;
     }
 
     /**
@@ -84,6 +86,17 @@ public class Map implements GlobalConst {
         map_offset = 0;
         fldCnt = 4;
         fldOffset = fromMap.copyFldOffset();
+    }
+
+    /**
+     * Class constructor Creat a new map with length = size, map offset = 0.
+     */
+
+    public Map(int size) {
+        // Creat a new map
+        data = new byte[size];
+        map_offset = 0;
+        map_length = size;
     }
 
     /**
