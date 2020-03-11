@@ -44,7 +44,7 @@ class DataPageInfo implements GlobalConst {
    */
   public DataPageInfo() {
     data = new byte[12]; // size of datapageinfo
-    int availspace = 0;
+    availspace = 0;
     recct = 0;
     pageId.pid = INVALID_PAGE;
     offset = 0;
