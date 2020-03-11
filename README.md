@@ -2,6 +2,6 @@
 
 - Bigt.Map 
 - global.MID
-## heap pakage
+## heap package
 - HFPage --> replaced tuple with map
 - DataPageInfo --> replaced tuple with map
