@@ -68,7 +68,7 @@ class DataPageInfo implements GlobalConst {
    * constructor: translate a map to a DataPageInfo object it will make a copy of
    * the data in the map
    * 
-   * @param atuple: the input map
+   * @param _amap: the input map
    */
   public DataPageInfo(Map _amap) throws InvalidTupleSizeException, IOException {
     // need check _amap size == this.size ?otherwise, throw new exception
@@ -100,10 +100,10 @@ class DataPageInfo implements GlobalConst {
     Convert.setIntValue(recct, offset + 4, data);
     Convert.setIntValue(pageId.pid, offset + 8, data);
 
-    // 2) creat a Mpa object using this array
-    Map amap = new Map(data, offset);
+    // 2) creat a map object using this array
+    Map amap = new Map(data, offset, size);
 
-    // 3) return Map object
+    // 3) return map object
     return amap;
 
   }
