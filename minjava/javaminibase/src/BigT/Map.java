@@ -1,12 +1,11 @@
 package BigT;
 
 import java.io.*;
-import java.lang.*;
 import global.*;
 import heap.*;
 
 /**
- * You will need to create a class BigT.Map, similar to heap.Map but having a
+ * You will need to create a class BigT.Map, similar to heap.Tuple but having a
  * ﬁxed structure (and thus a ﬁxed header) as described above. Thus, the
  * constructor and get/set methods associated with the BigT.Map should be
  * adapted as appropriate
@@ -83,7 +82,7 @@ public class Map implements GlobalConst {
         data = fromMap.getMapByteArray();
         map_length = fromMap.getLength();
         map_offset = 0;
-        fldCnt = 4; // fromMap.noOfFlds();
+        fldCnt = 4;
         fldOffset = fromMap.copyFldOffset();
     }
 

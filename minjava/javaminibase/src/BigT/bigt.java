@@ -1,17 +1,43 @@
 package BigT;
 
-import global.*;
+import java.lang.*;
+import diskmgr.*;
+import global.MID;
 
 /**
  * BigT.bigt, which creates and maintains all the relevant heapﬁles (and index
  * ﬁles of your choice to organize the data)
  */
 public class bigt {
+
+    // name of the bigtable
+    String BTname;
+
+    // type of the bigtable
+    int BTtype;
+
+    // number of rows in bigtable
+    int rowCnt;
+
+    // number of columns in bigtable
+    int columnCnt;
+
+    // number of maps in bigtable
+    int mapCnt;
+
+    // first index page of bigtable
+    // Page fpage;
+
     // Initialize the big table.
     // type is an integer between 1 and 5 and the different types will correspond
     // to different clustering and indexing strategies you will use for the
     // bigtable.
     public bigt(String name, int type) {
+        BTname = name;
+        BTtype = type;
+        rowCnt = 0;
+        columnCnt = 0;
+        mapCnt = 0;
     }
 
     // Delete the bigtable from the database.
@@ -20,14 +46,17 @@ public class bigt {
 
     // Return number of maps in the bigtable.
     public int getMapCnt() {
+        return 0;
     }
 
     // Return number of distinct row labels in the bigtable.
     public int getRowCnt() {
+        return 0;
     }
 
     // Return number of distinct column labels in the bigtable.
     public int getColumnCnt() {
+        return 0;
     }
 
     // Insert map into the big table, return its Mid.
