@@ -160,10 +160,8 @@ public class Map implements GlobalConst {
         try {
             this.setStrFld(1, val);
         } catch (FieldNumberOutOfBoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return this;
@@ -179,10 +177,8 @@ public class Map implements GlobalConst {
         try {
             this.setStrFld(2, val);
         } catch (FieldNumberOutOfBoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return this;
@@ -198,10 +194,8 @@ public class Map implements GlobalConst {
         try {
             this.setIntFld(3, val);
         } catch (FieldNumberOutOfBoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return this;
@@ -217,10 +211,8 @@ public class Map implements GlobalConst {
         try {
             this.setStrFld(4, val);
         } catch (FieldNumberOutOfBoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return this;
