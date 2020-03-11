@@ -2,7 +2,6 @@ package heap;
 
 import java.io.*;
 import diskmgr.*;
-import bufmgr.*;
 import global.*;
 import BigT.*;
 

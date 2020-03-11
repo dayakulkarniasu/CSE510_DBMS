@@ -1,4 +1,4 @@
-# tasks that has be done and tested so far
+# tasks that has been done and tested so far
 - Bigt.Map 
 - global.MID
 

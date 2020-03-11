@@ -34,7 +34,7 @@ public class bigt implements Tabletype, GlobalConst {
     // correspond
     // to different clustering and indexing strategies you will use for the
     // bigtable.
-    bigt(String name, int type) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
+    public bigt(String name, int type) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
         hf = new Heapfile(name);
         BTType = type;
     } // end of constructor
@@ -84,8 +84,7 @@ public class bigt implements Tabletype, GlobalConst {
      * results are ﬁrst ordered in column label, then time stamp · 5, then results
      * are ordered in time stamp
      */
-    public Stream openStream(int orderType, String rowFilter, String columnFilter, String valueFilter
-    {
-        return new Stream();
+    public Stream openStream(int orderType, String rowFilter, String columnFilter, String valueFilter) {
+        return new Stream(null, orderType, valueFilter, valueFilter, valueFilter);
     }
 }
