@@ -355,7 +355,7 @@ public class Heapfile implements Filetype,  GlobalConst {
       
       
       return answer;
-	} // end of getRecCnt
+	} // end of getMapCnt
 
 
 	/** Return number of distinct rows in file.
@@ -377,7 +377,7 @@ public class Heapfile implements Filetype,  GlobalConst {
 		PageId currentDirPageId = new PageId(_firstDirPageId.pid);
 		PageId nextDirPageId = new PageId(0);
 		HFPage currentDirPage = new HFPage();
-		Page pageinbuffer = new Page();
+		// Page pageinbuffer = new Page();
 
 		while(currentDirPageId.pid != INVALID_PAGE)
 		{
@@ -400,7 +400,7 @@ public class Heapfile implements Filetype,  GlobalConst {
 	}
 
 
-	/** Return number of distinct rows in file.
+	/** Return number of distinct columns in file.
    	*
    	* @exception InvalidSlotNumberException invalid slot number
    	* @exception InvalidMapSizeException invalid tuple size
@@ -415,7 +415,30 @@ public class Heapfile implements Filetype,  GlobalConst {
 			HFBufMgrException,
 			IOException
 	{
-		return 0;
+		Set<String> colSet = new HashSet<String>();
+		PageId currentDirPageId = new PageId(_firstDirPageId.pid);
+		PageId nextDirPageId = new PageId(0);
+		HFPage currentDirPage = new HFPage();
+		// Page pageinbuffer = new Page();
+
+		while(currentDirPageId.pid != INVALID_PAGE)
+		{
+			pinPage(currentDirPageId, currentDirPage, false);
+			MID mid = new MID();
+			Map amap;
+			for(mid = currentDirPage.firstMap();
+				mid != null;
+				mid = currentDirPage.nextMap(mid))
+			{
+				amap = currentDirPage.getMap(mid);
+				colSet.add(amap.getColumnLabel());
+			}
+
+			nextDirPageId = currentDirPage.getNextPage();
+			unpinPage(currentDirPageId, false);
+			currentDirPageId.pid = nextDirPageId.pid;
+		}
+		return colSet.size();
 	}
 	
 /** Insert map into file, return its Rid.
