@@ -102,7 +102,7 @@ class DataPageInfo implements GlobalConst{
   {   
      // need check _amap size == this.size ?otherwise, throw new exception
     if (_amap.getLength()!=12){
-      throw new InvalidMapSizeException(null, "HEAPFILE: TUPLE SIZE ERROR");
+      throw new InvalidMapSizeException(null, "HEAPFILE: MAP SIZE ERROR");
     }
 
     else{
@@ -115,28 +115,6 @@ class DataPageInfo implements GlobalConst{
       pageId.pid = Convert.getIntValue(offset+8, data);
       
     }
-  }
-  
-  /** convert this class objcet to a tuple(like cast a DataPageInfo to Tuple)
-   *  
-   *
-   */
-  public Tuple convertToTuple()
-       throws IOException
-  {
-
-    // 1) write availspace, recct, pageId into data []
-    Convert.setIntValue(availspace, offset, data);
-    Convert.setIntValue(recct, offset+4, data);
-    Convert.setIntValue(pageId.pid, offset+8, data);
-
-
-    // 2) creat a Tuple object using this array
-    Tuple atuple = new Tuple(data, offset, size); 
- 
-    // 3) return tuple object
-    return atuple;
-
   }
 
 

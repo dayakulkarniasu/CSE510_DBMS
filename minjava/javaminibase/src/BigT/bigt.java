@@ -2,6 +2,7 @@ package BigT;
 
 import java.lang.*;
 import java.util.*;
+import java.util.stream.*;
 import java.io.*;
 import diskmgr.*;
 import bufmgr.*;
@@ -45,7 +46,7 @@ public class bigt implements Tabletype, GlobalConst{
     public void deleteBigt()
         throws InvalidSlotNumberException,
             FileAlreadyDeletedException,
-            InvalidTupleSizeException,
+            InvalidMapSizeException,
             HFBufMgrException,
             HFDiskMgrException,
             IOException
@@ -67,23 +68,23 @@ public class bigt implements Tabletype, GlobalConst{
     //Return number of distinct row labels in the bigtable.
     public int getRowCnt()
         throws InvalidSlotNumberException, 
-            InvalidTupleSizeException,
+            InvalidMapSizeException,
             HFDiskMgrException,
             HFBufMgrException,
             IOException
     {
-        return hf.getMapCnt();
+        return hf.getRowCnt();
     }
 
     //Return number of distinct column labels in the bigtable.
     public int getColumnCnt()
         throws InvalidSlotNumberException,
-            InvalidTupleSizeException,
+            InvalidMapSizeException,
             HFDiskMgrException,
             HFBufMgrException,
             IOException
     {
-        return hf.getMapCnt();
+        return hf.getColCnt();
     }
 
     //Insert map into the big table, return its Mid. 
@@ -92,7 +93,7 @@ public class bigt implements Tabletype, GlobalConst{
     //When a fourth is inserted, the one with the oldest label is dropped from the big table.
     public MID insertMap(byte[] mapPtr)
         throws InvalidSlotNumberException,
-            InvalidTupleSizeException,
+            InvalidMapSizeException,
             SpaceNotAvailableException,
             HFException, HFBufMgrException,
             HFDiskMgrException,
@@ -113,8 +114,8 @@ public class bigt implements Tabletype, GlobalConst{
     4, then results are ﬁrst ordered in column label, then time stamp · 
     5, then results are ordered in time stamp
     */
-    public Stream openStream(int orderType, String rowFilter, String columnFilter, String valueFilter
+    public Stream<Map> openStream(int orderType, String rowFilter, String columnFilter, String valueFilter)
     {
-        return new Stream();
+        return new Stream<Map>();
     }
 }
