@@ -1,12 +1,11 @@
 package BigT;
 
 import java.io.*;
-import java.lang.*;
 import global.*;
 import heap.*;
 
 /**
- * You will need to create a class BigT.Map, similar to heap.Map but having a
+ * You will need to create a class BigT.Map, similar to heap.Tuple but having a
  * ﬁxed structure (and thus a ﬁxed header) as described above. Thus, the
  * constructor and get/set methods associated with the BigT.Map should be
  * adapted as appropriate
@@ -63,15 +62,17 @@ public class Map implements GlobalConst {
     }
 
     /**
+     * 
      * Construct a map from a byte array.
      * 
      * @param amap   a byte array which contains the map
      * @param offset the offset of the map in the byte array
+     * @param length
      */
-    public Map(byte[] amap, int offset) {
+    public Map(byte[] amap, int offset, int length) { //length needs to be declared
         data = amap;
         map_offset = offset;
-        map_length = amap.length;
+        map_length = length;
     }
 
     /**
@@ -83,8 +84,19 @@ public class Map implements GlobalConst {
         data = fromMap.getMapByteArray();
         map_length = fromMap.getLength();
         map_offset = 0;
-        fldCnt = 4; // fromMap.noOfFlds();
+        fldCnt = 4;
         fldOffset = fromMap.copyFldOffset();
+    }
+
+    /**
+     * Class constructor Creat a new map with length = size, map offset = 0.
+     */
+
+    public Map(int size) {
+        // Creat a new map
+        data = new byte[size];
+        map_offset = 0;
+        map_length = size;
     }
 
     /**
@@ -161,10 +173,8 @@ public class Map implements GlobalConst {
         try {
             this.setStrFld(1, val);
         } catch (FieldNumberOutOfBoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return this;
@@ -180,10 +190,8 @@ public class Map implements GlobalConst {
         try {
             this.setStrFld(2, val);
         } catch (FieldNumberOutOfBoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return this;
@@ -199,10 +207,8 @@ public class Map implements GlobalConst {
         try {
             this.setIntFld(3, val);
         } catch (FieldNumberOutOfBoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return this;
@@ -218,10 +224,8 @@ public class Map implements GlobalConst {
         try {
             this.setStrFld(4, val);
         } catch (FieldNumberOutOfBoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return this;
