@@ -4,7 +4,8 @@ import global.*;
 import iterator.*;
 
 /**
- * This class will be similar to heap.Scan, however, will provide different types of accesses to the bigtable
+ * This class will be similar to heap.Scan, however, will provide different
+ * types of accesses to the bigtable
  */
 public class Stream{
 
@@ -12,6 +13,7 @@ public class Stream{
     private bigt bigTable;
     /**
      * Initialize a stream of maps on bigtable.
+     * 
      * @param bigtable
      * @param orderType
      * @param rowFilter
@@ -168,8 +170,11 @@ public class Stream{
 
     /**
      * Retrieve the next map in the stream.
+     * 
      * @param mid
      * @return
      */
-    Map getNext(MID mid){}
+    public Map getNext(MID mid) {
+        return null;
+    }
 }

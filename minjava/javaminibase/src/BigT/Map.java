@@ -3,9 +3,19 @@
 package BigT;
 
 import java.io.*;
-import java.lang.*;
 import global.*;
 
+/**
+ * You will need to create a class BigT.Map, similar to heap.Tuple but having a
+ * ﬁxed structure (and thus a ﬁxed header) as described above. Thus, the
+ * constructor and get/set methods associated with the BigT.Map should be
+ * adapted as appropriate
+ */
+public class Map implements GlobalConst {
+    /**
+     * Maximum size of any Map
+     */
+    public static final int max_size = MINIBASE_PAGESIZE;
 
 public class Map implements GlobalConst{
 
@@ -42,6 +52,19 @@ public class Map implements GlobalConst{
    */
   private short [] fldOffset;
 
+    /**
+     * 
+     * Construct a map from a byte array.
+     * 
+     * @param amap   a byte array which contains the map
+     * @param offset the offset of the map in the byte array
+     * @param length
+     */
+    public Map(byte[] amap, int offset, int length) { //length needs to be declared
+        data = amap;
+        map_offset = offset;
+        map_length = length;
+    }
   /**
    * private field
    * Row label of the Map
