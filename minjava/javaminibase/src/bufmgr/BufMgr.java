@@ -252,7 +252,7 @@ class Clock extends Replacer {
    *
    * @return -1 if no frame is available.
    *         head of the list otherwise.
-   * @throws BufferPoolExceededException.
+   * @throws BufferPoolExceededException
    */
   public int pick_victim() 
     throws BufferPoolExceededException, 
@@ -465,7 +465,7 @@ public class BufMgr implements GlobalConst{
    * if emptyPage==TRUE, then actually no read is done to bring
    * the page in.
    *
-   * @param Page_Id_in_a_DB page number in the minibase.
+   * @param pin_pgid page number in the minibase.
    * @param page the pointer poit to the page.       
    * @param emptyPage true (empty page); false (non-empty page)
    *
@@ -580,7 +580,7 @@ public class BufMgr implements GlobalConst{
    * put it in a group of replacement candidates.
    * if pincount=0 before this call, return error.
    *
-   * @param globalPageId_in_a_DB page number in the minibase.
+   * @param PageId_in_a_DB page number in the minibase.
    * @param dirty the dirty bit of the frame
    *
    * @exception ReplacerException if there is a replacer error. 
@@ -816,7 +816,7 @@ public class BufMgr implements GlobalConst{
     throws BufMgrException {
     
     try {
-      SystemDefs.JavabaseDB.write_page(pageno, page);
+      SystemDefs.JavabaseBigDB.write_page(pageno, page);
     }
     catch (Exception e) {
       throw new BufMgrException(e,"BufMgr.java: write_page() failed");
@@ -828,7 +828,7 @@ public class BufMgr implements GlobalConst{
     throws BufMgrException {
     
     try {
-      SystemDefs.JavabaseDB.read_page(pageno, page);
+      SystemDefs.JavabaseBigDB.read_page(pageno, page);
     }
     catch (Exception e) {
       throw new BufMgrException(e,"BufMgr.java: read_page() failed");
@@ -840,7 +840,7 @@ public class BufMgr implements GlobalConst{
     throws BufMgrException {
     
     try {
-      SystemDefs.JavabaseDB.allocate_page(pageno, num);
+      SystemDefs.JavabaseBigDB.allocate_page(pageno, num);
     }
     catch (Exception e) {
       throw new BufMgrException(e,"BufMgr.java: allocate_page() failed");
@@ -852,7 +852,7 @@ public class BufMgr implements GlobalConst{
     throws BufMgrException {
     
     try {
-      SystemDefs.JavabaseDB.deallocate_page(pageno);
+      SystemDefs.JavabaseBigDB.deallocate_page(pageno);
     }
     catch (Exception e) {
       throw new BufMgrException(e,"BufMgr.java: deallocate_page() failed");

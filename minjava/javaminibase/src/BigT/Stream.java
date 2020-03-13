@@ -7,7 +7,6 @@ import iterator.*;
  * This class will be similar to heap.Scan, however, will provide different
  * types of accesses to the bigtable
  */
-public class Stream implements GlobalConst {
 public class Stream{
 
     /** in-core copy (pinned) of the same */
