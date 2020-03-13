@@ -55,7 +55,12 @@ public class DB implements GlobalConst {
   
   /** default constructor.
    */
-  public DB() { }
+  public DB() { 
+  
+	  //create count class
+	Pcounter pc= new Pcounter();
+	pc.initialize();
+  }
   
   
   /** DB Constructors.
@@ -154,6 +159,7 @@ public class DB implements GlobalConst {
     byte [] buffer = apage.getpage();  //new byte[MINIBASE_PAGESIZE];
     try{
       fp.read(buffer);
+	    pc.readIncrement();
     }
     catch (IOException e) {
       throw new FileIOException(e, "DB file I/O error");
@@ -184,6 +190,7 @@ public class DB implements GlobalConst {
     // Write the appropriate number of bytes.
     try{
       fp.write(apage.getpage());
+	    pc.writeIncrement();
     }
     catch (IOException e) {
       throw new FileIOException(e, "DB file I/O error");
