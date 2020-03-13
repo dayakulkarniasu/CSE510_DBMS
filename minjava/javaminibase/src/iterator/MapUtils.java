@@ -206,7 +206,7 @@ public class MapUtils {
      * @exception IOException         some I/O fault
      * @exception MapUtilsException exception from this class
      */
-    public static short[] setup_op_tuple(Map Jmap, AttrType[] res_attrs, AttrType in1[], int len_in1,
+    public static short[] setup_op_map(Map Jmap, AttrType[] res_attrs, AttrType in1[], int len_in1,
             AttrType in2[], int len_in2, short t1_str_sizes[], short t2_str_sizes[], FldSpec proj_list[], int nOutFlds)
             throws IOException, MapUtilsException {
         short[] sizesT1 = new short[len_in1];
@@ -273,7 +273,7 @@ public class MapUtils {
      * @exception InvalidRelation     invalid relation
      */
 
-    public static short[] setup_op_tuple(Map Jmap, AttrType res_attrs[], AttrType in1[], int len_in1,
+    public static short[] setup_op_map(Map Jmap, AttrType res_attrs[], AttrType in1[], int len_in1,
             short t1_str_sizes[], FldSpec proj_list[], int nOutFlds)
             throws IOException, MapUtilsException, InvalidRelation {
         short[] sizesT1 = new short[len_in1];
