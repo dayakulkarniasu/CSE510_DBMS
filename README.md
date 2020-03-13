@@ -6,3 +6,4 @@
 - HFPage 
 - DataPageInfo 
 - Heapfile
+- Scan
