@@ -4,11 +4,10 @@
 - Bigt.Map 
 - global.MID
 
-## btree package --> replacement complete
-- all
-
-## catalog package --> replacement complete
-- all
+## replacement complete
+- btree package
+- catalog package
+- chainexception package
 
 ## heap package --> replacement complete
 - HFPage 
