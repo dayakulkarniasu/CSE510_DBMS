@@ -51,6 +51,7 @@ public class BigDB implements GlobalConst {
   
   /** default constructor.
    */
+  //TODO: according to instructions we should pass in a type to ctor
   public BigDB() { }
   
   
