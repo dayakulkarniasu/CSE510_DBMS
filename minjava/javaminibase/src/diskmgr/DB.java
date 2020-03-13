@@ -58,7 +58,7 @@ public class DB implements GlobalConst {
   public DB() { 
   
 	  //create count class
-	Pcounter pc= new Pcounter();
+	PCounter pc= new PCounter();
 	pc.initialize();
   }
   
