@@ -57,7 +57,7 @@ public class bigt implements Tabletype, GlobalConst{
     //Return number of maps in the bigtable.
     public int getMapCnt()
         throws InvalidSlotNumberException,
-            InvalidTupleSizeException,
+            InvalidMapSizeException,
             HFDiskMgrException,
             HFBufMgrException,
             IOException
