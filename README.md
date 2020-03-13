@@ -1,8 +1,12 @@
 # tasks that has been done and tested so far
 
-- MapOrder
-- Bigt.Map 
-- global.MID
+- task1: Bigt.Map
+- task2: complete
+- task3: complete
+- task4: 
+- task5: 
+- task6: 
+- task7: 
 
 ## replacement complete (except tests package)
 - btree 
