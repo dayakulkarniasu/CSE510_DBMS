@@ -69,7 +69,7 @@ public class Map implements GlobalConst {
      * @param offset the offset of the map in the byte array
      * @param length
      */
-    public Map(byte[] amap, int offset, int length) { //length needs to be declared
+    public Map(byte[] amap, int offset, int length) { // length needs to be declared
         data = amap;
         map_offset = offset;
         map_length = length;
@@ -105,7 +105,7 @@ public class Map implements GlobalConst {
      * @return
      * @throws FieldNumberOutOfBoundException
      */
-    public String getRowLabel() {
+    public String getRowLabel() throws IOException, FieldNumberOutOfBoundException {
         String tmp = null;
         try {
             tmp = getStrFld(1);
@@ -121,7 +121,7 @@ public class Map implements GlobalConst {
      * @return
      * @throws FieldNumberOutOfBoundException
      */
-    public String getColumnLabel() {
+    public String getColumnLabel() throws IOException, FieldNumberOutOfBoundException {
         String tmp = null;
         try {
             tmp = getStrFld(2);
@@ -137,7 +137,7 @@ public class Map implements GlobalConst {
      * @return
      * @throws FieldNumberOutOfBoundException
      */
-    public int getTimeStamp() {
+    public int getTimeStamp() throws IOException, FieldNumberOutOfBoundException {
         int tmp = -1;
         try {
             tmp = getIntFld(3);
@@ -153,7 +153,7 @@ public class Map implements GlobalConst {
      * @return
      * @throws FieldNumberOutOfBoundException
      */
-    public String getValue() {
+    public String getValue() throws IOException, FieldNumberOutOfBoundException {
         String tmp = null;
         try {
             tmp = getStrFld(4);
@@ -169,7 +169,7 @@ public class Map implements GlobalConst {
      * @param val
      * @return
      */
-    public Map setRowLabel(String val) {
+    public Map setRowLabel(String val) throws IOException, FieldNumberOutOfBoundException {
         try {
             this.setStrFld(1, val);
         } catch (FieldNumberOutOfBoundException e) {
@@ -186,7 +186,7 @@ public class Map implements GlobalConst {
      * @param val
      * @return
      */
-    public Map setColumnLabel(String val) {
+    public Map setColumnLabel(String val) throws IOException, FieldNumberOutOfBoundException {
         try {
             this.setStrFld(2, val);
         } catch (FieldNumberOutOfBoundException e) {
@@ -203,7 +203,7 @@ public class Map implements GlobalConst {
      * @param val
      * @return
      */
-    public Map setTimeStamp(int val) {
+    public Map setTimeStamp(int val) throws IOException, FieldNumberOutOfBoundException {
         try {
             this.setIntFld(3, val);
         } catch (FieldNumberOutOfBoundException e) {
@@ -220,7 +220,7 @@ public class Map implements GlobalConst {
      * @param val
      * @return
      */
-    public Map setValue(String val) {
+    public Map setValue(String val) throws IOException, FieldNumberOutOfBoundException {
         try {
             this.setStrFld(4, val);
         } catch (FieldNumberOutOfBoundException e) {
