@@ -1,4 +1,4 @@
-# tasks that has been done and tested so far
+# tasks that has been done and hasn't been tested so far
 
 - task1: Bigt.Map
 - task2: complete
