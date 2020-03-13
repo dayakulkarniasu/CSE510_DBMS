@@ -1,40 +1,39 @@
 package global;
 
-/** 
+/**
  * Enumeration class for AttrOperator
  * 
  */
 
 public class AttrOperator {
 
-  public static final int aopEQ   = 0;
-  public static final int aopLT   = 1;
-  public static final int aopGT   = 2;
-  public static final int aopNE   = 3;
-  public static final int aopLE   = 4;
-  public static final int aopGE   = 5;
-  public static final int aopNOT  = 6;
-  public static final int aopNOP  = 7;
-  public static final int opRANGE = 8; //defined this way in C++
+  public static final int aopEQ = 0;
+  public static final int aopLT = 1;
+  public static final int aopGT = 2;
+  public static final int aopNE = 3;
+  public static final int aopLE = 4;
+  public static final int aopGE = 5;
+  public static final int aopNOT = 6;
+  public static final int aopNOP = 7;
+  public static final int opRANGE = 8; // defined this way in C++
 
   public int attrOperator;
 
-  /** 
-   * AttrOperator Constructor
-   * <br>
-   * An attribute operator types can be defined as 
+  /**
+   * AttrOperator Constructor <br>
+   * An attribute operator types can be defined as
    * <ul>
-   * <li>   AttrOperator attrOperator = new AttrOperator(AttrOperator.aopEQ);
+   * <li>AttrOperator attrOperator = new AttrOperator(AttrOperator.aopEQ);
    * </ul>
    * and subsequently used as
    * <ul>
-   * <li>   if (attrOperator.attrOperator == AttrOperator.aopEQ) ....
+   * <li>if (attrOperator.attrOperator == AttrOperator.aopEQ) ....
    * </ul>
    *
-   * @param _attrOperator The available attribute operators 
+   * @param _attrOperator The available attribute operators
    */
 
-  public AttrOperator (int _attrOperator) {
+  public AttrOperator(int _attrOperator) {
     attrOperator = _attrOperator;
   }
 

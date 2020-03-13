@@ -5,9 +5,12 @@
 - global.MID
 
 ## replacement complete
-- btree package
-- catalog package
-- chainexception package
+- btree 
+- catalog 
+- chainexception 
+- diskmgr 
+- global
+- heap
 
 ## heap package --> replacement complete
 - HFPage 
