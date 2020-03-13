@@ -51,13 +51,13 @@ public class bigt implements Tabletype, GlobalConst {
     // Return number of distinct row labels in the bigtable.
     public int getRowCnt() throws InvalidSlotNumberException, InvalidTupleSizeException, HFDiskMgrException,
             HFBufMgrException, IOException {
-        return hf.getMapCnt();
+        return hf.getRowCnt();
     }
 
     // Return number of distinct column labels in the bigtable.
     public int getColumnCnt() throws InvalidSlotNumberException, InvalidTupleSizeException, HFDiskMgrException,
             HFBufMgrException, IOException {
-        return hf.getMapCnt();
+        return hf.getColCnt();
     }
 
     // Insert map into the big table, return its Mid.

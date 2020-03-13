@@ -1,6 +1,9 @@
 package heap;
 
 import java.io.*;
+import java.util.HashSet;
+import java.util.Set;
+
 import diskmgr.*;
 import global.*;
 import BigT.*;
@@ -307,7 +310,73 @@ public class Heapfile implements Filetype, GlobalConst {
 	} // end of getRecCnt
 
 	/**
-	 * Insert map into file, return its Rid.
+	 * Return number of distinct rows in file.
+	 *
+	 * @exception InvalidSlotNumberException invalid slot number
+	 * @exception InvalidMapSizeException    invalid tuple size
+	 * @exception HFBufMgrException          exception thrown from bufmgr layer
+	 * @exception HFDiskMgrException         exception thrown from diskmgr layer
+	 * @exception IOException                I/O errors
+	 */
+	public int getRowCnt() throws InvalidSlotNumberException, InvalidTupleSizeException, HFDiskMgrException,
+			HFBufMgrException, IOException {
+		Set<String> rowSet = new HashSet<String>();
+		PageId currentDirPageId = new PageId(_firstDirPageId.pid);
+		PageId nextDirPageId = new PageId(0);
+		HFPage currentDirPage = new HFPage();
+		// Page pageinbuffer = new Page();
+
+		while (currentDirPageId.pid != INVALID_PAGE) {
+			pinPage(currentDirPageId, currentDirPage, false);
+			MID mid = new MID();
+			Map amap;
+			for (mid = currentDirPage.firstMap(); mid != null; mid = currentDirPage.nextMap(mid)) {
+				amap = currentDirPage.getMap(mid);
+				rowSet.add(amap.getRowLabel());
+			}
+
+			nextDirPageId = currentDirPage.getNextPage();
+			unpinPage(currentDirPageId, false);
+			currentDirPageId.pid = nextDirPageId.pid;
+		}
+		return rowSet.size();
+	}
+
+	/**
+	 * Return number of distinct columns in file.
+	 *
+	 * @exception InvalidSlotNumberException invalid slot number
+	 * @exception InvalidMapSizeException    invalid tuple size
+	 * @exception HFBufMgrException          exception thrown from bufmgr layer
+	 * @exception HFDiskMgrException         exception thrown from diskmgr layer
+	 * @exception IOException                I/O errors
+	 */
+	public int getColCnt() throws InvalidSlotNumberException, InvalidTupleSizeException, HFDiskMgrException,
+			HFBufMgrException, IOException {
+		Set<String> colSet = new HashSet<String>();
+		PageId currentDirPageId = new PageId(_firstDirPageId.pid);
+		PageId nextDirPageId = new PageId(0);
+		HFPage currentDirPage = new HFPage();
+		// Page pageinbuffer = new Page();
+
+		while (currentDirPageId.pid != INVALID_PAGE) {
+			pinPage(currentDirPageId, currentDirPage, false);
+			MID mid = new MID();
+			Map amap;
+			for (mid = currentDirPage.firstMap(); mid != null; mid = currentDirPage.nextMap(mid)) {
+				amap = currentDirPage.getMap(mid);
+				colSet.add(amap.getColumnLabel());
+			}
+
+			nextDirPageId = currentDirPage.getNextPage();
+			unpinPage(currentDirPageId, false);
+			currentDirPageId.pid = nextDirPageId.pid;
+		}
+		return colSet.size();
+	}
+
+	/**
+	 * Insert map into file, return its Mid.
 	 *
 	 * @param mapPtr pointer of the map
 	 * @param mapLen the length of the map

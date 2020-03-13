@@ -545,7 +545,7 @@ public class Scan implements GlobalConst {
   }
 
   /**
-   * Move to the next record in a sequential scan. Also returns the RID of the
+   * Move to the next record in a sequential scan. Also returns the MID of the
    * (new) current record.
    */
   private boolean mvNext(MID mid) throws InvalidTupleSizeException, IOException {
