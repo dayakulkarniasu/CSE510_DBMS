@@ -6,16 +6,17 @@ import BigT.*;
 import heap.Tuple;
 
 import java.io.*;
-//import global.*;
+import global.*;
 
-public class batchInsert{
+public class batchInsert implements GlobalConst{
     public static void main(String[] args){
         String filepath = "./";
         String datafilename = args[0];
         int type = Integer.parseInt(args[1]);
         String bigTableName = args[2];
         //TODO System Defs
-        //SystemDefsBigDB sysDefs = new SystemDefsBigDB();
+        //SystemDefs sysDefs = new SystemDefs();
+        SystemDefs sysdef = new SystemDefs( datafilename, 300, NUMBUF, "Clock" );
         BufferedReader br = null;
         String line = "";
         String csvSplitBy = ",";
@@ -28,7 +29,6 @@ public class batchInsert{
                 String timeStamp = map[2];
                 String value = map[3];
                 System.out.println("row label: "+ rowLabel + " col label: " + columnLabel + " TS: " + timeStamp  + " val: " + value);
-
                 //TODO Map
                 Map m = new Map();
                 //TODO insert into big table
@@ -49,8 +49,9 @@ public class batchInsert{
                 // type 5 - type5CombKeyIdx & type5TSIdx
 
                 // putting this here for now
-                bigt big = new bigt(bigTableName, type);
-                BTreeFile btf = null;
+                //bigt big = new bigt(bigTableName, type);
+                //BTreeFile btf = null;
+                /*
                 switch (type){
                     case DBType.type1:
                         //TODO need to research this one a little more
@@ -59,7 +60,7 @@ public class batchInsert{
                     case DBType.type2:
                         //one btree to index row labels
                         try {
-                            btf = new BTreeFile("type2Idx", AttrType.attrString, big.getRowCnt(), 1/*delete*/);
+                            btf = new BTreeFile("type2Idx", AttrType.attrString, big.getRowCnt(), 1);
                         }
                         catch (Exception e) {
                             e.printStackTrace();
@@ -125,9 +126,7 @@ public class batchInsert{
                     default:
 
                 }
-            }
-
-
+                */
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

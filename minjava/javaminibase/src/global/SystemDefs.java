@@ -6,13 +6,13 @@ import catalog.*;
 
 public class SystemDefs {
   public static BufMgr	JavabaseBM;
-  public static DB	JavabaseDB;
+  public static BigDB	JavabaseBigDB;
   public static Catalog	JavabaseCatalog;
   
-  public static String  JavabaseDBName;
+  public static String  JavabaseBigDBName;
   public static String  JavabaseLogName;
   public static boolean MINIBASE_RESTART_FLAG = false;
-  public static String	MINIBASE_DBNAME;
+  public static String	MINIBASE_BigDBNAME;
   
   public SystemDefs (){};
   
@@ -47,14 +47,14 @@ public class SystemDefs {
       
       boolean status = true;
       JavabaseBM = null;
-      JavabaseDB = null;
-      JavabaseDBName = null;
+      JavabaseBigDB = null;
+      JavabaseBigDBName = null;
       JavabaseLogName = null;
       JavabaseCatalog = null;
       
       try {
 	JavabaseBM = new BufMgr(bufpoolsize, replacement_policy);
-	JavabaseDB = new DB();
+	JavabaseBigDB = new BigDB();
 /*
 	JavabaseCatalog = new Catalog(); 
 */
@@ -65,15 +65,15 @@ public class SystemDefs {
 	Runtime.getRuntime().exit(1);
       }
       
-      JavabaseDBName = new String(dbname);
+      JavabaseBigDBName = new String(dbname);
       JavabaseLogName = new String(logname);
-      MINIBASE_DBNAME = new String(JavabaseDBName);
+      MINIBASE_BigDBNAME = new String(JavabaseBigDBName);
       
       // create or open the DB
-      
+
       if ((MINIBASE_RESTART_FLAG)||(num_pgs == 0)){//open an existing database
 	try {
-	  JavabaseDB.openDB(dbname);
+	  JavabaseBigDB.openDB(dbname);
 	}
 	catch (Exception e) {
 	  System.err.println (""+e);
@@ -83,7 +83,7 @@ public class SystemDefs {
       } 
       else {
 	try {
-	  JavabaseDB.openDB(dbname, num_pgs);
+	  JavabaseBigDB.openDB(dbname, num_pgs);
 	  JavabaseBM.flushAllPages();
 	}
 	catch (Exception e) {
