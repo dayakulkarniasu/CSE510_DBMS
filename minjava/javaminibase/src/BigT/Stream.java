@@ -1,16 +1,43 @@
 package BigT;
 
 import global.*;
+import heap.HFBufMgrException;
 import iterator.*;
+import diskmgr.*;
+import heap.*;
+
+import java.io.IOException;
 
 /**
  * This class will be similar to heap.Scan, however, will provide different
  * types of accesses to the bigtable
  */
-public class Stream{
+public class Stream implements GlobalConst{
 
     /** in-core copy (pinned) of the same */
     private bigt bigTable;
+    /** PageId of current directory page (which is itself an HFPage) */
+    private PageId dirpageId = new PageId();
+    /** pageId of bigT*/
+    private PageId datapageId = new PageId();
+    /** pointer to in-core data of dirpageId (page is pinned) */
+    private HFPage dirpage = new HFPage();
+    /** record ID of the DataPageInfo struct (in the directory page) which
+     * describes the data page where our current record lives.
+     *
+     */
+    private MID datapageMid = new MID();
+    /** Status of next user status */
+    private boolean nextUserStatus;
+    /** in-core copy (pinned) of the same */
+    private HFPage datapage = new HFPage();
+
+    /** record ID of the current record (from the current data page) */
+    private MID userrid = new MID();
+
+    /** the actual PageId of the data page with the current record */
+
+
     /**
      * Initialize a stream of maps on bigtable.
      * 
@@ -175,6 +202,257 @@ public class Stream{
      * @return
      */
     public Map getNext(MID mid) {
-        return null;
+        Map recptrmap = null;
+
+        if (nextUserStatus != true) {
+            nextDataPage();
+        }
+
+        if (datapage == null)
+            return null;
+
+        mid.pageNo.pid = userrid.pageNo.pid;
+        mid.slotNo = userrid.slotNo;
+
+        try {
+            recptrmap = datapage.getMap(mid);
+        }
+
+        catch (Exception e) {
+            //    System.err.println("SCAN: Error in Scan" + e);
+            e.printStackTrace();
+        }
+
+        try {
+            userrid = datapage.nextMap(mid);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(userrid == null) nextUserStatus = false;
+        else nextUserStatus = true;
+
+        return recptrmap;
+
     }
+
+    /** Move to the next data page in the file and
+     * retrieve the next data page.
+     *
+     * @return 		true if successful
+     *			false if unsuccessful
+     */
+    private boolean nextDataPage()
+            throws InvalidTupleSizeException,
+            IOException
+    {
+        DataPageInfo dpinfo;
+
+        boolean nextDataPageStatus;
+        PageId nextDirPageId = new PageId();
+        Map recmap = null;
+
+        // ASSERTIONS:
+        // - this->dirpageId has Id of current directory page
+        // - this->dirpage is valid and pinned
+        // (1) if bigTable empty:
+        //    - this->datapage==NULL; this->datapageId == INVALID_PAGE
+        // (2) if overall first record in bigTable:
+        //    - this->datapage==NULL, but this->datapageId valid
+        //    - this->datapageRid valid
+        //    - current data page unpinned !!!
+        // (3) if somewhere in bigTable
+        //    - this->datapageId, this->datapage, this->datapageRid valid
+        //    - current data page pinned
+        // (4)- if the scan had already been done,
+        //        dirpage = NULL;  datapageId = INVALID_PAGE
+
+        if ((dirpage == null) && (datapageId.pid == INVALID_PAGE))
+            return false;
+
+        if (datapage == null) {
+            if (datapageId.pid == INVALID_PAGE) {
+                // heapfile is empty to begin with
+
+                try{
+                    unpinPage(dirpageId, false);
+                    dirpage = null;
+                }
+                catch (Exception e){
+                    //  System.err.println("Scan: Chain Error: " + e);
+                    e.printStackTrace();
+                }
+
+            } else {
+
+                // pin first data page
+                try {
+                    datapage  = new HFPage();
+                    pinPage(datapageId, (Page) datapage, false);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                try {
+                    userrid = datapage.firstMap();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return true;
+            }
+        }
+
+        // ASSERTIONS:
+        // - this->datapage, this->datapageId, this->datapageRid valid
+        // - current datapage pinned
+
+        // unpin the current datapage
+        try{
+            unpinPage(datapageId, false /* no dirty */);
+            datapage = null;
+        }
+        catch (Exception e){
+
+        }
+
+        // read next datapagerecord from current directory page
+        // dirpage is set to NULL at the end of scan. Hence
+
+        if (dirpage == null) {
+            return false;
+        }
+
+        datapageMid = dirpage.nextMap(datapageMid);
+
+        if (datapageMid == null) {
+            nextDataPageStatus = false;
+            // we have read all datapage records on the current directory page
+
+            // get next directory page
+            nextDirPageId = dirpage.getNextPage();
+
+            // unpin the current directory page
+            try {
+                unpinPage(dirpageId, false /* not dirty */);
+                dirpage = null;
+
+                datapageId.pid = INVALID_PAGE;
+            }
+
+            catch (Exception e) {
+
+            }
+
+            if (nextDirPageId.pid == INVALID_PAGE)
+                return false;
+            else {
+                // ASSERTION:
+                // - nextDirPageId has correct id of the page which is to get
+
+                dirpageId = nextDirPageId;
+
+                try {
+                    dirpage  = new HFPage();
+                    pinPage(dirpageId, (Page)dirpage, false);
+                }
+
+                catch (Exception e){
+
+                }
+
+                if (dirpage == null)
+                    return false;
+
+                try {
+                    datapageMid = dirpage.firstMap();
+                    nextDataPageStatus = true;
+                }
+                catch (Exception e){
+                    nextDataPageStatus = false;
+                    return false;
+                }
+            }
+        }
+
+        // ASSERTION:
+        // - this->dirpageId, this->dirpage valid
+        // - this->dirpage pinned
+        // - the new datapage to be read is on dirpage
+        // - this->datapageRid has the Rid of the next datapage to be read
+        // - this->datapage, this->datapageId invalid
+
+        // data page is not yet loaded: read its record from the directory page
+        try {
+            recmap = dirpage.getMap(datapageMid);
+        }
+
+        catch (Exception e) {
+            System.err.println("HeapFile: Error in Scan" + e);
+        }
+
+        if (recmap.getLength() != DataPageInfo.size)
+            return false;
+
+        dpinfo = new DataPageInfo(recmap);
+        datapageId.pid = dpinfo.pageId.pid;
+
+        try {
+            datapage = new HFPage();
+            pinPage(dpinfo.pageId, (Page) datapage, false);
+        }
+
+        catch (Exception e) {
+            System.err.println("HeapFile: Error in Scan" + e);
+        }
+
+
+        // - directory page is pinned
+        // - datapage is pinned
+        // - this->dirpageId, this->dirpage correct
+        // - this->datapageId, this->datapage, this->datapageRid correct
+
+        userrid = datapage.firstMap();
+
+        if(userrid == null)
+        {
+            nextUserStatus = false;
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * short cut to access the pinPage function in bufmgr package.
+     * @see bufmgr
+     */
+    private void pinPage(PageId pageno, Page page, boolean emptyPage)
+            throws HFBufMgrException {
+
+        try {
+            SystemDefs.JavabaseBM.pinPage(pageno, page, emptyPage);
+        }
+        catch (Exception e) {
+            throw new HFBufMgrException(e,"Scan.java: pinPage() failed");
+        }
+
+    } // end of pinPage
+
+    /**
+     * short cut to access the unpinPage function in bufmgr package.
+     * @see bufmgr
+     */
+    private void unpinPage(PageId pageno, boolean dirty)
+            throws HFBufMgrException {
+
+        try {
+            SystemDefs.JavabaseBM.unpinPage(pageno, dirty);
+        }
+        catch (Exception e) {
+            throw new HFBufMgrException(e,"Scan.java: unpinPage() failed");
+        }
+
+    } // end of unpinPage
 }

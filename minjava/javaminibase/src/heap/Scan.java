@@ -637,7 +637,7 @@ public class Scan implements GlobalConst{
 
   /**
    * short cut to access the unpinPage function in bufmgr package.
-   * @see bufmgr.unpinPage
+   * @see bufmgr
    */
   private void unpinPage(PageId pageno, boolean dirty)
     throws HFBufMgrException {

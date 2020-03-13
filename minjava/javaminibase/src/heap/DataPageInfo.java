@@ -14,7 +14,7 @@ import BigT.Map;
  * April 9, 1998
  */
 
-class DataPageInfo implements GlobalConst {
+public class DataPageInfo implements GlobalConst {
 
   /** HFPage returns int for avail space, so we use int here */
   int availspace;
@@ -23,7 +23,7 @@ class DataPageInfo implements GlobalConst {
   int recct;
 
   /** obvious: id of this particular data page (a HFPage) */
-  PageId pageId = new PageId();
+  public PageId pageId = new PageId();
 
   /** auxiliary fields of DataPageInfo */
 
@@ -88,31 +88,6 @@ class DataPageInfo implements GlobalConst {
 
     }
   }
-  
-  /** constructor: translate a map to a DataPageInfo object
-   *  it will make a copy of the data in the map
-   * @param amap: the input map
-   */
-  public DataPageInfo(Map _amap)
-       throws InvalidMapSizeException, IOException
-  {   
-     // need check _amap size == this.size ?otherwise, throw new exception
-    if (_amap.getLength()!=12){
-      throw new InvalidMapSizeException(null, "HEAPFILE: MAP SIZE ERROR");
-    }
-
-    else{
-      data = _amap.returnMapByteArray();
-      offset = _amap.getOffset();
-      
-      availspace = Convert.getIntValue(offset, data);
-      recct = Convert.getIntValue(offset+4, data);
-      pageId = new PageId();
-      pageId.pid = Convert.getIntValue(offset+8, data);
-      
-    }
-  }
-
 
   /** convert this class objcet to a map(like cast a DataPageInfo to Map)
    *  
@@ -129,27 +104,9 @@ class DataPageInfo implements GlobalConst {
 
     // 2) creat a map object using this array
     Map amap = new Map(data, offset, size);
-
-    // 2) creat a Tuple object using this array
-    Map amap = new Map(data, offset, size); 
  
     // 3) return tuple object
     return amap;
-
-  }
-
-  /**
-   * write this object's useful fields(availspace, recct, pageId) to the
-   * data[](may be in buffer pool)
-   * 
-   */
-  public void flushToMap() throws IOException {
-    // write availspace, recct, pageId into "data[]"
-    Convert.setIntValue(availspace, offset, data);
-    Convert.setIntValue(recct, offset + 4, data);
-    Convert.setIntValue(pageId.pid, offset + 8, data);
-
-    // here we assume data[] already points to buffer pool
 
   }
 
