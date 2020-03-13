@@ -3,10 +3,8 @@ package iterator;
 import heap.*;
 import global.*;
 import bufmgr.*;
-import diskmgr.*;
 import index.*;
-
-import java.lang.*;
+import BigT.Map;
 import java.io.*;
 
 /**
@@ -22,16 +20,16 @@ public class DuplElim extends Iterator {
 
   private AttrType sortFldType;
   private int sortFldLen;
-  private Tuple Jtuple;
+  private Map Jmap;
 
-  private Tuple TempTuple1, TempTuple2;
+  private Map TempMap1, TempMap2;
 
   /**
    * Constructor to set up some information.
    * 
    * @param in[]       Array containing field types of R.
    * @param len_in     # of columns in R.
-   * @param s_sizes[]  store the length of string appeared in tuple
+   * @param s_sizes[]  store the length of string appeared in map
    * @param am         input relation iterator, access method for left input to
    *                   join,
    * @param amt_of_mem the page numbers required IN PAGES
@@ -44,9 +42,9 @@ public class DuplElim extends Iterator {
     System.arraycopy(in, 0, _in, 0, in.length);
     in_len = len_in;
 
-    Jtuple = new Tuple();
+    Jmap = new Map();
     try {
-      Jtuple.setHdr(len_in, _in, s_sizes);
+      Jmap.setHdr(len_in, _in, s_sizes);
     } catch (Exception e) {
       throw new DuplElimException(e, "setHdr() failed");
     }
@@ -79,11 +77,11 @@ public class DuplElim extends Iterator {
     }
 
     // Allocate memory for the temporary tuples
-    TempTuple1 = new Tuple();
-    TempTuple2 = new Tuple();
+    TempMap1 = new Map();
+    TempMap2 = new Map();
     try {
-      TempTuple1.setHdr(in_len, _in, s_sizes);
-      TempTuple2.setHdr(in_len, _in, s_sizes);
+      TempMap1.setHdr(in_len, _in, s_sizes);
+      TempMap2.setHdr(in_len, _in, s_sizes);
     } catch (Exception e) {
       throw new DuplElimException(e, "setHdr() failed");
     }
@@ -91,16 +89,16 @@ public class DuplElim extends Iterator {
   }
 
   /**
-   * The tuple is returned.
+   * The map is returned.
    * 
-   * @return call this function to get the tuple
+   * @return call this function to get the map
    * @exception JoinsException            some join exception
    * @exception IndexException            exception from super class
    * @exception IOException               I/O errors
-   * @exception InvalidTupleSizeException invalid tuple size
-   * @exception InvalidTypeException      tuple type not valid
+   * @exception InvalidTupleSizeException invalid map size
+   * @exception InvalidTypeException      map type not valid
    * @exception PageNotReadException      exception from lower layer
-   * @exception TupleUtilsException       exception from using tuple utilities
+   * @exception TupleUtilsException       exception from using map utilities
    * @exception PredEvalException         exception from PredEval class
    * @exception SortException             sort exception
    * @exception LowMemException           memory error
@@ -108,27 +106,27 @@ public class DuplElim extends Iterator {
    * @exception UnknownKeyTypeException   key type unknown
    * @exception Exception                 other exceptions
    */
-  public Tuple get_next() throws IOException, JoinsException, IndexException, InvalidTupleSizeException,
-      InvalidTypeException, PageNotReadException, TupleUtilsException, PredEvalException, SortException,
-      LowMemException, UnknowAttrType, UnknownKeyTypeException, Exception {
-    Tuple t;
+  public Map get_next() throws IOException, JoinsException, IndexException, InvalidTupleSizeException,
+      InvalidTypeException, PageNotReadException, MapUtilsException, PredEvalException, SortException, LowMemException,
+      UnknowAttrType, UnknownKeyTypeException, Exception {
+    Map t;
 
     if (done)
       return null;
-    Jtuple.tupleCopy(TempTuple1);
+    Jmap.mapCopy(TempMap1);
 
     do {
       if ((t = _am.get_next()) == null) {
         done = true; // next call returns DONE;
         return null;
       }
-      TempTuple2.tupleCopy(t);
-    } while (TupleUtils.Equal(TempTuple1, TempTuple2, _in, in_len));
+      TempMap2.mapCopy(t);
+    } while (MapUtils.Equal(TempMap1, TempMap2, _in, in_len));
 
-    // Now copy the the TempTuple2 (new o/p tuple) into TempTuple1.
-    TempTuple1.tupleCopy(TempTuple2);
-    Jtuple.tupleCopy(TempTuple2);
-    return Jtuple;
+    // Now copy the the TempTuple2 (new o/p map) into TempTuple1.
+    TempMap1.mapCopy(TempMap2);
+    Jmap.mapCopy(TempMap2);
+    return Jmap;
   }
 
   /**

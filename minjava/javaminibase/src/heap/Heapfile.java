@@ -317,9 +317,10 @@ public class Heapfile implements Filetype, GlobalConst {
 	 * @exception HFBufMgrException          exception thrown from bufmgr layer
 	 * @exception HFDiskMgrException         exception thrown from diskmgr layer
 	 * @exception IOException                I/O errors
+	 * @throws FieldNumberOutOfBoundException
 	 */
 	public int getRowCnt() throws InvalidSlotNumberException, InvalidTupleSizeException, HFDiskMgrException,
-			HFBufMgrException, IOException {
+			HFBufMgrException, IOException, FieldNumberOutOfBoundException {
 		Set<String> rowSet = new HashSet<String>();
 		PageId currentDirPageId = new PageId(_firstDirPageId.pid);
 		PageId nextDirPageId = new PageId(0);
@@ -350,9 +351,10 @@ public class Heapfile implements Filetype, GlobalConst {
 	 * @exception HFBufMgrException          exception thrown from bufmgr layer
 	 * @exception HFDiskMgrException         exception thrown from diskmgr layer
 	 * @exception IOException                I/O errors
+	 * @throws FieldNumberOutOfBoundException
 	 */
 	public int getColCnt() throws InvalidSlotNumberException, InvalidTupleSizeException, HFDiskMgrException,
-			HFBufMgrException, IOException {
+			HFBufMgrException, IOException, FieldNumberOutOfBoundException {
 		Set<String> colSet = new HashSet<String>();
 		PageId currentDirPageId = new PageId(_firstDirPageId.pid);
 		PageId nextDirPageId = new PageId(0);

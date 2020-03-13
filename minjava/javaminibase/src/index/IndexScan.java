@@ -51,8 +51,8 @@ public class IndexScan extends Iterator {
     Jmap = new Map();
 
     try {
-      ts_sizes = TupleUtils.setup_op_tuple(Jmap, Jtypes, types, noInFlds, str_sizes, outFlds, noOutFlds);
-    } catch (TupleUtilsException e) {
+      ts_sizes = MapUtils.setup_op_map(Jmap, Jtypes, types, noInFlds, str_sizes, outFlds, noOutFlds);
+    } catch (MapUtilsException e) {
       throw new IndexException(e, "IndexScan.java: TupleUtilsException caught from TupleUtils.setup_op_tuple()");
     } catch (InvalidRelation e) {
       throw new IndexException(e, "IndexScan.java: InvalidRelation caught from TupleUtils.setup_op_tuple()");

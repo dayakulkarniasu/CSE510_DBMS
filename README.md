@@ -4,18 +4,17 @@
 - Bigt.Map 
 - global.MID
 
-## replacement complete
+## replacement complete (except tests package)
 - btree 
 - catalog 
 - chainexception 
 - diskmgr 
 - global
 - heap
+- index
+- iterator
+- programs
 
-## heap package --> replacement complete
-- HFPage 
-- DataPageInfo 
-- Heapfile
-- Scan
+
 
 

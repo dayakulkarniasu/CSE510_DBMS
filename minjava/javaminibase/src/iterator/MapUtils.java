@@ -98,7 +98,7 @@ public class MapUtils {
      * @exception IOException         some I/O fault
      * @exception TupleUtilsException exception from this class
      */
-    public static int CompareMapWithMap(AttrType fldType, Map m1, int m1_fld_no, Map value)
+    public static int CompareMapWithValue(AttrType fldType, Map m1, int m1_fld_no, Map value)
             throws IOException, UnknowAttrType, MapUtilsException {
         return CompareMapWithMap(fldType, m1, m1_fld_no, value, m1_fld_no);
     }

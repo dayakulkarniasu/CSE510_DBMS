@@ -50,13 +50,13 @@ public class bigt implements Tabletype, GlobalConst {
 
     // Return number of distinct row labels in the bigtable.
     public int getRowCnt() throws InvalidSlotNumberException, InvalidTupleSizeException, HFDiskMgrException,
-            HFBufMgrException, IOException {
+            HFBufMgrException, IOException, FieldNumberOutOfBoundException {
         return hf.getRowCnt();
     }
 
     // Return number of distinct column labels in the bigtable.
     public int getColumnCnt() throws InvalidSlotNumberException, InvalidTupleSizeException, HFDiskMgrException,
-            HFBufMgrException, IOException {
+            HFBufMgrException, IOException, FieldNumberOutOfBoundException {
         return hf.getColCnt();
     }
 
