@@ -1140,6 +1140,9 @@ public class Heapfile implements Filetype,  GlobalConst {
 
   } // end of delete_file_entry
 
-
+  public PageId getFirstDirPageId()
+  {
+	  return _firstDirPageId;
+  }
   
 }// End of HeapFile 

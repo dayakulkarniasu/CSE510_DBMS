@@ -102,6 +102,11 @@ public class bigt implements Tabletype, GlobalConst{
         return hf.insertMap(mapPtr);
     }
 
+    public Heapfile getHeapfile()
+    {
+        return hf;
+    }
+
     /*
     Initialize a stream of maps where row label matching rowFilter, 
     column label matching columnFilter, and value label matching valueFilter. 
