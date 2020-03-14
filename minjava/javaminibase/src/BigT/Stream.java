@@ -95,9 +95,28 @@ public class Stream implements GlobalConst{
         Sort sort = null;
         try {
 
-            //TODO we need to make modifications to the sort to work with maps instead of tuples
-            sort = new Sort(attrType, (short) 4, attrSize, fscan, 1, order[0], 64, SORTPGNUM);
-            //sort = new Sort(attrType, (short) 4, attrSize, fscan, 3, order[0], 4, SORTPGNUM);
+            //TODO
+            //sort = new Sort(attrType, (short) 4, attrSize, fscan, 1, order[0], 64, SORTPGNUM);
+            switch (orderType){
+                case OrderType.type1:
+                    //results ordered by rowLabel then columnLabel then time stamp
+                    break;
+                case OrderType.type2:
+                    //ordered columnLabel, rowLabel, timestamp
+                    break;
+                case OrderType.type3:
+                    //row label then timestamp
+                    break;
+                case OrderType.type4:
+                    //column label then time stamp
+                    break;
+                case OrderType.type5:
+                    //time stamp
+                    sort = new Sort(attrType, (short) 4, attrSize, fscan, 3, order[0], 4, SORTPGNUM);
+
+                    break;
+                default:
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -115,25 +134,6 @@ public class Stream implements GlobalConst{
             e.printStackTrace();
         }
 
-        switch (orderType){
-            case OrderType.type1:
-                //results ordered by rowLabel then columnLabel then time stamp
-                break;
-            case OrderType.type2:
-                //ordered columnLabel, rowLabel, timestamp
-                break;
-            case OrderType.type3:
-                //row label then timestamp
-                break;
-            case OrderType.type4:
-                //column label then time stamp
-                break;
-            case OrderType.type5:
-                //time stamp
-                break;
-            default:
-
-        }
     }
 
     /**
