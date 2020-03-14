@@ -4,6 +4,7 @@ package diskmgr;
 import java.io.*;
 import bufmgr.*;
 import global.*;
+import programs.*;
 
 public class bigDB implements GlobalConst {
 
@@ -64,9 +65,37 @@ private static final int finalnum_pgs = 20;
 */
   /** default constructor.
    */
-  public bigDB(){}
+  public bigDB( int type){}
 
-
+	PCounter pc = new PCounter();
+	pc.initialize();
+	btreeindex bti= new btreeindex();
+	switch (type)
+     {
+       case 1:
+           //type == 1;
+           break;
+       case 2:
+           //type == 2;
+	bti.BTreeIndex_Row();
+           break;
+       case 3:
+           //type == 3;
+	bti.BTreeIndex_Col();
+           break;
+       case 4:
+           //type == 4;
+	bti.BTreeIndex_RowCol();
+	bti.BTreeIndex_TS();
+			
+           break;
+       case 5:
+           //type == 5;
+	bti.BTreeIndex_RowVal();
+			bti.BTreeIndex_TS();
+           break;
+     }
+	
   /** DB Constructors.
    * Create a database with the specified number of pages where the page
    * size is the default page size.
