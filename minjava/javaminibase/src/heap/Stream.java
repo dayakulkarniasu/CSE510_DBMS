@@ -203,6 +203,8 @@ public class Stream implements GlobalConst {
         {
             e.printStackTrace();
         }
+
+        return true;
     }
 
     // shortcut to access the pinPage function in bufmgr package.
@@ -347,7 +349,7 @@ public class Stream implements GlobalConst {
 
             }
 
-            if(nextDirPageId.pid = INVALID_PAGE)
+            if(nextDirPageId.pid == INVALID_PAGE)
             {
                 return false;
             }
@@ -421,7 +423,55 @@ public class Stream implements GlobalConst {
         // - datapage is pinned
         // - this->dirpageId, this->dirpage correct
         // - this->datapageId, this->datapage, this->datapageRid correct
+        usermid = datapage.firstMap();
 
+        if(usermid == null)
+        {
+            nextUserStatus = false;
+            return false;
+        }
+
+        return true;
+    }   // end of nextDataPage()
+
+    private boolean peekNext(MID mid)
+    {
+        mid.pageNo.pid = usermid.pageNo.pid;
+        mid.slotNo = usermid.slotNo;
+        return true;
+    }
+
+    // Move to the next map in a sequential scan
+    // Also returns the MID of the (new) current map
+    private boolean mvNext(MID mid)
+        throws InvalidMapSizeException,
+            IOException
+    {
+        MID nextmid;
+        boolean status;
+
+        if(datapage == null)
+            return false;
+        
+        nextmid = datapage.nextMap(mid);
+        if(nextmid != null)
+        {
+            usermid.pageNo.pid = nextmid.pageNo.pid;
+            usermid.slotNo = nextmid.slotNo;
+            return true;
+        }
+        else
+        {
+            status = nextDataPage();
+
+            if(status == true)
+            {
+                mid.pageNo.pid = usermid.pageNo.pid;
+                mid.slotNo = usermid.slotNo;
+            }
+        }
+
+        return true;
     }
 
 }
