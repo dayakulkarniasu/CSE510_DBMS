@@ -1,10 +1,8 @@
 package heap;
 
 /** File DataPageInfo.java */
-
 import global.*;
 import java.io.*;
-
 import BigT.Map;
 
 /**
@@ -12,7 +10,6 @@ import BigT.Map;
  *
  * April 9, 1998
  */
-
 class DataPageInfo implements GlobalConst {
 
   /** HFPage returns int for avail space, so we use int here */

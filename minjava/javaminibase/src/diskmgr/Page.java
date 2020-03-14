@@ -11,9 +11,14 @@ import global.*;
 public class Page implements GlobalConst {
 
   /**
+   * protected field: An array of bytes (for the page).
+   * 
+   */
+  protected byte[] data;
+
+  /**
    * default constructor
    */
-
   public Page() {
     data = new byte[MAX_SPACE];
 
@@ -44,11 +49,4 @@ public class Page implements GlobalConst {
   public void setpage(byte[] array) {
     data = array;
   }
-
-  /**
-   * protected field: An array of bytes (for the page).
-   * 
-   */
-  protected byte[] data;
-
 }

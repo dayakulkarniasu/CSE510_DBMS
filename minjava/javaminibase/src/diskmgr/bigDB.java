@@ -2,10 +2,15 @@
 
 package diskmgr;
 
-import java.io.*;
-import global.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import global.Convert;
+import global.GlobalConst;
+import global.PageId;
+import global.SystemDefs;
 
-public class DB implements GlobalConst {
+public class bigDB implements GlobalConst {
 
   private static final int bits_per_page = MAX_SPACE * 8;
 
@@ -44,7 +49,7 @@ public class DB implements GlobalConst {
   /**
    * default constructor.
    */
-  public DB() {
+  public bigDB() {
   }
 
   /**
@@ -948,7 +953,6 @@ class DBFirstPage extends DBHeaderPage {
    * @exception IOException I/O errors
    */
   public int getNumDBPages() throws IOException {
-
     return (Convert.getIntValue(NUM_DB_PAGE, data));
   }
 
