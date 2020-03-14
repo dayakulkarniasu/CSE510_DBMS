@@ -136,6 +136,35 @@ public class Stream implements GlobalConst{
 
     }
 
+    //TODO need to set up for rowLabel, columnLabel, TS, value
+    private void Query_CondExpr(CondExpr[] expr, CondExpr[] expr2) {
+
+        expr[0].next  = null;
+        expr[0].op    = new AttrOperator(AttrOperator.aopEQ);
+        expr[0].type1 = new AttrType(AttrType.attrSymbol);
+        expr[0].type2 = new AttrType(AttrType.attrSymbol);
+        expr[0].operand1.symbol = new FldSpec (new RelSpec(RelSpec.outer),1);
+        expr[0].operand2.symbol = new FldSpec (new RelSpec(RelSpec.innerRel),1);
+
+        expr[1] = null;
+
+        expr2[0].next  = null;
+        expr2[0].op    = new AttrOperator(AttrOperator.aopEQ);
+        expr2[0].type1 = new AttrType(AttrType.attrSymbol);
+        expr2[0].type2 = new AttrType(AttrType.attrSymbol);
+        expr2[0].operand1.symbol = new FldSpec (new RelSpec(RelSpec.outer),2);
+        expr2[0].operand2.symbol = new FldSpec (new RelSpec(RelSpec.innerRel),1);
+
+        expr2[1].op   = new AttrOperator(AttrOperator.aopEQ);
+        expr2[1].next = null;
+        expr2[1].type1 = new AttrType(AttrType.attrSymbol);
+        expr2[1].type2 = new AttrType(AttrType.attrString);
+        expr2[1].operand1.symbol = new FldSpec (new RelSpec(RelSpec.innerRel),3);
+        expr2[1].operand2.string = "red";
+
+        expr2[2] = null;
+    }
+
     /**
      * Closes the stream object.
      */
