@@ -215,7 +215,7 @@ private static final int finalnum_pgs = 20;
     byte [] buffer = apage.getpage();  //new byte[MINIBASE_PAGESIZE];
     try{
       fp.read(buffer);
-      PCounter.readincrement();
+      pc.readincrement();
     }
     catch (IOException e) {
       throw new FileIOException(e, "DB file I/O error");
@@ -246,7 +246,7 @@ private static final int finalnum_pgs = 20;
     // Write the appropriate number of bytes.
     try{
       fp.write(apage.getpage());
-      PCounter.writeIncrement();
+      pc.writeIncrement();
     }
     catch (IOException e) {
       throw new FileIOException(e, "DB file I/O error");
