@@ -19,7 +19,6 @@ public class bigDB implements GlobalConst {
      * different clustering and indexing strategies you will use for the graph
      * database. Note that each big table database may contain
      * 
-     * <br>
      * Type 1: No index <br>
      * Type 2: one btree to index row labels <br>
      * Type 3: one btree to index column labels <br>
@@ -31,7 +30,19 @@ public class bigDB implements GlobalConst {
      * @param type
      */
     public bigDB(int type) {
-        
+
+        switch (type) {
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        }
         // initialize read page and write page counter
         PCounter.initialize();
     }
