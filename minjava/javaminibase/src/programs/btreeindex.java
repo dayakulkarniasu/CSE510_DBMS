@@ -11,7 +11,7 @@ import java.util.*;
 
 // get rowLabel (String), columnLabel (String), timestamp (Integer) from BigT.Map
 // code refers to IndexTest.java
-
+public class btreeindex implements GlobalConst {
  public static BTreeIndex_Row(String rowLabel) {
 
 		MID mid = new MID();
@@ -135,3 +135,4 @@ import java.util.*;
         }
 		System.out.println("Successfully created BTree index on RowLabel and Value !");
     }
+}
