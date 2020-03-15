@@ -26,7 +26,7 @@ public class LeafData extends DataClass {
 
   /**
    * get a copy of the mid
-   * 
+   * f
    * @return the reference of the copy
    */
   public MID getData() {

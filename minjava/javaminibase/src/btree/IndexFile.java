@@ -46,7 +46,7 @@ public abstract class IndexFile {
    * Delete entry from the index file.
    * 
    * @param data the key for the entry
-   * @param rid  the rid of the tuple with the key
+   * @param mid  the mid of the map with the key
    * @exception IOException               from lower layers
    * @exception DeleteFashionException    delete fashion undefined
    * @exception LeafRedistributeException failed to redistribute leaf page

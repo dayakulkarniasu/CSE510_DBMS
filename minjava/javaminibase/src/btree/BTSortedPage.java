@@ -49,7 +49,6 @@ public class BTSortedPage extends HFPage {
    *                AttrType.attrString or AttrType.attrInteger.
    */
   public BTSortedPage(Page page, int keyType) {
-
     super(page);
     this.keyType = keyType;
   }

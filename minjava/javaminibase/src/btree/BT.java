@@ -45,8 +45,8 @@ public class BT implements GlobalConst {
    * @exception KeyNotMatchException key is not IntegerKey or StringKey class
    */
   public final static int keyCompare(KeyClass key1, KeyClass key2) throws KeyNotMatchException {
-    if ((key1 instanceof IntegerKey) && (key2 instanceof IntegerKey)) {
 
+    if ((key1 instanceof IntegerKey) && (key2 instanceof IntegerKey)) {
       return (((IntegerKey) key1).getKey()).intValue() - (((IntegerKey) key2).getKey()).intValue();
     } else if ((key1 instanceof StringKey) && (key2 instanceof StringKey)) {
       return ((StringKey) key1).getKey().compareTo(((StringKey) key2).getKey());
@@ -67,7 +67,6 @@ public class BT implements GlobalConst {
    */
   protected final static int getKeyLength(KeyClass key) throws KeyNotMatchException, IOException {
     if (key instanceof StringKey) {
-
       OutputStream out = new ByteArrayOutputStream();
       DataOutputStream outstr = new DataOutputStream(out);
       outstr.writeUTF(((StringKey) key).getKey());
