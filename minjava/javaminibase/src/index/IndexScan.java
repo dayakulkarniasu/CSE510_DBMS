@@ -1,20 +1,17 @@
 package index;
 
 import global.*;
-import bufmgr.*;
-import diskmgr.*;
 import btree.*;
 import iterator.*;
 import heap.*;
 import java.io.*;
-
 import BigT.Map;
 
 /**
- * Index Scan iterator will directly access the required tuple using the
- * provided key. It will also perform selections and projections. information
- * about the tuples and the index are passed to the constructor, then the user
- * calls <code>get_next()</code> to get the tuples.
+ * Index Scan iterator will directly access the required map using the provided
+ * key. It will also perform selections and projections. information about the
+ * maps and the index are passed to the constructor, then the user calls
+ * <code>get_next()</code> to get the maps.
  */
 public class IndexScan extends Iterator {
 
@@ -26,15 +23,15 @@ public class IndexScan extends Iterator {
    * @param indName   name of the input index
    * @param types     array of types in this relation
    * @param str_sizes array of string sizes (for attributes that are string)
-   * @param noInFlds  number of fields in input tuple
-   * @param noOutFlds number of fields in output tuple
+   * @param noInFlds  number of fields in input map
+   * @param noOutFlds number of fields in output map
    * @param outFlds   fields to project
    * @param selects   conditions to apply, first one is primary
    * @param fldNum    field number of the indexed field
-   * @param indexOnly whether the answer requires only the key or the tuple
+   * @param indexOnly whether the answer requires only the key or the map
    * @exception IndexException            error from the lower layer
-   * @exception InvalidTypeException      tuple type not valid
-   * @exception InvalidTupleSizeException tuple size not valid
+   * @exception InvalidTypeException      map type not valid
+   * @exception InvalidTupleSizeException map size not valid
    * @exception UnknownIndexTypeException index type unknown
    * @exception IOException               from the lower layer
    */
@@ -105,11 +102,11 @@ public class IndexScan extends Iterator {
   }
 
   /**
-   * returns the next tuple. if <code>index_only</code>, only returns the key
-   * value (as the first field in a tuple) otherwise, retrive the tuple and
-   * returns the whole tuple
+   * returns the next map. if <code>index_only</code>, only returns the key value
+   * (as the first field in a map) otherwise, retrive the map and returns the
+   * whole map
    * 
-   * @return the tuple
+   * @return the map
    * @exception IndexException          error from the lower layer
    * @exception UnknownKeyTypeException key type unknown
    * @exception IOException             from the lower layer
@@ -174,7 +171,7 @@ public class IndexScan extends Iterator {
         return Jmap;
       }
 
-      // not index_only, need to return the whole tuple
+      // not index_only, need to return the whole map
       mid = ((LeafData) nextentry.data).getData();
       try {
         map1 = f.getMap(mid);

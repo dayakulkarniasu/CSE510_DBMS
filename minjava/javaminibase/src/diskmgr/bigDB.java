@@ -31,20 +31,33 @@ public class bigDB implements GlobalConst {
      */
     public bigDB(int type) {
 
-        switch (type) {
-        case 1:
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        case 4:
-            break;
-        case 5:
-            break;
-        }
         // initialize read page and write page counter
         PCounter.initialize();
+        btreeindex bti = new btreeindex();
+        switch (type) {
+        case 1:
+            // type == 1;
+            break;
+        case 2:
+            // type == 2;
+            bti.BTreeIndex_Row();
+            break;
+        case 3:
+            // type == 3;
+            bti.BTreeIndex_Col();
+            break;
+        case 4:
+            // type == 4;
+            bti.BTreeIndex_RowCol();
+            bti.BTreeIndex_TS();
+
+            break;
+        case 5:
+            // type == 5;
+            bti.BTreeIndex_RowVal();
+            bti.BTreeIndex_TS();
+            break;
+        }
     }
 
     /**
