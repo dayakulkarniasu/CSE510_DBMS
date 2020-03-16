@@ -535,9 +535,9 @@ public class Map implements GlobalConst {
             throws IOException, InvalidTypeException, InvalidTupleSizeException {
         numFlds = 4;
 
-        if ((numFlds + 2) * 2 > max_size)
+        if ((numFlds + 2) * 2 > max_size) // 1 for numFlds, 1 for fldCnt
             throw new InvalidTupleSizeException(null, "MAP: TUPLE_TOOBIG_ERROR");
-            
+
         fldCnt = numFlds;
         Convert.setShortValue(numFlds, map_offset, data);
         fldOffset = new short[numFlds + 1];
@@ -570,7 +570,7 @@ public class Map implements GlobalConst {
                 break;
 
             default:
-                throw new InvalidTypeException(null, "MAP: TUPLE_TYPE_ERROR");
+                throw new InvalidTypeException(null, "MAP: MAP_TYPE_ERROR");
             }
             fldOffset[i] = (short) (fldOffset[i - 1] + incr);
             Convert.setShortValue(fldOffset[i], pos, data);
@@ -592,7 +592,7 @@ public class Map implements GlobalConst {
             break;
 
         default:
-            throw new InvalidTypeException(null, "MAP: TUPLE_TYPE_ERROR");
+            throw new InvalidTypeException(null, "MAP: MAP_TYPE_ERROR");
         }
 
         fldOffset[numFlds] = (short) (fldOffset[i - 1] + incr);
@@ -601,6 +601,6 @@ public class Map implements GlobalConst {
         map_length = fldOffset[numFlds] - map_offset;
 
         if (map_length > max_size)
-            throw new InvalidTupleSizeException(null, "MAP: TUPLE_TOOBIG_ERROR");
+            throw new InvalidTupleSizeException(null, "MAP: MAP_TOOBIG_ERROR");
     }
 }
