@@ -533,9 +533,11 @@ public class Map implements GlobalConst {
 
     public void setHdr(short numFlds, AttrType types[], short strSizes[])
             throws IOException, InvalidTypeException, InvalidTupleSizeException {
+        numFlds = 4;
+
         if ((numFlds + 2) * 2 > max_size)
             throw new InvalidTupleSizeException(null, "MAP: TUPLE_TOOBIG_ERROR");
-        numFlds = 4;
+            
         fldCnt = numFlds;
         Convert.setShortValue(numFlds, map_offset, data);
         fldOffset = new short[numFlds + 1];
