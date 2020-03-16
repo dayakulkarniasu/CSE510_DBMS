@@ -114,7 +114,7 @@ class IndexDriver extends TestDriver implements GlobalConst {
     attrSize[0] = REC_LEN2;
     attrSize[1] = REC_LEN1;
 
-    // create a tuple of appropriate size
+    // create a map of appropriate size
     Map m = new Map();
     try {
       m.setHdr((short) 2, attrType, attrSize);

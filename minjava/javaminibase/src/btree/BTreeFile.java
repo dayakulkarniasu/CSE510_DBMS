@@ -277,7 +277,7 @@ public class BTreeFile extends IndexFile implements GlobalConst {
 	}
 
 	/**
-	 * insert record with the given key and rid
+	 * insert record with the given key and mid
 	 * 
 	 * @param key the key of the record. Input parameter.
 	 * @param rid the rid of the record. Input parameter.
