@@ -260,7 +260,7 @@ class IndexDriver extends TestDriver implements GlobalConst {
       try {
         outval = m.getStrFld(1);
       } catch (Exception e) {
-        status = FAIL;F
+        status = FAIL;
         e.printStackTrace();
       }
 
@@ -298,6 +298,8 @@ class IndexDriver extends TestDriver implements GlobalConst {
 
     return status;
   }
+
+
 
   protected boolean test2() {
     System.out.println("------------------------ TEST 2 --------------------------");

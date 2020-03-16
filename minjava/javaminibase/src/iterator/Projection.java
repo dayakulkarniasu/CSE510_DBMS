@@ -6,7 +6,7 @@ import java.io.*;
 import BigT.Map;
 
 /**
- * Jtuple has the appropriate types. Jtuple already has its setHdr called to
+ * Jmap has the appropriate types. Jmap already has its setHdr called to
  * setup its vital stas.
  */
 
