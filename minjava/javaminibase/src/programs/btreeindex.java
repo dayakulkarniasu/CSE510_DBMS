@@ -1,22 +1,17 @@
-
 package programs;
 
-import btree.*;
 import global.*;
-import heap.*;
-import iterator.*;
-import java.io.IOException;
 import BigT.Map;
 
-// get rowLabel (String), columnLabel (String), timestamp (Integer) from BigT.Map
-// code refers to IndexTest.java
-public class btreeindex{
+/**
+ * get rowLabel (String), columnLabel (String), timestamp (Integer) from BigT.Map
+*code refers to IndexTest.java
+ */
+public class btreeindex implements GlobalConst{
     boolean status = true;
-    AttrType[] attrType = new AttrType[4];
-    attrType[0]=new AttrType(AttrType.attrString);
-    attrType[1]=new AttrType(AttrType.attrString);
-    short[] attrSize = new short[2];
-    attrSize[0]=REC_LEN2;attrSize[1]=REC_LEN1;
+    AttrType[] attrType=new AttrType[2];
+    attrType[0] = new AttrType(AttrType.attrString);
+    attrType[1] = new AttrType(AttrType.attrString);
 }
 
     // create the index file
