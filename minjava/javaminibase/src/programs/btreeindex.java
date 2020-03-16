@@ -1,5 +1,5 @@
 
-package programs;
+/*package programs;
 
 import btree.* ;
 import global.*;
@@ -134,3 +134,4 @@ import java.util.*;
         }
 		System.out.println("Successfully created BTree index on RowLabel and Value !");
     }
+*/

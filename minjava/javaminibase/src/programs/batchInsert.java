@@ -3,34 +3,39 @@ package programs;
 import btree.*;
 import global.*;
 import BigT.*;
-import heap.Tuple;
+import heap.*;
 
 import java.io.*;
-import global.*;
+//import global.*;
 
-public class batchInsert implements GlobalConst{
+public class batchInsert{
     public static void main(String[] args){
         String filepath = "./";
         String datafilename = args[0];
         int type = Integer.parseInt(args[1]);
         String bigTableName = args[2];
+
+         int reclen = 64;
+
         //TODO System Defs
-        //SystemDefs sysDefs = new SystemDefs();
-        SystemDefs sysdef = new SystemDefs( datafilename, 300, NUMBUF, "Clock" );
-        BufferedReader br = null;
+        //SystemDefsBigDB sysDefs = new SystemDefsBigDB();
+       /*BufferedReader br = null;
         String line = "";
         String csvSplitBy = ",";
         try{
             br = new BufferedReader(new FileReader(datafilename));
             while((line = br.readLine()) != null){
-                String[] map = line.split(csvSplitBy);
-                String rowLabel = map[0];
-                String columnLabel = map[1];
-                String timeStamp = map[2];
-                String value = map[3];
+                String[] arryfields = line.split(csvSplitBy);
+                String rowLabel = arryfields[0];
+                String columnLabel = arryfields[1];
+                String timeStamp = arryfields[2];
+                String value = arryfields[3];
                 System.out.println("row label: "+ rowLabel + " col label: " + columnLabel + " TS: " + timeStamp  + " val: " + value);
+
                 //TODO Map
                 Map m = new Map();
+                */
+
                 //TODO insert into big table
 
                 //TODO take big table, scan it and index based on type
@@ -47,91 +52,508 @@ public class batchInsert implements GlobalConst{
                 // type 3 - type3Idx
                 // type 4 - type4CombKeyIdx & type4TSIdx
                 // type 5 - type5CombKeyIdx & type5TSIdx
+                /******************/
+                //testing insertion of map
 
-                // putting this here for now
-                //bigt big = new bigt(bigTableName, type);
-                //BTreeFile btf = null;
-                /*
-                switch (type){
-                    case DBType.type1:
-                        //TODO need to research this one a little more
-                        //no index
-                        break;
-                    case DBType.type2:
-                        //one btree to index row labels
-                        try {
-                            btf = new BTreeFile("type2Idx", AttrType.attrString, big.getRowCnt(), 1);
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                            Runtime.getRuntime().exit(1);
-                        }
+                 String dbpath;
+                 String logpath;
 
-                        mid = new MID();
-                        String key = null;
-                        Map temp = null;
+                dbpath = "/tmp/"+System.getProperty("user.name")+bigTableName+".db";
+                logpath = "/tmp/"+System.getProperty("user.name")+bigTableName+".log";
 
-                        try {
-                            temp = Stream.getNext(mid);
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        // itterate through all the maps
-                        while ( temp != null) {
-                            m.mapCopy(temp);
+                SystemDefs sysdef = new SystemDefs( dbpath , 8193,  100, "Clock" );
+                String newdbpath;
+                String newlogpath;
+                String remove_logcmd;
+                String remove_dbcmd;
+                String remove_cmd = "/bin/rm -rf ";
 
-                            try {
-                                // the key for Type 2 is the row
-                                key = m.getRowLabel();
-                            }
-                            catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                newdbpath = dbpath;
+                newlogpath = logpath;
 
-                            try {
-                                // insert the key and the 'pointer' Map Id into btree index
-                                btf.insert(new StringKey(key), mid);
-                            }
-                            catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                remove_logcmd = remove_cmd + logpath;
+                remove_dbcmd = remove_cmd + dbpath;
 
-                            try {
-                                // get next map
-                                temp = Stream.getNext(mid);
-                            }
-                            catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        // close the file scan
-                        scan.closescan();
-
-                        //BTreeIndex file created successfully
-
-                        break;
-                    case DBType.type3:
-                        // one btree to index column labels
-                        break;
-                    case DBType.type4:
-                        // one btree to index column label and row label (combined key)
-                        // one btree to index time stamps
-                        break;
-                    case DBType.type5:
-                        // one btree to index row label and value (combined key)
-                        // one btree to index time stamps
-                        break;
-                    default:
-
+                // Commands here is very machine dependent.  We assume
+                // user are on UNIX system here
+                try {
+                  Runtime.getRuntime().exec(remove_logcmd);
+                  Runtime.getRuntime().exec(remove_dbcmd);
                 }
-                */
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                catch (IOException e) {
+                  System.err.println ("IO error: "+e);
+                }
+                   //insert map
+                 InsertBTmap(datafilename);
+
+
+
+
+
+    }//end of main
+    public static boolean InsertBTmap(String datafileN)  {
+//this method is to test if the info is getting stored in map correctly
+      BufferedReader br = null;
+      int linecount = 0;
+       String line = "";
+       String csvSplitBy = ",";
+       int recleng2 = 64;
+
+      System.out.println ("\n  Test 1: Insert and scan fixed-size records\n");
+      boolean status = true;
+      MID rid = new MID();
+      Heapfile f = null;
+
+      System.out.println ("  - Create a heap file\n");
+      try {
+        f = new Heapfile("file_1");
+      }
+      catch (Exception e) {
+        status = false;
+        System.err.println ("*** Could not create heap file\n");
+        e.printStackTrace();
+      }
+
+      if ( status == true && SystemDefs.JavabaseBM.getNumUnpinnedBuffers()
+  	 != SystemDefs.JavabaseBM.getNumBuffers() ) {
+        System.err.println ("*** The heap file has left pages pinned\n");
+        status = false;
+      }
+
+      if ( status == true ) {
+        System.out.println ("  - Add " + linecount + " records to the file\n");
+
+
+        //this is to read in the CSV file lines and save the data
+        try{
+            br = new BufferedReader(new FileReader(datafileN));
+            while((line = br.readLine()) != null){
+                String[] arryfields = line.split(csvSplitBy);
+                String rowLabel = arryfields[0];
+                String columnLabel = arryfields[1];
+                String timeStamp = arryfields[2];
+                String value = arryfields[3];
+                System.out.println("row label: "+ rowLabel + " col label: " + columnLabel + " TS: " + timeStamp  + " val: " + value);
+
+
+      	        //fixed length record
+              	DummyRecord rec = new DummyRecord(recleng2);
+              	rec.rowlabname = rowLabel;
+              	rec.collabname = columnLabel;
+              	rec.timestampname = Integer.parseInt(timeStamp);
+                rec.valuename = value;
+              //  System.out.println("Printing the Dummy record object fields in Main");
+
+                System.out.println(" Dummy row label: "+ rec.rowlabname + " col label: " + rec.collabname + " TS: " + rec.timestampname  + " val: " + rec.valuename);
+
+              	try {
+              	  rid = f.insertMap(rec.toByteArray());
+              	}
+              	catch (Exception e) {
+              	  status = false;
+              	  System.err.println ("*** Error inserting record " + linecount + "\n");
+              	  e.printStackTrace();
+              	}
+
+              	if ( status == true && SystemDefs.JavabaseBM.getNumUnpinnedBuffers()
+              	     != SystemDefs.JavabaseBM.getNumBuffers() ) {
+
+              	  System.err.println ("*** Insertion left a page pinned\n");
+              	  status = false;
+              	}
+      //  }
+      linecount++;
+    }//end of while loop
+    System.out.println("After reading the file, LineCoiunt = "+ linecount);
+
+  }// end of try
+  catch (FileNotFoundException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+
+        try {
+          	if ( f.getMapCnt() != linecount ) {
+          	  status = false;
+          	  System.err.println ("*** File reports " + f.getMapCnt() +
+          			      " records, not " + linecount + "\n");
+          	}
+        }
+        catch (Exception e) {
+          	status = false;
+          	System.out.println (""+e);
+          	e.printStackTrace();
+        }
+      } // if status okay
+
+      // In general, a sequential scan won't be in the same order as the
+      // insertions.  However, we're inserting fixed-length records here, and
+      // in this case the scan must return the insertion order.
+
+      Scan scan = null;
+
+      if ( status == true ) {
+              System.out.println ("  - Scan the records just inserted\n");
+
+              try {
+        	         scan = f.openScan();
+              }
+              catch (Exception e) {
+                  	status = false;
+                  	System.err.println ("*** Error opening scan\n");
+                  	e.printStackTrace();
+              }
+
+              if ( status == true &&  SystemDefs.JavabaseBM.getNumUnpinnedBuffers()
+        	   == SystemDefs.JavabaseBM.getNumBuffers() ) {
+                	System.err.println ("*** The heap-file scan has not pinned the first page\n");
+                	status = false;
+              }
+      }
+
+      if ( status == true ) {
+                int len, i = 0;
+                DummyRecord rec = null;
+                Map aMap = new Map();
+
+                boolean done = false;
+                while (!done) {
+                  	try {
+                  	  aMap = scan.getNext(rid);
+                  	  if (aMap == null) {
+                  	    done = true;
+                  	    break;
+                  	  }
+                  	}
+                  	catch (Exception e) {
+                  	  status = false;
+                  	  e.printStackTrace();
+                  	}
+
+                  	if (status == true && !done) {
+                  	  try {
+                        System.out.println ("From Scan, getting next Map and converting in to DummyRecord \n");
+                  	    rec = new DummyRecord(aMap);
+                  	  }
+                  	  catch (Exception e) {
+                  	    System.err.println (""+e);
+                  	    e.printStackTrace();
+                  	  }
+
+                  	  len = aMap.getLength();
+                  	  if ( len != recleng2 ) {
+                  	    System.err.println ("*** Record " + i + " had unexpected length "
+                  				+ len + "\n");
+                  	    status = false;
+                  	    break;
+                  	  }
+                  	  else if ( SystemDefs.JavabaseBM.getNumUnpinnedBuffers()
+                  		    == SystemDefs.JavabaseBM.getNumBuffers() ) {
+                  	    System.err.println ("On record " + i + ":\n");
+                  	    System.err.println ("*** The heap-file scan has not left its " +
+                  				"page pinned\n");
+                  	    status = false;
+                  	    break;
+                  	  }
+                  	  String name = ("record" + i );
+                        System.out.println("rec.row "+ i + " :" + rec.rowlabname);
+                        System.out.println("rec.col "+ i + " :" +  rec.collabname);
+                        System.out.println("rec.timestamp "+ i + " :" +  rec.timestampname);
+                        System.out.println("rec.value "+ i + " :" +  rec.valuename);
+                  	  /*if( (rec.ival != i)
+                  	      || (rec.fval != (float)i*2.5)
+                  	      || (!name.equals(rec.name)) ) {
+                  	    System.err.println ("*** Record " + i
+                  				+ " differs from what we inserted\n");
+                  	    System.err.println ("rec.ival: "+ rec.ival
+                  				+ " should be " + i + "\n");
+                  	    System.err.println ("rec.fval: "+ rec.fval
+                  				+ " should be " + (i*2.5) + "\n");
+                  	    System.err.println ("rec.name: " + rec.name
+                  				+ " should be " + name + "\n");
+                  	    status = false;
+                  	    break;
+                  	  }*/
+                  	}
+                  	++i;
+                }//end of while not done
+
+                //If it gets here, then the scan should be completed
+                if (status == true) {
+                  	if ( SystemDefs.JavabaseBM.getNumUnpinnedBuffers()
+                  	     != SystemDefs.JavabaseBM.getNumBuffers() ) {
+                      	  System.err.println ("*** The heap-file scan has not unpinned " +
+                      			      "its page after finishing\n");
+                      	  status = false;
+                  	}
+                  	else if ( i != (linecount) )
+                  	  {
+                  	    status = false;
+
+                  	    System.err.println ("*** Scanned " + i + " records instead of "
+                  	       + linecount + "\n");
+                  	  }
+                }
+      }//end of  bigger status ok
+
+      if ( status == true )
+          System.out.println ("  Test 1 completed successfully.\n");
+
+      return status;
+    }
+
 }
+
+class DummyRecord  {
+
+  //content of the record
+  public String rowlabname;
+  public String collabname;
+  public int timestampname;
+  public String valuename;
+
+  //length under control
+  private int reclen1;
+
+  private byte[]  data;
+
+  /** Default constructor
+   */
+  public DummyRecord() {}
+
+  /** another constructor
+   */
+  public DummyRecord (int _reclen) {
+    setRecLen (_reclen);
+    data = new byte[_reclen];
+  }
+
+  /** constructor: convert a byte array to DummyRecord object.
+   * @param arecord a byte array which represents the DummyRecord object
+   */
+  public DummyRecord(byte [] arecord)
+    throws java.io.IOException {
+//TODO fix the functions and create one mor function
+  /*  setIntRec (arecord);
+    setFloRec (arecord);
+    setStrRec (arecord);
+    */
+    // Setting the 4 fields in the data object
+    setRowLabelRec (arecord);
+    setColumnLabelRec (arecord);
+    setTimeStampRec (arecord);
+    setValueRec (arecord);
+    data = arecord;
+    //setRecLen(name.length());s
+    // Setting the record length = arecord getLength
+    int RecordLength = rowlabname.length() + collabname.length() + valuename.length() + valuename.length();
+  //  setRecLen(data.length());
+  setRecLen(RecordLength);
+  }
+
+  /** constructor: translate a tuple to a DummyRecord object
+   *  it will make a copy of the data in the tuple
+   * @param atuple: the input tuple
+   */
+  public DummyRecord(Map _atuple)
+	throws java.io.IOException{
+      System.out.println (" the length of the map in dummy reccord is: " + _atuple.getLength());
+    data = new byte[_atuple.getLength()];
+    data = _atuple.getMapByteArray();
+    setRecLen(_atuple.getLength());
+      String MapRowLabel = "";
+      String MapColLabel = "";
+      int MapTimeLabel = 0 ;
+      String MapValueLabel = "" ;
+    System.out.println (" In the Dummy Record (Map) function \n");
+      try{
+      MapRowLabel = _atuple.getRowLabel() ;
+      }catch(FieldNumberOutOfBoundException e)
+      {
+        e.printStackTrace();
+      }
+      try{
+      MapColLabel = _atuple.getColumnLabel() ;
+      }catch(FieldNumberOutOfBoundException e)
+      {
+        e.printStackTrace();
+      }
+
+      try{
+      MapTimeLabel = _atuple.getTimeStamp() ;
+      }catch(FieldNumberOutOfBoundException e)
+      {
+        e.printStackTrace();
+      }
+
+      try{
+      MapValueLabel = _atuple.getValue() ;
+      }catch(FieldNumberOutOfBoundException e)
+      {
+        e.printStackTrace();
+      }
+
+
+    System.out.println(" Dummy Map Function : "+ MapRowLabel + " col label: " + MapColLabel + " TS: " + MapTimeLabel  + " val: " + MapValueLabel);
+
+  //  setIntRec (data);
+  //  setFloRec (data);
+  //  setStrRec (data);
+
+    setRowLabelRec (data);
+    setColumnLabelRec (data);
+    setTimeStampRec (data);
+    setValueRec (data);
+
+  }
+
+  /** convert this class objcet to a byte array
+   *  this is used when you want to write this object to a byte array
+   */
+  public byte [] toByteArray()
+    throws java.io.IOException {
+    //    data = new byte[reclen];
+  /*  Convert.setIntValue (ival, 0, data);
+    Convert.setFloValue (fval, 4, data);
+    Convert.setStrValue (name, 8, data);
+    */
+    int RL_Length = rowlabname.length();
+    int CL_Length = collabname.length();
+    int TS_Length = 4;
+    int V_Length = valuename.length();
+    Convert.setStrValue (rowlabname, 0,data);
+    Convert.setStrValue (collabname, RL_Length,data);
+    Convert.setIntValue (timestampname, RL_Length + CL_Length,data);
+    Convert.setStrValue (valuename, RL_Length + CL_Length + TS_Length ,data);
+    System.out.println("In toByte Array : Data = " + data);
+
+    return data;
+  }
+
+  public void setRowLabelRec (byte[] _data)
+    throws java.io.IOException {
+   // System.out.println("reclne= "+reclen);
+   // System.out.println("data size "+_data.size());
+    rowlabname = Convert.getStrValue (0, _data, 16);
+  }
+  public void setColumnLabelRec (byte[] _data)
+    throws java.io.IOException {
+   // System.out.println("reclne= "+reclen);
+   // System.out.println("data size "+_data.size());
+    collabname = Convert.getStrValue (16, _data, 16);
+  }
+  public void setTimeStampRec (byte[] _data)
+    throws java.io.IOException {
+    timestampname = Convert.getIntValue (32, _data);
+  }
+  public void setValueRec (byte[] _data)
+    throws java.io.IOException {
+   // System.out.println("reclne= "+reclen);
+   // System.out.println("data size "+_data.size());
+    valuename = Convert.getStrValue (36, _data, 16);
+  }
+  //Other access methods to the size of the String field and
+  //the size of the record
+  public void setRecLen (int size) {
+    reclen1 = size;
+  }
+
+  public int getRecLength () {
+    return reclen1;
+  }
+ }
+
+
+ /******************/
+
+
+
+ // putting this here for now
+ /*bigt big = new bigt(bigTableName, type);
+ BTreeFile btf = null;
+ switch (type){
+     case DBType.type1:
+         //TODO need to research this one a little more
+         //no index
+         break;
+     case DBType.type2:
+         //one btree to index row labels
+         try {
+             btf = new BTreeFile("type2Idx", AttrType.attrString, big.getRowCnt(), 1);
+         }
+         catch (Exception e) {
+             e.printStackTrace();
+             Runtime.getRuntime().exit(1);
+         }
+
+         mid = new MID();
+         String key = null;
+         Map temp = null;
+
+         try {
+             temp = Stream.getNext(mid);
+         }
+         catch (Exception e) {
+             e.printStackTrace();
+         }
+         // itterate through all the maps
+         while ( temp != null) {
+             m.mapCopy(temp);
+
+             try {
+                 // the key for Type 2 is the row
+                 key = m.getRowLabel();
+             }
+             catch (Exception e) {
+                 e.printStackTrace();
+             }
+
+             try {
+                 // insert the key and the 'pointer' Map Id into btree index
+                 btf.insert(new StringKey(key), mid);
+             }
+             catch (Exception e) {
+                 e.printStackTrace();
+             }
+
+             try {
+                 // get next map
+                 temp = Stream.getNext(mid);
+             }
+             catch (Exception e) {
+                 e.printStackTrace();
+             }
+         }
+
+         // close the file scan
+         scan.closescan();
+
+         //BTreeIndex file created successfully
+
+         break;
+     case DBType.type3:
+         // one btree to index column labels
+         break;
+     case DBType.type4:
+         // one btree to index column label and row label (combined key)
+         // one btree to index time stamps
+         break;
+     case DBType.type5:
+         // one btree to index row label and value (combined key)
+         // one btree to index time stamps
+         break;
+     default:
+*/
+ //}
+//  }
+
+
+//  }
+/*  }
+catch (FileNotFoundException e) {
+e.printStackTrace();
+} catch (IOException e) {
+e.printStackTrace();
+}
+*/
