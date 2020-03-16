@@ -219,7 +219,6 @@ class IndexDriver extends TestDriver implements GlobalConst {
 
     // close the file scan
     scan.closescan();
-
     System.out.println("BTreeIndex file created successfully.\n");
 
     FldSpec[] projlist = new FldSpec[2];
@@ -261,7 +260,7 @@ class IndexDriver extends TestDriver implements GlobalConst {
       try {
         outval = m.getStrFld(1);
       } catch (Exception e) {
-        status = FAIL;
+        status = FAIL;F
         e.printStackTrace();
       }
 
