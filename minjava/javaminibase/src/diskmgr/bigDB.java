@@ -18,7 +18,7 @@ public class bigDB implements GlobalConst {
      * Constructor for the big table database. type is an integer denoting the
      * different clustering and indexing strategies you will use for the graph
      * database. Note that each big table database may contain
-     * 
+     *
      * Type 1: No index <br>
      * Type 2: one btree to index row labels <br>
      * Type 3: one btree to index column labels <br>
@@ -26,38 +26,25 @@ public class bigDB implements GlobalConst {
      * btree to index timestamps <br>
      * Type 5: one btree to index row label and value (combined key) and one btree
      * to index timestamps
-     * 
+     *
      * @param type
      */
     public bigDB(int type) {
 
-        // initialize read page and write page counter
-        PCounter.initialize();
-        btreeindex bti = new btreeindex();
         switch (type) {
         case 1:
-            // type == 1;
             break;
         case 2:
-            // type == 2;
-            bti.BTreeIndex_Row();
             break;
         case 3:
-            // type == 3;
-            bti.BTreeIndex_Col();
             break;
         case 4:
-            // type == 4;
-            bti.BTreeIndex_RowCol();
-            bti.BTreeIndex_TS();
-
             break;
         case 5:
-            // type == 5;
-            bti.BTreeIndex_RowVal();
-            bti.BTreeIndex_TS();
             break;
         }
+        // initialize read page and write page counter
+        PCounter.initialize();
     }
 
     /**
@@ -153,7 +140,7 @@ public class bigDB implements GlobalConst {
 
     /**
      * Close DB file.
-     * 
+     *
      * @exception IOException I/O errors.
      */
     public void closeDB() throws IOException {
@@ -162,7 +149,7 @@ public class bigDB implements GlobalConst {
 
     /**
      * Destroy the database, removing the file that stores it.
-     * 
+     *
      * @exception IOException I/O errors.
      */
     public void DBDestroy() throws IOException {
@@ -340,7 +327,7 @@ public class bigDB implements GlobalConst {
      *
      * @param start_page_num the start pageId to be deallocate
      * @param run_size       the number of pages to be deallocated
-     * 
+     *
      * @exception InvalidRunSizeException    invalid run size
      * @exception InvalidPageNumberException invalid page number
      * @exception FileIOException            file I/O error
@@ -368,7 +355,7 @@ public class bigDB implements GlobalConst {
      * @exception FileIOException            file I/O error
      * @exception IOException                I/O errors
      * @exception DiskMgrException           error caused by other layers
-     * 
+     *
      */
     public void deallocate_page(PageId start_page_num)
             throws InvalidRunSizeException, InvalidPageNumberException, IOException, FileIOException, DiskMgrException {
@@ -790,7 +777,7 @@ public class bigDB implements GlobalConst {
 
     /**
      * short cut to access the pinPage function in bufmgr package.
-     * 
+     *
      * @see bufmgr.pinPage
      */
     private void pinPage(PageId pageno, Page page, boolean emptyPage) throws DiskMgrException {
@@ -805,7 +792,7 @@ public class bigDB implements GlobalConst {
 
     /**
      * short cut to access the unpinPage function in bufmgr package.
-     * 
+     *
      * @see bufmgr.unpinPage
      */
     private void unpinPage(PageId pageno, boolean dirty) throws DiskMgrException {
@@ -848,7 +835,7 @@ class DBHeaderPage implements PageUsedBytes, GlobalConst {
 
     /**
      * Constrctor of class DBHeaderPage
-     * 
+     *
      * @param page          a page of Page object
      * @param pageusedbytes number of bytes used on the page
      * @exception IOException
@@ -870,7 +857,7 @@ class DBHeaderPage implements PageUsedBytes, GlobalConst {
 
     /**
      * set the next page number
-     * 
+     *
      * @param pageno next page ID
      * @exception IOException I/O errors
      */
@@ -880,7 +867,7 @@ class DBHeaderPage implements PageUsedBytes, GlobalConst {
 
     /**
      * return the next page number
-     * 
+     *
      * @return next page ID
      * @exception IOException I/O errors
      */
@@ -892,7 +879,7 @@ class DBHeaderPage implements PageUsedBytes, GlobalConst {
 
     /**
      * set number of entries on this page
-     * 
+     *
      * @param numEntries the number of entries
      * @exception IOException I/O errors
      */
@@ -903,7 +890,7 @@ class DBHeaderPage implements PageUsedBytes, GlobalConst {
 
     /**
      * return the number of file entries on the page
-     * 
+     *
      * @return number of entries
      * @exception IOException I/O errors
      */
@@ -913,7 +900,7 @@ class DBHeaderPage implements PageUsedBytes, GlobalConst {
 
     /**
      * initialize file entries as empty
-     * 
+     *
      * @param empty   invalid page number (=-1)
      * @param entryno file entry number
      * @exception IOException I/O errors
@@ -925,7 +912,7 @@ class DBHeaderPage implements PageUsedBytes, GlobalConst {
 
     /**
      * set file entry
-     * 
+     *
      * @param pageno  page ID
      * @param fname   the file name
      * @param entryno file entry number
@@ -940,7 +927,7 @@ class DBHeaderPage implements PageUsedBytes, GlobalConst {
 
     /**
      * return file entry info
-     * 
+     *
      * @param pageno  page Id
      * @param entryNo the file entry number
      * @return file name
@@ -971,7 +958,7 @@ class DBFirstPage extends DBHeaderPage {
 
     /**
      * Constructor of class DBFirstPage class
-     * 
+     *
      * @param page a page of Page object
      * @exception IOException I/O errors
      */
@@ -981,7 +968,7 @@ class DBFirstPage extends DBHeaderPage {
 
     /**
      * open an exist DB first page
-     * 
+     *
      * @param page a page of Page object
      */
     public void openPage(Page page) {
@@ -990,7 +977,7 @@ class DBFirstPage extends DBHeaderPage {
 
     /**
      * set number of pages in the DB
-     * 
+     *
      * @param num the number of pages in DB
      * @exception IOException I/O errors
      */
@@ -1000,7 +987,7 @@ class DBFirstPage extends DBHeaderPage {
 
     /**
      * return the number of pages in the DB
-     * 
+     *
      * @return number of pages in DB
      * @exception IOException I/O errors
      */
@@ -1024,7 +1011,7 @@ class DBDirectoryPage extends DBHeaderPage { // implements PageUsedBytes
 
     /**
      * Constructor of DBDirectoryPage class
-     * 
+     *
      * @param page a page of Page object
      * @exception IOException
      */
@@ -1034,7 +1021,7 @@ class DBDirectoryPage extends DBHeaderPage { // implements PageUsedBytes
 
     /**
      * open an exist DB directory page
-     * 
+     *
      * @param page a page of Page object
      */
     public void openPage(Page page) {

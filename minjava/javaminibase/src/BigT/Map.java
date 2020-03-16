@@ -62,9 +62,9 @@ public class Map implements GlobalConst {
     }
 
     /**
-     * 
+     *
      * Construct a map from a byte array.
-     * 
+     *
      * @param amap   a byte array which contains the map
      * @param offset the offset of the map in the byte array
      * @param length
@@ -77,7 +77,7 @@ public class Map implements GlobalConst {
 
     /**
      * Construct a map from another map through copy.
-     * 
+     *
      * @param fromMap
      */
     public Map(Map fromMap) {
@@ -101,15 +101,18 @@ public class Map implements GlobalConst {
 
     /**
      * Returns the row label.
-     * 
+     *
      * @return
      * @throws FieldNumberOutOfBoundException
      */
     public String getRowLabel() throws IOException, FieldNumberOutOfBoundException {
         String tmp = null;
+        System.out.println("in the getRowLabel()  - entry point");
         try {
             tmp = getStrFld(1);
-        } catch (Exception e) {
+        } catch (FieldNumberOutOfBoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return tmp;
@@ -117,7 +120,7 @@ public class Map implements GlobalConst {
 
     /**
      * Returns the column label.
-     * 
+     *
      * @return
      * @throws FieldNumberOutOfBoundException
      */
@@ -133,7 +136,7 @@ public class Map implements GlobalConst {
 
     /**
      * Returns the timestamp.
-     * 
+     *
      * @return
      * @throws FieldNumberOutOfBoundException
      */
@@ -149,7 +152,7 @@ public class Map implements GlobalConst {
 
     /**
      * Returns the value.
-     * 
+     *
      * @return
      * @throws FieldNumberOutOfBoundException
      */
@@ -165,13 +168,14 @@ public class Map implements GlobalConst {
 
     /**
      * Set the row label.
-     * 
+     *
      * @param val
      * @return
      */
     public Map setRowLabel(String val) throws IOException, FieldNumberOutOfBoundException {
         try {
             this.setStrFld(1, val);
+              System.out.println (" In setRowLabel, val = " + val + " \n");
         } catch (FieldNumberOutOfBoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -182,13 +186,14 @@ public class Map implements GlobalConst {
 
     /**
      * Set the column label.
-     * 
+     *
      * @param val
      * @return
      */
     public Map setColumnLabel(String val) throws IOException, FieldNumberOutOfBoundException {
         try {
             this.setStrFld(2, val);
+            System.out.println (" In setColumnLabel, val = " + val + " \n");
         } catch (FieldNumberOutOfBoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -199,13 +204,14 @@ public class Map implements GlobalConst {
 
     /**
      * Set the timestamp.
-     * 
+     *
      * @param val
      * @return
      */
     public Map setTimeStamp(int val) throws IOException, FieldNumberOutOfBoundException {
         try {
             this.setIntFld(3, val);
+            System.out.println (" In setTimeStamp, val = " + val + " \n");
         } catch (FieldNumberOutOfBoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -216,13 +222,14 @@ public class Map implements GlobalConst {
 
     /**
      * Set the value.
-     * 
+     *
      * @param val
      * @return
      */
     public Map setValue(String val) throws IOException, FieldNumberOutOfBoundException {
         try {
             this.setStrFld(4, val);
+            System.out.println (" In setValue, val = " + val + " \n");
         } catch (FieldNumberOutOfBoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -233,7 +240,7 @@ public class Map implements GlobalConst {
 
     /**
      * Copy the map to byte array out.
-     * 
+     *
      * @return byte[], a byte array contains the map, the length of byte[] = length
      *         of the map
      */
@@ -245,7 +252,7 @@ public class Map implements GlobalConst {
 
     /**
      * Print out the map
-     * 
+     *
      * @param type the types in the map
      * @Exception IOException I/O exception
      */
@@ -307,7 +314,7 @@ public class Map implements GlobalConst {
 
     /**
      * get the length of a map, call this method if you did call setHdr () before
-     * 
+     *
      * @return size of this map in bytes
      */
     public short size() {
@@ -316,7 +323,7 @@ public class Map implements GlobalConst {
 
     /**
      * Copy the given map
-     * 
+     *
      * @param fromMap the map being copied
      */
     public void mapCopy(Map fromMap) {
@@ -326,7 +333,7 @@ public class Map implements GlobalConst {
 
     /**
      * This is used when you don’t want to use the constructor
-     * 
+     *
      * @param amap
      * @param offset
      */
@@ -338,7 +345,7 @@ public class Map implements GlobalConst {
 
     /**
      * Set a map with the given byte array and offset.
-     * 
+     *
      * @param frommap
      * @param offset
      */
@@ -354,7 +361,7 @@ public class Map implements GlobalConst {
     /**
      * get the length of a map, call this method if you did not call setHdr ()
      * before
-     * 
+     *
      * @return length of this map in bytes
      */
     public int getLength() {
@@ -377,7 +384,7 @@ public class Map implements GlobalConst {
 
     /**
      * get the offset of a map
-     * 
+     *
      * @return offset of the map in byte array
      */
     public int getOffset() {
@@ -386,7 +393,7 @@ public class Map implements GlobalConst {
 
     /**
      * return the data byte array
-     * 
+     *
      * @return data byte array
      */
     public byte[] returnMapByteArray() {
@@ -395,10 +402,10 @@ public class Map implements GlobalConst {
 
     /**
      * Convert this field into integer
-     * 
+     *
      * @param fldNo the field number
      * @return the converted integer if success
-     * 
+     *
      * @exception IOException                    I/O errors
      * @exception FieldNumberOutOfBoundException Map field number out of bound
      */
@@ -416,7 +423,7 @@ public class Map implements GlobalConst {
      *
      * @param fldNo the field number
      * @return the converted float number if success
-     * 
+     *
      * @exception IOException                    I/O errors
      * @exception FieldNumberOutOfBoundException Map field number out of bound
      */
@@ -434,17 +441,27 @@ public class Map implements GlobalConst {
      *
      * @param fldNo the field number
      * @return the converted string if success
-     * 
+     *
      * @exception IOException                    I/O errors
      * @exception FieldNumberOutOfBoundException Map field number out of bound
      */
     public String getStrFld(int fldNo) throws IOException, FieldNumberOutOfBoundException {
         String val;
+        //try {
+        System.out.println("in the getStrFld() fldNo = " + fldNo + " FldCnt = "+ fldCnt  );
         if ((fldNo > 0) && (fldNo <= fldCnt)) {
+         System.out.println("fldOffset[fldNo - 1] = " + fldOffset[fldNo - 1]);
+         System.out.println("fldOffset[fldNo] - fldOffset[fldNo - 1] = " + ( fldOffset[fldNo] - fldOffset[fldNo - 1])) ;
             val = Convert.getStrValue(fldOffset[fldNo - 1], data, fldOffset[fldNo] - fldOffset[fldNo - 1]); // strlen+2
             return val;
-        } else
-            throw new FieldNumberOutOfBoundException(null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
+        }
+        else {
+          throw new FieldNumberOutOfBoundException(null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
+        }
+      //}
+
+           //throw new FieldNumberOutOfBoundException(null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
+           //throw new IOException(null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
     }
 
     /**
@@ -452,7 +469,7 @@ public class Map implements GlobalConst {
      *
      * @param fldNo the field number
      * @return the character if success
-     * 
+     *
      * @exception IOException                    I/O errors
      * @exception FieldNumberOutOfBoundException Map field number out of bound
      */
@@ -524,7 +541,7 @@ public class Map implements GlobalConst {
      * @param numFlds    number of fields
      * @param types[]    contains the types that will be in this map
      * @param strSizes[] contains the sizes of the string
-     * 
+     *
      * @exception IOException               I/O errors
      * @exception InvalidTypeException      Invalid tupe type
      * @exception InvalidTupleSizeException map size too big
@@ -533,11 +550,9 @@ public class Map implements GlobalConst {
 
     public void setHdr(short numFlds, AttrType types[], short strSizes[])
             throws IOException, InvalidTypeException, InvalidTupleSizeException {
-        numFlds = 4;
-
-        if ((numFlds + 2) * 2 > max_size) // 1 for numFlds, 1 for fldCnt
+        if ((numFlds + 2) * 2 > max_size)
             throw new InvalidTupleSizeException(null, "MAP: TUPLE_TOOBIG_ERROR");
-
+        numFlds = 4;
         fldCnt = numFlds;
         Convert.setShortValue(numFlds, map_offset, data);
         fldOffset = new short[numFlds + 1];
@@ -570,7 +585,7 @@ public class Map implements GlobalConst {
                 break;
 
             default:
-                throw new InvalidTypeException(null, "MAP: MAP_TYPE_ERROR");
+                throw new InvalidTypeException(null, "MAP: TUPLE_TYPE_ERROR");
             }
             fldOffset[i] = (short) (fldOffset[i - 1] + incr);
             Convert.setShortValue(fldOffset[i], pos, data);
@@ -592,7 +607,7 @@ public class Map implements GlobalConst {
             break;
 
         default:
-            throw new InvalidTypeException(null, "MAP: MAP_TYPE_ERROR");
+            throw new InvalidTypeException(null, "MAP: TUPLE_TYPE_ERROR");
         }
 
         fldOffset[numFlds] = (short) (fldOffset[i - 1] + incr);
@@ -601,6 +616,6 @@ public class Map implements GlobalConst {
         map_length = fldOffset[numFlds] - map_offset;
 
         if (map_length > max_size)
-            throw new InvalidTupleSizeException(null, "MAP: MAP_TOOBIG_ERROR");
+            throw new InvalidTupleSizeException(null, "MAP: TUPLE_TOOBIG_ERROR");
     }
 }

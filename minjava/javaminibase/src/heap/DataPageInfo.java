@@ -49,7 +49,7 @@ class DataPageInfo implements GlobalConst {
 
   /**
    * Constructor
-   * 
+   *
    * @param array a byte array
    */
   public DataPageInfo(byte[] array) {
@@ -64,7 +64,7 @@ class DataPageInfo implements GlobalConst {
   /**
    * constructor: translate a map to a DataPageInfo object it will make a copy of
    * the data in the map
-   * 
+   *
    * @param _amap: the input map
    */
   public DataPageInfo(Map _amap) throws InvalidTupleSizeException, IOException {
@@ -87,19 +87,20 @@ class DataPageInfo implements GlobalConst {
 
   /**
    * convert this class objcet to a map(like cast a DataPageInfo to Map)
-   * 
+   *
    *
    */
   public Map convertToMap() throws IOException {
 
     // 1) write availspace, recct, pageId into data []
+    System.out.println("In convertToMap() : Data = " + data + " availspace= "+availspace + " recct = " + recct + " pageId.pid = " +pageId.pid);
     Convert.setIntValue(availspace, offset, data);
     Convert.setIntValue(recct, offset + 4, data);
     Convert.setIntValue(pageId.pid, offset + 8, data);
 
     // 2) creat a map object using this array
     Map amap = new Map(data, offset, size);
-
+    //System.out.println("In convertToMap() : After Map creation"  );
     // 3) return map object
     return amap;
 
@@ -108,7 +109,7 @@ class DataPageInfo implements GlobalConst {
   /**
    * write this object's useful fields(availspace, recct, pageId) to the
    * data[](may be in buffer pool)
-   * 
+   *
    */
   public void flushToMap() throws IOException {
     // write availspace, recct, pageId into "data[]"
