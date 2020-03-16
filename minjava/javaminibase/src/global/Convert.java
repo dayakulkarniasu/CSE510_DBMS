@@ -318,7 +318,15 @@ public class Convert{
     //   return new CombinedLabel(s1, s2, val, s3);
     // }
 
-    public static StringString getStringString(int position, byte[] data)
+    /**
+     * reads a string followed by a string that has been encoded using a modified UTF-8 format from
+     * the given byte array at the specified position
+     * @param       data            a byte array
+     * @param       position        the position in data[]
+     * @exception   java.io.IOException I/O errors
+     * @return      the stringstring
+     */
+    public static StringString getStrStrValue(int position, byte[] data)
       throws java.io.IOException
     {
       int pos = position;
@@ -329,7 +337,15 @@ public class Convert{
       return new StringString(s1, s2);
     }
 
-    public static StringInteger getStringInteger(int position, byte[] data)
+    /**
+     * reads a string followed by an integer that has been encoded using a modified UTF-8 format from
+     * the given byte array at the specified position
+     * @param       data            a byte array
+     * @param       position        the position in data[]
+     * @exception   java.io.IOException I/O errors
+     * @return      the stringinteger
+     */
+    public static StringInteger getStrIntValue(int position, byte[] data)
       throws java.io.IOException
     {
       int pos = position;
@@ -340,7 +356,15 @@ public class Convert{
       return new StringInteger(s, val);
     }
 
-    public static StringStringInteger getStringStringInteger(int position, byte[] data)
+    /**
+     * reads a string followed by a string then an integer that has been encoded using a modified UTF-8 format from
+     * the given byte array at the specified position
+     * @param       data            a byte array
+     * @param       position        the position in data[]
+     * @exception   java.io.IOException I/O errors
+     * @return      the stringstringinteger
+     */
+    public static StringStringInteger getStrStrIntValue(int position, byte[] data)
       throws java.io.IOException
     {
       int pos = position;
@@ -351,5 +375,63 @@ public class Convert{
       Integer val = getIntValue(pos, data);
 
       return new StringStringInteger(s1, s2, val);
+    }
+
+    /**
+     * Insert or update a stringstring in the given byte array at the specified 
+     * position.
+     * @param       data            a byte array
+     * @param       ss              the value to be copied into data[]
+     * @param       position        the position of tht value in data[]
+     * @exception   java.io.IOException I/O errors
+     */
+    public static void setStrStrValue(StringString ss, int position, byte[] data)
+      throws java.io.IOException
+    {
+      int pos = position;
+      String[] vals = ss.getStrings();
+      setStrValue(vals[0], pos, data);
+      pos += GlobalConst.STR_LEN;
+      setStrValue(vals[1], pos, data);
+    }
+
+    /**
+     * Insert or update a stringinteger in the given byte array at the specified 
+     * position.
+     * @param       data            a byte array
+     * @param       si              the value to be copied into data[]
+     * @param       position        the position of tht value in data[]
+     * @exception   java.io.IOException I/O errors
+     */
+    public static void setStrIntValue(StringInteger si, int position, byte[] data)
+      throws java.io.IOException
+    {
+      int pos = position;
+      String s = si.getString();
+      Integer val = si.getInteger();
+      setStrValue(s, pos, data);
+      pos += GlobalConst.STR_LEN;
+      setIntValue(val.intValue(), pos, data);
+    }
+
+    /**
+     * Insert or update a stringstringinteger in the given byte array at the specified 
+     * position.
+     * @param       data            a byte array
+     * @param       ssi             the value to be copied into data[]
+     * @param       position        the position of tht value in data[]
+     * @exception   java.io.IOException I/O errors
+     */
+    public static void setStrStrIntValue(StringStringInteger ssi, int position, byte[] data)
+      throws java.io.IOException
+    {
+      int pos = position;
+      String[] vals = ssi.getStrings();
+      Integer intVal = ssi.getInteger();
+      setStrValue(vals[0], pos, data);
+      pos += GlobalConst.STR_LEN;
+      setStrValue(vals[1], pos, data);
+      pos += GlobalConst.STR_LEN;
+      setIntValue(intVal, pos, data);
     }
 }

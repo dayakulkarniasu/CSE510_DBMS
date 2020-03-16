@@ -34,7 +34,8 @@ public class Stream implements GlobalConst{
 
     /** record ID of the current record (from the current data page) */
     private MID userrid = new MID();
-
+    /** The amount of pages available for sorting*/
+    int SORTPGNUM = 12;
     /** the actual PageId of the data page with the current record */
 
 
@@ -53,13 +54,13 @@ public class Stream implements GlobalConst{
         attrType[1] = new AttrType(AttrType.attrString);
         attrType[2] = new AttrType(AttrType.attrInteger);
         attrType[3] = new AttrType(AttrType.attrString);
-        // TODO need to set the string size for each map
-        // I don't know if this is the length of each string in map.
         short[] attrSize = new short[3];
-
-        attrSize[0] = 0;
-        attrSize[1] = 0;
-        attrSize[2] = 0;
+        attrSize[0] = 64;
+        attrSize[1] = 64;
+        attrSize[2] = 64;
+        TupleOrder[] order = new TupleOrder[2];
+        order[0] = new TupleOrder(TupleOrder.Ascending);
+        order[1] = new TupleOrder(TupleOrder.Descending);
 
         // create empty map we will use for reading data
         Map m = new Map();
@@ -73,41 +74,18 @@ public class Stream implements GlobalConst{
 
         int size = m.size();
 
-        // the "pointer" to records
-        MID             mid;
-
-        // not sure why we're doing this again
-        m = new Map();
-        //m = new Map(size); originally (for tuples) would call with size param
-        try {
-            m.setHdr((short) 2, attrType, attrSize);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        //At this point we're going to use our indexes to return
-        //maps. The indexes should have been created during the batch
-        // insertion process (probabally inside of the bigT constructor)
-        // that means that at this step all we need to do is call the
-        // names of the btree index files.
-        // Index File Nmes
-        // type 1 - no index
-        // type 2 - type2Idx
-        // type 3 - type3Idx
-        // type 4 - type4CombKeyIdx & type4TSIdx
-        // type 5 - type5CombKeyIdx & type5TSIdx
-
         // create an iterator by open a file scan
-        //TODO don't totally understand hte projlist stuff
-        FldSpec[] projlist = new FldSpec[2];
+        FldSpec[] projlist = new FldSpec[4];
         RelSpec rel = new RelSpec(RelSpec.outer);
         projlist[0] = new FldSpec(rel, 1);
         projlist[1] = new FldSpec(rel, 2);
+        projlist[2] = new FldSpec(rel, 3);
+        projlist[3] = new FldSpec(rel, 4);
 
         FileScan fscan = null;
 
         try {
-            fscan = new FileScan("test1.in", attrType, attrSize, (short) 2, 2, projlist, null);
+            fscan = new FileScan(bigtable.name, attrType, attrSize, (short) 4, 4, projlist, null);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -117,8 +95,28 @@ public class Stream implements GlobalConst{
         Sort sort = null;
         try {
 
-            //TODO we need to make modifications to the sort to work with maps instead of tuples
-            sort = new Sort(attrType, (short) 2, attrSize, fscan, 1, order[0], REC_LEN1, SORTPGNUM);
+            //TODO
+            //sort = new Sort(attrType, (short) 4, attrSize, fscan, 1, order[0], 64, SORTPGNUM);
+            switch (orderType){
+                case OrderType.type1:
+                    //results ordered by rowLabel then columnLabel then time stamp
+                    break;
+                case OrderType.type2:
+                    //ordered columnLabel, rowLabel, timestamp
+                    break;
+                case OrderType.type3:
+                    //row label then timestamp
+                    break;
+                case OrderType.type4:
+                    //column label then time stamp
+                    break;
+                case OrderType.type5:
+                    //time stamp
+                    sort = new Sort(attrType, (short) 4, attrSize, fscan, 3, order[0], 4, SORTPGNUM);
+
+                    break;
+                default:
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -136,28 +134,35 @@ public class Stream implements GlobalConst{
             e.printStackTrace();
         }
 
-        boolean flag = true;
+    }
 
-        switch (orderType){
-            case OrderType.type1:
-                //TODO need to research this one a little more
-                //results ordered by rowLabel then columnLabel then time stamp
-                break;
-            case OrderType.type2:
-                //ordered columnLabel, rowLabel, timestamp
-                break;
-            case OrderType.type3:
-                //row label then timestamp
-                break;
-            case OrderType.type4:
-                //column label then time stamp
-                break;
-            case OrderType.type5:
-                //time stamp
-                break;
-            default:
+    //TODO need to set up for rowLabel, columnLabel, TS, value
+    private void Query_CondExpr(CondExpr[] expr, CondExpr[] expr2) {
 
-        }
+        expr[0].next  = null;
+        expr[0].op    = new AttrOperator(AttrOperator.aopEQ);
+        expr[0].type1 = new AttrType(AttrType.attrSymbol);
+        expr[0].type2 = new AttrType(AttrType.attrSymbol);
+        expr[0].operand1.symbol = new FldSpec (new RelSpec(RelSpec.outer),1);
+        expr[0].operand2.symbol = new FldSpec (new RelSpec(RelSpec.innerRel),1);
+
+        expr[1] = null;
+
+        expr2[0].next  = null;
+        expr2[0].op    = new AttrOperator(AttrOperator.aopEQ);
+        expr2[0].type1 = new AttrType(AttrType.attrSymbol);
+        expr2[0].type2 = new AttrType(AttrType.attrSymbol);
+        expr2[0].operand1.symbol = new FldSpec (new RelSpec(RelSpec.outer),2);
+        expr2[0].operand2.symbol = new FldSpec (new RelSpec(RelSpec.innerRel),1);
+
+        expr2[1].op   = new AttrOperator(AttrOperator.aopEQ);
+        expr2[1].next = null;
+        expr2[1].type1 = new AttrType(AttrType.attrSymbol);
+        expr2[1].type2 = new AttrType(AttrType.attrString);
+        expr2[1].operand1.symbol = new FldSpec (new RelSpec(RelSpec.innerRel),3);
+        expr2[1].operand2.string = "red";
+
+        expr2[2] = null;
     }
 
     /**

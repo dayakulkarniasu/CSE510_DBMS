@@ -210,43 +210,43 @@ public class BT  implements GlobalConst{
   else if (keyType== AttrType.attrRowCol)
   {
     //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
-          StringString ss = Convert.getStringString(offset, from);
+          StringString ss = Convert.getStrStrValue(offset, from);
           key= new RowColKey(ss);
   } 
   else if (keyType== AttrType.attrColRow)
   {
     //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
-          StringString ss = Convert.getStringString(offset, from);
+          StringString ss = Convert.getStrStrValue(offset, from);
           key= new ColRowKey(ss);
   } 
   else if (keyType== AttrType.attrRowTs)
   {
     //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
-          StringInteger si = Convert.getStringInteger(offset, from);
+          StringInteger si = Convert.getStrIntValue(offset, from);
           key= new RowTsKey(si);
   } 
   else if (keyType== AttrType.attrColTs)
   {
     //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
-          StringInteger si = Convert.getStringInteger(offset, from);
+          StringInteger si = Convert.getStrIntValue(offset, from);
           key= new ColTsKey(si);
   } 
   else if (keyType== AttrType.attrRowColTs)
   {
     //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
-          StringStringInteger ssi = Convert.getStringStringInteger(offset, from);
+          StringStringInteger ssi = Convert.getStrStrIntValue(offset, from);
           key= new RowColTsKey(ssi);
   } 
   else if (keyType== AttrType.attrColRowTs)
   {
     //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
-          StringStringInteger ssi = Convert.getStringStringInteger(offset, from);
+          StringStringInteger ssi = Convert.getStrStrIntValue(offset, from);
           key= new ColRowTsKey(ssi);
   } 
   else if (keyType== AttrType.attrColVal)
   {
     //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
-          StringString ss = Convert.getStringString(offset, from);
+          StringString ss = Convert.getStrStrValue(offset, from);
           key= new ColValKey(ss);
 	} 
 	else 
@@ -292,6 +292,18 @@ public class BT  implements GlobalConst{
         else if ( entry.key instanceof StringKey ) {
 	  Convert.setStrValue( ((StringKey)entry.key).getKey(),
 			       0, data);            
+        }
+        else if ( entry.key instanceof StringStringKey ) {
+    Convert.setStrStrValue( ((StringStringKey)entry.key).getKey(),
+             0, data);            
+        }
+        else if ( entry.key instanceof StringIntegerKey ) {
+    Convert.setStrIntValue( ((StringIntegerKey)entry.key).getKey(),
+             0, data);            
+        }
+        else if ( entry.key instanceof StringStringIntegerKey ) {
+    Convert.setStrStrIntValue( ((StringStringIntegerKey)entry.key).getKey(),
+             0, data);            
         }
         else throw new KeyNotMatchException(null, "key types do not match");
         
