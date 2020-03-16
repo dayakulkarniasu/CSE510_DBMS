@@ -326,13 +326,15 @@ public class Convert{
      * @exception   java.io.IOException I/O errors
      * @return      the stringstring
      */
-    public static StringString getStrStrValue(int position, byte[] data)
+    public static StringString getStrStrValue(int position, byte[] data, int length)
       throws java.io.IOException
     {
       int pos = position;
-      String s1 = getStrValue(pos, data, GlobalConst.STR_LEN);
-      pos += GlobalConst.STR_LEN;
-      String s2 = getStrValue(pos, data, GlobalConst.STR_LEN);
+      short len = getShortValue(pos, data);
+      pos += 2;
+      String s1 = getStrValue(pos, data, len+2);
+      pos += len+2;
+      String s2 = getStrValue(pos, data, length-len-6);
 
       return new StringString(s1, s2);
     }
@@ -345,12 +347,14 @@ public class Convert{
      * @exception   java.io.IOException I/O errors
      * @return      the stringinteger
      */
-    public static StringInteger getStrIntValue(int position, byte[] data)
+    public static StringInteger getStrIntValue(int position, byte[] data, int length)
       throws java.io.IOException
     {
       int pos = position;
-      String s = getStrValue(pos, data, GlobalConst.STR_LEN);
-      pos += GlobalConst.STR_LEN;
+      short len = getShortValue(pos, data);
+      pos += 2;
+      String s = getStrValue(pos, data, len+2);
+      pos = length-4;
       Integer val = getIntValue(pos, data);
 
       return new StringInteger(s, val);
@@ -364,14 +368,16 @@ public class Convert{
      * @exception   java.io.IOException I/O errors
      * @return      the stringstringinteger
      */
-    public static StringStringInteger getStrStrIntValue(int position, byte[] data)
+    public static StringStringInteger getStrStrIntValue(int position, byte[] data, int length)
       throws java.io.IOException
     {
       int pos = position;
-      String s1 = getStrValue(pos, data, GlobalConst.STR_LEN);
-      pos += GlobalConst.STR_LEN;
-      String s2 = getStrValue(pos, data, GlobalConst.STR_LEN);
-      pos += GlobalConst.STR_LEN;
+      short len = getShortValue(pos, data);
+      pos += 2;
+      String s1 = getStrValue(pos, data, len+2);
+      pos += len+2;
+      String s2 = getStrValue(pos, data, length-len-10);
+      pos = length-4;
       Integer val = getIntValue(pos, data);
 
       return new StringStringInteger(s1, s2, val);
@@ -390,8 +396,10 @@ public class Convert{
     {
       int pos = position;
       String[] vals = ss.getStrings();
+      setShortValue((short) vals[0].length(), pos, data);
+      pos += 2;
       setStrValue(vals[0], pos, data);
-      pos += GlobalConst.STR_LEN;
+      pos += vals[0].length()+2;
       setStrValue(vals[1], pos, data);
     }
 
@@ -409,8 +417,10 @@ public class Convert{
       int pos = position;
       String s = si.getString();
       Integer val = si.getInteger();
+      setShortValue((short) s.length(), pos, data);
+      pos += 2;
       setStrValue(s, pos, data);
-      pos += GlobalConst.STR_LEN;
+      pos += s.length()+2;
       setIntValue(val.intValue(), pos, data);
     }
 
@@ -428,10 +438,12 @@ public class Convert{
       int pos = position;
       String[] vals = ssi.getStrings();
       Integer intVal = ssi.getInteger();
+      setShortValue((short) vals[0].length(), pos, data);
+      pos += 2;
       setStrValue(vals[0], pos, data);
-      pos += GlobalConst.STR_LEN;
+      pos += vals[0].length()+2;
       setStrValue(vals[1], pos, data);
-      pos += GlobalConst.STR_LEN;
+      pos += vals[1].length()+2;
       setIntValue(intVal, pos, data);
     }
 }
