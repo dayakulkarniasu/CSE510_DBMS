@@ -58,6 +58,15 @@ public class BT  implements GlobalConst{
       else if  ( (key1 instanceof StringKey) && (key2 instanceof StringKey)){
         return ((StringKey)key1).getKey().compareTo(((StringKey)key2).getKey());
       }
+      else if  ( (key1 instanceof StringStringKey) && (key2 instanceof StringStringKey)){
+        return ((StringStringKey)key1).getKey().compareTo(((StringStringKey)key2).getKey());
+      }
+      else if  ( (key1 instanceof StringIntegerKey) && (key2 instanceof StringIntegerKey)){
+        return ((StringIntegerKey)key1).getKey().compareTo(((StringIntegerKey)key2).getKey());
+      }
+      else if  ( (key1 instanceof StringStringIntegerKey) && (key2 instanceof StringStringIntegerKey)){
+        return ((StringStringIntegerKey)key1).getKey().compareTo(((StringStringIntegerKey)key2).getKey());
+      }
       
       else { throw new  KeyNotMatchException(null, "key types do not match");}
     } 
@@ -67,7 +76,7 @@ public class BT  implements GlobalConst{
    *@param key  specify the key whose length will be calculated.
    * Input parameter.
    *@return return the length of the key
-   *@exception  KeyNotMatchException  key is neither StringKey nor  IntegerKey 
+   *@exception  KeyNotMatchException  keytype is not defined 
    *@exception IOException   error  from the lower layer  
    */  
   protected final static int getKeyLength(KeyClass key) 
@@ -76,10 +85,34 @@ public class BT  implements GlobalConst{
     {
       if ( key instanceof StringKey) {
 	
-	OutputStream out = new ByteArrayOutputStream();
-	DataOutputStream outstr = new DataOutputStream (out);
-	outstr.writeUTF(((StringKey)key).getKey()); 
-	return  outstr.size();
+      OutputStream out = new ByteArrayOutputStream();
+      DataOutputStream outstr = new DataOutputStream (out);
+      outstr.writeUTF(((StringKey)key).getKey()); 
+      return  outstr.size();
+    }
+    else if ( key instanceof StringStringKey) {
+	
+      OutputStream out = new ByteArrayOutputStream();
+      DataOutputStream outstr = new DataOutputStream (out);
+      outstr.writeUTF(((StringStringKey)key).getKey().toString());
+      
+      return  outstr.size();
+    }
+    else if ( key instanceof StringIntegerKey) {
+	
+      OutputStream out = new ByteArrayOutputStream();
+      DataOutputStream outstr = new DataOutputStream (out);
+      outstr.writeUTF(((StringIntegerKey)key).getKey().getString());
+      
+      return  outstr.size() + 4;
+    }
+    else if ( key instanceof StringStringIntegerKey) {
+	
+      OutputStream out = new ByteArrayOutputStream();
+      DataOutputStream outstr = new DataOutputStream (out);
+      outstr.writeUTF(((StringStringIntegerKey)key).getKey().getStringString().toString());
+      
+      return  outstr.size() + 4;
     }
       else if ( key instanceof IntegerKey)
 	return 4;
@@ -108,7 +141,7 @@ public class BT  implements GlobalConst{
    *@param  key    an object of KeyClass.  Input parameter.
    *@param  pageType  NodeType.LEAF or  NodeType.INDEX. Input parameter.
    *@return return the lenrth of the (key,data) pair.
-   *@exception  KeyNotMatchException key is neither StringKey nor  IntegerKey 
+   *@exception  KeyNotMatchException keytype is not defined
    *@exception NodeNotMatchException pageType is neither NodeType.LEAF 
    *  nor NodeType.INDEX.
    *@exception IOException  error from the lower layer 
@@ -126,14 +159,16 @@ public class BT  implements GlobalConst{
    * Input parameter.
    *@param offset the offset in the bytes. Input parameter.
    *@param keyType It specifies the type of key. It can be 
-   *               AttrType.attrString or AttrType.attrInteger.
+   *               AttrType.attrString, AttrType.attrInteger,
+   *               AttrType.attrStringString, AttrType.attrStringInteger
+   *               or AttrType.attrStringStringInteger.
    *               Input parameter. 
    *@param nodeType It specifes NodeType.LEAF or NodeType.INDEX. 
    *                Input parameter.
    *@param length  The length of (key, data) in byte array "from".
    *               Input parameter.
    *@return return a KeyDataEntry object
-   *@exception KeyNotMatchException  key is neither StringKey nor  IntegerKey
+   *@exception KeyNotMatchException  keytype not defined
    *@exception NodeNotMatchException  nodeType is neither NodeType.LEAF 
    *  nor NodeType.INDEX.
    *@exception ConvertException  error from the lower layer 
@@ -156,11 +191,11 @@ public class BT  implements GlobalConst{
 	}
 	else if ( nodeType==NodeType.LEAF) {
 	  n=8;
-	  RID rid=new RID();
-	  rid.slotNo =   Convert.getIntValue(offset+length-8, from);
-	  rid.pageNo =new PageId();
-	  rid.pageNo.pid= Convert.getIntValue(offset+length-4, from); 
-	  data = new LeafData(rid);
+	  MID mid=new MID();
+	  mid.slotNo =   Convert.getIntValue(offset+length-8, from);
+	  mid.pageNo =new PageId();
+	  mid.pageNo.pid= Convert.getIntValue(offset+length-4, from); 
+	  data = new LeafData(mid);
 	}
 	else throw new NodeNotMatchException(null, "node types do not match"); 
 	
@@ -171,6 +206,48 @@ public class BT  implements GlobalConst{
 	else if (keyType== AttrType.attrString) {
 	  //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
           key= new StringKey( Convert.getStrValue(offset, from, length-n));
+  } 
+  else if (keyType== AttrType.attrRowCol)
+  {
+    //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
+          StringString ss = Convert.getStringString(offset, from);
+          key= new RowColKey(ss);
+  } 
+  else if (keyType== AttrType.attrColRow)
+  {
+    //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
+          StringString ss = Convert.getStringString(offset, from);
+          key= new ColRowKey(ss);
+  } 
+  else if (keyType== AttrType.attrRowTs)
+  {
+    //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
+          StringInteger si = Convert.getStringInteger(offset, from);
+          key= new RowTsKey(si);
+  } 
+  else if (keyType== AttrType.attrColTs)
+  {
+    //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
+          StringInteger si = Convert.getStringInteger(offset, from);
+          key= new ColTsKey(si);
+  } 
+  else if (keyType== AttrType.attrRowColTs)
+  {
+    //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
+          StringStringInteger ssi = Convert.getStringStringInteger(offset, from);
+          key= new RowColTsKey(ssi);
+  } 
+  else if (keyType== AttrType.attrColRowTs)
+  {
+    //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
+          StringStringInteger ssi = Convert.getStringStringInteger(offset, from);
+          key= new ColRowTsKey(ssi);
+  } 
+  else if (keyType== AttrType.attrColVal)
+  {
+    //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
+          StringString ss = Convert.getStringString(offset, from);
+          key= new ColValKey(ss);
 	} 
 	else 
           throw new KeyNotMatchException(null, "key types do not match");
@@ -272,10 +349,10 @@ public class BT  implements GlobalConst{
         System.out.println("Current Page ID: "+ indexPage.getCurPage().pid);
         System.out.println("Left Link      : "+ indexPage.getLeftLink().pid);
 	
-        RID rid=new RID();
+        MID mid=new MID();
 	
-        for(KeyDataEntry entry=indexPage.getFirst(rid); entry!=null; 
-	    entry=indexPage.getNext(rid)){
+        for(KeyDataEntry entry=indexPage.getFirst(mid); entry!=null; 
+	    entry=indexPage.getNext(mid)){
 	  if( keyType==AttrType.attrInteger) 
 	    System.out.println(i+" (key, pageId):   ("+ 
 			       (IntegerKey)entry.key + ",  "+(IndexData)entry.data+ " )");
@@ -297,10 +374,10 @@ public class BT  implements GlobalConst{
         System.out.println("Left Link      : "+ leafPage.getPrevPage().pid);
         System.out.println("Right Link     : "+ leafPage.getNextPage().pid);
 	
-        RID rid=new RID();
+        MID mid=new MID();
 	
-        for(KeyDataEntry entry=leafPage.getFirst(rid); entry!=null; 
-	    entry=leafPage.getNext(rid)){
+        for(KeyDataEntry entry=leafPage.getFirst(mid); entry!=null; 
+	    entry=leafPage.getNext(mid)){
 	  if( keyType==AttrType.attrInteger) 
 	    System.out.println(i+" (key, [pageNo, slotNo]):   ("+ 
 			       (IntegerKey)entry.key+ ",  "+(LeafData)entry.data+ " )");
@@ -381,9 +458,9 @@ public class BT  implements GlobalConst{
 	System.out.println(i+prefix+ indexPage.getPrevPage());
 	_printTree( indexPage.getPrevPage(), prefix, i, keyType);
 	
-	RID rid=new RID();
-	for( KeyDataEntry entry=indexPage.getFirst(rid); entry!=null; 
-	     entry=indexPage.getNext(rid)) {
+	MID mid=new MID();
+	for( KeyDataEntry entry=indexPage.getFirst(mid); entry!=null; 
+	     entry=indexPage.getNext(mid)) {
 	  System.out.println(i+prefix+(IndexData)entry.data);
 	  _printTree( ((IndexData)entry.data).getData(), prefix, i, keyType);
 	}
@@ -449,9 +526,9 @@ public class BT  implements GlobalConst{
 	
 	_printAllLeafPages( indexPage.getPrevPage(),  keyType);
 	
-	RID rid=new RID();
-	for( KeyDataEntry entry=indexPage.getFirst(rid); entry!=null; 
-	     entry=indexPage.getNext(rid)) {
+	MID mid=new MID();
+	for( KeyDataEntry entry=indexPage.getFirst(mid); entry!=null; 
+	     entry=indexPage.getNext(mid)) {
 	  _printAllLeafPages( ((IndexData)entry.data).getData(),  keyType);
 	}
       }

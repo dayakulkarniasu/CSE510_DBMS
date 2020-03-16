@@ -23,7 +23,33 @@ public class KeyDataEntry {
      this.data = new IndexData(pageNo);
   }; 
 
+  /** Class constructor.
+   */
+  public KeyDataEntry( String key, PageId pageNo) {
+     this.key = new StringKey(key); 
+     this.data = new IndexData(pageNo);
+  };
+  
+  /** Class constructor.
+   */
+  public KeyDataEntry( StringString key, PageId pageNo) {
+      this.key = new StringStringKey(key); 
+      this.data = new IndexData(pageNo);
+   };
 
+     /** Class constructor.
+   */
+  public KeyDataEntry( StringInteger key, PageId pageNo) {
+      this.key = new StringIntegerKey(key); 
+      this.data = new IndexData(pageNo);
+   };
+
+  /** Class constructor.
+   */
+  public KeyDataEntry( StringStringInteger key, PageId pageNo) {
+      this.key = new StringStringIntegerKey(key); 
+      this.data = new IndexData(pageNo);
+   };
 
   /** Class constructor.
    */
@@ -33,41 +59,69 @@ public class KeyDataEntry {
      if ( key instanceof IntegerKey ) 
         this.key= new IntegerKey(((IntegerKey)key).getKey());
      else if ( key instanceof StringKey ) 
-        this.key= new StringKey(((StringKey)key).getKey());    
+        this.key= new StringKey(((StringKey)key).getKey());  
+     else if ( key instanceof StringStringKey ) 
+        this.key= new StringStringKey(((StringStringKey)key).getKey());    
+     else if ( key instanceof StringIntegerKey ) 
+        this.key= new StringIntegerKey(((StringIntegerKey)key).getKey());    
+     else if ( key instanceof StringStringIntegerKey ) 
+        this.key= new StringStringIntegerKey(((StringStringIntegerKey)key).getKey());      
   };
 
 
   /** Class constructor.
    */
-  public KeyDataEntry( String key, PageId pageNo) {
-     this.key = new StringKey(key); 
-     this.data = new IndexData(pageNo);
-  };
-
-  /** Class constructor.
-   */
-  public KeyDataEntry( Integer key, RID rid) {
+  public KeyDataEntry( Integer key, MID mid) {
      this.key = new IntegerKey(key); 
-     this.data = new LeafData(rid);
+     this.data = new LeafData(mid);
   };
 
   /** Class constructor.
    */
-  public KeyDataEntry( KeyClass key, RID rid){
-     data = new LeafData(rid); 
+  public KeyDataEntry( String key, MID mid) {
+     this.key = new StringKey(key); 
+     this.data = new LeafData(mid);
+  }; 
+
+  /** Class constructor.
+   */
+  public KeyDataEntry( StringString key, MID mid) {
+      this.key = new StringStringKey(key); 
+      this.data = new LeafData(mid);
+   }; 
+
+  /** Class constructor.
+   */
+  public KeyDataEntry( StringInteger key, MID mid) {
+      this.key = new StringIntegerKey(key); 
+      this.data = new LeafData(mid);
+   }; 
+
+  /** Class constructor.
+   */
+  public KeyDataEntry( StringStringInteger key, MID mid) {
+      this.key = new StringStringIntegerKey(key); 
+      this.data = new LeafData(mid);
+   }; 
+
+  /** Class constructor.
+   */
+  public KeyDataEntry( KeyClass key, MID mid){
+     data = new LeafData(mid); 
      if ( key instanceof IntegerKey ) 
         this.key= new IntegerKey(((IntegerKey)key).getKey());
      else if ( key instanceof StringKey ) 
         this.key= new StringKey(((StringKey)key).getKey());    
+     else if ( key instanceof StringStringKey ) 
+        this.key= new StringStringKey(((StringStringKey)key).getKey());    
+     else if ( key instanceof StringIntegerKey ) 
+        this.key= new StringIntegerKey(((StringIntegerKey)key).getKey());    
+     else if ( key instanceof StringStringIntegerKey ) 
+        this.key= new StringStringIntegerKey(((StringStringIntegerKey)key).getKey());    
   };
 
 
-  /** Class constructor.
-   */
-  public KeyDataEntry( String key, RID rid) {
-     this.key = new StringKey(key); 
-     this.data = new LeafData(rid);
-  }; 
+
 
   /** Class constructor.
    */
@@ -76,6 +130,12 @@ public class KeyDataEntry {
         this.key= new IntegerKey(((IntegerKey)key).getKey());
      else if ( key instanceof StringKey ) 
         this.key= new StringKey(((StringKey)key).getKey()); 
+     else if ( key instanceof StringStringKey ) 
+        this.key= new StringStringKey(((StringStringKey)key).getKey()); 
+     else if ( key instanceof StringIntegerKey ) 
+        this.key= new StringIntegerKey(((StringIntegerKey)key).getKey()); 
+     else if ( key instanceof StringStringIntegerKey ) 
+        this.key= new StringStringIntegerKey(((StringStringIntegerKey)key).getKey()); 
 
      if ( data instanceof IndexData ) 
         this.data= new IndexData(((IndexData)data).getData());
@@ -93,16 +153,26 @@ public class KeyDataEntry {
       if ( key instanceof IntegerKey )
          st1= ((IntegerKey)key).getKey().equals
                   (((IntegerKey)entry.key).getKey());
-      else 
+      else if ( key instanceof StringKey )
          st1= ((StringKey)key).getKey().equals
                   (((StringKey)entry.key).getKey());
+      else if ( key instanceof StringStringKey )
+         st1= ((StringStringKey)key).getKey().equals
+                  (((StringStringKey)entry.key).getKey());
+      else if ( key instanceof StringIntegerKey )
+         st1= ((StringIntegerKey)key).getKey().equals
+                  (((StringIntegerKey)entry.key).getKey());
+      else 
+         st1= ((StringStringIntegerKey)key).getKey().equals
+                  (((StringStringIntegerKey)entry.key).getKey());
+      
 
       if( data instanceof IndexData )
          st2= ( (IndexData)data).getData().pid==
               ((IndexData)entry.data).getData().pid ;
       else
-         st2= ((RID)((LeafData)data).getData()).equals
-                (((RID)((LeafData)entry.data).getData()));
+         st2= ((MID)((LeafData)data).getData()).equals
+                (((MID)((LeafData)entry.data).getData()));
 
   
       return (st1&&st2);

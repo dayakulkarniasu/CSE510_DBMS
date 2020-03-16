@@ -302,4 +302,54 @@ public class Convert{
       System.arraycopy (B, 0, data, position, 2);
       
     }
+
+    // public static CombinedLabel getCombinedLabel(int position, byte[] data)
+    //   throws java.io.IOException
+    // {
+    //   int pos = position;
+    //   String s1 = getStrValue(position, data, GlobalConst.STR_LEN);
+    //   pos += GlobalConst.STR_LEN;
+    //   String s2 = getStrValue(pos, data, GlobalConst.STR_LEN);
+    //   pos += GlobalConst.STR_LEN;
+    //   Integer val = getIntValue(pos, data);
+    //   pos += 4;
+    //   String s3 = getStrValue(pos, data, GlobalConst.STR_LEN);
+
+    //   return new CombinedLabel(s1, s2, val, s3);
+    // }
+
+    public static StringString getStringString(int position, byte[] data)
+      throws java.io.IOException
+    {
+      int pos = position;
+      String s1 = getStrValue(pos, data, GlobalConst.STR_LEN);
+      pos += GlobalConst.STR_LEN;
+      String s2 = getStrValue(pos, data, GlobalConst.STR_LEN);
+
+      return new StringString(s1, s2);
+    }
+
+    public static StringInteger getStringInteger(int position, byte[] data)
+      throws java.io.IOException
+    {
+      int pos = position;
+      String s = getStrValue(pos, data, GlobalConst.STR_LEN);
+      pos += GlobalConst.STR_LEN;
+      Integer val = getIntValue(pos, data);
+
+      return new StringInteger(s, val);
+    }
+
+    public static StringStringInteger getStringStringInteger(int position, byte[] data)
+      throws java.io.IOException
+    {
+      int pos = position;
+      String s1 = getStrValue(pos, data, GlobalConst.STR_LEN);
+      pos += GlobalConst.STR_LEN;
+      String s2 = getStrValue(pos, data, GlobalConst.STR_LEN);
+      pos += GlobalConst.STR_LEN;
+      Integer val = getIntValue(pos, data);
+
+      return new StringStringInteger(s1, s2, val);
+    }
 }

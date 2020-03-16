@@ -12,6 +12,16 @@ public class AttrType {
   public static final int attrReal    = 2;
   public static final int attrSymbol  = 3;
   public static final int attrNull    = 4;
+  public static final int attrStringString = 5;
+  public static final int attrStringInteger = 6;
+  public static final int attrStringStringInteger = 7;
+  public static final int attrRowCol = 8;
+  public static final int attrColRow = 9;
+  public static final int attrRowTs = 10;
+  public static final int attrColTs = 11;
+  public static final int attrRowColTs = 12;
+  public static final int attrColRowTs = 13;
+  public static final int attrColVal = 14;
   
   public int attrType;
 
