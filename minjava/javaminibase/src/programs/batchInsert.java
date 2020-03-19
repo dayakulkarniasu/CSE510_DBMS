@@ -88,11 +88,102 @@ public class batchInsert{
 
 
 
+                /******************/
 
+
+
+                // putting this here for now
+                /*bigt big = new bigt(bigTableName, type);
+                BTreeFile btf = null;
+                switch (type){
+                    case DBType.type1:
+                        //TODO need to research this one a little more
+                        //no index
+                        break;
+                    case DBType.type2:
+                        //one btree to index row labels
+                        try {
+                            btf = new BTreeFile("type2Idx", AttrType.attrString, big.getRowCnt(), 1);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                            Runtime.getRuntime().exit(1);
+                        }
+
+                        mid = new MID();
+                        String key = null;
+                        Map temp = null;
+
+                        try {
+                            temp = Stream.getNext(mid);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        // itterate through all the maps
+                        while ( temp != null) {
+                            m.mapCopy(temp);
+
+                            try {
+                                // the key for Type 2 is the row
+                                key = m.getRowLabel();
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                // insert the key and the 'pointer' Map Id into btree index
+                                btf.insert(new StringKey(key), mid);
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                // get next map
+                                temp = Stream.getNext(mid);
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        // close the file scan
+                        scan.closescan();
+
+                        //BTreeIndex file created successfully
+
+                        break;
+                    case DBType.type3:
+                        // one btree to index column labels
+                        break;
+                    case DBType.type4:
+                        // one btree to index column label and row label (combined key)
+                        // one btree to index time stamps
+                        break;
+                    case DBType.type5:
+                        // one btree to index row label and value (combined key)
+                        // one btree to index time stamps
+                        break;
+                    default:
+*/
+                //}
+          //  }
+
+
+          //  }
+      /*  }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        */
 
     }//end of main
     public static boolean InsertBTmap(String datafileN)  {
-//this method is to test if the info is getting stored in map correctly
+
       BufferedReader br = null;
       int linecount = 0;
        String line = "";
@@ -124,7 +215,7 @@ public class batchInsert{
         System.out.println ("  - Add " + linecount + " records to the file\n");
 
 
-        //this is to read in the CSV file lines and save the data
+        //for (int i =0; (i < choice) && (status == true); i++) {
         try{
             br = new BufferedReader(new FileReader(datafileN));
             while((line = br.readLine()) != null){
@@ -133,7 +224,7 @@ public class batchInsert{
                 String columnLabel = arryfields[1];
                 String timeStamp = arryfields[2];
                 String value = arryfields[3];
-                System.out.println("row label: "+ rowLabel + " col label: " + columnLabel + " TS: " + timeStamp  + " val: " + value);
+              //  System.out.println("row label: "+ rowLabel + " col label: " + columnLabel + " TS: " + timeStamp  + " val: " + value);
 
 
       	        //fixed length record
@@ -144,10 +235,37 @@ public class batchInsert{
                 rec.valuename = value;
               //  System.out.println("Printing the Dummy record object fields in Main");
 
-                System.out.println(" Dummy row label: "+ rec.rowlabname + " col label: " + rec.collabname + " TS: " + rec.timestampname  + " val: " + rec.valuename);
+                // System.out.println(" Dummy row label: "+ rec.rowlabname + " col label: " + rec.collabname + " TS: " + rec.timestampname  + " val: " + rec.valuename);
 
               	try {
-              	  rid = f.insertMap(rec.toByteArray());
+                //  Map recMap = new Map(rec.toByteArray(),0, rec.getRecLength()) ;
+                    Map recMap = new Map(rec.toByteArray(),0, rec.getRecLength()) ;
+                    //  System.out.println(" RecMap created successfully ");
+                      AttrType[] types = {new AttrType(0),new AttrType(0),new AttrType(1),new AttrType(0)};
+                      types[0] = new AttrType(0) ;
+                      types[1] = new AttrType(0) ;
+                      types[2] = new AttrType(1) ;
+                      types[3] = new AttrType(0) ;
+                      short[] strSizes = { 0, 0,0,0};
+                      strSizes[0] = (short) (rowLabel.length());
+                      strSizes[1] = (short) (columnLabel.length()) ;
+                      strSizes[2] = (short) (4) ;
+                      strSizes[3] = (short) (value.length());
+                    //  System.out.println(" types[0] = " + types[0]+ "types[1] = " + types[1]+ " types[2] = " + types[2] + " types[3] = " + types[3]);
+                      recMap.setHdr((short) 4, types, strSizes) ;
+                    /*  recMap.setFieldOffset((short)1, (short)0);
+                      recMap.setFieldOffset((short)2, (short) (rec.rowlabname.length()));
+                      recMap.setFieldOffset((short)3, (short) (rec.rowlabname.length() + rec.collabname.length()));
+                      recMap.setFieldOffset((short)4, (short) (rec.rowlabname.length() + rec.collabname.length() + 4));
+                      recMap.setFieldOffset((short)5, (short) (rec.rowlabname.length() + rec.collabname.length() + 4 + rec.valuename.length()));
+                      */
+                    /*   recMap.fldOffset[2] = 0;
+                       recMap.fldOffset[1] = rec.rowlabname.length();
+                       recMap.fldOffset[2] = rec.rowlabname.length() + rec.collabname.length();
+                       recMap.fldOffset[3] = rec.rowlabname.length() + rec.collabname.length() + 4;
+                       recMap.fldOffset[4] = rec.rowlabname.length() + rec.collabname.length() + 4 + rec.valuename.length;
+                       */
+              	  rid = f.insertMap(recMap.getMapByteArray());
               	}
               	catch (Exception e) {
               	  status = false;
@@ -194,10 +312,11 @@ public class batchInsert{
       Scan scan = null;
 
       if ( status == true ) {
-              System.out.println ("  - Scan the records just inserted\n");
+              System.out.println (" In batchInsert - Scan the records just inserted\n");
 
               try {
         	         scan = f.openScan();
+                //   System.out.println (" In batchInsert - done with f.openScan() \n") ;
               }
               catch (Exception e) {
                   	status = false;
@@ -220,6 +339,8 @@ public class batchInsert{
                 boolean done = false;
                 while (!done) {
                   	try {
+                    //  System.out.println (" In batchInsert, before  scan.getNext(rid) , rid.pageNo.pid = " + rid.pageNo.pid );
+
                   	  aMap = scan.getNext(rid);
                   	  if (aMap == null) {
                   	    done = true;
@@ -233,8 +354,9 @@ public class batchInsert{
 
                   	if (status == true && !done) {
                   	  try {
-                        System.out.println ("From Scan, getting next Map and converting in to DummyRecord \n");
+                      //  System.out.println ("From Scan, getting next Map and converting in to DummyRecord \n");
                   	    rec = new DummyRecord(aMap);
+                      //  System.out.println ("From Scan, After converting in to DummyRecord \n");
                   	  }
                   	  catch (Exception e) {
                   	    System.err.println (""+e);
@@ -348,7 +470,7 @@ class DummyRecord  {
     //setRecLen(name.length());s
     // Setting the record length = arecord getLength
     int RecordLength = rowlabname.length() + collabname.length() + valuename.length() + valuename.length();
-  //  setRecLen(data.length());
+  //setRecLen(data.length());
   setRecLen(RecordLength);
   }
 
@@ -358,54 +480,61 @@ class DummyRecord  {
    */
   public DummyRecord(Map _atuple)
 	throws java.io.IOException{
-      System.out.println (" the length of the map in dummy reccord is: " + _atuple.getLength());
+    //  System.out.println (" the length of the map in dummy reccord is: " + _atuple.getLength());
     data = new byte[_atuple.getLength()];
     data = _atuple.getMapByteArray();
     setRecLen(_atuple.getLength());
-      String MapRowLabel = "";
+    /*  String MapRowLabel = "";
       String MapColLabel = "";
       int MapTimeLabel = 0 ;
       String MapValueLabel = "" ;
-    System.out.println (" In the Dummy Record (Map) function \n");
-      try{
-      MapRowLabel = _atuple.getRowLabel() ;
-      }catch(FieldNumberOutOfBoundException e)
-      {
-        e.printStackTrace();
-      }
-      try{
-      MapColLabel = _atuple.getColumnLabel() ;
-      }catch(FieldNumberOutOfBoundException e)
-      {
-        e.printStackTrace();
-      }
+      */
+  //  System.out.println (" In the Dummy Record (Map) function \n");
+    //  try {}
+    rowlabname = _atuple.getRowLabel() ;
+    //  }
+      //catch(FieldNumberOutOfBoundException e)
+      //{
+      //  e.printStackTrace();
+      //}
+//      System.out.println (" In the Dummy Record (Map) function , Retrieved  MapRowLabel = " + MapRowLabel );
+//      try{
+      collabname = _atuple.getColumnLabel() ;
+//      }catch(FieldNumberOutOfBoundException e)
+//      {
+//        e.printStackTrace();
+//      }
+//      System.out.println (" In the Dummy Record (Map) function , Retrieved  MapColLabel = " + MapColLabel );
 
-      try{
-      MapTimeLabel = _atuple.getTimeStamp() ;
-      }catch(FieldNumberOutOfBoundException e)
-      {
-        e.printStackTrace();
-      }
+//      try{
+      timestampname = _atuple.getTimeStamp() ;
+//      System.out.println (" In the Dummy Record (Map) function , Retrieved  MapTimeLabel = " + MapTimeLabel );
 
-      try{
-      MapValueLabel = _atuple.getValue() ;
-      }catch(FieldNumberOutOfBoundException e)
-      {
-        e.printStackTrace();
-      }
+//      }catch(FieldNumberOutOfBoundException e)
+//      {
+//        e.printStackTrace();
+//      }
+
+//      try{
+      valuename = _atuple.getValue() ;
+//      }catch(FieldNumberOutOfBoundException e)
+//      {
+//        e.printStackTrace();
+//      }
+//      System.out.println (" In the Dummy Record (Map) function , Retrieved  MapValueLabel = " + MapValueLabel );
 
 
-    System.out.println(" Dummy Map Function : "+ MapRowLabel + " col label: " + MapColLabel + " TS: " + MapTimeLabel  + " val: " + MapValueLabel);
+//    System.out.println(" Dummy Map Function : "+ MapRowLabel + " col label: " + MapColLabel + " TS: " + MapTimeLabel  + " val: " + MapValueLabel);
 
   //  setIntRec (data);
   //  setFloRec (data);
   //  setStrRec (data);
-
+/* Commented out as it is not required
     setRowLabelRec (data);
     setColumnLabelRec (data);
     setTimeStampRec (data);
     setValueRec (data);
-
+*/
   }
 
   /** convert this class objcet to a byte array
@@ -422,15 +551,45 @@ class DummyRecord  {
     int CL_Length = collabname.length();
     int TS_Length = 4;
     int V_Length = valuename.length();
-    Convert.setStrValue (rowlabname, 0,data);
-    Convert.setStrValue (collabname, RL_Length,data);
-    Convert.setIntValue (timestampname, RL_Length + CL_Length,data);
-    Convert.setStrValue (valuename, RL_Length + CL_Length + TS_Length ,data);
-    System.out.println("In toByte Array : Data = " + data);
+  //  System.out.println("In toByte Array : TotalLength : " + (16 + RL_Length + 2 + CL_Length + 2 + TS_Length +4 + V_Length + 2));
+    setRecLen (64);
+  //  setRecLen (16 + RL_Length + 2 + CL_Length + 2 + TS_Length +4 + V_Length + 2);
+    Convert.setStrValue (rowlabname, 16,data);
+    Convert.setStrValue (collabname, 16 + RL_Length + 2,data );
+    Convert.setIntValue (timestampname, 16 + RL_Length + CL_Length + 4,data );
+    Convert.setStrValue (valuename, 16 + RL_Length + CL_Length + TS_Length + 4,data);
+    // recln1 = RL_Length + CL_Length + TS_Length ;
+  //  System.out.println("In toByte Array : Data = " + data + " Record length : " + reclen1);
 
     return data;
   }
 
+  /** get the integer value out of the byte array and set it to
+   *  the int value of the DummyRecord object
+   */
+/*  public void setIntRec (byte[] _data)
+    throws java.io.IOException {
+    ival = Convert.getIntValue (0, _data);
+  }
+
+  /** get the float value out of the byte array and set it to
+   *  the float value of the DummyRecord object
+   */
+/*  public void setFloRec (byte[] _data)
+    throws java.io.IOException {
+    fval = Convert.getFloValue (4, _data);
+  }
+*/
+  /** get the String value out of the byte array and set it to
+   *  the float value of the HTDummyRecorHT object
+   */
+/*  public void setStrRec (byte[] _data)
+    throws java.io.IOException {
+   // System.out.println("reclne= "+reclen);
+   // System.out.println("data size "+_data.size());
+    name = Convert.getStrValue (8, _data, reclen1-8);
+  }
+  */
   public void setRowLabelRec (byte[] _data)
     throws java.io.IOException {
    // System.out.println("reclne= "+reclen);
@@ -463,97 +622,3 @@ class DummyRecord  {
     return reclen1;
   }
  }
-
-
- /******************/
-
-
-
- // putting this here for now
- /*bigt big = new bigt(bigTableName, type);
- BTreeFile btf = null;
- switch (type){
-     case DBType.type1:
-         //TODO need to research this one a little more
-         //no index
-         break;
-     case DBType.type2:
-         //one btree to index row labels
-         try {
-             btf = new BTreeFile("type2Idx", AttrType.attrString, big.getRowCnt(), 1);
-         }
-         catch (Exception e) {
-             e.printStackTrace();
-             Runtime.getRuntime().exit(1);
-         }
-
-         mid = new MID();
-         String key = null;
-         Map temp = null;
-
-         try {
-             temp = Stream.getNext(mid);
-         }
-         catch (Exception e) {
-             e.printStackTrace();
-         }
-         // itterate through all the maps
-         while ( temp != null) {
-             m.mapCopy(temp);
-
-             try {
-                 // the key for Type 2 is the row
-                 key = m.getRowLabel();
-             }
-             catch (Exception e) {
-                 e.printStackTrace();
-             }
-
-             try {
-                 // insert the key and the 'pointer' Map Id into btree index
-                 btf.insert(new StringKey(key), mid);
-             }
-             catch (Exception e) {
-                 e.printStackTrace();
-             }
-
-             try {
-                 // get next map
-                 temp = Stream.getNext(mid);
-             }
-             catch (Exception e) {
-                 e.printStackTrace();
-             }
-         }
-
-         // close the file scan
-         scan.closescan();
-
-         //BTreeIndex file created successfully
-
-         break;
-     case DBType.type3:
-         // one btree to index column labels
-         break;
-     case DBType.type4:
-         // one btree to index column label and row label (combined key)
-         // one btree to index time stamps
-         break;
-     case DBType.type5:
-         // one btree to index row label and value (combined key)
-         // one btree to index time stamps
-         break;
-     default:
-*/
- //}
-//  }
-
-
-//  }
-/*  }
-catch (FileNotFoundException e) {
-e.printStackTrace();
-} catch (IOException e) {
-e.printStackTrace();
-}
-*/
