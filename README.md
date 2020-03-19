@@ -7,7 +7,7 @@ use your directory path
 
 # tasks that has been done and hasn't been tested so far
 
-- task1: Bigt.Map
+- task1: Bigt.Map (testing complete)
 - task2: done
 - task3: done
 - task4: 
