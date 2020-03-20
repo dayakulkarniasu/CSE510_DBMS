@@ -330,11 +330,13 @@ public class Convert{
       throws java.io.IOException
     {
       int pos = position;
-      short len = getShortValue(pos, data);
+      short len1 = getShortValue(pos, data);
       pos += 2;
-      String s1 = getStrValue(pos, data, len+2);
-      pos += len+2;
-      String s2 = getStrValue(pos, data, length-len-6);
+      String s1 = getStrValue(pos, data, len1+2);
+      pos += len1+2;
+      short len2 = getShortValue(pos, data);
+      pos += 2;
+      String s2 = getStrValue(pos, data, len2+2);
 
       return new StringString(s1, s2);
     }
@@ -354,7 +356,7 @@ public class Convert{
       short len = getShortValue(pos, data);
       pos += 2;
       String s = getStrValue(pos, data, len+2);
-      pos = length-4;
+      pos += len+2;
       Integer val = getIntValue(pos, data);
 
       return new StringInteger(s, val);
@@ -372,12 +374,14 @@ public class Convert{
       throws java.io.IOException
     {
       int pos = position;
-      short len = getShortValue(pos, data);
+      short len1 = getShortValue(pos, data);
       pos += 2;
-      String s1 = getStrValue(pos, data, len+2);
-      pos += len+2;
-      String s2 = getStrValue(pos, data, length-len-10);
-      pos = length-4;
+      String s1 = getStrValue(pos, data, len1+2);
+      pos += len1+2;
+      short len2 = getShortValue(pos, data);
+      pos += 2;
+      String s2 = getStrValue(pos, data, len2+2);
+      pos += len2+2;
       Integer val = getIntValue(pos, data);
 
       return new StringStringInteger(s1, s2, val);
@@ -395,11 +399,14 @@ public class Convert{
       throws java.io.IOException
     {
       int pos = position;
+      short[] lens = ss.getStrLen();
       String[] vals = ss.getStrings();
-      setShortValue((short) vals[0].length(), pos, data);
+      setShortValue(lens[0], pos, data);
       pos += 2;
       setStrValue(vals[0], pos, data);
-      pos += vals[0].length()+2;
+      pos += lens[0]+2;
+      setShortValue(lens[1], pos, data);
+      pos += 2;
       setStrValue(vals[1], pos, data);
     }
 
@@ -417,10 +424,11 @@ public class Convert{
       int pos = position;
       String s = si.getString();
       Integer val = si.getInteger();
-      setShortValue((short) s.length(), pos, data);
+      short len = si.getStrLen();
+      setShortValue(len, pos, data);
       pos += 2;
       setStrValue(s, pos, data);
-      pos += s.length()+2;
+      pos += len+2;
       setIntValue(val.intValue(), pos, data);
     }
 
@@ -436,14 +444,17 @@ public class Convert{
       throws java.io.IOException
     {
       int pos = position;
+      short lens[] = ssi.getStrLen();
       String[] vals = ssi.getStrings();
       Integer intVal = ssi.getInteger();
-      setShortValue((short) vals[0].length(), pos, data);
+      setShortValue(lens[0], pos, data);
       pos += 2;
       setStrValue(vals[0], pos, data);
-      pos += vals[0].length()+2;
+      pos += lens[0]+2;
+      setShortValue(lens[1], pos, data);
+      pos += 2;
       setStrValue(vals[1], pos, data);
-      pos += vals[1].length()+2;
-      setIntValue(intVal, pos, data);
+      pos += lens[1]+2;
+      setIntValue(intVal.intValue(), pos, data);
     }
 }

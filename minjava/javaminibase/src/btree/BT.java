@@ -94,9 +94,10 @@ public class BT  implements GlobalConst{
 	
       OutputStream out = new ByteArrayOutputStream();
       DataOutputStream outstr = new DataOutputStream (out);
-      outstr.writeUTF(((StringStringKey)key).getKey().toString());
+      outstr.writeUTF(((StringStringKey)key).getKey().getStrings()[0]);
+      outstr.writeUTF(((StringStringKey)key).getKey().getStrings()[1]);
       
-      return  outstr.size();
+      return  outstr.size()+4;
     }
     else if ( key instanceof StringIntegerKey) {
 	
@@ -104,15 +105,16 @@ public class BT  implements GlobalConst{
       DataOutputStream outstr = new DataOutputStream (out);
       outstr.writeUTF(((StringIntegerKey)key).getKey().getString());
       
-      return  outstr.size() + 4;
+      return  outstr.size()+6;
     }
     else if ( key instanceof StringStringIntegerKey) {
 	
       OutputStream out = new ByteArrayOutputStream();
       DataOutputStream outstr = new DataOutputStream (out);
-      outstr.writeUTF(((StringStringIntegerKey)key).getKey().getStringString().toString());
+      outstr.writeUTF(((StringStringIntegerKey)key).getKey().getStrings()[0]);
+      outstr.writeUTF(((StringStringIntegerKey)key).getKey().getStrings()[1]);
       
-      return  outstr.size() + 4;
+      return  outstr.size()+6;
     }
       else if ( key instanceof IntegerKey)
 	return 4;
