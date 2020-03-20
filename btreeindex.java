@@ -19,16 +19,17 @@ public class btreeindex{
     //attrType[0] = new AttrType(AttrType.attrString);
     //attrType[1] = new AttrType(AttrType.attrString);
 	BTreeFile btf  = null;
-	
+	MAXLEN_S = 32;  //set max length of row label, column lable, values as 32
+	MAXLEN_I = 4;	//set max length of timestamp, int as 4
 	
 	public void BTreeIndex_Row(){
 		MID mid = new MID();
 		
 		//create an index file
         int keyType = AttrType.attrString;
-        int keySize = bigt.getRowCnt();   //get number of row labels
+        int keySize = MAXLEN_S;
 		int delete_Fashion =1;
-        BTreeFile btf = new BTreeFile("btree"+rowLabel, keyType, keySize, delete_Fashion); 
+        BTreeFile btf = new BTreeFile("btreerow", keyType, keySize, delete_Fashion); 
 		
 		//insert index key
 		Map temp = null; 
@@ -46,9 +47,9 @@ public class btreeindex{
 		MID mid = new MID();
 		//create an index file
         int keyType = AttrType.attrString;
-        int keySize = bigt.getColumnCnt();   //get number of column labels
+        int keySize = MAXLEN_S;
 		int delete_Fashion =1;
-        BTreeFile btf = new BTreeFile("btree"+colLabel, keyType, keySize, delete_Fashion);   
+        BTreeFile btf = new BTreeFile("btreecol", keyType, keySize, delete_Fashion);   
         //insert index key
 		Map temp = null;     
 		String temp_key = null;
@@ -65,9 +66,9 @@ public class btreeindex{
 		MID mid = new MID();
 		//create an index file
         int keyType = AttrType.attrInteger;
-        int keySize = bigt.getMapCnt()  //get number of timestamp?
+        int keySize = MAXLEN_I;
 		int delete_Fashion =1;
-        BTreeFile btf = new BTreeFile("btree"+timestamp, keyType, keySize, delete_Fashion);   
+        BTreeFile btf = new BTreeFile("btreeTS", keyType, keySize, delete_Fashion);   
         //insert index key
 		Map temp = null; 
 		String temp_key = null;
@@ -84,9 +85,9 @@ public class btreeindex{
 		MID mid = new MID();
 		//create index file
         int keyType = AttrType.attrString;
-        int keySize = bigt.getMapCnt()  //get number of values?
+        int keySize = MAXLEN_S;
 		int delete_Fashion =1;
-        BTreeFile btf = new BTreeFile("btree"+timestamp, keyType, keySize, delete_Fashion);   
+        BTreeFile btf = new BTreeFile("btreeval", keyType, keySize, delete_Fashion);   
         //insert index key
 		Map temp = null; 
 		String temp_key = null;
@@ -98,28 +99,26 @@ public class btreeindex{
 		System.out.println("Successfully created BTree index on Value !");
 	}
 	
-	public BTreeIndex_RowCol() {
+	public BTreeIndex_ColRow() {
 		
 		MID mid = new MID();
 		//create index file
         int keyType = AttrType.attrString;
-        int keySize1 = bigt.getRowCnt();   //get number of row labels 
-		int keySize2 = bigt.getColumnCnt();   //get number of column labels
-		int keySize = max(keySize1, keySize2);
+        int keySize = MAXLEN_S;
 		int delete_Fashion =1;
-        BTreeFile btf = new BTreeFile("btree"+rowcol, keyType, keySize, delete_Fashion);   
+        BTreeFile btf = new BTreeFile("btreecolrow", keyType, keySize, delete_Fashion);   
         //insert index key
 		Map temp = null; 
 		String temp_key1 = null;
 		String temp_key2 = null;
         while (temp = Map.getNext(mid))!= null) {
-            int temp_key1 = temp.getRowLabel();    
-			int temp_key2 = temp.getColLabel();
+            int temp_key1 = temp.getColLabel();    
+			int temp_key2 = temp.getRowLabel();
             btf.insert(new btree.StringKey(temp_key1), mid);
 			btf.insert(new btree.StringKey(temp_key2), mid);
 			
         }
-		System.out.println("Successfully created BTree index on RowLabel and ColumnLabel !");
+		System.out.println("Successfully created BTree index on Column Label and Row Label !");
 	}
 	
 	public BTreeIndex_RowVal() {
@@ -127,11 +126,9 @@ public class btreeindex{
 		MID mid = new MID();
 		//create index file
         int keyType = AttrType.attrString;
-        int keySize1 = bigt.getRowCnt();   //get number of row labels 
-		int keySize2 = bigt.getMapCnt();   //get number of values
-		int keySize = max(keySize1, keySize2);
+        int keySize = MAXLEN_S;
 		int delete_Fashion =1;
-        BTreeFile btf = new BTreeFile("btree"+rowval, keyType, keySize, delete_Fashion);   
+        BTreeFile btf = new BTreeFile("btreerowval", keyType, keySize, delete_Fashion);   
         //insert index key
 		Map temp = null; 
 		String temp_key1 = null;
@@ -143,7 +140,7 @@ public class btreeindex{
 			btf.insert(new btree.StringKey(temp_key2), mid);
 			
         }
-		System.out.println("Successfully created BTree index on RowLabel and Value !");
+		System.out.println("Successfully created BTree index on Row Label and Value !");
 	}
 	
 }
