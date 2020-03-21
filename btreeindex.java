@@ -61,7 +61,7 @@ public class btreeindex{
 		System.out.println("Successfully created BTree index on ColumnLabel !");
 	}
 
-	public BTreeIndex_TS() {
+	public void BTreeIndex_TS() {
 		
 		MID mid = new MID();
 		//create an index file
@@ -80,7 +80,7 @@ public class btreeindex{
 		System.out.println("Successfully created BTree index on TimeStamp !");
 	}
 
-	public BTreeIndex_Val() {
+	public void BTreeIndex_Val() {
 		
 		MID mid = new MID();
 		//create index file
@@ -99,7 +99,7 @@ public class btreeindex{
 		System.out.println("Successfully created BTree index on Value !");
 	}
 	
-	public BTreeIndex_ColRow() {
+	public void BTreeIndex_ColRow() {
 		
 		MID mid = new MID();
 		//create index file
@@ -122,7 +122,7 @@ public class btreeindex{
 		System.out.println("Successfully created BTree index on Column Label and Row Label !");
 	}
 	
-	public BTreeIndex_RowVal() {
+	public void BTreeIndex_RowVal() {
 		
 		MID mid = new MID();
 		//create index file
