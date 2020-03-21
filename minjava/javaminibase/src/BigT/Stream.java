@@ -1,7 +1,11 @@
 package BigT;
 
+import btree.BTreeFile;
+import btree.StringKey;
 import global.*;
 import heap.HFBufMgrException;
+import index.IndexException;
+import index.IndexScan;
 import iterator.*;
 import diskmgr.*;
 import heap.*;
@@ -41,6 +45,10 @@ public class Stream implements GlobalConst{
     /** Strings are set to use size 62 bytes, 2 extra bytes are added when setting hdr for maps, hence 64 */
     private short RECLENGTH = 62;
 
+    private final static boolean OK = true;
+    private IndexScan iscan = null;
+
+
 
     /**
      * Initialize a stream of maps on bigtable.
@@ -54,10 +62,6 @@ public class Stream implements GlobalConst{
     Stream(bigt bigtable, int orderType, java.lang.String rowFilter, java.lang.String columnFilter, java.lang.String valueFilter)
             throws InvalidTupleSizeException, IOException{
         _bigTable = bigtable;
-        DataPageInfo dpinfo;
-        Tuple        rectuple = null;
-        Boolean      bst;
-
         /** copy data about first directory page */
 
         dirpageId.pid = _bigTable.hf._firstDirPageId.pid;
@@ -72,9 +76,6 @@ public class Stream implements GlobalConst{
         attrSize[0] = RECLENGTH;
         attrSize[1] = RECLENGTH;
         attrSize[2] = RECLENGTH;
-        TupleOrder[] order = new TupleOrder[2];
-        order[0] = new TupleOrder(TupleOrder.Ascending);
-        order[1] = new TupleOrder(TupleOrder.Descending);
 
         // create empty map we will use for reading data
         Map m = new Map();
@@ -102,11 +103,26 @@ public class Stream implements GlobalConst{
         FileScan fscan = null;
 
         try {
-            fscan = new FileScan(bigtable.Name, attrType, attrSize, (short) 4, 4, projlist, outFilter[0] == null ? null : outFilter );
+            fscan = new FileScan(_bigTable.Name, attrType, attrSize, (short) 4, 4, projlist, outFilter[0] == null ? null : outFilter );
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+
+        int count = 0;
+        m = null;
+        MID mid = new MID();
+
+        try {
+            m = fscan.get_next();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        BTreeFile btf = null;
+
+        boolean flag = true;
 
         // Sort "test1.in"
         Sort sort = null;
@@ -117,6 +133,42 @@ public class Stream implements GlobalConst{
             switch (orderType){
                 case OrderType.type1:
                     //results ordered by rowLabel then columnLabel then time stamp
+                    String key = null;
+                    MID MID = new MID();
+                    Map temp = null;
+
+
+                    try {
+                        //TODO make sure key size when making btree is correct
+                        btf = new BTreeFile("StreamOrderIndex", AttrType.attrString, RECLENGTH*3, 1/*delete*/);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                        Runtime.getRuntime().exit(1);
+                    }
+                    while ( temp != null) {
+                        try {
+                            key = m.getRowLabel() + " " + m.getColumnLabel() + " " + m.getTimeStamp();
+                            mid = fscan.MID;
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            btf.insert(new StringKey(key), mid);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            temp = fscan.getNext();
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     break;
                 case OrderType.type2:
                     //ordered columnLabel, rowLabel, timestamp
@@ -139,18 +191,11 @@ public class Stream implements GlobalConst{
         }
 
 
-        int count = 0;
-        t = null;
-        String outval = null;
+        iscan = new IndexScan(new IndexType(IndexType.B_Index), _bigTable.Name, "StreamOrderIndex", attrType, attrSize, 4, 4, projlist, null, 1, false);
 
-        try {
-            t = sort.get_next();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
+
 
     /**
      * Each filter can either be *, a single value, or a range [x,y]. This function takes the filters and determines
@@ -325,7 +370,15 @@ public class Stream implements GlobalConst{
      * Closes the stream object.
      */
     void closestream(){
-        if (bigTable != null) {
+        if(iscan != null){
+            try {
+                iscan.close();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (_bigTable != null) {
 
             try{
                 unpinPage(datapageId, false);
@@ -336,7 +389,7 @@ public class Stream implements GlobalConst{
             }
         }
         datapageId.pid = 0;
-        bigTable = null;
+        _bigTable = null;
 
         if (dirpage != null) {
 
@@ -360,37 +413,46 @@ public class Stream implements GlobalConst{
      * @param mid
      * @return
      */
-    public Map getNext(MID mid) {
+    public Map getNext() {
         Map recptrmap = null;
 
-        if (nextUserStatus != true) {
-            nextDataPage();
-        }
-
-        if (datapage == null)
-            return null;
-
-        mid.pageNo.pid = userrid.pageNo.pid;
-        mid.slotNo = userrid.slotNo;
-
         try {
-            recptrmap = datapage.getMap(mid);
-        }
-
-        catch (Exception e) {
-            //    System.err.println("SCAN: Error in Scan" + e);
+            recptrmap = iscan.get_next();
+        } catch (IndexException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        try {
-            userrid = datapage.nextMap(mid);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if(userrid == null) nextUserStatus = false;
-        else nextUserStatus = true;
-
         return recptrmap;
+
+//        if (nextUserStatus != true) {
+//            nextDataPage();
+//        }
+//
+//        if (datapage == null)
+//            return null;
+//
+//        mid.pageNo.pid = userrid.pageNo.pid;
+//        mid.slotNo = userrid.slotNo;
+//
+//        try {
+//            recptrmap = datapage.getMap(mid);
+//        }
+//
+//        catch (Exception e) {
+//            //    System.err.println("SCAN: Error in Scan" + e);
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            userrid = datapage.nextMap(mid);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        if(userrid == null) nextUserStatus = false;
+//        else nextUserStatus = true;
+//
+//        return recptrmap;
 
     }
 
