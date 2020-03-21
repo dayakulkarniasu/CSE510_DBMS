@@ -4,14 +4,12 @@ import java.util.Comparator;
 
 public class StringInteger implements Comparator<StringInteger>, Comparable<StringInteger>
 {
-    private short len;
     private String s;
     private Integer value;
 
     // constructor, using a string and an int
     public StringInteger(String str, int val)
     {
-        len = (short) str.length();
         s = new String(str);
         value = new Integer(val);
     }
@@ -19,7 +17,6 @@ public class StringInteger implements Comparator<StringInteger>, Comparable<Stri
     // constructor, using a string and an integer
     public StringInteger(String str, Integer val)
     {
-        len = (short) str.length();
         s = new String(str);
         value = new Integer(val.intValue());
     }
@@ -27,7 +24,6 @@ public class StringInteger implements Comparator<StringInteger>, Comparable<Stri
     // constructor, copying from a StringInteger
     public StringInteger(StringInteger si)
     {
-        len = si.len;
         s = new String(si.s);
         value = new Integer(si.value.intValue());
     }
@@ -45,11 +41,6 @@ public class StringInteger implements Comparator<StringInteger>, Comparable<Stri
     public Integer getInteger()
     {
         return new Integer(value.intValue());
-    }
-
-    public short getStrLen()
-    {
-        return len;
     }
 
     public int compareTo(StringInteger si)
