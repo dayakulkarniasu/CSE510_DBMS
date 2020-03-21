@@ -152,56 +152,146 @@ public class IndexScan extends Iterator {
     while(nextentry != null) {
       if (index_only) {
 	// only need to return the key 
+  if (_types.length == 1)
+  {
+    AttrType[] attrType = new AttrType[1];
+    short[] s_sizes = new short[1];
+    
+    if (_types[_fldNum -1].attrType == AttrType.attrInteger) {
+      attrType[0] = new AttrType(AttrType.attrInteger);
+      try {
+        Jtuple.setHdr((short) 1, attrType, s_sizes);
+      }
+      catch (Exception e) {
+        throw new IndexException(e, "IndexScan.java: Heapfile error");
+      }
+      
+      try {
+        Jtuple.setIntFld(1, ((IntegerKey)nextentry.key).getKey().intValue());
+      }
+      catch (Exception e) {
+        throw new IndexException(e, "IndexScan.java: Heapfile error");
+      }	  
+    }
+    else if (_types[_fldNum -1].attrType == AttrType.attrString) {
+      
+      attrType[0] = new AttrType(AttrType.attrString);
+      // calculate string size of _fldNum
+      int count = 0;
+      for (int i=0; i<_fldNum; i++) {
+        if (_types[i].attrType == AttrType.attrString)
+          count ++;
+      } 
+      s_sizes[0] = _s_sizes[count-1];
+      
+      try {
+        Jtuple.setHdr((short) 1, attrType, s_sizes);
+      }
+      catch (Exception e) {
+        throw new IndexException(e, "IndexScan.java: Heapfile error");
+      }
+      
+      try {
+        Jtuple.setStrFld(1, ((StringKey)nextentry.key).getKey());
+      }
+      catch (Exception e) {
+        throw new IndexException(e, "IndexScan.java: Heapfile error");
+      }	  
+    }
+    else {
+      // attrReal not supported for now
+      throw new UnknownKeyTypeException("Only Integer and String keys are supported so far"); 
+    }
+    return Jtuple;
+  }
+  else if(_types.length == 2) // StringIntegerKey or StringStringKey
+  {
+    AttrType[] attrType = new AttrType[2];
+    short[] s_sizes = new short[2];
+    s_sizes[0] = GlobalConst.STR_LEN;
 
-	AttrType[] attrType = new AttrType[1];
-	short[] s_sizes = new short[1];
-	
-	if (_types[_fldNum -1].attrType == AttrType.attrInteger) {
-	  attrType[0] = new AttrType(AttrType.attrInteger);
-	  try {
-	    Jtuple.setHdr((short) 1, attrType, s_sizes);
-	  }
-	  catch (Exception e) {
-	    throw new IndexException(e, "IndexScan.java: Heapfile error");
-	  }
-	  
-	  try {
-	    Jtuple.setIntFld(1, ((IntegerKey)nextentry.key).getKey().intValue());
-	  }
-	  catch (Exception e) {
-	    throw new IndexException(e, "IndexScan.java: Heapfile error");
-	  }	  
-	}
-	else if (_types[_fldNum -1].attrType == AttrType.attrString) {
-	  
-	  attrType[0] = new AttrType(AttrType.attrString);
-	  // calculate string size of _fldNum
-	  int count = 0;
-	  for (int i=0; i<_fldNum; i++) {
-	    if (_types[i].attrType == AttrType.attrString)
-	      count ++;
-	  } 
-	  s_sizes[0] = _s_sizes[count-1];
-	  
-	  try {
-	    Jtuple.setHdr((short) 1, attrType, s_sizes);
-	  }
-	  catch (Exception e) {
-	    throw new IndexException(e, "IndexScan.java: Heapfile error");
-	  }
-	  
-	  try {
-	    Jtuple.setStrFld(1, ((StringKey)nextentry.key).getKey());
-	  }
-	  catch (Exception e) {
-	    throw new IndexException(e, "IndexScan.java: Heapfile error");
-	  }	  
-	}
-	else {
-	  // attrReal not supported for now
-	  throw new UnknownKeyTypeException("Only Integer and String keys are supported so far"); 
-	}
-	return Jtuple;
+    if (_types[_fldNum -1].attrType == AttrType.attrInteger) // StringInteger Key
+    {
+      attrType[0] = new AttrType(AttrType.attrString);
+      attrType[1] = new AttrType(AttrType.attrInteger);
+      try {
+        Jtuple.setHdr((short) 2, attrType, s_sizes);
+      }
+      catch (Exception e) {
+        throw new IndexException(e, "IndexScan.java: Heapfile error");
+      }
+
+      try {
+        StringInteger si = ((StringIntegerKey)nextentry.key).getKey();
+        Jtuple.setStrFld(1, si.getString());
+        Jtuple.setIntFld(2, si.getInteger());
+      }
+      catch (Exception e) {
+        throw new IndexException(e, "IndexScan.java: Heapfile error");
+      }	  
+      
+    }
+
+    else if(_types[_fldNum -1].attrType == AttrType.attrString) // StringStringKey
+    {
+      attrType[0] = new AttrType(AttrType.attrString);
+      attrType[1] = new AttrType(AttrType.attrString);
+      s_sizes[1] = GlobalConst.STR_LEN;
+      try {
+        Jtuple.setHdr((short) 2, attrType, s_sizes);
+      }
+      catch (Exception e) {
+        throw new IndexException(e, "IndexScan.java: Heapfile error");
+      }
+
+      try {
+        StringString ss = ((StringStringKey)nextentry.key).getKey();
+        String[] strs = ss.getStrings();
+        Jtuple.setStrFld(1, strs[0]);
+        Jtuple.setStrFld(2, strs[1]);
+      }
+      catch (Exception e) {
+        throw new IndexException(e, "IndexScan.java: Heapfile error");
+      }	
+    }
+    else {
+      // attrReal not supported for now
+      throw new UnknownKeyTypeException("Only Integer and String keys are supported so far"); 
+    }
+    return Jtuple;
+  }
+
+  else if(_types.length == 3) // StringStringIntegerKey
+  {
+    AttrType[] attrType = new AttrType[3];
+    short[] s_sizes = new short[3];
+
+    attrType[0] = new AttrType(AttrType.attrString);
+    attrType[1] = new AttrType(AttrType.attrString);
+    attrType[2] = new AttrType(AttrType.attrInteger);
+
+    s_sizes[1] = GlobalConst.STR_LEN;
+
+    try{
+      Jtuple.setHdr((short) 3, attrType, s_sizes);
+    }
+    catch (Exception e) {
+      throw new IndexException(e, "IndexScan.java: Heapfile error");
+    }
+
+    try {
+      StringStringInteger ssi = ((StringStringIntegerKey)nextentry.key).getKey();
+      String[] strs = ssi.getStrings();
+      Jtuple.setStrFld(1, strs[0]);
+      Jtuple.setStrFld(2, strs[1]);
+      Jtuple.setIntFld(3, ssi.getInteger().intValue());
+    }
+    catch (Exception e) {
+      throw new IndexException(e, "IndexScan.java: Heapfile error");
+    }
+    return Jtuple;
+  }
+}
       }
       
       // not index_only, need to return the whole tuple
