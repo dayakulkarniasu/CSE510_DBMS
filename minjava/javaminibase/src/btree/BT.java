@@ -231,7 +231,7 @@ public class BT  implements GlobalConst{
   else if (keyType== AttrType.attrColVal)
   {
     //System.out.println(" offset  "+ offset + "  " + length + "  "+n);
-          StringString ss = Convert.getStrStrValue(offset, from);
+          StringString ss = Convert.getStrStrValue(offset, from, length-n);
           key= new ColValKey(ss);
 	} 
 	else 

@@ -267,10 +267,11 @@ public class Convert{
    // creates a byte array with this output stream size and the 
    // valid contents of the buffer have been copied into it
    byte []B = ((ByteArrayOutputStream) out).toByteArray();
-   
+   byte []buf = new byte[GlobalConst.STR_LEN];
    int sz =outstr.size();  
+   System.arraycopy(B, 0, buf, 0, sz);
    // copies the contents of this byte array into data[]
-   System.arraycopy (B, 0, data, position, sz);
+   System.arraycopy (buf, 0, data, position, GlobalConst.STR_LEN);
    
  }
   
