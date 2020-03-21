@@ -17,41 +17,35 @@ public class btreeindex{
     short MAXLEN_COMB_KEY = 64; // size of two strings
     short MAXLEN_I = 4;	//set max length of timestamp, int as 4
 
-    public BTreeFile IndexForOneKey(java.lang.String labelName){
+    /**
+     * @param propName The property name we'll build an index on: Row, Column, TimeStamp, Value
+     * @return a btf file that will be assigned to the bigDB class and accessible globally
+     */
+    public BTreeFile IndexForOneKey(java.lang.String propName){
         //create an index file
-        int keyType = AttrType.attrString;
-        int keySize = MAXLEN_S;
+        int keyType = propName.equalsIgnoreCase("timestamp") ? AttrType.attrInteger : AttrType.attrString;
+        int keySize = propName.equalsIgnoreCase("timestamp") ? MAXLEN_I : MAXLEN_S;
         int delete_Fashion = 1;
         BTreeFile btf = null;
         try {
-            btf = new BTreeFile(String.format("btree-",labelName), keyType, keySize, delete_Fashion);
+            btf = new BTreeFile(String.format("btree-",propName), keyType, keySize, delete_Fashion);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(String.format("Successfully created BTree index on ", labelName, "!"));
+        System.out.println(String.format("Successfully created BTree index on ", propName, "!"));
         return btf;
     }
 
-    public BTreeFile IndexForOneKey(int labelName){
-        //create an index file
-        int keyType = AttrType.attrInteger;
-        int keySize = MAXLEN_I;
-        int delete_Fashion = 1;
-        BTreeFile btf = null;
-        try {
-            btf = new BTreeFile(String.format("btree-",labelName), keyType, keySize, delete_Fashion);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println(String.format("Successfully created BTree index on ", labelName, "!"));
-        return btf;
-    }
-
-    public BTreeFile IndexForCombinedKey(java.lang.String labelName1, java.lang.String labelName2) {
+    /**
+     * @param propName1 the name of the property we are indexing on that will be used to create a combined key
+     * @param propName2 the name of the property we are indexing on that will be used to create a combined key
+     * @return a btf file with a combined key setup that will be assigned to the bigDB class and accessible globally
+     */
+    public BTreeFile IndexForCombinedKey(java.lang.String propName1, java.lang.String propName2) {
         int keyType = AttrType.attrString;
         int keySize = MAXLEN_COMB_KEY;
         int delete_Fashion =1;
-        String keyName = labelName1 + " " +labelName2;
+        String keyName = propName1 + " " +propName2;
         BTreeFile btf = null;
         try {
             btf = new BTreeFile(String.format("btree-", keyName), keyType, keySize, delete_Fashion);
