@@ -33,6 +33,7 @@ public class bigDB implements GlobalConst {
 
         // initialize read page and write page counter
         PCounter.initialize();
+        
         btreeindex bti = new btreeindex();
         switch (type) {
         case 1:

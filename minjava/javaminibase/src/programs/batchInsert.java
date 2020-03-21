@@ -1,12 +1,8 @@
 package programs;
 
-import btree.*;
 import global.*;
 import BigT.*;
-import heap.Tuple;
-
 import java.io.*;
-import global.*;
 
 public class batchInsert implements GlobalConst{
     public static void main(String[] args){
