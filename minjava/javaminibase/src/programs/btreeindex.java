@@ -12,7 +12,7 @@ import java.util.*;
 // get rowLabel (String), columnLabel (String), timestamp (Integer) from BigT.Map
 // code refers to IndexTest.java
 
-public class btreeindex{
+public class btreeindex implements GlobalConst{
 
 	//boolean status = true;
     //AttrType[] attrType=new AttrType[2];
