@@ -35,7 +35,7 @@ public class btreeindex{
 		Map temp = null; 
 		String temp_key = null;
         while (temp = Map.getNext(mid))!= null) {
-            int temp_key = temp.getRowLabel();    
+            temp_key = temp.getRowLabel();    
             btf.insert(new btree.StringKey(temp_key), mid);
 		}
 	System.out.println("Successfully created BTree index on RowLabel !");
@@ -54,7 +54,7 @@ public class btreeindex{
 		Map temp = null;     
 		String temp_key = null;
         while (temp = Map.getNext(mid))!= null) {
-            int temp_key = temp.getColumnLabel();    
+            temp_key = temp.getColumnLabel();    
             btf.insert(new btree.StringKey(temp_key), mid);
 			
         }
@@ -71,9 +71,9 @@ public class btreeindex{
         BTreeFile btf = new BTreeFile("btreeTS", keyType, keySize, delete_Fashion);   
         //insert index key
 		Map temp = null; 
-		String temp_key = null;
+		Integer temp_key = null;
         while (temp = Map.getNext(mid))!= null) {
-            int temp_key = temp.getTimeStamp();   
+            temp_key = temp.getTimeStamp();   
             btf.insert(new btree.IntegerKey(temp_key), mid);
 			
         }
@@ -92,7 +92,7 @@ public class btreeindex{
 		Map temp = null; 
 		String temp_key = null;
         while (temp = Map.getNext(mid))!= null) {
-            int temp_key = temp.getValue();   
+            temp_key = temp.getValue();   
             btf.insert(new btree.StringKey(temp_key), mid);
 			
         }
@@ -111,11 +111,12 @@ public class btreeindex{
 		Map temp = null; 
 		String temp_key1 = null;
 		String temp_key2 = null;
+		String temp_key = null;
         while (temp = Map.getNext(mid))!= null) {
-            int temp_key1 = temp.getColLabel();    
-			int temp_key2 = temp.getRowLabel();
-            btf.insert(new btree.StringKey(temp_key1), mid);
-			btf.insert(new btree.StringKey(temp_key2), mid);
+            temp_key1 = temp.getColLabel();    
+			temp_key2 = temp.getRowLabel();
+			temp_key = temp_key1 + " " + temp_key2;			
+            btf.insert(new btree.StringKey(temp_key), mid);
 			
         }
 		System.out.println("Successfully created BTree index on Column Label and Row Label !");
@@ -133,11 +134,12 @@ public class btreeindex{
 		Map temp = null; 
 		String temp_key1 = null;
 		String temp_key2 = null;
+		String temp_key = null;
         while (temp = Map.getNext(mid))!= null) {
-            int temp_key1 = temp.getRowLabel();    
-			int temp_key2 = temp.getValue();
-            btf.insert(new btree.StringKey(temp_key1), mid);
-			btf.insert(new btree.StringKey(temp_key2), mid);
+            temp_key1 = temp.getRowLabel();    
+			temp_key2 = temp.getValue();
+			temp_key = temp_key1 + " " + temp_key2;
+            btf.insert(new btree.StringKey(temp_key), mid);
 			
         }
 		System.out.println("Successfully created BTree index on Row Label and Value !");
