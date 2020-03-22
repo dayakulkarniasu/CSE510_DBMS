@@ -23,6 +23,7 @@ public class FileScan extends Iterator {
   private int nOutFlds;
   private CondExpr[] OutputFilter;
   public FldSpec[] perm_mat;
+  public MID _mid;
 
   /**
    * constructor
@@ -110,6 +111,7 @@ public class FileScan extends Iterator {
       map1.setHdr(in1_len, _in1, s_sizes);
       if (PredEval.Eval(OutputFilter, map1, null, _in1, null) == true) {
         Projection.Project(map1, _in1, Jmap, perm_mat, nOutFlds);
+        _mid = mid;
         return Jmap;
       }
     }
