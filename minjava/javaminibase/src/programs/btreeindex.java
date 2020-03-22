@@ -1,11 +1,11 @@
 package programs;
 
-import btree.* ;
+import btree.*;
 import global.*;
 import heap.*;
-import BitT.*;
+import BigT.*;
+import BigT.Map;
 import iterator.*;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -19,8 +19,8 @@ public class btreeindex{
     //attrType[0] = new AttrType(AttrType.attrString);
     //attrType[1] = new AttrType(AttrType.attrString);
 	BTreeFile btf  = null;
-	MAXLEN_S = 32;  //set max length of row label, column lable, values as 32
-	MAXLEN_I = 4;	//set max length of timestamp, int as 4
+	int MAXLEN_S = 32;  //set max length of row label, column lable, values as 32
+	int MAXLEN_I = 4;	//set max length of timestamp, int as 4
 	
 	public void BTreeIndex_Row(){
 		MID mid = new MID();
