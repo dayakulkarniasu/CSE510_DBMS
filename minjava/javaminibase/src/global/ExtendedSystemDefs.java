@@ -18,14 +18,14 @@ public class ExtendedSystemDefs extends SystemDefs {
    * rather than SystemDefs when you need to use the catalog system.
    */
 
-  public ExtendedSystemDefs(String dbname, int dbpages, int bufpoolsize, String replacement_policy) {
-    super(dbname, dbpages, bufpoolsize, replacement_policy);
+  public ExtendedSystemDefs(String dbname, int type, int dbpages, int bufpoolsize, String replacement_policy) {
+    super(dbname, type, dbpages, bufpoolsize, replacement_policy);
     init(dbpages);
   }
 
-  public ExtendedSystemDefs(String dbname, String logname, int dbpages, int maxlogsize, int bufpoolsize,
+  public ExtendedSystemDefs(String dbname, int type, String logname, int dbpages, int maxlogsize, int bufpoolsize,
       String replacement_policy) {
-    super(dbname, dbpages, bufpoolsize, replacement_policy);
+    super(dbname, type, dbpages, bufpoolsize, replacement_policy);
     init(dbpages);
   }
 
