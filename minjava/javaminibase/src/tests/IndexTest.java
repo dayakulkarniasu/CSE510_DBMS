@@ -299,8 +299,6 @@ class IndexDriver extends TestDriver implements GlobalConst {
     return status;
   }
 
-
-
   protected boolean test2() {
     System.out.println("------------------------ TEST 2 --------------------------");
 
