@@ -105,14 +105,25 @@ public class Map implements GlobalConst {
      * @return
      * @throws FieldNumberOutOfBoundException
      */
-    public String getRowLabel() throws IOException, FieldNumberOutOfBoundException {
+  //  public String getRowLabel() throws IOException, FieldNumberOutOfBoundException {
+  public String getRowLabel() throws IOException {
         String tmp = null;
-        System.out.println("in the getRowLabel()  - entry point");
+        short val1, val2 ;
+        //System.out.println("in the getRowLabel()  - entry point");
         try {
-            tmp = getStrFld(1);
-        } catch (FieldNumberOutOfBoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+          //  tmp = getStrFld(1);
+          val1 = Convert.getShortValue(2,   data);
+          val2 = Convert.getShortValue(4, data);
+          //System.out.println("in the getRowLabel()  - val1 = " + val1 +" val2 = " + val2);
+
+          //val1 = Convert.getIntValue(2, data);
+          //val2 = Convert.getIntValue(4, data);
+          // tmp = Convert.getStrValue(fldOffset[i], data, fldOffset[i + 1] - fldOffset[i]);
+          tmp = Convert.getStrValue(val1, data, val2-val1+2);
+        }
+        //catch (FieldNumberOutOfBoundException e) {
+        //    e.printStackTrace(); }
+         catch (IOException e) {
             e.printStackTrace();
         }
         return tmp;
@@ -124,11 +135,31 @@ public class Map implements GlobalConst {
      * @return
      * @throws FieldNumberOutOfBoundException
      */
-    public String getColumnLabel() throws IOException, FieldNumberOutOfBoundException {
+  //  public String getColumnLabel() throws IOException, FieldNumberOutOfBoundException {
+      public String getColumnLabel() throws IOException {
         String tmp = null;
-        try {
+    /*    try {
             tmp = getStrFld(2);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        */
+        short val1, val2 ;
+        //System.out.println("in the getColumnLabel()  - entry point");
+        try {
+          //  tmp = getStrFld(1);
+          val1 = Convert.getShortValue(4,   data);
+          val2 = Convert.getShortValue(6, data);
+        //  System.out.println("in the getColumnLabel()  - val1 = " + val1 +" val2 = " + val2);
+
+          //val1 = Convert.getIntValue(2, data);
+          //val2 = Convert.getIntValue(4, data);
+          // tmp = Convert.getStrValue(fldOffset[i], data, fldOffset[i + 1] - fldOffset[i]);
+          tmp = Convert.getStrValue(val1, data, val2-val1+2);
+        }
+        //catch (FieldNumberOutOfBoundException e) {
+        //    e.printStackTrace(); }
+         catch (IOException e) {
             e.printStackTrace();
         }
         return tmp;
@@ -140,13 +171,33 @@ public class Map implements GlobalConst {
      * @return
      * @throws FieldNumberOutOfBoundException
      */
-    public int getTimeStamp() throws IOException, FieldNumberOutOfBoundException {
+//    public int getTimeStamp() throws IOException, FieldNumberOutOfBoundException {
+      public int getTimeStamp() throws IOException {
         int tmp = -1;
-        try {
+  /*      try {
             tmp = getIntFld(3);
         } catch (Exception e) {
             e.printStackTrace();
         }
+  */
+      short val1, val2 ;
+      //System.out.println("in the getTimeStamp()  - entry point");
+      try {
+        //  tmp = getStrFld(1);
+        val1 = Convert.getShortValue(6,   data);
+        val2 = Convert.getShortValue(8, data);
+      //  System.out.println("in the getTimeStamp()  - val1 = " + val1 +" val2 = " + val2);
+
+        //val1 = Convert.getIntValue(2, data);
+        //val2 = Convert.getIntValue(4, data);
+        // tmp = Convert.getStrValue(fldOffset[i], data, fldOffset[i + 1] - fldOffset[i]);
+        tmp = Convert.getIntValue(val1, data);
+      }
+      //catch (FieldNumberOutOfBoundException e) {
+      //    e.printStackTrace(); }
+       catch (IOException e) {
+          e.printStackTrace();
+      }
         return tmp;
     }
 
@@ -156,13 +207,33 @@ public class Map implements GlobalConst {
      * @return
      * @throws FieldNumberOutOfBoundException
      */
-    public String getValue() throws IOException, FieldNumberOutOfBoundException {
+//    public String getValue() throws IOException, FieldNumberOutOfBoundException {
+      public String getValue() throws IOException {
         String tmp = null;
-        try {
+/*        try {
             tmp = getStrFld(4);
         } catch (Exception e) {
             e.printStackTrace();
         }
+*/
+      short val1, val2 ;
+    //  System.out.println("in the getValue()  - entry point");
+      try {
+        //  tmp = getStrFld(1);
+        val1 = Convert.getShortValue(8,   data);
+        val2 = Convert.getShortValue(10, data);
+      //  System.out.println("in the getValue()  - val1 = " + val1 +" val2 = " + val2);
+
+        //val1 = Convert.getIntValue(2, data);
+        //val2 = Convert.getIntValue(4, data);
+        // tmp = Convert.getStrValue(fldOffset[i], data, fldOffset[i + 1] - fldOffset[i]);
+        tmp = Convert.getStrValue(val1, data, val2-val1+2);
+      }
+      //catch (FieldNumberOutOfBoundException e) {
+      //    e.printStackTrace(); }
+       catch (IOException e) {
+          e.printStackTrace();
+      }
         return tmp;
     }
 
@@ -449,6 +520,7 @@ public class Map implements GlobalConst {
         String val;
         //try {
         System.out.println("in the getStrFld() fldNo = " + fldNo + " FldCnt = "+ fldCnt  );
+        fldOffset = new short[5];
         if ((fldNo > 0) && (fldNo <= fldCnt)) {
          System.out.println("fldOffset[fldNo - 1] = " + fldOffset[fldNo - 1]);
          System.out.println("fldOffset[fldNo] - fldOffset[fldNo - 1] = " + ( fldOffset[fldNo] - fldOffset[fldNo - 1])) ;
@@ -534,7 +606,13 @@ public class Map implements GlobalConst {
         } else
             throw new FieldNumberOutOfBoundException(null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
     }
-
+    public Map setFieldOffset(short fldNo, short val) throws IOException, FieldNumberOutOfBoundException {
+        if ((fldNo > 0) && (fldNo <= fldCnt)) {
+            fldOffset[fldNo - 1] = val;
+            return this;
+        } else
+            throw new FieldNumberOutOfBoundException(null, "MAP:TUPLE_FLDNO_OUT_OF_BOUND");
+    }
     /**
      * setHdr will set the header of this map.
      *
@@ -560,8 +638,8 @@ public class Map implements GlobalConst {
 
         // sizeof short =2 +2: array siaze = numFlds +1 (0 - numFilds) and
         // another 1 for fldCnt
-        fldOffset[0] = (short) ((numFlds + 2) * 2 + map_offset);
-
+        //fldOffset[0] = (short) ((numFlds + 2) * 2 + map_offset);
+          fldOffset[0] = (short) (16);
         Convert.setShortValue(fldOffset[0], pos, data);
         pos += 2;
         short strCount = 0;
@@ -613,7 +691,7 @@ public class Map implements GlobalConst {
         fldOffset[numFlds] = (short) (fldOffset[i - 1] + incr);
         Convert.setShortValue(fldOffset[numFlds], pos, data);
 
-        map_length = fldOffset[numFlds] - map_offset;
+        //map_length = fldOffset[numFlds] - map_offset;
 
         if (map_length > max_size)
             throw new InvalidTupleSizeException(null, "MAP: TUPLE_TOOBIG_ERROR");
