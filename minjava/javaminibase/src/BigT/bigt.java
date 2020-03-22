@@ -15,7 +15,7 @@ interface Tabletype {
  */
 public class bigt implements Tabletype, GlobalConst {
 
-    private Heapfile hf;
+    public Heapfile hf;
     private int BTType;
 
     // private int rowCnt;
