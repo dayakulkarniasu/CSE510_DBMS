@@ -28,11 +28,11 @@ public class MakeIndex {
 
         BTreeFile btf = null;
         try {
-            btf = new BTreeFile(String.format("btree-",propName), keyType, keySize, delete_Fashion);
+            btf = new BTreeFile(String.format("btree-%s",propName), keyType, keySize, delete_Fashion);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(String.format("Successfully created BTree index on ", propName, "!"));
+        System.out.println(String.format("Successfully created BTree index on %s !", propName));
         return btf;
     }
 
@@ -73,8 +73,9 @@ public class MakeIndex {
                     break;
                 case 2:
                     // Index on RowLabel
-                    //key = amap.getRowLabel();
-                    //SystemDefs.JavabaseDB.indexStrat1.insert(new StringKey(key), mid);
+                    key = amap.getRowLabel();
+                    SystemDefs.JavabaseDB.indexStrat1.insert(new StringKey(key), mid);
+                    System.out.println("key mid: " + key + " " + mid.pageNo + " " + mid.slotNo);
                     break;
                 case 3:
                     // Index on ColumnLabel
@@ -83,17 +84,22 @@ public class MakeIndex {
                     break;
                 case 4:
                     // Index on combKey for ColumnLabel and RowLabel & Index on TimeStamp
-                    key = String.format(amap.getColumnLabel(), " ", amap.getRowLabel());
+                    key = String.format("%s %s", amap.getColumnLabel(), amap.getRowLabel());
                     key2 = amap.getTimeStamp();
                     SystemDefs.JavabaseDB.indexStrat1.insert(new StringKey(key), mid);
+                    System.out.println("key mid: " + key + " " + mid.pageNo + " " + mid.slotNo);
                     SystemDefs.JavabaseDB.indexStrat2.insert(new IntegerKey(key2), mid);
+                    System.out.println("key2 mid2: " + key2 + " " + mid.pageNo + " " + mid.slotNo);
+                    
                     break;
                 case 5:
                     // Index on combKey for RowLabel and Value & Index on TimeStamp
-                    key = String.format(amap.getRowLabel(), " ", amap.getValue());
+                    key = String.format("%s %s", amap.getRowLabel(), amap.getValue());
                     key2 = amap.getTimeStamp();
                     SystemDefs.JavabaseDB.indexStrat1.insert(new StringKey(key), mid);
+                    System.out.println("key mid: " + key + " " + mid.pageNo + " " + mid.slotNo);
                     SystemDefs.JavabaseDB.indexStrat2.insert(new IntegerKey(key2), mid);
+                    System.out.println("key2 mid2: " + key2 + " " + mid.pageNo + " " + mid.slotNo);
                     break;
             }
         }
