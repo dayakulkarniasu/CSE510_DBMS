@@ -7,6 +7,7 @@ import java.util.Set;
 import diskmgr.*;
 import global.*;
 import BigT.*;
+import index.MakeIndex;
 
 /**  This heapfile implementation is directory-based. We maintain a
  *  directory of info about the data pages (which are of type HFPage
@@ -603,7 +604,10 @@ System.out.println("in the heap file insert map function - setting first map in 
 
 		unpinPage(currentDirPageId, true /* = DIRTY */);
     System.out.println("MID : SlotNo = " + mid.slotNo + " PageNo = " + mid.pageNo.pid);
-		return mid;
+    	// Each insertion of a map into the BigTable also adds into the corresponding
+		// Index based upon the type of the BigTable.
+		MakeIndex.InsertIntoIndex(new Map(mapPtr, mapPtr.length, 0), mid);
+    	return mid;
 
 	}
 
