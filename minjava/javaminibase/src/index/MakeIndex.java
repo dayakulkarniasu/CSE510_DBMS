@@ -55,6 +55,12 @@ public class MakeIndex {
         return btf;
     }
 
+    /**
+     * @param amap The map that has been inserted into the BigTable. We use this object to get the relevant fields to
+     *             create the key that will be used in the btree
+     * @param mid The MapId for the newly created Map record. This will serve as the pointer to our record for the btree
+     *            index
+     */
     public static void InsertIntoIndex(Map amap , MID mid){
         String key = null;
         int key2 = 0;
