@@ -421,7 +421,7 @@ public class Heapfile implements Filetype, GlobalConst {
 			for (currentDataPageMid = currentDirPage
 					.firstMap(); currentDataPageMid != null; currentDataPageMid = currentDirPage
 					.nextMap(currentDataPageMid)) {
-				System.out.println("in insert map inside while loop and for loop");
+				// System.out.println("in insert map inside while loop and for loop");
 				amap = currentDirPage.getMap(currentDataPageMid);
 
 				dpinfo = new DataPageInfo(amap);
@@ -433,8 +433,8 @@ public class Heapfile implements Filetype, GlobalConst {
 					break;
 				}
 			}
-			System.out.println("in the heap file insert map function - out of for loop but stil inside while");
-			System.out.println("in the heap file insert map function - the value of found is: "+ found);
+			// System.out.println("in the heap file insert map function - out of for loop but stil inside while");
+			// System.out.println("in the heap file insert map function - the value of found is: "+ found);
 			// two cases:
 			// (1) found == true:
 			// currentDirPage has a datapagerecord which can accomodate
@@ -462,8 +462,8 @@ public class Heapfile implements Filetype, GlobalConst {
 				// page
 				// - (2.2) (currentDirPage->available_space() <= sizeof(DataPageInfo):
 				// look at the next directory page, if necessary, create it.
-				System.out.println("in the heap file insert map function - currentDirPage.available space: "+ currentDirPage.available_space());
-				System.out.println("in the heap file insert map function - dpinfo.size: "+ dpinfo.size);
+				// System.out.println("in the heap file insert map function - currentDirPage.available space: "+ currentDirPage.available_space());
+				// System.out.println("in the heap file insert map function - dpinfo.size: "+ dpinfo.size);
 				if (currentDirPage.available_space() >= dpinfo.size) {
 					// Start IF02
 					// case (2.1) : add a new data page record into the
@@ -476,12 +476,12 @@ public class Heapfile implements Filetype, GlobalConst {
 
 					// currentDataPage is pinned: insert its record
 					// calling a HFPage function
-					System.out.println("in the heap file insert map function - converting dpinfo to map");
+					// System.out.println("in the heap file insert map function - converting dpinfo to map");
 					amap = dpinfo.convertToMap();
 
 					byte[] tmpData = amap.getMapByteArray();
 					currentDataPageMid = currentDirPage.insertMap(tmpData);
-					System.out.println("in the heap file insert map function - setting first map in current dirpage");
+					// System.out.println("in the heap file insert map function - setting first map in current dirpage");
 					MID tmpmid = currentDirPage.firstMap();
 
 					// need catch error here!
@@ -585,7 +585,7 @@ public class Heapfile implements Filetype, GlobalConst {
 			throw new HFException(null, "can't find Data page");
 
 		MID mid;
-		System.out.println("in the heap file insert map function - Ready to insert map into Data Page");
+		// System.out.println("in the heap file insert map function - Ready to insert map into Data Page");
 		mid = currentDataPage.insertMap(mapPtr);
 
 		dpinfo.recct++;
