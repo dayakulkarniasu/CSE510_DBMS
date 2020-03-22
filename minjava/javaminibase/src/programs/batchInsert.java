@@ -487,10 +487,10 @@ class DummyRecord {
     // CL_Length + 2 + TS_Length +4 + V_Length + 2));
     setRecLen(64);
     // setRecLen (16 + RL_Length + 2 + CL_Length + 2 + TS_Length +4 + V_Length + 2);
-    Convert.setStrValue(rowlabname, 16, data);
-    Convert.setStrValue(collabname, 16 + RL_Length + 2, data);
-    Convert.setIntValue(timestampname, 16 + RL_Length + CL_Length + 4, data);
-    Convert.setStrValue(valuename, 16 + RL_Length + CL_Length + TS_Length + 4, data);
+    Convert.setStrValue(rowlabname, 12, data);
+    Convert.setStrValue(collabname, 12+ RL_Length + 2, data);
+    Convert.setIntValue(timestampname, 12 + RL_Length + CL_Length + 4, data);
+    Convert.setStrValue(valuename, 12 + RL_Length + CL_Length + TS_Length + 4, data);
     // recln1 = RL_Length + CL_Length + TS_Length ;
     // System.out.println("In toByte Array : Data = " + data + " Record length : " +
     // reclen1);
