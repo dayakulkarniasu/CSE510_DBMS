@@ -4,7 +4,7 @@
 # BINPATH = $(JDKPATH)/bin
 # JAVAC = $(JDKPATH)/bin/javac -classpath $(CLASSPATH)
 # JAVA  = $(JDKPATH)/bin/java  -classpath $(CLASSPATH)
-JDKPATH = /Library/Java/JavaVirtualMachines/jdk1.8.0_241.jdk/Contents/Home
+JDKPATH = /Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home
 LIBPATH = .:..
 CLASSPATH = $(LIBPATH)
 BINPATH = $(JDKPATH)/bin
