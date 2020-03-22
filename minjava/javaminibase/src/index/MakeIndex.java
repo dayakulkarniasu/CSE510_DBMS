@@ -24,6 +24,8 @@ public class MakeIndex {
         int keyType = propName.equalsIgnoreCase("timestamp") ? AttrType.attrInteger : AttrType.attrString;
         int keySize = propName.equalsIgnoreCase("timestamp") ? MAXLEN_I : MAXLEN_S;
         int delete_Fashion = 1;
+        System.out.println("incoming prop name " + propName + " keyType: " + "keySize: " + keySize);
+
         BTreeFile btf = null;
         try {
             btf = new BTreeFile(String.format("btree-",propName), keyType, keySize, delete_Fashion);
@@ -71,8 +73,8 @@ public class MakeIndex {
                     break;
                 case 2:
                     // Index on RowLabel
-                    key = amap.getRowLabel();
-                    SystemDefs.JavabaseDB.indexStrat1.insert(new StringKey(key), mid);
+                    //key = amap.getRowLabel();
+                    //SystemDefs.JavabaseDB.indexStrat1.insert(new StringKey(key), mid);
                     break;
                 case 3:
                     // Index on ColumnLabel
