@@ -5,17 +5,14 @@ package diskmgr;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-
-import btree.BTreeFile;
-import global.*;
-import index.MakeIndex;
+import global.Convert;
+import global.GlobalConst;
+import global.PageId;
+import global.SystemDefs;
 
 public class bigDB implements GlobalConst {
 
     private static final int bits_per_page = MAX_SPACE * 8;
-    public BTreeFile indexStrat1 = null;
-    public BTreeFile indexStrat2 = null;
-    public static int dbType = 0;
 
     /**
      * Constructor for the big table database. type is an integer denoting the
@@ -35,38 +32,26 @@ public class bigDB implements GlobalConst {
     public bigDB(int type) {
 
         switch (type) {
-            case 1:
-                // No Index
-                break;
-            case 2:
-                // Index on RowLabel
-                indexStrat1 = MakeIndex.IndexForOneKey(PropertyType.RowLabel);
-                break;
-            case 3:
-                // Index on ColumnLabel
-                indexStrat1 = MakeIndex.IndexForOneKey(PropertyType.ColumnLabel);
-                break;
-            case 4:
-                // Index on combKey for ColumnLabel and RowLabel & Index on TimeStamp
-                indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.ColumnLabel, PropertyType.RowLabel);
-                indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
-
-                break;
-            case 5:
-                // Index on combKey for RowLabel and Value & Index on TimeStamp
-                indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.RowLabel, PropertyType.Value);
-                indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
-                break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
         }
         // initialize read page and write page counter
-        dbType = type;
         PCounter.initialize();
     }
 
     /**
      * Open the database with the given name.
      *
-     * @param fname DB_name
+     * @param name DB_name
+     *
      * @exception IOException                I/O errors
      * @exception FileIOException            file I/O error
      * @exception InvalidPageNumberException invalid page number
