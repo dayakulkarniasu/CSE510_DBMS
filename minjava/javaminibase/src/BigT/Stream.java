@@ -9,8 +9,6 @@ import index.IndexScan;
 import iterator.*;
 import diskmgr.*;
 import heap.*;
-import java.util.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 

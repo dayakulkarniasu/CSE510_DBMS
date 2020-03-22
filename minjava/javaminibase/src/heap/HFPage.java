@@ -303,9 +303,9 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
    * @exception IOException I/O errors in C++ Status insertRecord(char *recPtr,
    *                        int recLen, MID& mid)
    */
+
   public MID insertMap(byte[] map) throws IOException {
     MID mid = new MID();
-
     int mapLen = map.length;
     int spaceNeeded = mapLen + SIZE_OF_SLOT;
 
