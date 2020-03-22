@@ -184,12 +184,12 @@ public class batchInsert implements GlobalConst{
             // Map recMap = new Map(rec.toByteArray(),0, rec.getRecLength()) ;
             Map recMap = new Map(rec.toByteArray(), 0, rec.getRecLength());
             // System.out.println(" RecMap created successfully ");
-            AttrType[] types = { new AttrType(0), new AttrType(0), new AttrType(1), new AttrType(0) };
+            AttrType[] types = new AttrType[4];
             types[0] = new AttrType(0);
             types[1] = new AttrType(0);
             types[2] = new AttrType(1);
             types[3] = new AttrType(0);
-            short[] strSizes = { 0, 0, 0, 0 };
+            short[] strSizes = new short[4];
             strSizes[0] = (short) (rowLabel.length());
             strSizes[1] = (short) (columnLabel.length());
             strSizes[2] = (short) (4);
