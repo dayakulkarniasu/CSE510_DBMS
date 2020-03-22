@@ -30,4 +30,8 @@ public interface GlobalConst {
   public static final int MAX_NAME = 50;
 
   public static final int INVALID_PAGE = -1;
+
+  public static final int STR_LEN = 32;
+  public static final int MAP_LEN = 112;
+  public static final int MAPHEADER_LEN = 12;
 }

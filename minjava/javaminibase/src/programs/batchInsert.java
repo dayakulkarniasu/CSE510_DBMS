@@ -355,7 +355,7 @@ public class batchInsert {
 
 }
 
-class DummyRecord {
+class DummyRecord implements GlobalConst {
 
   // content of the record
   public String rowlabname;
@@ -489,10 +489,10 @@ class DummyRecord {
     // CL_Length + 2 + TS_Length +4 + V_Length + 2));
     setRecLen(64);
     // setRecLen (16 + RL_Length + 2 + CL_Length + 2 + TS_Length +4 + V_Length + 2);
-    Convert.setStrValue(rowlabname, 16, data);
-    Convert.setStrValue(collabname, 16 + RL_Length + 2, data);
-    Convert.setIntValue(timestampname, 16 + RL_Length + CL_Length + 4, data);
-    Convert.setStrValue(valuename, 16 + RL_Length + CL_Length + TS_Length + 4, data);
+    Convert.setStrValue(rowlabname, MAPHEADER_LEN, data);
+    Convert.setStrValue(collabname, MAPHEADER_LEN + RL_Length + 2, data);
+    Convert.setIntValue(timestampname, MAPHEADER_LEN + RL_Length + CL_Length + 4, data);
+    Convert.setStrValue(valuename, MAPHEADER_LEN + RL_Length + CL_Length + TS_Length + 4, data);
     // recln1 = RL_Length + CL_Length + TS_Length ;
     // System.out.println("In toByte Array : Data = " + data + " Record length : " +
     // reclen1);
@@ -528,23 +528,23 @@ class DummyRecord {
   public void setRowLabelRec(byte[] _data) throws java.io.IOException {
     // System.out.println("reclne= "+reclen);
     // System.out.println("data size "+_data.size());
-    rowlabname = Convert.getStrValue(0, _data, 16);
+    rowlabname = Convert.getStrValue(MAPHEADER_LEN, _data, STR_LEN);
   }
 
   public void setColumnLabelRec(byte[] _data) throws java.io.IOException {
     // System.out.println("reclne= "+reclen);
     // System.out.println("data size "+_data.size());
-    collabname = Convert.getStrValue(16, _data, 16);
+    collabname = Convert.getStrValue(MAPHEADER_LEN + STR_LEN, _data, STR_LEN);
   }
 
   public void setTimeStampRec(byte[] _data) throws java.io.IOException {
-    timestampname = Convert.getIntValue(32, _data);
+    timestampname = Convert.getIntValue(MAPHEADER_LEN + STR_LEN * 2, _data);
   }
 
   public void setValueRec(byte[] _data) throws java.io.IOException {
     // System.out.println("reclne= "+reclen);
     // System.out.println("data size "+_data.size());
-    valuename = Convert.getStrValue(36, _data, 16);
+    valuename = Convert.getStrValue(MAPHEADER_LEN + STR_LEN * 2 + 4, _data, STR_LEN);
   }
 
   // Other access methods to the size of the String field and
