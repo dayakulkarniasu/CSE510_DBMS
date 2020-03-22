@@ -8,7 +8,7 @@ import heap.*;
 import java.io.*;
 //import global.*;
 
-public class batchInsert {
+public class batchInsert implements GlobalConst{
   public static void main(String[] args) {
     String filepath = "./";
     String datafilename = args[0];
@@ -133,7 +133,7 @@ public class batchInsert {
     int linecount = 0;
     String line = "";
     String csvSplitBy = ",";
-    int recleng2 = 64;
+    int recleng2 = MAP_LEN;
 
     System.out.println("\n  Test 1: Insert and scan fixed-size records\n");
     boolean status = true;
@@ -487,7 +487,7 @@ class DummyRecord implements GlobalConst {
     int V_Length = valuename.length();
     // System.out.println("In toByte Array : TotalLength : " + (16 + RL_Length + 2 +
     // CL_Length + 2 + TS_Length +4 + V_Length + 2));
-    setRecLen(64);
+    setRecLen(MAP_LEN);
     // setRecLen (16 + RL_Length + 2 + CL_Length + 2 + TS_Length +4 + V_Length + 2);
     Convert.setStrValue(rowlabname, MAPHEADER_LEN, data);
     Convert.setStrValue(collabname, MAPHEADER_LEN + RL_Length + 2, data);
