@@ -7,13 +7,13 @@ use your directory path
 
 # tasks that has been done and hasn't been tested so far
 
-- task1: Bigt.Map
-- task2: done
+- task1: Bigt.Map (testing complete)
+- task2: 
 - task3: done
 - task4: 
 - task5: done
-- task6: 
-- task7: 
+- task6: done for the most part
+- task7: done for the most part
 
 ## replacement complete (except tests package)
 - btree 
