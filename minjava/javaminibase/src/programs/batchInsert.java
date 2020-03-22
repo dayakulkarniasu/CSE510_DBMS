@@ -492,7 +492,7 @@ public class batchInsert implements GlobalConst{
              * recMap.fldOffset[4] = rec.rowlabname.length() + rec.collabname.length() + 4 +
              * rec.valuename.length;
              */
-             found_delete_flag = found_delete( big, rowLabel, columnLabel, rec.timestampname, value1) ;
+             found_delete_flag = found_delete( big.hf, rowLabel, columnLabel, rec.timestampname, value1) ;
              if ( found_delete_flag /*found delete flag is false*/ )
              {
                 ridtoinsert = big.insertMap(recMap.getMapByteArray());
@@ -568,7 +568,7 @@ public class batchInsert implements GlobalConst{
           // System.out.println (" In batchInsert, before scan.getNext(rid) ,
           // rid.pageNo.pid = " + rid.pageNo.pid );
 
-          aMap = scan.getNext(rid);
+          aMap = scan.getNext(ridtoinsert);
           if (aMap == null) {
             done = true;
             break;
