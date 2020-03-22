@@ -62,7 +62,7 @@ public class InsertTest implements GlobalConst{
                     if(first){
                         dbpath = "/tmp/" + System.getProperty("user.name") + fname + ".db";
                         logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
-                        sysdef = new SystemDefs(dbpath, dbtype, 8193, 100, "Clock");
+                        sysdef = new SystemDefs(dbpath, dbtype, 10000, 100, "Clock");
 
                         String newdbpath;
                         String newlogpath;
