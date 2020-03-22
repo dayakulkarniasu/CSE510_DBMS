@@ -52,4 +52,8 @@ public class btreeindex{
         System.out.println(String.format("Successfully created BTree index on", keyName, "!"));
         return btf;
     }
+
+    public void InsertIntoIndex(){
+
+    }
 }
