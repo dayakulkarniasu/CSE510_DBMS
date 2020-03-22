@@ -15,6 +15,7 @@ interface Tabletype {
  */
 public class bigt implements Tabletype, GlobalConst {
 
+    public String name;
     public Heapfile hf;
     private int BTType;
 
@@ -32,8 +33,18 @@ public class bigt implements Tabletype, GlobalConst {
     // to different clustering and indexing strategies you will use for the
     // bigtable.
     public bigt(String name, int type) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
-        hf = new Heapfile(name);
-        BTType = type;
+        if(SystemDefs.JavabaseDB.table == null)
+        {
+            this.name = name;
+            hf = new Heapfile(name);
+            BTType = type;
+            SystemDefs.JavabaseDB.table = this;
+        }
+        else
+        {
+            System.out.println("bigt: DB existing");
+            System.out.println("bigDB name: " + SystemDefs.JavabaseDBName);
+        }
     } // end of constructor
 
     // Delete the bigtable from the database.
