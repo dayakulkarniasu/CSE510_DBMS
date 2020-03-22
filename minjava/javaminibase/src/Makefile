@@ -46,7 +46,8 @@ doc:
 	$(JAVADOC) $(DOCFILES)
 
 test:
-	cd programs; make batchInsert project2_testdata.csv DayaBigDB
+# 	cd programs; make batchInsert project2_testdata.csv DayaBigDB
+	cd programs; make InserTest project2_testdata.csv DayaBigDB
 
 clean:
 	\rm -f $(CLASSPATH)/*.class *~ \#* core $(JARFILES) TRACE

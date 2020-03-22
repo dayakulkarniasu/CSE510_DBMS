@@ -9,6 +9,7 @@ import java.io.RandomAccessFile;
 import btree.BTreeFile;
 import global.*;
 import index.MakeIndex;
+import BigT.*;
 
 public class bigDB implements GlobalConst {
 
@@ -16,6 +17,7 @@ public class bigDB implements GlobalConst {
     public BTreeFile indexStrat1 = null;
     public BTreeFile indexStrat2 = null;
     public static int dbType = 0;
+    public bigt table = null;
 
     /**
      * Constructor for the big table database. type is an integer denoting the
