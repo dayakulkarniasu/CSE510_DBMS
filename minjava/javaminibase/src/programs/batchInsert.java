@@ -1,6 +1,5 @@
 package programs;
 
-import btree.*;
 import global.*;
 import BigT.*;
 import heap.*;
@@ -8,14 +7,12 @@ import heap.*;
 import java.io.*;
 //import global.*;
 
-public class batchInsert implements GlobalConst{
+public class batchInsert implements GlobalConst {
   public static void main(String[] args) {
     String filepath = "./";
     String datafilename = args[0];
     int type = Integer.parseInt(args[1]);
     String bigTableName = args[2];
-
-    int reclen = 64;
 
     // TODO System Defs
     // SystemDefsBigDB sysDefs = new SystemDefsBigDB();
@@ -137,7 +134,7 @@ public class batchInsert implements GlobalConst{
 
     System.out.println("\n  Test 1: Insert and scan fixed-size records\n");
     boolean status = true;
-    MID rid = new MID();
+    MID mid = new MID();
     Heapfile f = null;
 
     System.out.println("  - Create a heap file\n");
@@ -213,7 +210,7 @@ public class batchInsert implements GlobalConst{
              * recMap.fldOffset[4] = rec.rowlabname.length() + rec.collabname.length() + 4 +
              * rec.valuename.length;
              */
-            rid = f.insertMap(recMap.getMapByteArray());
+            mid = f.insertMap(recMap.getMapByteArray());
           } catch (Exception e) {
             status = false;
             System.err.println("*** Error inserting record " + linecount + "\n");
@@ -282,10 +279,10 @@ public class batchInsert implements GlobalConst{
       boolean done = false;
       while (!done) {
         try {
-          // System.out.println (" In batchInsert, before scan.getNext(rid) ,
-          // rid.pageNo.pid = " + rid.pageNo.pid );
+          // System.out.println (" In batchInsert, before scan.getNext(mid) ,
+          // mid.pageNo.pid = " + mid.pageNo.pid );
 
-          aMap = scan.getNext(rid);
+          aMap = scan.getNext(mid);
           if (aMap == null) {
             done = true;
             break;
