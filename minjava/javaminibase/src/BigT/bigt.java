@@ -15,9 +15,7 @@ interface Tabletype {
  */
 public class bigt implements Tabletype, GlobalConst {
 
-    public static final String Name = null;
-    
-	Heapfile hf;
+    private Heapfile hf;
     private int BTType;
 
     // private int rowCnt;
@@ -83,8 +81,7 @@ public class bigt implements Tabletype, GlobalConst {
      * results are ﬁrst ordered in column label, then time stamp · 5, then results
      * are ordered in time stamp
      */
-    public Stream openStream(int orderType, String rowFilter, String columnFilter, String valueFilter)
-            throws InvalidTupleSizeException, IOException {
+    public Stream openStream(int orderType, String rowFilter, String columnFilter, String valueFilter) {
         return new Stream(null, orderType, valueFilter, valueFilter, valueFilter);
     }
 }

@@ -4,10 +4,10 @@
 #the assignment to be generated
 
 JARFILES=bufmgr/*.class diskmgr/*.class global/*.class iterator/*.class\
-         heap/*.class chainexception/*.class  btree/*.class index/*.class tests/*.class
+         heap/*.class chainexception/*.class  btree/*.class index/*.class BigT/*.class programs/*.class
 
 #JDKPATH = /usr/java/jdk1.3.1_02
-JDKPATH = /usr/lib/jvm/java-1.8.0-openjdk-amd64
+JDKPATH = /Library/Java/JavaVirtualMachines/jdk1.8.0_241.jdk/Contents/Home
 LIBPATH = .:..
 CLASSPATH = $(LIBPATH)
 BINPATH = $(JDKPATH)/bin
@@ -30,7 +30,7 @@ PACKAGEINDEX=$(ASSIGN)/javadoc
 JAVADOC=javadoc -public -d $(PACKAGEINDEX)
 
 ### Generate jar and javadoc files.  Apply to most assignments.
-db: 
+db:
 	make -C global
 	make -C chainexception
 	make -C btree
@@ -39,13 +39,14 @@ db:
 	make -C heap
 	make -C index
 	make -C iterator
-	
+	make -C BigT
+	make -C programs
+
 doc:
 	$(JAVADOC) $(DOCFILES)
 
-test: 
-	cd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
+test:
+	cd programs; make batchInsert project2_testdata.csv DayaBigDB
 
 clean:
 	\rm -f $(CLASSPATH)/*.class *~ \#* core $(JARFILES) TRACE
-

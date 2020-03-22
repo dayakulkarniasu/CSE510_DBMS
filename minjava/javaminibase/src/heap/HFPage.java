@@ -83,7 +83,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
   /**
    * Constructor of class HFPage open a HFPage and make this HFpage piont to the
    * given page
-   * 
+   *
    * @param page the given page in Page type
    */
 
@@ -93,7 +93,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
 
   /**
    * Constructor of class HFPage open a existed hfpage
-   * 
+   *
    * @param apage a page in buffer pool
    */
 
@@ -103,7 +103,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
 
   /**
    * Constructor of class HFPage initialize a new page
-   * 
+   *
    * @param pageNo the page number of a new page to be initialized
    * @param apage  the Page to be initialized
    * @see Page
@@ -141,7 +141,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
 
   /**
    * Dump contents of a page
-   * 
+   *
    * @exception IOException I/O errors
    */
   public void dumpPage() throws IOException {
@@ -181,7 +181,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
 
   /**
    * sets value of prevPage to pageNo
-   * 
+   *
    * @param pageNo page number for previous page
    * @exception IOException I/O errors
    */
@@ -201,7 +201,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
 
   /**
    * sets value of nextPage to pageNo
-   * 
+   *
    * @param pageNo page number for next page
    * @exception IOException I/O errors
    */
@@ -221,7 +221,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
 
   /**
    * sets value of curPage to pageNo
-   * 
+   *
    * @param pageNo page number for current page
    * @exception IOException I/O errors
    */
@@ -241,7 +241,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
 
   /**
    * sets value of type
-   * 
+   *
    * @param valtype an arbitrary value
    * @exception IOException I/O errors
    */
@@ -261,7 +261,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
 
   /**
    * sets slot contents
-   * 
+   *
    * @param slotno the slot number
    * @param length length of record the slot contains
    * @param offset offset of record
@@ -297,15 +297,15 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
 
   /**
    * inserts a new map onto the page, returns MID of this map
-   * 
+   *
    * @param map a map to be inserted
    * @return MID of map, null if sufficient space does not exist
    * @exception IOException I/O errors in C++ Status insertRecord(char *recPtr,
    *                        int recLen, MID& mid)
    */
-
   public MID insertMap(byte[] map) throws IOException {
     MID mid = new MID();
+
     int mapLen = map.length;
     int spaceNeeded = mapLen + SIZE_OF_SLOT;
 
@@ -360,7 +360,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
 
   /**
    * delete the map with the specified mid
-   * 
+   *
    * @param mid the map ID
    * @exception InvalidSlotNumberException Invalid slot number
    * @exception IOException                I/O errors in C++ Status
@@ -418,7 +418,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
   /**
    * @return MID of first map on page, null if page contains no map.
    * @exception IOException I/O errors in C++ Status firstMap(MID& firstMid)
-   * 
+   *
    */
   public MID firstMap() throws IOException {
     MID mid = new MID();
@@ -481,7 +481,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
   /**
    * copies out map with MID mid into map pointer. <br>
    * Status getMap(MID mid, char *mapPtr, int& mapLen)
-   * 
+   *
    * @param mid the map ID
    * @return a map contains the map
    * @exception InvalidSlotNumberException Invalid slot number
@@ -516,7 +516,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
 
   /**
    * returns a map in a byte array[pageSize] with given MID mid. <br>
-   * 
+   *
    * @param mid the map ID
    * @return a map with its length and offset in the byte array
    * @exception InvalidSlotNumberException Invalid slot number
@@ -551,7 +551,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
 
   /**
    * returns the amount of available space on the page.
-   * 
+   *
    * @return the amount of available space on the page
    * @exception IOException I/O errors
    */
@@ -562,7 +562,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
 
   /**
    * Determining if the page is empty
-   * 
+   *
    * @return true if the HFPage is has no records in it, false otherwise
    * @exception IOException I/O errors
    */
@@ -585,7 +585,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
    * Compacts the slot directory on an HFPage. WARNING -- this will probably lead
    * to a change in the RIDs of records on the page. You CAN'T DO THIS on most
    * kinds of pages.
-   * 
+   *
    * @exception IOException I/O errors
    */
   protected void compact_slot_dir() throws IOException {

@@ -5,7 +5,7 @@ public class RelSpec {
   
   /**
    *constructor
-   *@param value the enum value
+   *@param value teh enum value
    */
   public  RelSpec (int value) {
     key = value;

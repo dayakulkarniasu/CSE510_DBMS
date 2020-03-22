@@ -7,6 +7,7 @@ import java.util.Set;
 import diskmgr.*;
 import global.*;
 import BigT.*;
+import index.MakeIndex;
 
 /**  This heapfile implementation is directory-based. We maintain a
  *  directory of info about the data pages (which are of type HFPage
@@ -44,7 +45,7 @@ interface Filetype {
 
 public class Heapfile implements Filetype, GlobalConst {
 
-	public PageId _firstDirPageId; // page number of header page
+	PageId _firstDirPageId; // page number of header page
 	int _ftype;
 	private boolean _file_deleted;
 	private String _fileName;
@@ -52,7 +53,7 @@ public class Heapfile implements Filetype, GlobalConst {
 
 	/*
 	 * get a new datapage from the buffer manager and initialize dpinfo
-	 * 
+	 *
 	 * @param dpinfop the information in the new HFPage
 	 */
 	private HFPage _newDatapage(DataPageInfo dpinfop)
@@ -407,10 +408,12 @@ public class Heapfile implements Filetype, GlobalConst {
 		HFPage nextDirPage = new HFPage();
 		PageId currentDirPageId = new PageId(_firstDirPageId.pid);
 		PageId nextDirPageId = new PageId(); // OK
+System.out.println("in the heap file insert map function - entry point, FirstDirectory page no  : " + _firstDirPageId.pid );
 
 		pinPage(currentDirPageId, currentDirPage, false/* Rdisk */);
 
 		found = false;
+		System.out.println("after pin page , found = " + found);
 		Map amap;
 		DataPageInfo dpinfo = new DataPageInfo();
 		while (found == false) { // Start While01
@@ -418,6 +421,7 @@ public class Heapfile implements Filetype, GlobalConst {
 			for (currentDataPageMid = currentDirPage
 					.firstMap(); currentDataPageMid != null; currentDataPageMid = currentDirPage
 							.nextMap(currentDataPageMid)) {
+								System.out.println("in insert map inside while loop and for loop");
 				amap = currentDirPage.getMap(currentDataPageMid);
 
 				dpinfo = new DataPageInfo(amap);
@@ -429,7 +433,8 @@ public class Heapfile implements Filetype, GlobalConst {
 					break;
 				}
 			}
-
+			System.out.println("in the heap file insert map function - out of for loop but stil inside while");
+			System.out.println("in the heap file insert map function - the value of found is: "+ found);
 			// two cases:
 			// (1) found == true:
 			// currentDirPage has a datapagerecord which can accomodate
@@ -438,6 +443,7 @@ public class Heapfile implements Filetype, GlobalConst {
 			// there is no datapagerecord on the current directory page
 			// whose corresponding datapage has enough space free
 			// several subcases: see below
+
 			if (found == false) { // Start IF01
 									// case (2)
 
@@ -456,7 +462,8 @@ public class Heapfile implements Filetype, GlobalConst {
 				// page
 				// - (2.2) (currentDirPage->available_space() <= sizeof(DataPageInfo):
 				// look at the next directory page, if necessary, create it.
-
+				System.out.println("in the heap file insert map function - currentDirPage.available space: "+ currentDirPage.available_space());
+				System.out.println("in the heap file insert map function - dpinfo.size: "+ dpinfo.size);
 				if (currentDirPage.available_space() >= dpinfo.size) {
 					// Start IF02
 					// case (2.1) : add a new data page record into the
@@ -469,12 +476,12 @@ public class Heapfile implements Filetype, GlobalConst {
 
 					// currentDataPage is pinned: insert its record
 					// calling a HFPage function
-
+System.out.println("in the heap file insert map function - converting dpinfo to map");
 					amap = dpinfo.convertToMap();
 
 					byte[] tmpData = amap.getMapByteArray();
 					currentDataPageMid = currentDirPage.insertMap(tmpData);
-
+System.out.println("in the heap file insert map function - setting first map in current dirpage");
 					MID tmpmid = currentDirPage.firstMap();
 
 					// need catch error here!
@@ -518,7 +525,7 @@ public class Heapfile implements Filetype, GlobalConst {
 						nextDirPageId = newPage(pageinbuffer, 1);
 						// need check error!
 						if (nextDirPageId == null)
-							throw new HFException(null, "can't new pae");
+							throw new HFException(null, "can't new page");
 
 						// initialize new directory page
 						nextDirPage.init(nextDirPageId, pageinbuffer);
@@ -578,6 +585,7 @@ public class Heapfile implements Filetype, GlobalConst {
 			throw new HFException(null, "can't find Data page");
 
 		MID mid;
+		System.out.println("in the heap file insert map function - Ready to insert map into Data Page");
 		mid = currentDataPage.insertMap(mapPtr);
 
 		dpinfo.recct++;
@@ -595,8 +603,11 @@ public class Heapfile implements Filetype, GlobalConst {
 		dpinfo_ondirpage.flushToMap();
 
 		unpinPage(currentDirPageId, true /* = DIRTY */);
-
-		return mid;
+    System.out.println("MID : SlotNo = " + mid.slotNo + " PageNo = " + mid.pageNo.pid);
+    	// Each insertion of a map into the BigTable also adds into the corresponding
+		// Index based upon the type of the BigTable.
+		MakeIndex.InsertIntoIndex(new Map(mapPtr, mapPtr.length, 0), mid);
+    	return mid;
 
 	}
 
@@ -730,7 +741,7 @@ public class Heapfile implements Filetype, GlobalConst {
 
 	/**
 	 * Updates the specified map in the heapfile.
-	 * 
+	 *
 	 * @param mid:    the map which needs update
 	 * @param newmap: the new content of the map
 	 *
@@ -781,7 +792,7 @@ public class Heapfile implements Filetype, GlobalConst {
 
 	/**
 	 * Read Map from file, returning pointer and length.
-	 * 
+	 *
 	 * @param mid Map ID
 	 *
 	 * @exception InvalidSlotNumberException invalid slot number
@@ -827,7 +838,7 @@ public class Heapfile implements Filetype, GlobalConst {
 
 	/**
 	 * Initiate a sequential scan.
-	 * 
+	 *
 	 * @exception InvalidTupleSizeException Invalid tuple size
 	 * @exception IOException               I/O errors
 	 *
@@ -896,7 +907,7 @@ public class Heapfile implements Filetype, GlobalConst {
 
 	/**
 	 * short cut to access the pinPage function in bufmgr package.
-	 * 
+	 *
 	 * @see bufmgr.pinPage
 	 */
 	private void pinPage(PageId pageno, Page page, boolean emptyPage) throws HFBufMgrException {
@@ -911,7 +922,7 @@ public class Heapfile implements Filetype, GlobalConst {
 
 	/**
 	 * short cut to access the unpinPage function in bufmgr package.
-	 * 
+	 *
 	 * @see bufmgr.unpinPage
 	 */
 	private void unpinPage(PageId pageno, boolean dirty) throws HFBufMgrException {

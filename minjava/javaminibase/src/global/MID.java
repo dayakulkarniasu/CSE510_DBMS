@@ -42,7 +42,7 @@ public class MID {
 
   /**
    * Write the mid into a byte array at offset
-   * 
+   *
    * @param ary    the specified byte array
    * @param offset the offset of byte array to write
    * @exception java.io.IOException I/O errors
@@ -54,7 +54,7 @@ public class MID {
 
   /**
    * Compares two MID object, i.e, this to the mid
-   * 
+   *
    * @param mid MID object to be compared to
    * @return true is they are equal false if not.
    */

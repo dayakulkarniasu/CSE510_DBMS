@@ -45,17 +45,11 @@ public class BT implements GlobalConst {
    * @exception KeyNotMatchException key is not IntegerKey or StringKey class
    */
   public final static int keyCompare(KeyClass key1, KeyClass key2) throws KeyNotMatchException {
-    if ((key1 instanceof IntegerKey) && (key2 instanceof IntegerKey)) {
 
+    if ((key1 instanceof IntegerKey) && (key2 instanceof IntegerKey)) {
       return (((IntegerKey) key1).getKey()).intValue() - (((IntegerKey) key2).getKey()).intValue();
     } else if ((key1 instanceof StringKey) && (key2 instanceof StringKey)) {
       return ((StringKey) key1).getKey().compareTo(((StringKey) key2).getKey());
-    } else if ((key1 instanceof StringStringKey) && (key2 instanceof StringStringKey)) {
-      return ((StringStringKey) key1).getKey().compareTo(((StringStringKey) key2).getKey());
-    } else if ((key1 instanceof StringIntegerKey) && (key2 instanceof StringIntegerKey)) {
-      return ((StringIntegerKey) key1).getKey().compareTo(((StringIntegerKey) key2).getKey());
-    } else if ((key1 instanceof StringStringIntegerKey) && (key2 instanceof StringStringIntegerKey)) {
-      return ((StringStringIntegerKey) key1).getKey().compareTo(((StringStringIntegerKey) key2).getKey());
     }
 
     else {
@@ -68,22 +62,15 @@ public class BT implements GlobalConst {
    * 
    * @param key specify the key whose length will be calculated. Input parameter.
    * @return return the length of the key
-   * @exception KeyNotMatchException keytype is not defined
+   * @exception KeyNotMatchException key is neither StringKey nor IntegerKey
    * @exception IOException          error from the lower layer
    */
   protected final static int getKeyLength(KeyClass key) throws KeyNotMatchException, IOException {
     if (key instanceof StringKey) {
-
       OutputStream out = new ByteArrayOutputStream();
       DataOutputStream outstr = new DataOutputStream(out);
       outstr.writeUTF(((StringKey) key).getKey());
       return outstr.size();
-    } else if (key instanceof StringStringKey) {
-      return STR_LEN * 2;
-    } else if (key instanceof StringIntegerKey) {
-      return STR_LEN + 4;
-    } else if (key instanceof StringStringIntegerKey) {
-      return STR_LEN * 2 + 4;
     } else if (key instanceof IntegerKey)
       return 4;
     else
@@ -114,7 +101,7 @@ public class BT implements GlobalConst {
    * @param key      an object of KeyClass. Input parameter.
    * @param pageType NodeType.LEAF or NodeType.INDEX. Input parameter.
    * @return return the lenrth of the (key,data) pair.
-   * @exception KeyNotMatchException  keytype is not defined
+   * @exception KeyNotMatchException  key is neither StringKey nor IntegerKey
    * @exception NodeNotMatchException pageType is neither NodeType.LEAF nor
    *                                  NodeType.INDEX.
    * @exception IOException           error from the lower layer
@@ -130,15 +117,13 @@ public class BT implements GlobalConst {
    * @param from     It's a bytes array where KeyDataEntry will come from. Input
    *                 parameter.
    * @param offset   the offset in the bytes. Input parameter.
-   * @param keyType  It specifies the type of key. It can be AttrType.attrString,
-   *                 AttrType.attrInteger, AttrType.attrStringString,
-   *                 AttrType.attrStringInteger or
-   *                 AttrType.attrStringStringInteger. Input parameter.
+   * @param keyType  It specifies the type of key. It can be AttrType.attrString
+   *                 or AttrType.attrInteger. Input parameter.
    * @param nodeType It specifes NodeType.LEAF or NodeType.INDEX. Input parameter.
    * @param length   The length of (key, data) in byte array "from". Input
    *                 parameter.
    * @return return a KeyDataEntry object
-   * @exception KeyNotMatchException  keytype not defined
+   * @exception KeyNotMatchException  key is neither StringKey nor IntegerKey
    * @exception NodeNotMatchException nodeType is neither NodeType.LEAF nor
    *                                  NodeType.INDEX.
    * @exception ConvertException      error from the lower layer
@@ -168,34 +153,6 @@ public class BT implements GlobalConst {
       } else if (keyType == AttrType.attrString) {
         // System.out.println(" offset "+ offset + " " + length + " "+n);
         key = new StringKey(Convert.getStrValue(offset, from, length - n));
-      } else if (keyType == AttrType.attrRowCol) {
-        // System.out.println(" offset "+ offset + " " + length + " "+n);
-        StringString ss = Convert.getStrStrValue(offset, from, length - n);
-        key = new RowColKey(ss);
-      } else if (keyType == AttrType.attrColRow) {
-        // System.out.println(" offset "+ offset + " " + length + " "+n);
-        StringString ss = Convert.getStrStrValue(offset, from, length - n);
-        key = new ColRowKey(ss);
-      } else if (keyType == AttrType.attrRowTs) {
-        // System.out.println(" offset "+ offset + " " + length + " "+n);
-        StringInteger si = Convert.getStrIntValue(offset, from, length - n);
-        key = new RowTsKey(si);
-      } else if (keyType == AttrType.attrColTs) {
-        // System.out.println(" offset "+ offset + " " + length + " "+n);
-        StringInteger si = Convert.getStrIntValue(offset, from, length - n);
-        key = new ColTsKey(si);
-      } else if (keyType == AttrType.attrRowColTs) {
-        // System.out.println(" offset "+ offset + " " + length + " "+n);
-        StringStringInteger ssi = Convert.getStrStrIntValue(offset, from, length - n);
-        key = new RowColTsKey(ssi);
-      } else if (keyType == AttrType.attrColRowTs) {
-        // System.out.println(" offset "+ offset + " " + length + " "+n);
-        StringStringInteger ssi = Convert.getStrStrIntValue(offset, from, length - n);
-        key = new ColRowTsKey(ssi);
-      } else if (keyType == AttrType.attrColVal) {
-        // System.out.println(" offset "+ offset + " " + length + " "+n);
-        StringString ss = Convert.getStrStrValue(offset, from, length - n);
-        key = new ColValKey(ss);
       } else
         throw new KeyNotMatchException(null, "key types do not match");
 
@@ -234,12 +191,6 @@ public class BT implements GlobalConst {
         Convert.setIntValue(((IntegerKey) entry.key).getKey().intValue(), 0, data);
       } else if (entry.key instanceof StringKey) {
         Convert.setStrValue(((StringKey) entry.key).getKey(), 0, data);
-      } else if (entry.key instanceof StringStringKey) {
-        Convert.setStrStrValue(((StringStringKey) entry.key).getKey(), 0, data);
-      } else if (entry.key instanceof StringIntegerKey) {
-        Convert.setStrIntValue(((StringIntegerKey) entry.key).getKey(), 0, data);
-      } else if (entry.key instanceof StringStringIntegerKey) {
-        Convert.setStrStrIntValue(((StringStringIntegerKey) entry.key).getKey(), 0, data);
       } else
         throw new KeyNotMatchException(null, "key types do not match");
 
