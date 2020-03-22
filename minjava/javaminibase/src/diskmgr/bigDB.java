@@ -57,6 +57,7 @@ public class bigDB implements GlobalConst {
                 indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.RowLabel, PropertyType.Value);
                 indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
                 break;
+        }
         // initialize read page and write page counter
         dbType = type;
         PCounter.initialize();
@@ -65,8 +66,7 @@ public class bigDB implements GlobalConst {
     /**
      * Open the database with the given name.
      *
-     * @param name DB_name
-     *
+     * @param fname DB_name
      * @exception IOException                I/O errors
      * @exception FileIOException            file I/O error
      * @exception InvalidPageNumberException invalid page number
