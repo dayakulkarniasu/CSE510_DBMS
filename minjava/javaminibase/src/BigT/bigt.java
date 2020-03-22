@@ -3,6 +3,8 @@ package BigT;
 import java.io.*;
 import global.*;
 import heap.*;
+import index.IndexException;
+import index.UnknownIndexTypeException;
 
 interface Tabletype {
     int TEMP = 0;
@@ -33,15 +35,12 @@ public class bigt implements Tabletype, GlobalConst {
     // to different clustering and indexing strategies you will use for the
     // bigtable.
     public bigt(String name, int type) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
-        if(SystemDefs.JavabaseDB.table == null)
-        {
+        if (SystemDefs.JavabaseDB.table == null) {
             this.name = name;
             hf = new Heapfile(name);
             BTType = type;
             SystemDefs.JavabaseDB.table = this;
-        }
-        else
-        {
+        } else {
             System.out.println("bigt: DB existing");
             System.out.println("bigDB name: " + SystemDefs.JavabaseDBName);
         }
@@ -92,7 +91,9 @@ public class bigt implements Tabletype, GlobalConst {
      * results are ﬁrst ordered in column label, then time stamp · 5, then results
      * are ordered in time stamp
      */
-    public Stream openStream(int orderType, String rowFilter, String columnFilter, String valueFilter) {
+    public Stream openStream(int orderType, String rowFilter, String columnFilter, String valueFilter)
+            throws InvalidTupleSizeException, IndexException, InvalidTypeException, UnknownIndexTypeException,
+            IOException {
         return new Stream(null, orderType, valueFilter, valueFilter, valueFilter);
     }
 }
