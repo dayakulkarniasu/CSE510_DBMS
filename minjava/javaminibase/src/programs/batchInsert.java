@@ -15,7 +15,7 @@ public class batchInsert implements GlobalConst{
     int type = Integer.parseInt(args[1]);
     String bigTableName = args[2];
 
-    int reclen = 64;
+    // int reclen = 64;
 
     // TODO System Defs
     // SystemDefsBigDB sysDefs = new SystemDefsBigDB();
