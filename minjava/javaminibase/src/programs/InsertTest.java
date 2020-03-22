@@ -22,7 +22,7 @@ public class InsertTest implements GlobalConst{
         // dbpath = "/tmp/" + System.getProperty("user.name") + bigTableName + ".db";
         // logpath = "/tmp/" + System.getProperty("user.name") + bigTableName + ".log";
     
-    
+        SystemDefs sysdef = null;
         // SystemDefs sysdef = new SystemDefs(dbpath, type, 8193, 100, "Clock");
         
         // String newdbpath;
@@ -50,9 +50,8 @@ public class InsertTest implements GlobalConst{
         Scanner scanner = new Scanner(System.in);
         try{
             while(true){
-                System.out.println("Input filename, type and bigtable name");
+                System.out.println("Input batchinsert or query");
                 String line = scanner.nextLine();
-                first = false;
                 String[] params = line.split(" ");
                 if(params[0].equalsIgnoreCase("batchinsert"))
                 {
@@ -63,7 +62,7 @@ public class InsertTest implements GlobalConst{
                     if(first){
                         dbpath = "/tmp/" + System.getProperty("user.name") + fname + ".db";
                         logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
-                        SystemDefs sysdef = new SystemDefs(dbpath, dbtype, 8193, 100, "Clock");
+                        sysdef = new SystemDefs(dbpath, dbtype, 8193, 100, "Clock");
 
                         String newdbpath;
                         String newlogpath;
