@@ -1,3 +1,5 @@
+/*
+
 package programs;
 
 import btree.BTreeFile;
@@ -93,3 +95,5 @@ public class Query {
 		e.printStackTrace();
 	}
 }
+
+*/
