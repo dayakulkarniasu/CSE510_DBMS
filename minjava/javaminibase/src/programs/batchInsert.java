@@ -260,7 +260,7 @@ public class batchInsert implements GlobalConst{
     Scan scan = null;
 
     if (status == true) {
-      System.out.println(" In batchInsert - Scan the records just inserted\n");
+      System.out.println("In batchInsert - Scan the records just inserted\n");
 
       try {
         scan = big.hf.openScan();
@@ -320,11 +320,12 @@ public class batchInsert implements GlobalConst{
             status = false;
             break;
           }
-          String name = ("record" + i);
-          System.out.println("rec.row " + i + " :" + rec.rowlabname);
-          System.out.println("rec.col " + i + " :" + rec.collabname);
-          System.out.println("rec.timestamp " + i + " :" + rec.timestampname);
-          System.out.println("rec.value " + i + " :" + rec.valuename);
+          System.out.println("record: " + i);
+          System.out.println("rec.row " + i + " : " + rec.rowlabname);
+          System.out.println("rec.col " + i + " : " + rec.collabname);
+          System.out.println("rec.timestamp " + i + " : " + rec.timestampname);
+          System.out.println("rec.value " + i + " : " + rec.valuename);
+          System.out.println();
           /*
            * if( (rec.ival != i) || (rec.fval != (float)i*2.5) || (!name.equals(rec.name))
            * ) { System.err.println ("*** Record " + i +
@@ -351,7 +352,7 @@ public class batchInsert implements GlobalConst{
     } // end of bigger status ok
 
     if (status == true)
-      System.out.println("  Test 1 completed successfully.\n");
+      System.out.println("Test 1 completed successfully.\n");
 
     return status;
   }
