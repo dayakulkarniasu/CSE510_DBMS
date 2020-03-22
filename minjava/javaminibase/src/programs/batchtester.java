@@ -8,14 +8,14 @@ import heap.*;
 import java.io.*;
 //import global.*;
 
-public class batchtester{
-    public static void main(String[] args){
+public class batchtester implements GlobalConst{
+    public static void main(String[] args) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
         String filepath = "./";
         String datafilename = args[0];
         int type = Integer.parseInt(args[1]);
         String bigTableName = args[2];
 
-         int reclen = 64;
+         int reclen = MAP_LEN;
 
         //TODO System Defs
         //SystemDefsBigDB sysDefs = new SystemDefsBigDB();
@@ -83,8 +83,186 @@ public class batchtester{
                 catch (IOException e) {
                   System.err.println ("IO error: "+e);
                 }
+
+                bigt big = new bigt(bigTableName, type);
+                BufferedReader br = new BufferedReader(new FileReader(datafilename));
+                String csvSplitBy = ",";
+                String line;
+                MID rid = new MID();
+                Heapfile f = null;
+                int linecount = 0;
+                boolean status = true;
+                while((line = br.readLine()) != null){
+                    String[] arryfields = line.split(csvSplitBy);
+                    String rowLabel = arryfields[0];
+                    String columnLabel = arryfields[1];
+                    String value = arryfields[2];
+                    String timeStamp = arryfields[3];
+
+                    //fixed length record
+                    DummyRecord rec = new DummyRecord(reclen);
+                    rec.rowlabname = rowLabel;
+                    rec.collabname = columnLabel;
+                    rec.timestampname = Integer.parseInt(timeStamp);
+                    rec.valuename = value;
+                    System.out.println("Printing the Dummy record object fields in Main");
+
+                    System.out.println(" Dummy row label: "+ rec.rowlabname + " col label: " + rec.collabname + " TS: " + rec.timestampname  + " val: " + rec.valuename);
+
+
+                    try {
+                      //  Map recMap = new Map(rec.toByteArray(),0, rec.getRecLength()) ;
+                          Map recMap = new Map(rec.toByteArray(),0, rec.getRecLength()) ;
+                          //  System.out.println(" RecMap created successfully ");
+                            AttrType[] types = {new AttrType(0),new AttrType(0),new AttrType(1),new AttrType(0)};
+                            types[0] = new AttrType(0) ;
+                            types[1] = new AttrType(0) ;
+                            types[3] = new AttrType(1) ;
+                            types[2] = new AttrType(0) ;
+                            short[] strSizes = { 0, 0,0,0};
+                            strSizes[0] = (short) (rowLabel.length());
+                            strSizes[1] = (short) (columnLabel.length()) ;
+                            strSizes[3] = (short) (4) ;
+                            strSizes[2] = (short) (value.length());
+                          //  System.out.println(" types[0] = " + types[0]+ "types[1] = " + types[1]+ " types[2] = " + types[2] + " types[3] = " + types[3]);
+                            recMap.setHdr((short) 4, types, strSizes) ;
+                          /*  recMap.setFieldOffset((short)1, (short)0);
+                            recMap.setFieldOffset((short)2, (short) (rec.rowlabname.length()));
+                            recMap.setFieldOffset((short)3, (short) (rec.rowlabname.length() + rec.collabname.length()));
+                            recMap.setFieldOffset((short)4, (short) (rec.rowlabname.length() + rec.collabname.length() + 4));
+                            recMap.setFieldOffset((short)5, (short) (rec.rowlabname.length() + rec.collabname.length() + 4 + rec.valuename.length()));
+                            */
+                          /*   recMap.fldOffset[2] = 0;
+                             recMap.fldOffset[1] = rec.rowlabname.length();
+                             recMap.fldOffset[2] = rec.rowlabname.length() + rec.collabname.length();
+                             recMap.fldOffset[3] = rec.rowlabname.length() + rec.collabname.length() + 4;
+                             recMap.fldOffset[4] = rec.rowlabname.length() + rec.collabname.length() + 4 + rec.valuename.length;
+                             */
+                        rid = big.insertMap(recMap.getMapByteArray());
+                      }
+                      catch (Exception e) {
+                        status = false;
+                        System.err.println ("*** Error inserting record " + linecount + "\n");
+                        e.printStackTrace();
+                      }
+                      linecount++;
+                }
+                
+
+                Scan scan = null;
+
+                if ( status == true ) {
+                        System.out.println (" In batchInsert - Scan the records just inserted\n");
+          
+                        try {
+                             scan = big.hf.openScan();
+                          //   System.out.println (" In batchInsert - done with f.openScan() \n") ;
+                        }
+                        catch (Exception e) {
+                              status = false;
+                              System.err.println ("*** Error opening scan\n");
+                              e.printStackTrace();
+                        }
+          
+                        if ( status == true &&  SystemDefs.JavabaseBM.getNumUnpinnedBuffers()
+                       == SystemDefs.JavabaseBM.getNumBuffers() ) {
+                            System.err.println ("*** The heap-file scan has not pinned the first page\n");
+                            status = false;
+                        }
+                }
+          
+                if ( status == true ) {
+                          int len, i = 0;
+                          DummyRecord rec = null;
+                          Map aMap = new Map();
+          
+                          boolean done = false;
+                          while (!done) {
+                              try {
+                              //  System.out.println (" In batchInsert, before  scan.getNext(rid) , rid.pageNo.pid = " + rid.pageNo.pid );
+          
+                                aMap = scan.getNext(rid);
+                                if (aMap == null) {
+                                  done = true;
+                                  break;
+                                }
+                              }
+                              catch (Exception e) {
+                                status = false;
+                                e.printStackTrace();
+                              }
+          
+                              if (status == true && !done) {
+                                try {
+                                //  System.out.println ("From Scan, getting next Map and converting in to DummyRecord \n");
+                                  rec = new DummyRecord(aMap);
+                                //  System.out.println ("From Scan, After converting in to DummyRecord \n");
+                                }
+                                catch (Exception e) {
+                                  System.err.println (""+e);
+                                  e.printStackTrace();
+                                }
+          
+                                len = aMap.getLength();
+                                if ( len != reclen ) {
+                                  System.err.println ("*** Record " + i + " had unexpected length "
+                                    + len + "\n");
+                                  status = false;
+                                  break;
+                                }
+                                else if ( SystemDefs.JavabaseBM.getNumUnpinnedBuffers()
+                                    == SystemDefs.JavabaseBM.getNumBuffers() ) {
+                                  System.err.println ("On record " + i + ":\n");
+                                  System.err.println ("*** The heap-file scan has not left its " +
+                                    "page pinned\n");
+                                  status = false;
+                                  break;
+                                }
+                                String name = ("record" + i );
+                                  System.out.println("rec.row "+ i + " :" + rec.rowlabname);
+                                  System.out.println("rec.col "+ i + " :" +  rec.collabname);
+                                  System.out.println("rec.timestamp "+ i + " :" +  rec.timestampname);
+                                  System.out.println("rec.value "+ i + " :" +  rec.valuename);
+                                /*if( (rec.ival != i)
+                                    || (rec.fval != (float)i*2.5)
+                                    || (!name.equals(rec.name)) ) {
+                                  System.err.println ("*** Record " + i
+                                    + " differs from what we inserted\n");
+                                  System.err.println ("rec.ival: "+ rec.ival
+                                    + " should be " + i + "\n");
+                                  System.err.println ("rec.fval: "+ rec.fval
+                                    + " should be " + (i*2.5) + "\n");
+                                  System.err.println ("rec.name: " + rec.name
+                                    + " should be " + name + "\n");
+                                  status = false;
+                                  break;
+                                }*/
+                              }
+                              ++i;
+                          }//end of while not done
+          
+                          //If it gets here, then the scan should be completed
+                          if (status == true) {
+                              if ( SystemDefs.JavabaseBM.getNumUnpinnedBuffers()
+                                   != SystemDefs.JavabaseBM.getNumBuffers() ) {
+                                    System.err.println ("*** The heap-file scan has not unpinned " +
+                                            "its page after finishing\n");
+                                    status = false;
+                              }
+                              else if ( i != (linecount) )
+                                {
+                                  status = false;
+          
+                                  System.err.println ("*** Scanned " + i + " records instead of "
+                                     + linecount + "\n");
+                                }
+                          }
+                }//end of  bigger status ok
+
+
+
                    //insert map
-                 InsertBTmap(datafilename);
+                //  InsertBTmap(datafilename);
 
 
 
@@ -222,8 +400,9 @@ public class batchtester{
                 String[] arryfields = line.split(csvSplitBy);
                 String rowLabel = arryfields[0];
                 String columnLabel = arryfields[1];
-                String timeStamp = arryfields[2];
-                String value = arryfields[3];
+                String value = arryfields[2];
+                String timeStamp = arryfields[3];
+                
                 //System.out.println("row label: "+ rowLabel + " col label: " + columnLabel + " TS: " + timeStamp  + " val: " + value);
 
 
@@ -244,14 +423,14 @@ public class batchtester{
                       AttrType[] types = {new AttrType(0),new AttrType(0),new AttrType(1),new AttrType(0)};
                       types[0] = new AttrType(0) ;
                       types[1] = new AttrType(0) ;
-                      types[2] = new AttrType(1) ;
-                      types[3] = new AttrType(0) ;
+                      types[3] = new AttrType(1) ;
+                      types[2] = new AttrType(0) ;
                       short[] strSizes = { 0, 0,0,0};
                       strSizes[0] = (short) (rowLabel.length());
                       strSizes[1] = (short) (columnLabel.length()) ;
-                      strSizes[2] = (short) (4) ;
-                      strSizes[3] = (short) (value.length());
-                     System.out.println(" types[0] = " + types[0]+ "types[1] = " + types[1]+ " types[2] = " + types[2] + " types[3] = " + types[3]);
+                      strSizes[3] = (short) (4) ;
+                      strSizes[2] = (short) (value.length());
+                    //  System.out.println(" types[0] = " + types[0]+ "types[1] = " + types[1]+ " types[2] = " + types[2] + " types[3] = " + types[3]);
                       recMap.setHdr((short) 4, types, strSizes) ;
                     /*  recMap.setFieldOffset((short)1, (short)0);
                       recMap.setFieldOffset((short)2, (short) (rec.rowlabname.length()));
@@ -427,7 +606,7 @@ public class batchtester{
 
 }
 
-class DummyRecord  {
+class DummyRecord implements GlobalConst{
 
   //content of the record
   public String rowlabname;
@@ -548,16 +727,21 @@ class DummyRecord  {
     Convert.setStrValue (name, 8, data);
     */
     int RL_Length = rowlabname.length();
+    // int RL_Length = GlobalConst.STR_LEN;
     int CL_Length = collabname.length();
     int TS_Length = 4;
     int V_Length = valuename.length();
    System.out.println("In toByte Array : TotalLength : " + (16 + RL_Length + 2 + CL_Length + 2 + TS_Length +4 + V_Length + 2));
-    setRecLen (64);
+    setRecLen (MAP_LEN);
   //  setRecLen (16 + RL_Length + 2 + CL_Length + 2 + TS_Length +4 + V_Length + 2);
-    Convert.setStrValue (rowlabname, 16,data);
-    Convert.setStrValue (collabname, 16 + RL_Length + 2,data );
-    Convert.setIntValue (timestampname, 16 + RL_Length + CL_Length + 4,data );
-    Convert.setStrValue (valuename, 16 + RL_Length + CL_Length + TS_Length + 4,data);
+    // Convert.setStrValue (rowlabname, 16,data);
+    // Convert.setStrValue (collabname, 16 + RL_Length + 2,data );
+    // Convert.setStrValue (valuename, 16 + RL_Length + CL_Length + 4,data );
+    // Convert.setIntValue (timestampname, 16 + RL_Length + CL_Length + V_Length + 4,data);
+    Convert.setStrValue(rowlabname, MAPHEADER_LEN, data);
+    Convert.setStrValue(collabname, MAPHEADER_LEN + RL_Length + 2, data);
+    Convert.setIntValue(timestampname, MAPHEADER_LEN + RL_Length + CL_Length + 4, data);
+    Convert.setStrValue(valuename, MAPHEADER_LEN + RL_Length + CL_Length + TS_Length + 4, data);
     // recln1 = RL_Length + CL_Length + TS_Length ;
   // System.out.println("In toByte Array : Data = " + data + " Record length : " + reclen1);
 
@@ -594,23 +778,27 @@ class DummyRecord  {
     throws java.io.IOException {
    // System.out.println("reclne= "+reclen);
    // System.out.println("data size "+_data.size());
-    rowlabname = Convert.getStrValue (0, _data, 16);
+    // rowlabname = Convert.getStrValue (0, _data, 16);
+    rowlabname = Convert.getStrValue(MAPHEADER_LEN, _data, STR_LEN);
   }
   public void setColumnLabelRec (byte[] _data)
     throws java.io.IOException {
    // System.out.println("reclne= "+reclen);
    // System.out.println("data size "+_data.size());
-    collabname = Convert.getStrValue (16, _data, 16);
+    // collabname = Convert.getStrValue (16, _data, 16);
+    collabname = Convert.getStrValue(MAPHEADER_LEN + STR_LEN, _data, STR_LEN);
   }
   public void setTimeStampRec (byte[] _data)
     throws java.io.IOException {
-    timestampname = Convert.getIntValue (32, _data);
+    // timestampname = Convert.getIntValue (32, _data);
+    timestampname = Convert.getIntValue(MAPHEADER_LEN + STR_LEN * 2, _data);
   }
   public void setValueRec (byte[] _data)
     throws java.io.IOException {
    // System.out.println("reclne= "+reclen);
    // System.out.println("data size "+_data.size());
-    valuename = Convert.getStrValue (36, _data, 16);
+    // valuename = Convert.getStrValue (36, _data, 16);
+    valuename = Convert.getStrValue(MAPHEADER_LEN + STR_LEN * 2 + 4, _data, STR_LEN);
   }
   //Other access methods to the size of the String field and
   //the size of the record
