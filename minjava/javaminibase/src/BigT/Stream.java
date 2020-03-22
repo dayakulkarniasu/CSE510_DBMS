@@ -161,7 +161,7 @@ public class Stream implements GlobalConst{
                         }
 
                         try {
-                            temp = fscan.getNext();
+                            temp = fscan.get_next();
                         }
                         catch (Exception e) {
                             e.printStackTrace();
