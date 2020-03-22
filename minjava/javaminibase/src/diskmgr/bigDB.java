@@ -33,31 +33,6 @@ public class bigDB implements GlobalConst {
      * @param type
      */
     public bigDB(int type) {
-
-        switch (type) {
-            case 1:
-                // No Index
-                break;
-            case 2:
-                // Index on RowLabel
-                indexStrat1 = MakeIndex.IndexForOneKey(PropertyType.RowLabel);
-                break;
-            case 3:
-                // Index on ColumnLabel
-                indexStrat1 = MakeIndex.IndexForOneKey(PropertyType.ColumnLabel);
-                break;
-            case 4:
-                // Index on combKey for ColumnLabel and RowLabel & Index on TimeStamp
-                indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.ColumnLabel, PropertyType.RowLabel);
-                indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
-
-                break;
-            case 5:
-                // Index on combKey for RowLabel and Value & Index on TimeStamp
-                indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.RowLabel, PropertyType.Value);
-                indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
-                break;
-        }
         // initialize read page and write page counter
         dbType = type;
         PCounter.initialize();
@@ -160,6 +135,34 @@ public class bigDB implements GlobalConst {
      */
     public void closeDB() throws IOException {
         fp.close();
+    }
+
+    public void setStrategy(){
+        switch (dbType) {
+            case 1:
+                // No Index
+                break;
+            case 2:
+                // Index on RowLabel
+                indexStrat1 = MakeIndex.IndexForOneKey(PropertyType.RowLabel);
+                break;
+            case 3:
+                // Index on ColumnLabel
+                indexStrat1 = MakeIndex.IndexForOneKey(PropertyType.ColumnLabel);
+                break;
+            case 4:
+                // Index on combKey for ColumnLabel and RowLabel & Index on TimeStamp
+                indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.ColumnLabel, PropertyType.RowLabel);
+                indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
+
+                break;
+            case 5:
+                // Index on combKey for RowLabel and Value & Index on TimeStamp
+                indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.RowLabel, PropertyType.Value);
+                indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
+                break;
+        }
+
     }
 
     /**

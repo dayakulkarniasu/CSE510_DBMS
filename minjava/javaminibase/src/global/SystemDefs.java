@@ -82,5 +82,6 @@ public class SystemDefs {
                         Runtime.getRuntime().exit(1);
                   }
             }
+            JavabaseDB.setStrategy();
       }
 }
