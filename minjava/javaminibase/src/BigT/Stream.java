@@ -172,16 +172,160 @@ public class Stream implements GlobalConst{
                     break;
                 case OrderType.type2:
                     //ordered columnLabel, rowLabel, timestamp
+                     String key = null;
+                    MID MID = new MID();
+                    Map temp = null;
+
+
+                    try {
+                        //TODO make sure key size when making btree is correct
+                        btf = new BTreeFile("StreamOrderIndex", AttrType.attrString, RECLENGTH*3, 2/*delete*/);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                        Runtime.getRuntime().exit(1);
+                    }
+                    while ( temp != null) {
+                        try {
+                            key = m.getColumnLabel() + " " + m.getRowLabel() + " " + m.getTimeStamp();
+                            mid = fscan.MID;
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            btf.insert(new StringKey(key), mid);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            temp = fscan.getNext();
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     break;
                 case OrderType.type3:
                     //row label then timestamp
+                     String key = null;
+                    MID MID = new MID();
+                    Map temp = null;
+
+
+                    try {
+                        //TODO make sure key size when making btree is correct
+                        btf = new BTreeFile("StreamOrderIndex", AttrType.attrString, RECLENGTH*2, 3/*delete*/);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                        Runtime.getRuntime().exit(1);
+                    }
+                    while ( temp != null) {
+                        try {
+                            key = m.getRowLabel() + " " + m.getTimeStamp();
+                            mid = fscan.MID;
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            btf.insert(new StringKey(key), mid);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            temp = fscan.getNext();
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     break;
                 case OrderType.type4:
                     //column label then time stamp
+                     String key = null;
+                    MID MID = new MID();
+                    Map temp = null;
+
+
+                    try {
+                        //TODO make sure key size when making btree is correct
+                        btf = new BTreeFile("StreamOrderIndex", AttrType.attrString, RECLENGTH*2, 4/*delete*/);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                        Runtime.getRuntime().exit(1);
+                    }
+                    while ( temp != null) {
+                        try {
+                            key = m.getColumnLabel() + " " + m.getTimeStamp();
+                            mid = fscan.MID;
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            btf.insert(new StringKey(key), mid);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            temp = fscan.getNext();
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     break;
                 case OrderType.type5:
                     //time stamp
                     //sort = new Sort(attrType, (short) 4, attrSize, fscan, 3, order[0], 4, SORTPGNUM);
+                     String key = null;
+                    MID MID = new MID();
+                    Map temp = null;
+
+
+                    try {
+                        //TODO make sure key size when making btree is correct
+                        btf = new BTreeFile("StreamOrderIndex", AttrType.attrString, RECLENGTH*1, 5/*delete*/);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                        Runtime.getRuntime().exit(1);
+                    }
+                    while ( temp != null) {
+                        try {
+                            key = m.getTimeStamp();
+                            mid = fscan.MID;
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            btf.insert(new StringKey(key), mid);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            temp = fscan.getNext();
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     break;
                 default:
             }
