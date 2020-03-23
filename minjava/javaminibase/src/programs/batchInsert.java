@@ -8,9 +8,237 @@ import heap.*;
 
 import java.io.*;
 
-public class batchInsert implements GlobalConst{
+public class batchInsert implements GlobalConst {
 
-  public static void insertTable(String datafilename, String tablename) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
+  public static boolean found_delete(Heapfile fd, String fd_rowLabel, String fd_columnLabel, int fd_timestampname,
+      String fd_value) {
+
+    Scan scan = null;
+    boolean status = true;
+    int len, i = 0;
+    DummyRecord rec = null;
+    MID rid = new MID();
+
+    int pgid1 = 0;
+    int slotno1 = 0;
+    int pgid2 = 0;
+    int slotno2 = 0;
+    int pgid3 = 0;
+    int slotno3 = 0;
+    // MID rid1 = new MID();
+    // MID rid2 = new MID();
+    // MID rid3 = new MID();
+    MID delete_rid = new MID();
+
+    Map aMapfd = new Map();
+    int no_of_maps = 0;
+    // int recleng22 = 64;
+    boolean done = false;
+    Map aMapfd_1 = new Map();
+    Map aMapfd_2 = new Map();
+    Map aMapfd_3 = new Map();
+    int aMapfd_1_timeStamp = 0, aMapfd_2_timeStamp = 0, aMapfd_3_timeStamp = 0;
+
+    /*
+     * System.out.println (" Entered into  Found_delete program \n");
+     * System.out.println("Beginning rid1 = " + rid1.pageNo.pid +
+     * " SlotNo = "+rid1.slotNo); System.out.println("Beginning rid2 = " +
+     * rid2.pageNo.pid + " SlotNo = "+rid2.slotNo);
+     * System.out.println("Beginning rid3 = " + rid3.pageNo.pid +
+     * " SlotNo = "+rid3.slotNo);
+     */
+    try {
+      scan = fd.openScan();
+      // System.out.println (" In batchInsert - done with fd.openScan() \n") ;
+    } catch (Exception e) {
+      status = false;
+      System.err.println("*** Error opening scan\n");
+      e.printStackTrace();
+    }
+
+    if (status == true && SystemDefs.JavabaseBM.getNumUnpinnedBuffers() == SystemDefs.JavabaseBM.getNumBuffers()) {
+      System.err.println("*** The heap-file scan has not pinned the first page\n");
+      status = false;
+    }
+
+    if (status == true) {
+
+      while (!done) {
+        try {
+
+          // System.out.println();
+          // System.out.println("In batchInsert, before scan.getNext(rid) ,rid.pageNo.pid
+          // = " + rid.pageNo.pid);
+          // System.out.println("Beginning rid1.pid = " + rid1.pageNo.pid + " SlotNo =" +
+          // rid1.slotNo);
+          // System.out.println("Beginning rid2.pid = " + rid2.pageNo.pid + " SlotNo =" +
+          // rid2.slotNo);
+          // System.out.println("Beginning rid3.pid = " + rid3.pageNo.pid + " SlotNo =" +
+          // rid3.slotNo);
+          // System.out.println();
+
+          aMapfd = scan.getNext(rid);
+
+          // System.out.println();
+          // System.out.println("After getNext(rid) pid = " + rid.pageNo.pid + " SlotNo ="
+          // + rid.slotNo);
+          // System.out.println();
+
+          if (aMapfd == null) {
+            done = true;
+            break;
+          }
+        } catch (Exception e) {
+          status = false;
+          e.printStackTrace();
+        }
+
+        if (status == true && !done) {
+          try {
+            // System.out.println ("From Scan, getting next Map and converting in to
+            // DummyRecord \n");
+            rec = new DummyRecord(aMapfd);
+            // System.out.println ("From Scan, After converting in to DummyRecord \n");
+          } catch (Exception e) {
+            System.err.println("" + e);
+            e.printStackTrace();
+          }
+
+          len = aMapfd.getLength();
+          /*
+           * if ( len != recleng22 ) { System.err.println ("*** Record " + i +
+           * " had unexpected length " + len + "\n"); status = false; break; } else if (
+           * SystemDefs.JavabaseBM.getNumUnpinnedBuffers() ==
+           * SystemDefs.JavabaseBM.getNumBuffers() ) { System.err.println ("On record " +
+           * i + ":\n"); System.err.println ("*** The heap-file scan has not left its " +
+           * "page pinned\n"); status = false; break; }
+           */
+          // String name = ("record" + i );
+          // System.out.println("rec.row "+ i + " :" + rec.rowlabname +" rec.col : " +
+          // rec.collabname + " rec.timestamp : " + rec.timestampname + " rec.value : " +
+          // rec.valuename);
+
+          if ((fd_rowLabel.equals(rec.rowlabname)) && (fd_columnLabel.equals(rec.collabname))) {
+
+            System.out.println();
+            System.out.println("rec.row " + i + " :" + rec.rowlabname + " rec.col : " + rec.collabname
+                + " rec.timestamp : " + rec.timestampname + " rec.value : " + rec.valuename);
+            System.out.println();
+
+            no_of_maps++;
+
+            if (no_of_maps == 1) {
+              // rid1.copyMid(rid);
+              pgid1 = rid.pageNo.pid;
+              slotno1 = rid.slotNo;
+              // System.out.println();
+              // System.out.println("rid1.pageNo:" + rid1.pageNo + " rid1.slotNo:" +
+              // rid1.slotNo);
+              // System.out.println();
+
+              aMapfd_1 = aMapfd;
+              aMapfd_1_timeStamp = rec.timestampname;
+              // System.out.println("First Map for delete with timestamp = " +
+              // aMapfd_1_timeStamp + " rid1.pageNo.pid = "+ rid1.pageNo.pid + " SlotNo =
+              // "+rid1.slotNo);
+
+            }
+            if (no_of_maps == 2) {
+              // rid2.copyMid(rid);
+
+              pgid2 = rid.pageNo.pid;
+              slotno2 = rid.slotNo;
+
+              aMapfd_2 = aMapfd;
+              aMapfd_2_timeStamp = rec.timestampname;
+              // System.out.println("First Map for delete with timestamp = " +
+              // aMapfd_1_timeStamp + " rid1.pageNo.pid = "+ rid1.pageNo.pid + " SlotNo =
+              // "+rid1.slotNo);
+              // System.out.println("Second Map for delete with timestamp = " +
+              // aMapfd_2_timeStamp + " rid2.pageNo.pid = "+ rid2.pageNo.pid + " SlotNo =
+              // "+rid2.slotNo);
+
+            }
+            if (no_of_maps == 3) {
+              // rid3.copyMid(rid);
+
+              pgid3 = rid.pageNo.pid;
+              slotno3 = rid.slotNo;
+
+              aMapfd_3 = aMapfd;
+              aMapfd_3_timeStamp = rec.timestampname;
+              // System.out.println("First Map for delete with timestamp = " +
+              // aMapfd_1_timeStamp + " rid1.pageNo.pid = "+ rid1.pageNo.pid + " SlotNo =
+              // "+rid1.slotNo);
+              // System.out.println("Second Map for delete with timestamp = " +
+              // aMapfd_2_timeStamp + " rid2.pageNo.pid = "+ rid2.pageNo.pid + " SlotNo =
+              // "+rid2.slotNo);
+              // System.out.println("Third Map for delete with timestamp = " +
+              // aMapfd_3_timeStamp + " rid3.pageNo.pid = "+ rid3.pageNo.pid + " SlotNo =
+              // "+rid3.slotNo);
+
+            }
+          } // end of Map field comparision
+        } // end of if (status == true && !done)
+        ++i;
+      } // end of while not done
+
+      // output no of maps after comparison
+      System.out.println();
+      System.out.println("no_of_maps: " + no_of_maps);
+      System.out.println();
+      // end output
+
+      System.out.println();
+      System.out.println("rid1.pageNo:" + pgid1 + " rid1.slotNo:" + slotno1);
+      System.out.println("rid2.pageNo:" + pgid2 + " rid2.slotNo:" + slotno2);
+      System.out.println("rid3.pageNo:" + pgid3 + " rid3.slotNo:" + slotno3);
+      System.out.println();
+
+      // If the no_of_maps = 3, then, delete the last timeStamp record.
+      if (no_of_maps == 3) {
+        if (aMapfd_1_timeStamp <= aMapfd_2_timeStamp) {
+          if (aMapfd_1_timeStamp <= aMapfd_3_timeStamp) {
+            delete_rid = new MID(new PageId(pgid1), slotno1);
+          } else {
+            delete_rid = new MID(new PageId(pgid3), slotno3);
+          }
+        } else if (aMapfd_2_timeStamp <= aMapfd_3_timeStamp) {
+          delete_rid = new MID(new PageId(pgid2), slotno2);
+        } else {
+          delete_rid = new MID(new PageId(pgid3), slotno3);
+        }
+        // identified the map to be deleted.
+        // System.out.println("Ready to delete the Map with delete_rid.pageNo.pid = "+
+        // delete_rid.pageNo.pid + " SlotNo = "+delete_rid.slotNo);
+
+        try {
+
+          status = fd.deleteMap(delete_rid);
+          if (status == true) {
+            // System.out.println("Successfully deleted the Map : delete_rid.pageNo.pid = "+
+            // delete_rid.pageNo.pid + " SlotNo = "+delete_rid.slotNo);
+
+          }
+        } catch (Exception e) {
+          status = false;
+          System.err.println("*** Error deleting record " + i + "\n");
+          e.printStackTrace();
+        }
+      }
+
+      scan.closescan();
+
+      if (status == false) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  public static void insertTable(String datafilename, String tablename)
+      throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
 
     InsertBTmap(datafilename, tablename);
     System.out.println("Diskpage read " + PCounter.rcounter + " Disk page written " + PCounter.wcounter);
@@ -21,22 +249,17 @@ public class batchInsert implements GlobalConst{
       throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
 
     bigt big = null;
-    if(SystemDefs.JavabaseDB.table == null)
-    {
+    if (SystemDefs.JavabaseDB.table == null) {
       big = new bigt(tablename, SystemDefs.JavabaseDB.dbType);
       System.out.println("JavabaseDB name: " + SystemDefs.JavabaseDB.table.name);
       System.out.println("datafileN: " + datafileN);
-    }
-    else if(SystemDefs.JavabaseDB.table.name.equals(tablename))
-    {
+    } else if (SystemDefs.JavabaseDB.table.name.equals(tablename)) {
       big = SystemDefs.JavabaseDB.table;
       System.out.println("Table exist.");
-    }
-    else
-    {
+    } else {
       System.out.println("defname: " + SystemDefs.JavabaseDB.table.name);
       System.out.println("datafileN: " + datafileN);
-      System.err.println("Table name not match.." );
+      System.err.println("Table name not match..");
     }
 
     BufferedReader br = null;
@@ -49,6 +272,8 @@ public class batchInsert implements GlobalConst{
     boolean status = true;
     MID rid = new MID();
     Heapfile f = null;
+
+    boolean found_delete_flag = true;
 
     System.out.println("  - Create a heap file\n");
     try {
@@ -92,7 +317,10 @@ public class batchInsert implements GlobalConst{
 
             recMap.setHdr((short) 4, types, strSizes);
 
-            rid = big.insertMap(recMap.getMapByteArray());
+            found_delete_flag = found_delete(big.hf, rowLabel, columnLabel, rec.timestampname, value);
+            if (found_delete_flag /* found delete flag is false */ ) {
+              rid = big.insertMap(recMap.getMapByteArray());
+            }
           } catch (Exception e) {
             status = false;
             System.err.println("*** Error inserting record " + linecount + "\n");
@@ -274,7 +502,7 @@ class DummyRecord implements GlobalConst {
   }
 
   public void setColumnLabelRec(byte[] _data) throws java.io.IOException {
-    collabname = Convert.getStrValue(MAPHEADER_LEN + STR_LEN+2, _data, STR_LEN);
+    collabname = Convert.getStrValue(MAPHEADER_LEN + STR_LEN + 2, _data, STR_LEN);
   }
 
   public void setTimeStampRec(byte[] _data) throws java.io.IOException {
