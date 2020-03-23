@@ -65,7 +65,7 @@ public class Stream implements GlobalConst {
      * @throws InvalidTypeException
      * @throws IndexException
      */
-    Stream(bigt bigtable, int orderType, java.lang.String rowFilter, java.lang.String columnFilter,
+    public Stream(bigt bigtable, int orderType, java.lang.String rowFilter, java.lang.String columnFilter,
             java.lang.String valueFilter) throws InvalidTupleSizeException, IOException, IndexException,
             InvalidTypeException, UnknownIndexTypeException {
         _bigTable = bigtable;

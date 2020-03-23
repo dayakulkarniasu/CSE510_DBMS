@@ -1,4 +1,3 @@
-/*
 
 package programs;
 
@@ -16,36 +15,40 @@ import iterator.*;
 
 public class Query {
 
-	public static void main(String args[]) throws Exception {
-		// Query BIGTABLENAME, TYPE, ORDERTYPE, ROWFILTER, COLUMNFILTER, VALUEFILTER,
-		// NUMBUF
-		// Example Query: query ExampleBTable 3 4 Uruguay * [050000, 090000] 200
-		// Type: btree index type: 1-5 Ordertype: ascendingorder in row, column,
-		// timestamp, and combination: 1-5
-		// [S,Z] :range of rowfilter, no column and valuefilter
+	bigt bigtable;
+	String btname;
+	int type;
+	int ordertype;
+	String rowfilter;
+	String columnfilter;
+	String valuefilter;
+	int numbuf;
 
-		String bigtablename = args[0];
-		int type = Integer.parseInt(args[1]);
-		int ordertype = Integer.parseInt(args[2]);
-		String[] rowfilter = args[3];
-		String[] columnfilter = args[4];
-		String[] valuefilter = args[5];
-		int numbuf = Integer.parseInt(args[6]);
-
-		// TODO System Defs
-		// SystemDefsBigDB sysDefs = new SystemDefsBigDB();
-
-		runquery(bigtablename, type, ordertype, rowfilter, columnfilter, valuefilter, numbuf);
-
-		// SystemDefs.JavabaseBM.flushAllPages(); //?-copied from minibase, but might
-		// need to modify
-		// SystemDefs.JavabaseDB.closebigDB();
-
-		System.out.println("Reads: " + PCounter.rcounter);
-		System.out.println("Writes: " + PCounter.wcounter);
+	// constructor
+	public Query(String _btname, int _type, int _ordertype, String _rowfilter, String _columnfilter, String _valuefilter, int _numbuf)
+	{
+		if(SystemDefs.JavabaseDB == null)
+		{
+			System.out.println("Database not exist.");
+		}
+		else if(SystemDefs.JavabaseDB.table == null)
+		{
+			System.out.println("Table not exist.");
+		}
+		else
+		{
+			bigtable = SystemDefs.JavabaseDB.table;
+			btname = _btname;
+			type = _type;
+			ordertype = _ordertype;
+			rowfilter = _rowfilter;
+			columnfilter = _columnfilter;
+			valuefilter = _valuefilter;
+			numbuf = _numbuf;
+		}
 	}
 
-	public static void runquery(String bigtablename, Integer type, Integer ordertype, String rowfilter, String columnfilter,  String valuefilter, numbuf) throws Exception {
+	public void runquery() throws Exception {
 
 		//Stream(bigt bigtable, int orderType, String rowFilter, String columnFilter, String valueFilter)
 		// type - index type
@@ -55,45 +58,20 @@ public class Query {
 		// type 4 - columnLabel combined rowLabel index, and timestamp index
 		// type 5 - rowLabel combined value index, and timestamp index
 
-		BufferedReader br = null;
-		br = new BufferedReader(bigtablename)); // need to check BufferReader, type included?
-		Heapfile hf =  ?
-		switch (type)
+		Stream stream = new Stream(bigtable, ordertype, rowfilter, columnfilter, valuefilter);
+
+		Map map = new Map();
+		AttrType[] types = new AttrType[4];
+		types[0] = new AttrType(AttrType.attrString);
+		types[1] = new AttrType(AttrType.attrString);
+		types[2] = new AttrType(AttrType.attrString);
+		types[3] = new AttrType(AttrType.attrInteger);
+
+		while(map != null)
 		{
-		case 1:
-           //type == 1;
-		   bigT.Stream(bigt br, int orderType, String rowFilter, String columnFilter, String valueFilter);
-
-	query_op=
-
-	hf.openscan
-		   // while loop
-		   //*
-		   //signle value match
-		   //range search
-		   
-		   System.out.println("select items:"+query_op);break;case 2:
-	// type == 2;
-	bigT.Stream(bigt br, int orderType, String rowFilter, String columnFilter, String valueFilter);
-	// hf.openscan
-	System.out.println("select items"+query_op);break;case 3:
-	// type == 3;
-	bigT.Stream(bigt br, int orderType, String rowFilter, String columnFilter, String valueFilter);
-	// hf.openscan
-	System.out.println("select items"+query_op);break;case 4:
-	// type == 4;
-	bigT.Stream(bigt br, int orderType, String rowFilter, String columnFilter, String valueFilter);
-	// hf.openscan
-	System.out.println("select items"+query_op);break;case 5:
-	// type == 5;
-	bigT.Stream(bigt br, int orderType, String rowFilter, String columnFilter, String valueFilter);
-	// hf.openscan
-	System.out.println("select items"+query_op);break;}}catch(
-
-	Exception e)
-	{
-		e.printStackTrace();
+			map = stream.getNext();
+			map.print(types);
+		}
 	}
 }
 
-*/
