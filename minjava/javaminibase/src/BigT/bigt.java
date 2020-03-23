@@ -21,10 +21,6 @@ public class bigt implements Tabletype, GlobalConst {
     public Heapfile hf;
     private int BTType;
 
-    // private int rowCnt;
-    // private int columnCnt;
-    // private int mapCnt;
-
     // Initialize the big table. A null name produces a temporary heapfile while
     // will be deleted
     // by the destructor. If the name already denotes a file, the file is opened;
