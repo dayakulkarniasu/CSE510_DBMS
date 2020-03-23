@@ -7,6 +7,7 @@ import java.util.Set;
 import diskmgr.*;
 import global.*;
 import BigT.*;
+import index.MakeIndex;
 
 /**  This heapfile implementation is directory-based. We maintain a
  *  directory of info about the data pages (which are of type HFPage
@@ -84,7 +85,7 @@ public class Heapfile implements Filetype, GlobalConst {
 	 * false.
 	 */
 	private boolean _findDataPage(MID mid, PageId dirPageId, HFPage dirpage, PageId dataPageId, HFPage datapage,
-			MID rpDataPageMid) throws InvalidSlotNumberException, InvalidTupleSizeException, HFException,
+								  MID rpDataPageMid) throws InvalidSlotNumberException, InvalidTupleSizeException, HFException,
 			HFBufMgrException, HFDiskMgrException, Exception {
 		PageId currentDirPageId = new PageId(_firstDirPageId.pid);
 
@@ -99,12 +100,12 @@ public class Heapfile implements Filetype, GlobalConst {
 		Map amap = new Map();
 
 		while (currentDirPageId.pid != INVALID_PAGE) {// Start While01
-														// ASSERTIONS:
-														// currentDirPage, currentDirPageId valid and pinned and Locked.
+			// ASSERTIONS:
+			// currentDirPage, currentDirPageId valid and pinned and Locked.
 
 			for (currentDataPageMid = currentDirPage
 					.firstMap(); currentDataPageMid != null; currentDataPageMid = currentDirPage
-							.nextMap(currentDataPageMid)) {
+					.nextMap(currentDataPageMid)) {
 				try {
 					amap = currentDirPage.getMap(currentDataPageMid);
 				} catch (InvalidSlotNumberException e)// check error! return false(done)
@@ -171,7 +172,7 @@ public class Heapfile implements Filetype, GlobalConst {
 			}
 
 		} // end of While01
-			// checked all dir pages and all data pages; user record not found:(
+		// checked all dir pages and all data pages; user record not found:(
 
 		dirPageId.pid = dataPageId.pid = INVALID_PAGE;
 
@@ -285,7 +286,7 @@ public class Heapfile implements Filetype, GlobalConst {
 			MID mid = new MID();
 			Map amap;
 			for (mid = currentDirPage.firstMap(); mid != null; // rid==NULL means no more map
-					mid = currentDirPage.nextMap(mid)) {
+				 mid = currentDirPage.nextMap(mid)) {
 				amap = currentDirPage.getMap(mid);
 				DataPageInfo dpinfo = new DataPageInfo(amap);
 
@@ -407,7 +408,7 @@ public class Heapfile implements Filetype, GlobalConst {
 		HFPage nextDirPage = new HFPage();
 		PageId currentDirPageId = new PageId(_firstDirPageId.pid);
 		PageId nextDirPageId = new PageId(); // OK
-System.out.println("in the heap file insert map function - entry point, FirstDirectory page no  : " + _firstDirPageId.pid );
+		System.out.println("in the heap file insert map function - entry point, FirstDirectory page no  : " + _firstDirPageId.pid );
 
 		pinPage(currentDirPageId, currentDirPage, false/* Rdisk */);
 
@@ -416,11 +417,11 @@ System.out.println("in the heap file insert map function - entry point, FirstDir
 		Map amap;
 		DataPageInfo dpinfo = new DataPageInfo();
 		while (found == false) { // Start While01
-									// look for suitable dpinfo-struct
+			// look for suitable dpinfo-struct
 			for (currentDataPageMid = currentDirPage
 					.firstMap(); currentDataPageMid != null; currentDataPageMid = currentDirPage
-							.nextMap(currentDataPageMid)) {
-								System.out.println("in insert map inside while loop and for loop");
+					.nextMap(currentDataPageMid)) {
+				// System.out.println("in insert map inside while loop and for loop");
 				amap = currentDirPage.getMap(currentDataPageMid);
 
 				dpinfo = new DataPageInfo(amap);
@@ -432,8 +433,8 @@ System.out.println("in the heap file insert map function - entry point, FirstDir
 					break;
 				}
 			}
-			System.out.println("in the heap file insert map function - out of for loop but stil inside while");
-			System.out.println("in the heap file insert map function - the value of found is: "+ found);
+			// System.out.println("in the heap file insert map function - out of for loop but stil inside while");
+			// System.out.println("in the heap file insert map function - the value of found is: "+ found);
 			// two cases:
 			// (1) found == true:
 			// currentDirPage has a datapagerecord which can accomodate
@@ -444,7 +445,7 @@ System.out.println("in the heap file insert map function - entry point, FirstDir
 			// several subcases: see below
 
 			if (found == false) { // Start IF01
-									// case (2)
+				// case (2)
 
 				// System.out.println("no datapagerecord on the current directory is OK");
 				// System.out.println("dirpage availspace "+currentDirPage.available_space());
@@ -461,8 +462,8 @@ System.out.println("in the heap file insert map function - entry point, FirstDir
 				// page
 				// - (2.2) (currentDirPage->available_space() <= sizeof(DataPageInfo):
 				// look at the next directory page, if necessary, create it.
-				System.out.println("in the heap file insert map function - currentDirPage.available space: "+ currentDirPage.available_space());
-				System.out.println("in the heap file insert map function - dpinfo.size: "+ dpinfo.size);
+				// System.out.println("in the heap file insert map function - currentDirPage.available space: "+ currentDirPage.available_space());
+				// System.out.println("in the heap file insert map function - dpinfo.size: "+ dpinfo.size);
 				if (currentDirPage.available_space() >= dpinfo.size) {
 					// Start IF02
 					// case (2.1) : add a new data page record into the
@@ -475,12 +476,12 @@ System.out.println("in the heap file insert map function - entry point, FirstDir
 
 					// currentDataPage is pinned: insert its record
 					// calling a HFPage function
-System.out.println("in the heap file insert map function - converting dpinfo to map");
+					// System.out.println("in the heap file insert map function - converting dpinfo to map");
 					amap = dpinfo.convertToMap();
 
 					byte[] tmpData = amap.getMapByteArray();
 					currentDataPageMid = currentDirPage.insertMap(tmpData);
-System.out.println("in the heap file insert map function - setting first map in current dirpage");
+					// System.out.println("in the heap file insert map function - setting first map in current dirpage");
 					MID tmpmid = currentDirPage.firstMap();
 
 					// need catch error here!
@@ -496,7 +497,7 @@ System.out.println("in the heap file insert map function - setting first map in 
 
 				} // end of IF02
 				else { // Start else 02
-						// case (2.2)
+					// case (2.2)
 					nextDirPageId = currentDirPage.getNextPage();
 					// two sub-cases:
 					//
@@ -508,7 +509,7 @@ System.out.println("in the heap file insert map function - setting first map in 
 					// page and then do another loop
 
 					if (nextDirPageId.pid != INVALID_PAGE) { // Start IF03
-																// case (2.2.1): there is another directory page:
+						// case (2.2.1): there is another directory page:
 						unpinPage(currentDirPageId, false);
 
 						currentDirPageId.pid = nextDirPageId.pid;
@@ -519,8 +520,8 @@ System.out.println("in the heap file insert map function - setting first map in 
 						// search on the current directory page for a suitable datapage
 					} // End of IF03
 					else { // Start Else03
-							// case (2.2): append a new directory page after currentDirPage
-							// since it is the last directory page
+						// case (2.2): append a new directory page after currentDirPage
+						// since it is the last directory page
 						nextDirPageId = newPage(pageinbuffer, 1);
 						// need check error!
 						if (nextDirPageId == null)
@@ -547,16 +548,16 @@ System.out.println("in the heap file insert map function - setting first map in 
 
 					} // End of else03
 				} // End of else02
-					// ASSERTIONS:
-					// - if found == true: search will end and see assertions below
-					// - if found == false: currentDirPage, currentDirPageId
-					// valid and pinned
+				// ASSERTIONS:
+				// - if found == true: search will end and see assertions below
+				// - if found == false: currentDirPage, currentDirPageId
+				// valid and pinned
 
 			} // end IF01
 			else { // Start else01
-					// found == true:
-					// we have found a datapage with enough space,
-					// but we have not yet pinned the datapage:
+				// found == true:
+				// we have found a datapage with enough space,
+				// but we have not yet pinned the datapage:
 
 				// ASSERTIONS:
 				// - dpinfo valid
@@ -584,7 +585,7 @@ System.out.println("in the heap file insert map function - setting first map in 
 			throw new HFException(null, "can't find Data page");
 
 		MID mid;
-		System.out.println("in the heap file insert map function - Ready to insert map into Data Page");
+		// System.out.println("in the heap file insert map function - Ready to insert map into Data Page");
 		mid = currentDataPage.insertMap(mapPtr);
 
 		dpinfo.recct++;
@@ -602,7 +603,10 @@ System.out.println("in the heap file insert map function - setting first map in 
 		dpinfo_ondirpage.flushToMap();
 
 		unpinPage(currentDirPageId, true /* = DIRTY */);
-    System.out.println("MID : SlotNo = " + mid.slotNo + " PageNo = " + mid.pageNo.pid);
+		System.out.println("MID : SlotNo = " + mid.slotNo + " PageNo = " + mid.pageNo.pid);
+		// Each insertion of a map into the BigTable also adds into the corresponding
+		// Index based upon the type of the BigTable.
+		MakeIndex.InsertIntoIndex(new Map(mapPtr, mapPtr.length, 0), mid);
 		return mid;
 
 	}

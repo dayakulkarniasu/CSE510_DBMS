@@ -5,14 +5,19 @@ package diskmgr;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import global.Convert;
-import global.GlobalConst;
-import global.PageId;
-import global.SystemDefs;
+
+import btree.BTreeFile;
+import global.*;
+import index.MakeIndex;
+import BigT.*;
 
 public class bigDB implements GlobalConst {
 
     private static final int bits_per_page = MAX_SPACE * 8;
+    public BTreeFile indexStrat1 = null;
+    public BTreeFile indexStrat2 = null;
+    public static int dbType = 0;
+    public bigt table = null;
 
     /**
      * Constructor for the big table database. type is an integer denoting the
@@ -30,28 +35,15 @@ public class bigDB implements GlobalConst {
      * @param type
      */
     public bigDB(int type) {
-
-        switch (type) {
-        case 1:
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        case 4:
-            break;
-        case 5:
-            break;
-        }
         // initialize read page and write page counter
+        dbType = type;
         PCounter.initialize();
     }
 
     /**
      * Open the database with the given name.
      *
-     * @param name DB_name
-     *
+     * @param fname DB_name
      * @exception IOException                I/O errors
      * @exception FileIOException            file I/O error
      * @exception InvalidPageNumberException invalid page number
@@ -145,6 +137,34 @@ public class bigDB implements GlobalConst {
      */
     public void closeDB() throws IOException {
         fp.close();
+    }
+
+    public void setStrategy(){
+        switch (dbType) {
+            case 1:
+                // No Index
+                break;
+            case 2:
+                // Index on RowLabel
+                indexStrat1 = MakeIndex.IndexForOneKey(PropertyType.RowLabel);
+                break;
+            case 3:
+                // Index on ColumnLabel
+                indexStrat1 = MakeIndex.IndexForOneKey(PropertyType.ColumnLabel);
+                break;
+            case 4:
+                // Index on combKey for ColumnLabel and RowLabel & Index on TimeStamp
+                indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.ColumnLabel, PropertyType.RowLabel);
+                indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
+
+                break;
+            case 5:
+                // Index on combKey for RowLabel and Value & Index on TimeStamp
+                indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.RowLabel, PropertyType.Value);
+                indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
+                break;
+        }
+
     }
 
     /**
@@ -305,7 +325,7 @@ public class bigDB implements GlobalConst {
                 }
 
             } // end of forloop02
-              // Unpin the space-map page.
+            // Unpin the space-map page.
 
             unpinPage(pgid, false /* undirty */);
 
@@ -671,7 +691,7 @@ public class bigDB implements GlobalConst {
 
                 for (mask = 1; mask < 256
                         && num_bits_this_page > 0; mask = (mask << 1), --num_bits_this_page, ++bit_number) {// start
-                                                                                                            // forloop03
+                    // forloop03
 
                     int bit = pagebuf[pgptr] & mask;
                     if ((bit_number % 10) == 0)

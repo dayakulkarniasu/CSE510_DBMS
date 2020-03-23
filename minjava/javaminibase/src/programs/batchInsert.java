@@ -1,6 +1,7 @@
 package programs;
 
 import btree.*;
+import diskmgr.PCounter;
 import global.*;
 import BigT.*;
 import heap.*;
@@ -8,76 +9,160 @@ import heap.*;
 import java.io.*;
 //import global.*;
 
-public class batchInsert {
-  public static void main(String[] args) {
-    String filepath = "./";
-    String datafilename = args[0];
-    int type = Integer.parseInt(args[1]);
-    String bigTableName = args[2];
+public class batchInsert implements GlobalConst{
+  // public static void main(String[] args) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
+  //   String filepath = "./";
+  //   String datafilename = args[0];
+  //   int type = Integer.parseInt(args[1]);
+  //   String bigTableName = args[2];
 
-    // TODO System Defs
-    // SystemDefsBigDB sysDefs = new SystemDefsBigDB();
-    /*
-     * BufferedReader br = null; String line = ""; String csvSplitBy = ","; try{ br
-     * = new BufferedReader(new FileReader(datafilename)); while((line =
-     * br.readLine()) != null){ String[] arryfields = line.split(csvSplitBy); String
-     * rowLabel = arryfields[0]; String columnLabel = arryfields[1]; String
-     * timeStamp = arryfields[2]; String value = arryfields[3];
-     * System.out.println("row label: "+ rowLabel + " col label: " + columnLabel +
-     * " TS: " + timeStamp + " val: " + value);
-     * 
-     * //TODO Map Map m = new Map();
-     */
+  //   // int reclen = 64;
 
-    // TODO insert into big table
+  //   // TODO System Defs
+  //   // SystemDefsBigDB sysDefs = new SystemDefsBigDB();
+  //   /*
+  //    * BufferedReader br = null; String line = ""; String csvSplitBy = ","; try{ br
+  //    * = new BufferedReader(new FileReader(datafilename)); while((line =
+  //    * br.readLine()) != null){ String[] arryfields = line.split(csvSplitBy); String
+  //    * rowLabel = arryfields[0]; String columnLabel = arryfields[1]; String
+  //    * timeStamp = arryfields[2]; String value = arryfields[3];
+  //    * System.out.println("row label: "+ rowLabel + " col label: " + columnLabel +
+  //    * " TS: " + timeStamp + " val: " + value);
+  //    * 
+  //    * //TODO Map Map m = new Map();
+  //    */
 
-    // TODO take big table, scan it and index based on type
+  //   // TODO insert into big table
 
-    // TODO
-    // At this point we're going to make indexes for our
-    // maps. (The indexes should probabally be inside of the bigT constructor
-    // but for now I am putting it here)
-    // when we create an index we need to give it a name to find it
-    // I think we should use the following names
-    // Index File Nmes
-    // type 1 - no index
-    // type 2 - type2Idx
-    // type 3 - type3Idx
-    // type 4 - type4CombKeyIdx & type4TSIdx
-    // type 5 - type5CombKeyIdx & type5TSIdx
-    /******************/
-    // testing insertion of map
+  //   // TODO take big table, scan it and index based on type
 
-    String dbpath;
-    String logpath;
+  //   // TODO
+  //   // At this point we're going to make indexes for our
+  //   // maps. (The indexes should probabally be inside of the bigT constructor
+  //   // but for now I am putting it here)
+  //   // when we create an index we need to give it a name to find it
+  //   // I think we should use the following names
+  //   // Index File Nmes
+  //   // type 1 - no index
+  //   // type 2 - type2Idx
+  //   // type 3 - type3Idx
+  //   // type 4 - type4CombKeyIdx & type4TSIdx
+  //   // type 5 - type5CombKeyIdx & type5TSIdx
+  //   /******************/
+  //   // testing insertion of map
 
-    dbpath = "/tmp/" + System.getProperty("user.name") + bigTableName + ".db";
-    logpath = "/tmp/" + System.getProperty("user.name") + bigTableName + ".log";
+  //   String dbpath;
+  //   String logpath;
 
-    SystemDefs sysdef = new SystemDefs(dbpath, 8193, 100, "Clock");
-    String newdbpath;
-    String newlogpath;
-    String remove_logcmd;
-    String remove_dbcmd;
-    String remove_cmd = "/bin/rm -rf ";
+  //   dbpath = "/tmp/" + System.getProperty("user.name") + bigTableName + ".db";
+  //   logpath = "/tmp/" + System.getProperty("user.name") + bigTableName + ".log";
 
-    newdbpath = dbpath;
-    newlogpath = logpath;
+  //   SystemDefs sysdef = new SystemDefs(dbpath, type, 8193, 100, "Clock");
+  //   String newdbpath;
+  //   String newlogpath;
+  //   String remove_logcmd;
+  //   String remove_dbcmd;
+  //   String remove_cmd = "/bin/rm -rf ";
 
-    remove_logcmd = remove_cmd + logpath;
-    remove_dbcmd = remove_cmd + dbpath;
+  //   newdbpath = dbpath;
+  //   newlogpath = logpath;
 
-    // Commands here is very machine dependent. We assume
-    // user are on UNIX system here
-    try {
-      Runtime.getRuntime().exec(remove_logcmd);
-      Runtime.getRuntime().exec(remove_dbcmd);
-    } catch (IOException e) {
-      System.err.println("IO error: " + e);
-    }
+  //   remove_logcmd = remove_cmd + logpath;
+  //   remove_dbcmd = remove_cmd + dbpath;
+
+  //   // Commands here is very machine dependent. We assume
+  //   // user are on UNIX system here
+  //   try {
+  //     Runtime.getRuntime().exec(remove_logcmd);
+  //     Runtime.getRuntime().exec(remove_dbcmd);
+  //   } catch (IOException e) {
+  //     System.err.println("IO error: " + e);
+  //   }
+  //   // insert map
+  //   InsertBTmap(datafilename);
+
+  //   /******************/
+
+  //   // putting this here for now
+  //   /*
+  //    * bigt big = new bigt(bigTableName, type); BTreeFile btf = null; switch (type){
+  //    * case DBType.type1: //TODO need to research this one a little more //no index
+  //    * break; case DBType.type2: //one btree to index row labels try { btf = new
+  //    * BTreeFile("type2Idx", AttrType.attrString, big.getRowCnt(), 1); } catch
+  //    * (Exception e) { e.printStackTrace(); Runtime.getRuntime().exit(1); }
+  //    * 
+  //    * mid = new MID(); String key = null; Map temp = null;
+  //    * 
+  //    * try { temp = Stream.getNext(mid); } catch (Exception e) {
+  //    * e.printStackTrace(); } // itterate through all the maps while ( temp != null)
+  //    * { m.mapCopy(temp);
+  //    * 
+  //    * try { // the key for Type 2 is the row key = m.getRowLabel(); } catch
+  //    * (Exception e) { e.printStackTrace(); }
+  //    * 
+  //    * try { // insert the key and the 'pointer' Map Id into btree index
+  //    * btf.insert(new StringKey(key), mid); } catch (Exception e) {
+  //    * e.printStackTrace(); }
+  //    * 
+  //    * try { // get next map temp = Stream.getNext(mid); } catch (Exception e) {
+  //    * e.printStackTrace(); } }
+  //    * 
+  //    * // close the file scan scan.closescan();
+  //    * 
+  //    * //BTreeIndex file created successfully
+  //    * 
+  //    * break; case DBType.type3: // one btree to index column labels break; case
+  //    * DBType.type4: // one btree to index column label and row label (combined key)
+  //    * // one btree to index time stamps break; case DBType.type5: // one btree to
+  //    * index row label and value (combined key) // one btree to index time stamps
+  //    * break; default:
+  //    */
+  //   // }
+  //   // }
+
+  //   // }
+  //   /*
+  //    * } catch (FileNotFoundException e) { e.printStackTrace(); } catch (IOException
+  //    * e) { e.printStackTrace(); }
+  //    */
+
+  // }// end of main
+
+  public static void insertTable(String datafilename) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
+    // String filepath = "./";
+
+    // String dbpath;
+    // String logpath;
+
+    // dbpath = "/tmp/" + System.getProperty("user.name") + bigTableName + ".db";
+    // logpath = "/tmp/" + System.getProperty("user.name") + bigTableName + ".log";
+
+
+    // SystemDefs sysdef = new SystemDefs(dbpath, type, 8193, 100, "Clock");
+    
+    // String newdbpath;
+    // String newlogpath;
+    // String remove_logcmd;
+    // String remove_dbcmd;
+    // String remove_cmd = "/bin/rm -rf ";
+
+    // newdbpath = dbpath;
+    // newlogpath = logpath;
+
+    // remove_logcmd = remove_cmd + logpath;
+    // remove_dbcmd = remove_cmd + dbpath;
+
+    // // Commands here is very machine dependent. We assume
+    // // user are on UNIX system here
+    // try {
+    //   Runtime.getRuntime().exec(remove_logcmd);
+    //   Runtime.getRuntime().exec(remove_dbcmd);
+    // } catch (IOException e) {
+    //   System.err.println("IO error: " + e);
+    // }
     // insert map
     InsertBTmap(datafilename);
-
+    System.out.println("Diskpage read " + PCounter.rcounter + " Disk page written " + PCounter.wcounter);
     /******************/
 
     // putting this here for now
@@ -125,13 +210,35 @@ public class batchInsert {
 
   }// end of main
 
-  public static boolean InsertBTmap(String datafileN) {
+  public static boolean InsertBTmap(String datafileN)
+      throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
 
+    bigt big = null;
+    if(SystemDefs.JavabaseDB.table == null)
+    {
+      big = new bigt(datafileN, SystemDefs.JavabaseDB.dbType);
+      System.out.println("JavabaseDB name: " + SystemDefs.JavabaseDB.table.name);
+      System.out.println("datafileN: " + datafileN);
+    }
+    else if(SystemDefs.JavabaseDB.table.name.equals(datafileN))
+    {
+      big = SystemDefs.JavabaseDB.table;
+      System.out.println("Table exist.");
+    }
+    else
+    {
+      System.out.println("defname: " + SystemDefs.JavabaseDB.table.name);
+      System.out.println("datafileN: " + datafileN);
+      System.err.println("Table name not match.." );
+    }
+
+    // bigt big = new bigt(datafileN, SystemDefs.JavabaseDB.dbType);
+    
     BufferedReader br = null;
     int linecount = 0;
     String line = "";
     String csvSplitBy = ",";
-    int recleng2 = 64;
+    int recleng2 = MAP_LEN;
 
     System.out.println("\n  Test 1: Insert and scan fixed-size records\n");
     boolean status = true;
@@ -147,10 +254,13 @@ public class batchInsert {
       e.printStackTrace();
     }
 
-    if (status == true && SystemDefs.JavabaseBM.getNumUnpinnedBuffers() != SystemDefs.JavabaseBM.getNumBuffers()) {
-      System.err.println("*** The heap file has left pages pinned\n");
-      status = false;
-    }
+    // if (status == true && SystemDefs.JavabaseBM.getNumUnpinnedBuffers() != SystemDefs.JavabaseBM.getNumBuffers()
+    //     && status == true && SystemDefs.JavabaseBM.getNumUnpinnedBuffers() != SystemDefs.JavabaseBM.getNumBuffers()-1) {
+    //   System.err.println(SystemDefs.JavabaseBM.getNumUnpinnedBuffers());
+    //   System.err.println(SystemDefs.JavabaseBM.getNumBuffers());
+    //   System.err.println("*** The heap file has left pages pinned\n");
+    //   status = false;
+    // }
 
     if (status == true) {
       System.out.println("  - Add " + linecount + " records to the file\n");
@@ -211,19 +321,19 @@ public class batchInsert {
              * recMap.fldOffset[4] = rec.rowlabname.length() + rec.collabname.length() + 4 +
              * rec.valuename.length;
              */
-            rid = f.insertMap(recMap.getMapByteArray());
+            rid = big.insertMap(recMap.getMapByteArray());
           } catch (Exception e) {
             status = false;
             System.err.println("*** Error inserting record " + linecount + "\n");
             e.printStackTrace();
           }
 
-          if (status == true
-              && SystemDefs.JavabaseBM.getNumUnpinnedBuffers() != SystemDefs.JavabaseBM.getNumBuffers()) {
+          // if (status == true
+          //     && SystemDefs.JavabaseBM.getNumUnpinnedBuffers() != SystemDefs.JavabaseBM.getNumBuffers()) {
 
-            System.err.println("*** Insertion left a page pinned\n");
-            status = false;
-          }
+          //   System.err.println("*** Insertion left a page pinned\n");
+          //   status = false;
+          // }
           // }
           linecount++;
         } // end of while loop
@@ -236,16 +346,16 @@ public class batchInsert {
         e.printStackTrace();
       }
 
-      try {
-        if (f.getMapCnt() != linecount) {
-          status = false;
-          System.err.println("*** File reports " + f.getMapCnt() + " records, not " + linecount + "\n");
-        }
-      } catch (Exception e) {
-        status = false;
-        System.out.println("" + e);
-        e.printStackTrace();
-      }
+      // try {
+      //   if (big.getMapCnt() != linecount) {
+      //     status = false;
+      //     System.err.println("*** File reports " + big.getMapCnt() + " records, not " + linecount + "\n");
+      //   }
+      // } catch (Exception e) {
+      //   status = false;
+      //   System.out.println("" + e);
+      //   e.printStackTrace();
+      // }
     } // if status okay
 
     // In general, a sequential scan won't be in the same order as the
@@ -255,10 +365,10 @@ public class batchInsert {
     Scan scan = null;
 
     if (status == true) {
-      System.out.println(" In batchInsert - Scan the records just inserted\n");
+      System.out.println("In batchInsert - Scan the records just inserted\n");
 
       try {
-        scan = f.openScan();
+        scan = big.hf.openScan();
         // System.out.println (" In batchInsert - done with f.openScan() \n") ;
       } catch (Exception e) {
         status = false;
@@ -266,10 +376,10 @@ public class batchInsert {
         e.printStackTrace();
       }
 
-      if (status == true && SystemDefs.JavabaseBM.getNumUnpinnedBuffers() == SystemDefs.JavabaseBM.getNumBuffers()) {
-        System.err.println("*** The heap-file scan has not pinned the first page\n");
-        status = false;
-      }
+      // if (status == true && SystemDefs.JavabaseBM.getNumUnpinnedBuffers() == SystemDefs.JavabaseBM.getNumBuffers()) {
+      //   System.err.println("*** The heap-file scan has not pinned the first page\n");
+      //   status = false;
+      // }
     }
 
     if (status == true) {
@@ -315,11 +425,12 @@ public class batchInsert {
             status = false;
             break;
           }
-          String name = ("record" + i);
-          System.out.println("rec.row " + i + " :" + rec.rowlabname);
-          System.out.println("rec.col " + i + " :" + rec.collabname);
-          System.out.println("rec.timestamp " + i + " :" + rec.timestampname);
-          System.out.println("rec.value " + i + " :" + rec.valuename);
+          System.out.println("record: " + i);
+          System.out.println("rec.row " + i + " : " + rec.rowlabname);
+          System.out.println("rec.col " + i + " : " + rec.collabname);
+          System.out.println("rec.timestamp " + i + " : " + rec.timestampname);
+          System.out.println("rec.value " + i + " : " + rec.valuename);
+          System.out.println();
           /*
            * if( (rec.ival != i) || (rec.fval != (float)i*2.5) || (!name.equals(rec.name))
            * ) { System.err.println ("*** Record " + i +
@@ -333,27 +444,27 @@ public class batchInsert {
       } // end of while not done
 
       // If it gets here, then the scan should be completed
-      if (status == true) {
-        if (SystemDefs.JavabaseBM.getNumUnpinnedBuffers() != SystemDefs.JavabaseBM.getNumBuffers()) {
-          System.err.println("*** The heap-file scan has not unpinned " + "its page after finishing\n");
-          status = false;
-        } else if (i != (linecount)) {
-          status = false;
+      // if (status == true) {
+      //   if (SystemDefs.JavabaseBM.getNumUnpinnedBuffers() != SystemDefs.JavabaseBM.getNumBuffers()) {
+      //     System.err.println("*** The heap-file scan has not unpinned " + "its page after finishing\n");
+      //     status = false;
+      //   } else if (i != (linecount)) {
+      //     status = false;
 
-          System.err.println("*** Scanned " + i + " records instead of " + linecount + "\n");
-        }
-      }
+      //     System.err.println("*** Scanned " + i + " records instead of " + linecount + "\n");
+      //   }
+      // }
     } // end of bigger status ok
 
     if (status == true)
-      System.out.println("  Test 1 completed successfully.\n");
+      System.out.println("Test 1 completed successfully.\n");
 
     return status;
   }
 
 }
 
-class DummyRecord {
+class DummyRecord implements GlobalConst {
 
   // content of the record
   public String rowlabname;
@@ -485,12 +596,12 @@ class DummyRecord {
     int V_Length = valuename.length();
     // System.out.println("In toByte Array : TotalLength : " + (16 + RL_Length + 2 +
     // CL_Length + 2 + TS_Length +4 + V_Length + 2));
-    setRecLen(64);
+    setRecLen(MAP_LEN);
     // setRecLen (16 + RL_Length + 2 + CL_Length + 2 + TS_Length +4 + V_Length + 2);
-    Convert.setStrValue(rowlabname, 12, data);
-    Convert.setStrValue(collabname, 12+ RL_Length + 2, data);
-    Convert.setIntValue(timestampname, 12 + RL_Length + CL_Length + 4, data);
-    Convert.setStrValue(valuename, 12 + RL_Length + CL_Length + TS_Length + 4, data);
+    Convert.setStrValue(rowlabname, MAPHEADER_LEN, data);
+    Convert.setStrValue(collabname, MAPHEADER_LEN + RL_Length + 2, data);
+    Convert.setIntValue(timestampname, MAPHEADER_LEN + RL_Length + CL_Length + 4, data);
+    Convert.setStrValue(valuename, MAPHEADER_LEN + RL_Length + CL_Length + TS_Length + 4, data);
     // recln1 = RL_Length + CL_Length + TS_Length ;
     // System.out.println("In toByte Array : Data = " + data + " Record length : " +
     // reclen1);
@@ -526,23 +637,23 @@ class DummyRecord {
   public void setRowLabelRec(byte[] _data) throws java.io.IOException {
     // System.out.println("reclne= "+reclen);
     // System.out.println("data size "+_data.size());
-    rowlabname = Convert.getStrValue(0, _data, 16);
+    rowlabname = Convert.getStrValue(MAPHEADER_LEN, _data, STR_LEN);
   }
 
   public void setColumnLabelRec(byte[] _data) throws java.io.IOException {
     // System.out.println("reclne= "+reclen);
     // System.out.println("data size "+_data.size());
-    collabname = Convert.getStrValue(16, _data, 16);
+    collabname = Convert.getStrValue(MAPHEADER_LEN + STR_LEN, _data, STR_LEN);
   }
 
   public void setTimeStampRec(byte[] _data) throws java.io.IOException {
-    timestampname = Convert.getIntValue(32, _data);
+    timestampname = Convert.getIntValue(MAPHEADER_LEN + STR_LEN * 2, _data);
   }
 
   public void setValueRec(byte[] _data) throws java.io.IOException {
     // System.out.println("reclne= "+reclen);
     // System.out.println("data size "+_data.size());
-    valuename = Convert.getStrValue(36, _data, 16);
+    valuename = Convert.getStrValue(MAPHEADER_LEN + STR_LEN * 2 + 4, _data, STR_LEN);
   }
 
   // Other access methods to the size of the String field and

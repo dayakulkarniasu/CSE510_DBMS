@@ -639,7 +639,7 @@ public class Map implements GlobalConst {
         // sizeof short =2 +2: array siaze = numFlds +1 (0 - numFilds) and
         // another 1 for fldCnt
         //fldOffset[0] = (short) ((numFlds + 2) * 2 + map_offset);
-          fldOffset[0] = (short) (12);
+          fldOffset[0] = (short) (MAPHEADER_LEN);
         Convert.setShortValue(fldOffset[0], pos, data);
         pos += 2;
         short strCount = 0;

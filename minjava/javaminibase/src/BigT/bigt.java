@@ -3,6 +3,8 @@ package BigT;
 import java.io.*;
 import global.*;
 import heap.*;
+import index.IndexException;
+import index.UnknownIndexTypeException;
 
 interface Tabletype {
     int TEMP = 0;
@@ -15,7 +17,8 @@ interface Tabletype {
  */
 public class bigt implements Tabletype, GlobalConst {
 
-    private Heapfile hf;
+    public String name;
+    public Heapfile hf;
     private int BTType;
 
     // private int rowCnt;
@@ -32,8 +35,15 @@ public class bigt implements Tabletype, GlobalConst {
     // to different clustering and indexing strategies you will use for the
     // bigtable.
     public bigt(String name, int type) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
-        hf = new Heapfile(name);
-        BTType = type;
+        if (SystemDefs.JavabaseDB.table == null) {
+            this.name = name;
+            hf = new Heapfile(name);
+            BTType = type;
+            SystemDefs.JavabaseDB.table = this;
+        } else {
+            System.out.println("bigt: DB existing");
+            System.out.println("bigDB name: " + SystemDefs.JavabaseDBName);
+        }
     } // end of constructor
 
     // Delete the bigtable from the database.
@@ -81,7 +91,9 @@ public class bigt implements Tabletype, GlobalConst {
      * results are ﬁrst ordered in column label, then time stamp · 5, then results
      * are ordered in time stamp
      */
-    public Stream openStream(int orderType, String rowFilter, String columnFilter, String valueFilter) {
+    public Stream openStream(int orderType, String rowFilter, String columnFilter, String valueFilter)
+            throws InvalidTupleSizeException, IndexException, InvalidTypeException, UnknownIndexTypeException,
+            IOException {
         return new Stream(null, orderType, valueFilter, valueFilter, valueFilter);
     }
 }

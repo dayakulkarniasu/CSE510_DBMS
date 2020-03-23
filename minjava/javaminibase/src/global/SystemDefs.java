@@ -17,7 +17,7 @@ public class SystemDefs {
       public SystemDefs() {
       };
 
-      public SystemDefs(String dbname, int num_pgs, int bufpoolsize, String replacement_policy) {
+      public SystemDefs(String dbname, int dbType, int num_pgs, int bufpoolsize, String replacement_policy) {
             int logsize;
 
             String real_logname = new String(dbname);
@@ -33,11 +33,11 @@ public class SystemDefs {
                   replacement_policy = new String("Clock");
             }
 
-            init(real_dbname, real_logname, num_pgs, logsize, bufpoolsize, replacement_policy);
+            init(real_dbname, dbType, real_logname, num_pgs, logsize, bufpoolsize, replacement_policy);
       }
 
-      public void init(String dbname, String logname, int num_pgs, int maxlogsize, int bufpoolsize,
-                  String replacement_policy) {
+      public void init(String dbname, int dbType, String logname, int num_pgs, int maxlogsize, int bufpoolsize,
+                       String replacement_policy) {
 
             boolean status = true;
             JavabaseBM = null;
@@ -48,7 +48,7 @@ public class SystemDefs {
 
             try {
                   JavabaseBM = new BufMgr(bufpoolsize, replacement_policy);
-                  JavabaseDB = new bigDB();
+                  JavabaseDB = new bigDB(dbType);
                   /*
                    * JavabaseCatalog = new Catalog();
                    */
@@ -82,5 +82,6 @@ public class SystemDefs {
                         Runtime.getRuntime().exit(1);
                   }
             }
+            JavabaseDB.setStrategy();
       }
 }

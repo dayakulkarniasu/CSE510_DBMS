@@ -7,7 +7,7 @@ JARFILES=bufmgr/*.class diskmgr/*.class global/*.class iterator/*.class\
          heap/*.class chainexception/*.class  btree/*.class index/*.class BigT/*.class programs/*.class
 
 #JDKPATH = /usr/java/jdk1.3.1_02
-JDKPATH = /Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home
+JDKPATH = /usr
 LIBPATH = .:..
 CLASSPATH = $(LIBPATH)
 BINPATH = $(JDKPATH)/bin
@@ -46,7 +46,8 @@ doc:
 	$(JAVADOC) $(DOCFILES)
 
 test:
-	cd programs; make batchInsert project2_testdata.csv DayaBigDB
+# 	cd programs; make batchInsert project2_testdata.csv DayaBigDB
+	cd programs; make InserTest project2_testdata.csv DayaBigDB
 
 clean:
 	\rm -f $(CLASSPATH)/*.class *~ \#* core $(JARFILES) TRACE
