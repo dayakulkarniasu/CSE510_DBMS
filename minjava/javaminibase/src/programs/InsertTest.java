@@ -18,25 +18,25 @@ public class InsertTest implements GlobalConst{
 
         String dbpath;
         String logpath;
-    
+
         // dbpath = "/tmp/" + System.getProperty("user.name") + bigTableName + ".db";
         // logpath = "/tmp/" + System.getProperty("user.name") + bigTableName + ".log";
-    
+
         SystemDefs sysdef = null;
         // SystemDefs sysdef = new SystemDefs(dbpath, type, 8193, 100, "Clock");
-        
+
         // String newdbpath;
         // String newlogpath;
         // String remove_logcmd;
         // String remove_dbcmd;
         // String remove_cmd = "/bin/rm -rf ";
-    
+
         // newdbpath = dbpath;
         // newlogpath = logpath;
-    
+
         // remove_logcmd = remove_cmd + logpath;
         // remove_dbcmd = remove_cmd + dbpath;
-    
+
         // Commands here is very machine dependent. We assume
         // user are on UNIX system here
         // try {
@@ -45,6 +45,7 @@ public class InsertTest implements GlobalConst{
         // } catch (IOException e) {
         //   System.err.println("IO error: " + e);
         // }
+
 
 
         Scanner scanner = new Scanner(System.in);
@@ -62,17 +63,17 @@ public class InsertTest implements GlobalConst{
                     if(first){
                         dbpath = "/tmp/" + System.getProperty("user.name") + fname + ".db";
                         logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
-                        sysdef = new SystemDefs(dbpath, dbtype, 10500, 100, "Clock");
+                        sysdef = new SystemDefs(dbpath, dbtype, 10000, 100, "Clock");
 
                         String newdbpath;
                         String newlogpath;
                         String remove_logcmd;
                         String remove_dbcmd;
                         String remove_cmd = "/bin/rm -rf ";
-                    
+
                         newdbpath = dbpath;
                         newlogpath = logpath;
-                    
+
                         remove_logcmd = remove_cmd + logpath;
                         remove_dbcmd = remove_cmd + dbpath;
 
@@ -112,10 +113,10 @@ public class InsertTest implements GlobalConst{
         }
 
 
-        
+
 
         // batchInsert.insertTable(datafilename + ".");
 
-    
+
       }// end of main
 }
