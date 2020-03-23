@@ -90,7 +90,7 @@ public class InsertTest implements GlobalConst{
                         }
                         first = false;
                     }
-                    batchInsert.insertTable(fname);
+                    batchInsert.insertTable(fname, tablename);
                 }
                 else if(params[0].equalsIgnoreCase("query"))
                 {
@@ -109,9 +109,6 @@ public class InsertTest implements GlobalConst{
                     if(line.equals("q")){
                         System.out.println("exiting");
                         scanner.close();
-                    }
-                    else{
-                        batchInsert.insertTable(line);
                     }
                 }
             }

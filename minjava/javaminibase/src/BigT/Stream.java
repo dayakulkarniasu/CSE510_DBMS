@@ -119,7 +119,7 @@ public class Stream implements GlobalConst {
         try {
             System.out.println("HFName: " + bigtable.name);
             System.out.println("sysdef DBname: " + SystemDefs.JavabaseDBName);
-            fscan = new FileScan(SystemDefs.JavabaseDBName, attrType, attrSize, (short) 4, 4, projlist, outFilter[0] == null ? null : outFilter );
+            fscan = new FileScan(bigtable.name, attrType, attrSize, (short) 4, 4, projlist, outFilter[0] == null ? null : outFilter );
         }
         catch (Exception e) {
             e.printStackTrace();
