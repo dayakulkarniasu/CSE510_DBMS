@@ -202,7 +202,7 @@ public class batchInsert implements GlobalConst{
                     }
 
                     len = aMapfd.getLength();
-                    if ( len != recleng22 ) {
+                    /*if ( len != recleng22 ) {
                       System.err.println ("*** Record " + i + " had unexpected length "
                         + len + "\n");
                       status = false;
@@ -215,7 +215,7 @@ public class batchInsert implements GlobalConst{
                         "page pinned\n");
                       status = false;
                       break;
-                    }
+                    }*/
 //                      String name = ("record" + i );
 //                        System.out.println("rec.row "+ i + " :" + rec.rowlabname +" rec.col : " +  rec.collabname +  " rec.timestamp  : " +  rec.timestampname +  " rec.value : " +  rec.valuename);
                     if( (fd_rowLabel.equals(rec.rowlabname))
@@ -590,7 +590,7 @@ public class batchInsert implements GlobalConst{
           }
 
           len = aMap.getLength();
-          if (len != recleng2) {
+          /*if (len != recleng2) {
             System.err.println("*** Record " + i + " had unexpected length " + len + "\n");
             status = false;
             break;
@@ -599,7 +599,7 @@ public class batchInsert implements GlobalConst{
             System.err.println("*** The heap-file scan has not left its " + "page pinned\n");
             status = false;
             break;
-          }
+          }*/
           System.out.println("record: " + i);
           System.out.println("rec.row " + i + " : " + rec.rowlabname);
           System.out.println("rec.col " + i + " : " + rec.collabname);
