@@ -49,15 +49,20 @@ public class InsertTest implements GlobalConst{
 
         Scanner scanner = new Scanner(System.in);
         try{
+            String pattern = "\\*|(\\[.+\\])|\\w*";
             while(true){
                 System.out.println("Input batchinsert or query");
                 String line = scanner.nextLine();
-                String[] params = line.split(" ");
-                if(params[0].equalsIgnoreCase("batchinsert"))
+                Matcher m = Pattern.compile(pattern).matcher(line);
+                List<String> params = New ArrayList<>();
+                while(m.find()){
+                    params.add(m.group(0));
+                }
+                if(params.get(0).equalsIgnoreCase("batchinsert"))
                 {
-                    String fname = params[1];
-                    int dbtype = Integer.parseInt(params[2]);
-                    String tablename = params[3];
+                    String fname = params.get(1);
+                    int dbtype = Integer.parseInt(params.get(2));
+                    String tablename = params.get(3);
 
                     if(first){
                         dbpath = "/tmp/" + System.getProperty("user.name") + fname + ".db";
@@ -86,15 +91,15 @@ public class InsertTest implements GlobalConst{
                     }
                     batchInsert.insertTable(fname);
                 }
-                else if(params[0].equalsIgnoreCase("query"))
+                else if(params.get(0).equalsIgnoreCase("query"))
                 {
-                    String btname = params[1];
-                    int dbtype = Integer.parseInt(params[2]);
-                    int ordertype = Integer.parseInt(params[3]);
-                    String rowfilter = params[4];
-                    String colfilter = params[5];
-                    String valfilter = params[6];
-                    int numbuf = Integer.parseInt(params[7]);
+                    String btname = params.get(1);
+                    int dbtype = Integer.parseInt(params.get(2));
+                    int ordertype = Integer.parseInt(params.get(3));
+                    String rowfilter = params.get(4);
+                    String colfilter = params.get(5);
+                    String valfilter = params.get(6);
+                    int numbuf = Integer.parseInt(params.get(7));
                 }
                 else{
                     if(line.equals("q")){
