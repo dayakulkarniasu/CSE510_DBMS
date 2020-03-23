@@ -102,6 +102,7 @@ public class Map implements GlobalConst {
         //System.out.println("in the getRowLabel()  - entry point");
         try {
           val1 = Convert.getShortValue(2,   data);
+          System.out.println("data_length: " + data.length);
           val2 = Convert.getShortValue(4, data);
           tmp = Convert.getStrValue(val1, data, val2-val1+2);
         }
@@ -141,8 +142,8 @@ public class Map implements GlobalConst {
         int tmp = -1;
       short val1, val2 ;
       try {
-        val1 = Convert.getShortValue(6,   data);
-        val2 = Convert.getShortValue(8, data);
+        val1 = Convert.getShortValue(8,   data);
+        // val2 = Convert.getShortValue(10, data);
         tmp = Convert.getIntValue(val1, data);
       }
        catch (IOException e) {
@@ -161,8 +162,8 @@ public class Map implements GlobalConst {
         String tmp = null;
       short val1, val2 ;
       try {
-        val1 = Convert.getShortValue(8,   data);
-        val2 = Convert.getShortValue(10, data);
+        val1 = Convert.getShortValue(6,   data);
+        val2 = Convert.getShortValue(8, data);
         tmp = Convert.getStrValue(val1, data, val2-val1+2);
       }
        catch (IOException e) {
@@ -453,7 +454,7 @@ public class Map implements GlobalConst {
     public String getStrFld(int fldNo) throws IOException, FieldNumberOutOfBoundException {
         String val;
         System.out.println("in the getStrFld() fldNo = " + fldNo + " FldCnt = "+ fldCnt  );
-        fldOffset = new short[5];
+        // fldOffset = new short[5];
         if ((fldNo > 0) && (fldNo <= fldCnt)) {
          System.out.println("fldOffset[fldNo - 1] = " + fldOffset[fldNo - 1]);
          System.out.println("fldOffset[fldNo] - fldOffset[fldNo - 1] = " + ( fldOffset[fldNo] - fldOffset[fldNo - 1])) ;
@@ -559,7 +560,7 @@ public class Map implements GlobalConst {
             throws IOException, InvalidTypeException, InvalidTupleSizeException {
         if ((numFlds + 2) * 2 > max_size)
             throw new InvalidTupleSizeException(null, "MAP: TUPLE_TOOBIG_ERROR");
-        numFlds = 4;
+        // numFlds = 4;
         fldCnt = numFlds;
         Convert.setShortValue(numFlds, map_offset, data);
         fldOffset = new short[numFlds + 1];
