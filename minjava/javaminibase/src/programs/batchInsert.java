@@ -7,7 +7,6 @@ import BigT.*;
 import heap.*;
 
 import java.io.*;
-//import global.*;
 
 public class batchInsert implements GlobalConst{
 
@@ -40,8 +39,6 @@ public class batchInsert implements GlobalConst{
       System.err.println("Table name not match.." );
     }
 
-    // bigt big = new bigt(datafileN, SystemDefs.JavabaseDB.dbType);
-    
     BufferedReader br = null;
     int linecount = 0;
     String line = "";
@@ -65,7 +62,6 @@ public class batchInsert implements GlobalConst{
     if (status == true) {
       System.out.println("  - Add " + linecount + " records to the file\n");
 
-      // for (int i =0; (i < choice) && (status == true); i++) {
       try {
         br = new BufferedReader(new FileReader(datafileN));
         while ((line = br.readLine()) != null) {
@@ -83,9 +79,7 @@ public class batchInsert implements GlobalConst{
           rec.valuename = value;
 
           try {
-            // Map recMap = new Map(rec.toByteArray(),0, rec.getRecLength()) ;
             Map recMap = new Map(rec.toByteArray(), 0, rec.getRecLength());
-            // System.out.println(" RecMap created successfully ");
             AttrType[] types = new AttrType[4];
             types[0] = new AttrType(AttrType.attrString);
             types[1] = new AttrType(AttrType.attrString);
@@ -227,10 +221,6 @@ class DummyRecord implements GlobalConst {
    * @param arecord a byte array which represents the DummyRecord object
    */
   public DummyRecord(byte[] arecord) throws java.io.IOException {
-    // TODO fix the functions and create one mor function
-    /*
-     * setIntRec (arecord); setFloRec (arecord); setStrRec (arecord);
-     */
     // Setting the 4 fields in the data object
     setRowLabelRec(arecord);
     setColumnLabelRec(arecord);
@@ -239,7 +229,6 @@ class DummyRecord implements GlobalConst {
     data = arecord;
 
     int RecordLength = MAP_LEN;
-    // setRecLen(data.length());
     setRecLen(RecordLength);
   }
 
@@ -250,8 +239,6 @@ class DummyRecord implements GlobalConst {
    * @param atuple: the input tuple
    */
   public DummyRecord(Map _atuple) throws java.io.IOException {
-    // System.out.println (" the length of the map in dummy reccord is: " +
-    // _atuple.getLength());
     data = new byte[_atuple.getLength()];
     data = _atuple.getMapByteArray();
     setRecLen(_atuple.getLength());
@@ -270,39 +257,23 @@ class DummyRecord implements GlobalConst {
    * this object to a byte array
    */
   public byte[] toByteArray() throws java.io.IOException {
-    // data = new byte[reclen];
-    /*
-     * Convert.setIntValue (ival, 0, data); Convert.setFloValue (fval, 4, data);
-     * Convert.setStrValue (name, 8, data);
-     */
     int RL_Length = STR_LEN;
     int CL_Length = STR_LEN;
     int TS_Length = 4;
     int V_Length = STR_LEN;
-    // System.out.println("In toByte Array : TotalLength : " + (16 + RL_Length + 2 +
-    // CL_Length + 2 + TS_Length +4 + V_Length + 2));
     setRecLen(MAP_LEN);
-    // setRecLen (16 + RL_Length + 2 + CL_Length + 2 + TS_Length +4 + V_Length + 2);
     Convert.setStrValue(rowlabname, MAPHEADER_LEN, data);
     Convert.setStrValue(collabname, MAPHEADER_LEN + RL_Length + 2, data);
     Convert.setStrValue(valuename, MAPHEADER_LEN + RL_Length + CL_Length + 4, data);
     Convert.setIntValue(timestampname, MAPHEADER_LEN + RL_Length + CL_Length + V_Length + 6, data);
-    // recln1 = RL_Length + CL_Length + TS_Length ;
-    // System.out.println("In toByte Array : Data = " + data + " Record length : " +
-    // reclen1);
-
     return data;
   }
 
   public void setRowLabelRec(byte[] _data) throws java.io.IOException {
-    // System.out.println("reclne= "+reclen);
-    // System.out.println("data size "+_data.size());
     rowlabname = Convert.getStrValue(MAPHEADER_LEN, _data, STR_LEN);
   }
 
   public void setColumnLabelRec(byte[] _data) throws java.io.IOException {
-    // System.out.println("reclne= "+reclen);
-    // System.out.println("data size "+_data.size());
     collabname = Convert.getStrValue(MAPHEADER_LEN + STR_LEN+2, _data, STR_LEN);
   }
 
@@ -311,8 +282,6 @@ class DummyRecord implements GlobalConst {
   }
 
   public void setValueRec(byte[] _data) throws java.io.IOException {
-    // System.out.println("reclne= "+reclen);
-    // System.out.println("data size "+_data.size());
     valuename = Convert.getStrValue(MAPHEADER_LEN + STR_LEN * 2 + 4, _data, STR_LEN);
   }
 
