@@ -353,24 +353,24 @@ public class Stream implements GlobalConst {
         // If RowFilter is a range, create a range expression
         if(isRangeQuery(rowFilter)){
             String[] bounds = getBounds(rowFilter);
-            for (CondExpr expr : rangeQuery(bounds[0], bounds[1], 0)){
+            for (CondExpr expr : rangeQuery(bounds[0], bounds[1], 1)){
                 query.add(expr);
             }
         }
         // Else if rowFilter is an equality, create an identity expression
         else if(isEqualityQuery(rowFilter)){
-            query.add(equalityQuery(rowFilter, 0));
+            query.add(equalityQuery(rowFilter, 1));
         }
         // If ColumnFilter is a range, create a range expression
         if(isRangeQuery(columnFilter)){
             String[] bounds = getBounds(rowFilter);
-            for (CondExpr expr : rangeQuery(bounds[0], bounds[1], 1)){
+            for (CondExpr expr : rangeQuery(bounds[0], bounds[1], 2)){
                 query.add(expr);
             }
         }
         // Else if columnFilter is an equality, create an identity expression
         else if(isEqualityQuery(columnFilter)){
-            query.add(equalityQuery(columnFilter, 1));
+            query.add(equalityQuery(columnFilter, 2));
         }
 
         // If ValueFilter is a range, create a range expression
