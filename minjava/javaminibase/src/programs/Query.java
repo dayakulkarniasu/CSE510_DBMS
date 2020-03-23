@@ -35,6 +35,10 @@ public class Query {
 		{
 			System.out.println("Table not exist.");
 		}
+		else if(!SystemDefs.JavabaseDB.table.name.equals(_btname))
+		{
+			System.out.println("Table name not match.");
+		}
 		else
 		{
 			bigtable = SystemDefs.JavabaseDB.table;
@@ -59,6 +63,8 @@ public class Query {
 		// type 5 - rowLabel combined value index, and timestamp index
 
 		Stream stream = new Stream(bigtable, ordertype, rowfilter, columnfilter, valuefilter);
+
+		System.out.println("Query: initialized stream.");
 
 		Map map = new Map();
 		AttrType[] types = new AttrType[4];

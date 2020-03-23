@@ -21,6 +21,7 @@ import java.util.ArrayList;
  */
 public class Stream implements GlobalConst {
 
+    private int nscan = 0;
     /** in-core copy (pinned) of the same */
     private bigt _bigTable;
     /** PageId of current directory page (which is itself an HFPage) */
@@ -68,6 +69,10 @@ public class Stream implements GlobalConst {
     public Stream(bigt bigtable, int orderType, java.lang.String rowFilter, java.lang.String columnFilter,
             java.lang.String valueFilter) throws InvalidTupleSizeException, IOException, IndexException,
             InvalidTypeException, UnknownIndexTypeException {
+
+        // System.out.println("Table name in sysdefs: " + SystemDefs.JavabaseDB.table.name);
+        // System.out.println("Table name in stream: " + bigtable.name);
+
         _bigTable = bigtable;
         /** copy data about first directory page */
 
@@ -109,7 +114,11 @@ public class Stream implements GlobalConst {
 
         FileScan fscan = null;
 
+        System.out.println("rowfilter: " + rowFilter + " colfilter: " + columnFilter + " valfilter: " + valueFilter);
+
         try {
+            System.out.println("HFName: " + bigtable.name);
+            System.out.println("sysdef DBname: " + SystemDefs.JavabaseDBName);
             fscan = new FileScan(SystemDefs.JavabaseDBName, attrType, attrSize, (short) 4, 4, projlist, outFilter[0] == null ? null : outFilter );
         }
         catch (Exception e) {
@@ -122,6 +131,10 @@ public class Stream implements GlobalConst {
 
         try {
             m = fscan.get_next();
+            if(m == null)
+                System.out.println("Stream.java: 133: FScan no map");
+            else
+                System.out.println("stream.java: 135: collabel: " + m.getColumnLabel());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -188,6 +201,7 @@ public class Stream implements GlobalConst {
                         try {
                             key = m.getColumnLabel() + " " + m.getRowLabel() + " " + m.getTimeStamp();
                             mid = fscan._mid;
+                            System.out.println("stream mid: " + mid.pageNo + " " + mid.slotNo);
                         }
                         catch (Exception e) {
                             e.printStackTrace();
@@ -319,7 +333,7 @@ public class Stream implements GlobalConst {
             e.printStackTrace();
         }
 
-
+        // System.out.println("Initializing indexscan, DBname: " + SystemDefs.JavabaseDBName);
         iscan = new IndexScan(new IndexType(IndexType.B_Index), SystemDefs.JavabaseDBName, "StreamOrderIndex", attrType, attrSize, 4, 4, projlist, null, 1, false);
 
 
@@ -545,14 +559,18 @@ public class Stream implements GlobalConst {
      */
     public Map getNext() {
         Map recptrmap = null;
-
         try {
             recptrmap = iscan.get_next();
+            if(recptrmap == null)
+            {
+                System.out.println("scan number: " + nscan);
+            }
         } catch (IndexException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        nscan++;
         return recptrmap;
 
     }

@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.io.*;
 
 public class InsertTest implements GlobalConst{
-    public static void main(String[] args) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
+    public static void main(String[] args) throws Exception {
         boolean first = true;
         String filepath = "./";
         // String datafilename = args[0];
@@ -101,6 +101,9 @@ public class InsertTest implements GlobalConst{
                     String colfilter = params[5];
                     String valfilter = params[6];
                     int numbuf = Integer.parseInt(params[7]);
+
+                    Query query = new Query(btname, dbtype, ordertype, rowfilter, colfilter, valfilter, numbuf);
+                    query.runquery();
                 }
                 else{
                     if(line.equals("q")){
