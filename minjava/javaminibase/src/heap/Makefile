@@ -4,7 +4,7 @@
 # BINPATH = $(JDKPATH)/bin
 # JAVAC = $(JDKPATH)/bin/javac -classpath $(CLASSPATH)
 # JAVA  = $(JDKPATH)/bin/java  -classpath $(CLASSPATH)
-JDKPATH = /usr/lib/jvm/java-1.8.0-openjdk-amd64
+JDKPATH = /usr
 LIBPATH = .:..
 CLASSPATH = $(LIBPATH)
 BINPATH = $(JDKPATH)/bin
@@ -30,4 +30,4 @@ together:*.java
 	$(JAVAC) *.java
 
 clean:
-	\rm -f *.class *~ \#* core 
+	\rm -f *.class *~ \#* core
