@@ -101,10 +101,10 @@ public class Map implements GlobalConst {
         short val1, val2 ;
         //System.out.println("in the getRowLabel()  - entry point");
         try {
-          val1 = Convert.getShortValue(2,   data);
+          val1 = Convert.getShortValue(map_offset + 2,   data);
         //   System.out.println("data_length: " + data.length);
-          val2 = Convert.getShortValue(4, data);
-          tmp = Convert.getStrValue(val1, data, val2-val1+2);
+          val2 = Convert.getShortValue(map_offset + 4, data);
+          tmp = Convert.getStrValue(val1, data, val2-val1);
         }
          catch (IOException e) {
             e.printStackTrace();
@@ -122,9 +122,9 @@ public class Map implements GlobalConst {
         String tmp = null;
         short val1, val2 ;
         try {
-          val1 = Convert.getShortValue(4,   data);
-          val2 = Convert.getShortValue(6, data);
-          tmp = Convert.getStrValue(val1, data, val2-val1+2);
+          val1 = Convert.getShortValue(map_offset + 4, data);
+          val2 = Convert.getShortValue(map_offset + 6, data);
+          tmp = Convert.getStrValue(val1, data, val2-val1);
         }
          catch (IOException e) {
             e.printStackTrace();
@@ -142,7 +142,7 @@ public class Map implements GlobalConst {
         int tmp = -1;
       short val1, val2 ;
       try {
-        val1 = Convert.getShortValue(8,   data);
+        val1 = Convert.getShortValue(map_offset + 8,   data);
         // val2 = Convert.getShortValue(10, data);
         tmp = Convert.getIntValue(val1, data);
       }
@@ -162,9 +162,9 @@ public class Map implements GlobalConst {
         String tmp = null;
       short val1, val2 ;
       try {
-        val1 = Convert.getShortValue(6,   data);
-        val2 = Convert.getShortValue(8, data);
-        tmp = Convert.getStrValue(val1, data, val2-val1+2);
+        val1 = Convert.getShortValue(map_offset + 6,   data);
+        val2 = Convert.getShortValue(map_offset + 8, data);
+        tmp = Convert.getStrValue(val1, data, val2-val1);
       }
        catch (IOException e) {
           e.printStackTrace();
@@ -216,7 +216,7 @@ public class Map implements GlobalConst {
      */
     public Map setTimeStamp(int val) throws IOException, FieldNumberOutOfBoundException {
         try {
-            this.setIntFld(3, val);
+            this.setIntFld(4, val);
             System.out.println (" In setTimeStamp, val = " + val + " \n");
         } catch (FieldNumberOutOfBoundException e) {
             e.printStackTrace();
@@ -234,7 +234,7 @@ public class Map implements GlobalConst {
      */
     public Map setValue(String val) throws IOException, FieldNumberOutOfBoundException {
         try {
-            this.setStrFld(4, val);
+            this.setStrFld(3, val);
             System.out.println (" In setValue, val = " + val + " \n");
         } catch (FieldNumberOutOfBoundException e) {
             e.printStackTrace();
@@ -453,11 +453,7 @@ public class Map implements GlobalConst {
      */
     public String getStrFld(int fldNo) throws IOException, FieldNumberOutOfBoundException {
         String val;
-        System.out.println("in the getStrFld() fldNo = " + fldNo + " FldCnt = "+ fldCnt  );
-        // fldOffset = new short[5];
         if ((fldNo > 0) && (fldNo <= fldCnt)) {
-         System.out.println("fldOffset[fldNo - 1] = " + fldOffset[fldNo - 1]);
-         System.out.println("fldOffset[fldNo] - fldOffset[fldNo - 1] = " + ( fldOffset[fldNo] - fldOffset[fldNo - 1])) ;
             val = Convert.getStrValue(fldOffset[fldNo - 1], data, fldOffset[fldNo] - fldOffset[fldNo - 1]); // strlen+2
             return val;
         }

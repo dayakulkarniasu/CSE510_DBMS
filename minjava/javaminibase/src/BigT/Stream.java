@@ -51,8 +51,8 @@ public class Stream implements GlobalConst {
         AttrType[] attrType = new AttrType[4];
         attrType[0] = new AttrType(AttrType.attrString);
         attrType[1] = new AttrType(AttrType.attrString);
-        attrType[2] = new AttrType(AttrType.attrInteger);
-        attrType[3] = new AttrType(AttrType.attrString);
+        attrType[2] = new AttrType(AttrType.attrString);
+        attrType[3] = new AttrType(AttrType.attrInteger);
         short[] attrSize = new short[3];
         attrSize[0] = STR_LEN;
         attrSize[1] = STR_LEN;

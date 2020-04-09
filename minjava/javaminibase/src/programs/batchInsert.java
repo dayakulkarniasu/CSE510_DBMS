@@ -256,8 +256,8 @@ public class batchInsert implements GlobalConst {
           DummyRecord rec = new DummyRecord(recleng2);
           rec.rowlabname = rowLabel;
           rec.collabname = columnLabel;
-          rec.timestampname = Integer.parseInt(timeStamp);
           rec.valuename = value;
+          rec.timestampname = Integer.parseInt(timeStamp);
 
           try {
             Map recMap = new Map(rec.toByteArray(), 0, rec.getRecLength());
