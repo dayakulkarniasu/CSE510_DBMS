@@ -66,17 +66,25 @@ public class Query {
 
 		System.out.println("Query: initialized stream.");
 
-		Map map = new Map();
+		Map map = null;
 		AttrType[] types = new AttrType[4];
 		types[0] = new AttrType(AttrType.attrString);
 		types[1] = new AttrType(AttrType.attrString);
 		types[2] = new AttrType(AttrType.attrString);
 		types[3] = new AttrType(AttrType.attrInteger);
 
+		try{
+			map = stream.getNext();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+
 		while(map != null)
 		{
-			map = stream.getNext();
 			map.print(types);
+			map = stream.getNext();
 		}
 	}
 }

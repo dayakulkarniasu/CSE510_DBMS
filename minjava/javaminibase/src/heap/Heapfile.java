@@ -78,6 +78,11 @@ public class Heapfile implements Filetype, GlobalConst {
 
 	} // end of _newDatapage
 
+	public String getFileName()
+	{
+		return new String(_fileName);
+	}
+
 	/*
 	 * Internal HeapFile function (used in getRecord and updateRecord): returns
 	 * pinned directory page and pinned data page of the specified user record(rid)

@@ -223,7 +223,8 @@ public class batchInsert implements GlobalConst {
 
     System.out.println("  - Create a heap file\n");
     try {
-      f = new Heapfile("file_1");
+      // f = new Heapfile("file_1");
+      f = new Heapfile(tablename);
     } catch (Exception e) {
       status = false;
       System.err.println("*** Could not create heap file\n");

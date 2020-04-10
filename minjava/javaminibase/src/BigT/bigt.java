@@ -73,6 +73,7 @@ public class bigt implements Tabletype, GlobalConst {
     // big table.
     public MID insertMap(byte[] mapPtr) throws InvalidSlotNumberException, InvalidTupleSizeException,
             SpaceNotAvailableException, HFException, HFBufMgrException, HFDiskMgrException, IOException {
+        System.out.println("In bigt.java, big.hf.name: " + hf.getFileName());
         return hf.insertMap(mapPtr);
     }
 

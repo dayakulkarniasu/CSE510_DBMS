@@ -30,8 +30,8 @@ public class InsertTest implements GlobalConst{
                     String tablename = params[3];
 
                     if(first){
-                        dbpath = "/tmp/" + System.getProperty("user.name") + fname + ".db";
-                        logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
+                        dbpath = "/tmp/" + System.getProperty("user.name/") + fname + ".db";
+                        logpath = "/tmp/" + System.getProperty("user.name/") + tablename + ".log";
                         sysdef = new SystemDefs(dbpath, dbtype, 10500, 100, "Clock");
 
                         String newdbpath;
@@ -55,6 +55,7 @@ public class InsertTest implements GlobalConst{
                         first = false;
                     }
                     batchInsert.insertTable(fname, tablename);
+                    // batchInsert.insertTable(SystemDefs.JavabaseDBName, tablename);
                 }
                 else if(params[0].equalsIgnoreCase("query"))
                 {

@@ -84,8 +84,6 @@ public class Stream implements GlobalConst {
         System.out.println("rowfilter: " + rowFilter + " colfilter: " + columnFilter + " valfilter: " + valueFilter);
 
         try {
-            System.out.println("HFName: " + bigtable.name);
-            System.out.println("sysdef DBname: " + SystemDefs.JavabaseDBName);
             fscan = new FileScan(bigtable.name, attrType, attrSize, (short) 4, 4, projlist, outFilter[0] == null ? null : outFilter );
         }
         catch (Exception e) {
@@ -97,10 +95,6 @@ public class Stream implements GlobalConst {
 
         try {
             m = fscan.get_next();
-            if(m == null)
-                System.out.println("Stream.java: 133: FScan no map");
-            else
-                System.out.println("stream.java: 135: collabel: " + m.getColumnLabel());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -115,15 +109,19 @@ public class Stream implements GlobalConst {
                 case OrderType.type1:
                     //results ordered by rowLabel then columnLabel then time stamp
                     try {
-                        btf = new BTreeFile("StreamOrderIndex", AttrType.attrString, STR_LEN*3, 1/*delete*/);
+                        // btf = new BTreeFile("StreamOrderIndex", AttrType.attrString, STR_LEN*3, 1/*delete*/);
+                        btf = new BTreeFile("StreamOrderIndex", AttrType.attrString, STR_LEN, 1/*delete*/);
+                        // btf.destroyFile();
                     }
                     catch (Exception e) {
                         e.printStackTrace();
                         Runtime.getRuntime().exit(1);
                     }
-                    while ( temp != null) {
+                    while ( m != null) {
+                        System.out.println("stream line 140: rowlabel: " + m.getRowLabel());
                         try {
-                            key = m.getRowLabel() + " " + m.getColumnLabel() + " " + m.getTimeStamp();
+                            // key = m.getRowLabel() + " " + m.getColumnLabel() + " " + m.getTimeStamp();
+                            key = m.getRowLabel();
                             mid = fscan._mid;
                         }
                         catch (Exception e) {
@@ -138,7 +136,7 @@ public class Stream implements GlobalConst {
                         }
 
                         try {
-                            temp = fscan.get_next();
+                            m = fscan.get_next();
                         }
                         catch (Exception e) {
                             e.printStackTrace();
@@ -285,8 +283,8 @@ public class Stream implements GlobalConst {
         catch (Exception e) {
             e.printStackTrace();
         }
-
-        iscan = new IndexScan(new IndexType(IndexType.B_Index), SystemDefs.JavabaseDBName, "StreamOrderIndex", attrType, attrSize, 4, 4, projlist, null, 1, false);
+        
+        iscan = new IndexScan(new IndexType(IndexType.B_Index), SystemDefs.JavabaseDB.table.name, "StreamOrderIndex", attrType, attrSize, 4, 4, projlist, null, 1, false);
     }
 
 
@@ -298,7 +296,7 @@ public class Stream implements GlobalConst {
      * @param valueFilter
      * @return the outFilter to be used with the FileScan
      */
-    private CondExpr[] queryFilter(java.lang.String rowFilter, java.lang.String columnFilter, java.lang.String valueFilter) {
+    private CondExpr[] queryFilter(String rowFilter, String columnFilter, String valueFilter) {
         List<CondExpr> query = new ArrayList<CondExpr>();
         // If RowFilter is a range, create a range expression
         if(isRangeQuery(rowFilter)){
@@ -449,10 +447,6 @@ public class Stream implements GlobalConst {
         Map recptrmap = null;
         try {
             recptrmap = iscan.get_next();
-            if(recptrmap == null)
-            {
-                System.out.println("scan number: " + nscan);
-            }
         } catch (IndexException e) {
             e.printStackTrace();
         } catch (Exception e) {
