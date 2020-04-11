@@ -356,7 +356,7 @@ public class Map implements GlobalConst {
      * @param offset
      */
     public void mapSet(byte[] frommap, int offset, int length) {
-        System.arraycopy(frommap, offset, data, 0, frommap.length);
+        System.arraycopy(frommap, offset, data, 0, length);
         map_offset = 0;
         map_length = length;
 

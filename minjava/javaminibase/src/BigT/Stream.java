@@ -58,6 +58,9 @@ public class Stream implements GlobalConst {
         attrSize[1] = STR_LEN;
         attrSize[2] = STR_LEN;
 
+        MapOrder[] order = new MapOrder[2];
+        order[0] = new MapOrder(MapOrder.Ascending);
+        order[1] = new MapOrder(MapOrder.Descending);
         // create empty map we will use for reading data
         Map m = new Map();
         try {
@@ -94,7 +97,7 @@ public class Stream implements GlobalConst {
         MID mid = new MID();
 
         try {
-            m = fscan.get_next();
+            //m = fscan.get_next();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -152,11 +155,12 @@ public class Stream implements GlobalConst {
                         e.printStackTrace();
                         Runtime.getRuntime().exit(1);
                     }
-                    while ( temp != null) {
+                    while ( m != null) {
                         try {
+                            System.out.println("stream line 157: rowlabel: " + m.getRowLabel());
                             key = m.getColumnLabel() + " " + m.getRowLabel() + " " + m.getTimeStamp();
                             mid = fscan._mid;
-                            System.out.println("stream mid: " + mid.pageNo + " " + mid.slotNo);
+                            //System.out.println("stream mid: " + mid.pageNo + " " + mid.slotNo);
                         }
                         catch (Exception e) {
                             e.printStackTrace();
@@ -212,31 +216,63 @@ public class Stream implements GlobalConst {
                     break;
                 case OrderType.type4:
                     //column label then time stamp
+                    System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    System.out.println("TYPE 4");
+                    FileScan fscan2 = new FileScan(bigtable.name, attrType, attrSize, (short) 4, 4, projlist, outFilter[0] == null ? null : outFilter );
+                    Sort am1 = new Sort(attrType, (short) 4, attrSize, fscan, 2, order[0], STR_LEN, 12);
+                    Sort am2 = new Sort(attrType, (short) 4, attrSize, fscan2, 4, order[0], STR_LEN, 12);
+                    FldSpec[] projlist2 = new FldSpec[4];
+                    RelSpec rel2 = new RelSpec(RelSpec.outer);
+                    RelSpec rel3 = new RelSpec(RelSpec.innerRel);
+                    projlist2[0] = new FldSpec(rel2, 1);
+                    projlist2[1] = new FldSpec(rel2, 2);
+                    projlist2[2] = new FldSpec(rel2, 3);
+                    projlist2[3] = new FldSpec(rel3, 4);
+                    SortMerge sm = null;
+                    sm = new SortMerge(attrType, 4, attrSize,
+                            attrType, 4, attrSize,
+                            3, STR_LEN,
+                            3, 4,
+                            12,
+                            am1, am2,
+                            true, true, order[0],
+                            null, projlist2, 4);
+
                     try {
-                        btf = new BTreeFile("StreamOrderIndex", AttrType.attrString, STR_LEN*2, 4/*delete*/);
+                        //btf = new BTreeFile("StreamOrderIndex", AttrType.attrString, STR_LEN*2, 4/*delete*/);
                     }
                     catch (Exception e) {
                         e.printStackTrace();
                         Runtime.getRuntime().exit(1);
                     }
-                    while ( temp != null) {
+                    //while ( temp != null) {
+
+                    System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    temp = sm.get_next();
+                    if(temp == null){
+                        System.out.println("XXXXXXXX this is no good XXXXXXXXXXXXXX");
+                    }
+                    while ((temp = sm.get_next()) != null) {
+                        System.out.println("************************************************");
                         try {
-                            key = m.getColumnLabel() + " " + m.getTimeStamp();
-                            mid = fscan._mid;
+                            //key = m.getColumnLabel() + " " + m.getTimeStamp();
+                            //mid = fscan._mid;
                         }
                         catch (Exception e) {
                             e.printStackTrace();
                         }
 
                         try {
-                            btf.insert(new StringKey(key), mid);
+                            //btf.insert(new StringKey(key), mid);
                         }
                         catch (Exception e) {
                             e.printStackTrace();
                         }
 
                         try {
-                            temp = fscan.get_next();
+                            System.out.println("**********************************************************");
+                            System.out.println(temp.getRowLabel() + " " + temp.getColumnLabel() + " " + temp.getValue() + " " + temp.getTimeStamp());
+                            //temp = fscan.get_next();
                         }
                         catch (Exception e) {
                             e.printStackTrace();
@@ -246,8 +282,11 @@ public class Stream implements GlobalConst {
                 case OrderType.type5:
                     //time stamp
                     int tsKey = 0;
+                    Sort sort = null;
+                    sort = new Sort(attrType, (short) 4, attrSize, fscan, 4, order[0], STR_LEN, 12);
+                    temp = sort.get_next();
                     try {
-                        btf = new BTreeFile("StreamOrderIndex", AttrType.attrInteger, 4, 5/*delete*/);
+                        //btf = new BTreeFile("StreamOrderIndex", AttrType.attrInteger, 4, 5/*delete*/);
                     }
                     catch (Exception e) {
                         e.printStackTrace();
@@ -255,22 +294,24 @@ public class Stream implements GlobalConst {
                     }
                     while ( temp != null) {
                         try {
-                            tsKey = m.getTimeStamp();
-                            mid = fscan._mid;
+                            //tsKey = m.getTimeStamp();
+                            //mid = fscan._mid;
                         }
                         catch (Exception e) {
                             e.printStackTrace();
                         }
 
                         try {
-                            btf.insert(new IntegerKey(tsKey), mid);
+                            //btf.insert(new IntegerKey(tsKey), mid);
                         }
                         catch (Exception e) {
                             e.printStackTrace();
                         }
 
                         try {
-                            temp = fscan.get_next();
+                            System.out.println("**********************************************************");
+                            System.out.println(temp.getRowLabel() + " " + temp.getColumnLabel() + " " + temp.getValue() + " " + temp.getTimeStamp());
+                            temp = sort.get_next();
                         }
                         catch (Exception e) {
                             e.printStackTrace();
