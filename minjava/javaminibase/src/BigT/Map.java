@@ -334,7 +334,10 @@ public class Map implements GlobalConst {
      */
     public void mapCopy(Map fromMap) {
         byte[] temparray = fromMap.getMapByteArray();
-        System.arraycopy(temparray, 0, data, map_offset, map_length);
+        //System.out.println("Length of map length" +map_length);
+        //System.out.println("Length of fromMap.map_length " + fromMap.map_length);
+        //System.out.println("Length of fromMap.map_length " + fromMap.getLength());
+        System.arraycopy(temparray, 0, data, map_offset, fromMap.map_length);
     }
 
     /**

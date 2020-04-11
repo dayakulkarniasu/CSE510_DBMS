@@ -236,7 +236,16 @@ public class Stream implements GlobalConst {
                             12,
                             am1, am2,
                             true, true, order[0],
-                            null, projlist2, 4);
+                            mapComparison(), projlist2, 4);
+                    Map t = sm.get_next();
+                    System.out.println("***********************************");
+                    System.out.println("entering sort merge");
+                    while(t != null){
+                        
+                        t = sm.get_next();
+                    }
+                    System.out.println("exiting sort merge");
+
 
                     try {
                         //btf = new BTreeFile("StreamOrderIndex", AttrType.attrString, STR_LEN*2, 4/*delete*/);
@@ -246,12 +255,6 @@ public class Stream implements GlobalConst {
                         Runtime.getRuntime().exit(1);
                     }
                     //while ( temp != null) {
-
-                    System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++");
-                    temp = sm.get_next();
-                    if(temp == null){
-                        System.out.println("XXXXXXXX this is no good XXXXXXXXXXXXXX");
-                    }
                     while ((temp = sm.get_next()) != null) {
                         System.out.println("************************************************");
                         try {
@@ -270,7 +273,6 @@ public class Stream implements GlobalConst {
                         }
 
                         try {
-                            System.out.println("**********************************************************");
                             System.out.println(temp.getRowLabel() + " " + temp.getColumnLabel() + " " + temp.getValue() + " " + temp.getTimeStamp());
                             //temp = fscan.get_next();
                         }
@@ -464,6 +466,39 @@ public class Stream implements GlobalConst {
         expr[1].operand1.symbol = new FldSpec(new RelSpec(RelSpec.outer), offset);
         expr[1].operand2.string = upperBound;
         expr[1].next = null;
+        return expr;
+    }
+
+    private CondExpr[] mapComparison(){
+        CondExpr [] expr  = new CondExpr[4];
+        expr[0] = new CondExpr();
+        expr[1] = new CondExpr();
+        expr[2] = new CondExpr();
+        expr[3] = new CondExpr();
+
+
+        expr[0].next  = null;
+        expr[0].op    = new AttrOperator(AttrOperator.aopEQ);
+        expr[0].type1 = new AttrType(AttrType.attrSymbol);
+        expr[0].operand1.symbol = new FldSpec (new RelSpec(RelSpec.outer),1);
+        expr[0].type2 = new AttrType(AttrType.attrSymbol);
+        expr[0].operand2.symbol = new FldSpec (new RelSpec(RelSpec.innerRel),1);
+
+        expr[1].next  = null;
+        expr[1].op    = new AttrOperator(AttrOperator.aopEQ);
+        expr[1].type1 = new AttrType(AttrType.attrSymbol);
+        expr[1].operand1.symbol = new FldSpec (new RelSpec(RelSpec.outer),2);
+        expr[1].type2 = new AttrType(AttrType.attrSymbol);
+        expr[1].operand2.symbol = new FldSpec (new RelSpec(RelSpec.innerRel),2);
+
+        expr[2].next  = null;
+        expr[2].op    = new AttrOperator(AttrOperator.aopEQ);
+        expr[2].type1 = new AttrType(AttrType.attrSymbol);
+        expr[2].operand1.symbol = new FldSpec (new RelSpec(RelSpec.outer),3);
+        expr[2].type2 = new AttrType(AttrType.attrSymbol);
+        expr[2].operand2.symbol = new FldSpec (new RelSpec(RelSpec.innerRel),3);
+
+        expr[3] = null;
         return expr;
     }
     /**
