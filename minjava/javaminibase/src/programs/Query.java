@@ -38,7 +38,9 @@ public class Query {
 		else {
 			boolean found = false;
 			int i;
-			for (i=0; i < SystemDefs.JavabaseDB.NumberOfTables - 1; i++) {
+			System.out.println("btname " + _btname);
+			for (i=0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
+				System.out.println("tables: " + i + " " + SystemDefs.JavabaseDB.table[i].name);
 				if ( _btname.equals(SystemDefs.JavabaseDB.table[i].name)) {
 					SystemDefs.JavabaseDB.CurrentTableIndex = i ;
 					found = true;
@@ -74,7 +76,9 @@ public class Query {
 		// type 5 - rowLabel combined value index, and timestamp index
 		int readBeforeQuery = PCounter.rcounter;
 		int writeBeforeQuery = PCounter.wcounter;
-
+		if(bigtable == null){
+			return;
+		}
 		Stream stream = new Stream(bigtable, ordertype, rowfilter, columnfilter, valuefilter);
 
 		System.out.println("Query: initialized stream.");
