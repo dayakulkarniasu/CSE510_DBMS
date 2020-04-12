@@ -108,6 +108,7 @@ public class Stream implements GlobalConst {
         try {
             String key = null;
             Map temp = null;
+            Sort sort = null;
             switch (orderType){
                 case OrderType.type1:
                     //results ordered by rowLabel then columnLabel then time stamp
@@ -148,33 +149,31 @@ public class Stream implements GlobalConst {
                     break;
                 case OrderType.type2:
                     //ordered columnLabel, rowLabel, timestamp
-                    try {
-                        btf = new BTreeFile("StreamOrderIndex", AttrType.attrString, STR_LEN*3, 2/*delete*/);
+                    int[] sort_flds = new int[]{2, 1, 4};
+                    int[] fld_lens = new int[]{STR_LEN, STR_LEN, 4};
+                    try
+                    {
+                        sort = new Sort(attrType, (short) 4, attrSize, fscan, sort_flds, order[0], fld_lens, 12);
                     }
-                    catch (Exception e) {
+                    catch(Exception e)
+                    {
                         e.printStackTrace();
-                        Runtime.getRuntime().exit(1);
                     }
-                    while ( m != null) {
+                    
+                    try
+                    {
+                        temp = sort.get_next();
+                    }
+                    catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                    
+                    while ( temp != null) {
                         try {
-                            System.out.println("stream line 157: rowlabel: " + m.getRowLabel());
-                            key = m.getColumnLabel() + " " + m.getRowLabel() + " " + m.getTimeStamp();
-                            mid = fscan._mid;
-                            //System.out.println("stream mid: " + mid.pageNo + " " + mid.slotNo);
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        try {
-                            btf.insert(new StringKey(key), mid);
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        try {
-                            temp = fscan.get_next();
+                            System.out.println("**********************************************************");
+                            System.out.println(temp.getRowLabel() + " " + temp.getColumnLabel() + " " + temp.getValue() + " " + temp.getTimeStamp());
+                            temp = sort.get_next();
                         }
                         catch (Exception e) {
                             e.printStackTrace();
@@ -283,8 +282,6 @@ public class Stream implements GlobalConst {
                     break;
                 case OrderType.type5:
                     //time stamp
-                    int tsKey = 0;
-                    Sort sort = null;
                     sort = new Sort(attrType, (short) 4, attrSize, fscan, 4, order[0], STR_LEN, 12);
                     temp = sort.get_next();
                     try {

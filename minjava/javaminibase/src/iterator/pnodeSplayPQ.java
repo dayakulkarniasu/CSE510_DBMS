@@ -42,6 +42,28 @@ public class pnodeSplayPQ extends pnodePQ {
     fld_no = fldNo;
     fld_type = fldType;
     sort_order = order;
+    single = true;
+  }
+
+  /**
+   * class constructor.
+   * 
+   * @param fldNos   the field number for sorting
+   * @param fldTypes the type of the field for sorting
+   * @param order   the order of sorting (Ascending or Descending)
+   */
+  public pnodeSplayPQ(int[] fldNos, AttrType[] fldTypes, MapOrder order) {
+    root = null;
+    count = 0;
+    fld_nos = new int[fldNos.length];
+    fld_types = new AttrType[fldTypes.length];
+    for(int i = 0; i < fldNos.length; i++)
+    {
+      fld_nos[i] = fldNos[i];
+      fld_types[i] = fldTypes[i];
+    }
+    sort_order = order;
+    single = false;
   }
 
   /**
