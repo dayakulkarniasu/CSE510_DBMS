@@ -332,8 +332,11 @@ public class Heapfile implements Filetype, GlobalConst {
 		PageId nextDirPageId = new PageId(0);
 		HFPage currentDirPage = new HFPage();
 		// Page pageinbuffer = new Page();
-
-		while (currentDirPageId.pid != INVALID_PAGE) {
+		boolean done = false;
+		Map aMapfd = null;
+		String rowlabname ;
+		MID mid = new MID();
+		/*while (currentDirPageId.pid != INVALID_PAGE) {
 			pinPage(currentDirPageId, currentDirPage, false);
 			MID mid = new MID();
 			Map amap;
@@ -345,6 +348,30 @@ public class Heapfile implements Filetype, GlobalConst {
 			nextDirPageId = currentDirPage.getNextPage();
 			unpinPage(currentDirPageId, false);
 			currentDirPageId.pid = nextDirPageId.pid;
+		}*/
+		Scan scan = null;
+		scan = this.openScan();
+
+		while (!done) {
+			try {
+				aMapfd = scan.getNext(mid);
+				// System.out.println();
+				// System.out.println("After getNext(rid) pid = " + rid.pageNo.pid + " SlotNo ="
+				// + rid.slotNo);
+				// System.out.println();
+
+				if (aMapfd == null) {
+					done = true;
+					break;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			rowlabname = aMapfd.getRowLabel();
+			//System.out.println("in the heap file, in getRowCnt(),   mid :" + mid.pageNo.pid + " SlotNo : " + mid.slotNo + "ROwLabel = " + rowlabname);
+
+			rowSet.add(aMapfd.getRowLabel());
+
 		}
 		return rowSet.size();
 	}
@@ -367,7 +394,7 @@ public class Heapfile implements Filetype, GlobalConst {
 		HFPage currentDirPage = new HFPage();
 		// Page pageinbuffer = new Page();
 
-		while (currentDirPageId.pid != INVALID_PAGE) {
+		/*while (currentDirPageId.pid != INVALID_PAGE) {
 			pinPage(currentDirPageId, currentDirPage, false);
 			MID mid = new MID();
 			Map amap;
@@ -379,7 +406,38 @@ public class Heapfile implements Filetype, GlobalConst {
 			nextDirPageId = currentDirPage.getNextPage();
 			unpinPage(currentDirPageId, false);
 			currentDirPageId.pid = nextDirPageId.pid;
+		}*/
+		boolean done = false;
+		Map aMapfd = null;
+		String collabname ;
+		MID mid = new MID();
+
+		Scan scan = null;
+		scan = this.openScan();
+
+		while (!done) {
+			try {
+				aMapfd = scan.getNext(mid);
+				// System.out.println();
+				// System.out.println("After getNext(rid) pid = " + rid.pageNo.pid + " SlotNo ="
+				// + rid.slotNo);
+				// System.out.println();
+
+				if (aMapfd == null) {
+					done = true;
+					break;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			collabname = aMapfd.getColumnLabel();
+			//System.out.println("in the heap file, in getColumnCnt(),   mid :" + mid.pageNo.pid + " SlotNo : " + mid.slotNo + "ROwLabel = " + collabname);
+
+			colSet.add(aMapfd.getColumnLabel());
+
 		}
+
+
 		return colSet.size();
 	}
 

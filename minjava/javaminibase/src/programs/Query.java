@@ -31,24 +31,34 @@ public class Query {
 		{
 			System.out.println("Database not exist.");
 		}
-		else if(SystemDefs.JavabaseDB.table == null)
+		else if(SystemDefs.JavabaseDB.table[0] == null)
 		{
-			System.out.println("Table not exist.");
-		}
-		else if(!SystemDefs.JavabaseDB.table.name.equals(_btname))
-		{
-			System.out.println("Table name not match.");
-		}
-		else
-		{
-			bigtable = SystemDefs.JavabaseDB.table;
-			btname = _btname;
-			type = _type;
-			ordertype = _ordertype;
-			rowfilter = _rowfilter;
-			columnfilter = _columnfilter;
-			valuefilter = _valuefilter;
-			numbuf = _numbuf;
+			System.out.println("Database does not have any Table.");
+		} else {
+			boolean found = false;
+			int i;
+			for (i=0; i < SystemDefs.JavabaseDB.NumberOfTables - 1; i++) {
+				if ( _btname.equals(SystemDefs.JavabaseDB.table[i].name)) {
+					SystemDefs.JavabaseDB.CurrentTableIndex = i ;
+					// this = SystemDefs.JavabaseDB.table[i] ;
+					found = true;
+					System.out.println("bigt: DB existing");
+					System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[i].name);
+				}
+			}
+			if ( found == false) {
+				System.out.println("Table name not match.");
+			} else
+			{
+				bigtable = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
+				btname = _btname;
+				type = _type;
+				ordertype = _ordertype;
+				rowfilter = _rowfilter;
+				columnfilter = _columnfilter;
+				valuefilter = _valuefilter;
+				numbuf = _numbuf;
+			}
 		}
 	}
 
@@ -66,21 +76,21 @@ public class Query {
 
 		System.out.println("Query: initialized stream.");
 
-		Map map = null;
+		Map map = new Map();
 		AttrType[] types = new AttrType[4];
 		types[0] = new AttrType(AttrType.attrString);
 		types[1] = new AttrType(AttrType.attrString);
 		types[2] = new AttrType(AttrType.attrString);
 		types[3] = new AttrType(AttrType.attrInteger);
 
-		try{
+		/*try{
 			map = stream.getNext();
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-
+*/
 		while(map != null)
 		{
 			map.print(types);

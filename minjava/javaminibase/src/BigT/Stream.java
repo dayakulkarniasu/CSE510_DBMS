@@ -97,7 +97,11 @@ public class Stream implements GlobalConst {
         MID mid = new MID();
 
         try {
-            //m = fscan.get_next();
+            m = fscan.get_next();
+            if(m == null)
+                System.out.println("Stream.java: 133: FScan no map");
+            else
+                System.out.println("stream.java: 135: collabel: " + m.getColumnLabel());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -120,11 +124,11 @@ public class Stream implements GlobalConst {
                         e.printStackTrace();
                         Runtime.getRuntime().exit(1);
                     }
-                    while ( m != null) {
-                        System.out.println("stream line 140: rowlabel: " + m.getRowLabel());
+                    while ( temp != null) {
+                       // System.out.println("stream line 140: rowlabel: " + m.getRowLabel());
                         try {
                             // key = m.getRowLabel() + " " + m.getColumnLabel() + " " + m.getTimeStamp();
-                            key = m.getRowLabel();
+                            key = m.getRowLabel() + " " + m.getColumnLabel() + " " + m.getTimeStamp();
                             mid = fscan._mid;
                         }
                         catch (Exception e) {
@@ -139,7 +143,7 @@ public class Stream implements GlobalConst {
                         }
 
                         try {
-                            m = fscan.get_next();
+                            temp = fscan.get_next();
                         }
                         catch (Exception e) {
                             e.printStackTrace();
@@ -155,7 +159,7 @@ public class Stream implements GlobalConst {
                         e.printStackTrace();
                         Runtime.getRuntime().exit(1);
                     }
-                    while ( m != null) {
+                    while ( temp != null) {
                         try {
                             System.out.println("stream line 157: rowlabel: " + m.getRowLabel());
                             key = m.getColumnLabel() + " " + m.getRowLabel() + " " + m.getTimeStamp();

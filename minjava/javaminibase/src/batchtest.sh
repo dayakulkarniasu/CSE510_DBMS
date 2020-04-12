@@ -1,1 +1,1 @@
-cd programs && java -cp /Users/ychen745/Desktop/CSE510_DBMS/minjava/javaminibase/src programs.InsertTest testdata.csv 1 bigdb
+cd programs && java -cp /Users/dayakulkarni/Desktop/CSE510/phase3/trial1/CSE510_DBMS/minjava/javaminibase/src  programs.InsertTest testdata.csv 1 bigdb

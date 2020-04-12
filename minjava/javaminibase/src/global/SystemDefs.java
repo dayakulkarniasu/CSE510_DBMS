@@ -48,7 +48,14 @@ public class SystemDefs {
 
             try {
                   JavabaseBM = new BufMgr(bufpoolsize, replacement_policy);
-                  JavabaseDB = new bigDB(dbType);
+                  if ( dbType == 999)
+                  {
+                        JavabaseDB = new bigDB();
+                  }
+                  else {
+                        JavabaseDB = new bigDB(dbType);
+                  }
+
                   /*
                    * JavabaseCatalog = new Catalog();
                    */

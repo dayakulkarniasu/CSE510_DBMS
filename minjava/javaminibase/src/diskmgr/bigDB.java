@@ -5,19 +5,23 @@ package diskmgr;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-
+import java.io.*;
 import btree.BTreeFile;
 import global.*;
 import index.MakeIndex;
 import BigT.*;
+import heap.* ;
 
 public class bigDB implements GlobalConst {
 
     private static final int bits_per_page = MAX_SPACE * 8;
+    private static final int Max_table = 10;
     public BTreeFile indexStrat1 = null;
     public BTreeFile indexStrat2 = null;
     public static int dbType = 0;
-    public bigt table = null;
+    public bigt[] table = new bigt[Max_table];
+    public static int CurrentTableIndex = 0;
+    public static int NumberOfTables = 0;
 
     /**
      * Constructor for the big table database. type is an integer denoting the
@@ -34,12 +38,40 @@ public class bigDB implements GlobalConst {
      *
      * @param type
      */
-    public bigDB(int type) {
+    public bigDB(int type) throws HFException, HFBufMgrException, HFDiskMgrException, IOException  {
         // initialize read page and write page counter
+        //  try {
+        //      bigt b1 = new bigt(888);
+        //    } catch (HFException e) {
+        //        throw new FileIOException(e, "DB file I/O error");
+        //    }
+        // AttrType[] types = new AttrType[4];
+        bigt b1 = new bigt(888);
+        int i = 0;
+        System.out.println("bigt b1 name : " + b1.name);
+        for (i=0; i < Max_table ; i++)
+        {
+            this.table[i] = b1;
+        }
         dbType = type;
+
         PCounter.initialize();
     }
-
+    /**
+     * default constructor.
+     */
+    public bigDB() throws HFException, HFBufMgrException, HFDiskMgrException, IOException  {
+        // initialize read page and write page counter
+        dbType = 1;
+        bigt b1 = new bigt(888);
+        int i = 0;
+        System.out.println("bigt b1 name : " + b1.name);
+        for (i=0; i < Max_table ; i++)
+        {
+            this.table[i] = b1;
+        }
+        PCounter.initialize();
+    }
     /**
      * Open the database with the given name.
      *
@@ -72,13 +104,8 @@ public class bigDB implements GlobalConst {
 
     }
 
-    /**
-     * default constructor.
-     */
-    public bigDB() {
-        // initialize read page and write page counter
-        PCounter.initialize();
-    }
+
+
 
     /**
      * DB Constructors. Create a database with the specified number of pages where
