@@ -61,6 +61,8 @@ public class Query {
 		// type 3 - columnLabel index
 		// type 4 - columnLabel combined rowLabel index, and timestamp index
 		// type 5 - rowLabel combined value index, and timestamp index
+		int readBeforeQuery = PCounter.rcounter;
+		int writeBeforeQuery = PCounter.wcounter;
 
 		Stream stream = new Stream(bigtable, ordertype, rowfilter, columnfilter, valuefilter);
 
@@ -86,6 +88,7 @@ public class Query {
 			map.print(types);
 			map = stream.getNext();
 		}
+		System.out.println("Diskpage read " + (PCounter.rcounter-readBeforeQuery) + " Disk page written " + (PCounter.wcounter-writeBeforeQuery));
 	}
 }
 

@@ -20,7 +20,11 @@ public class InsertTest implements GlobalConst{
         Scanner scanner = new Scanner(System.in);
         try{
             while(true){
+                System.out.println("**********************************");
                 System.out.println("Input batchinsert or query");
+                System.out.println("\tbatchinsert [CSV File] [OrderType] [BigTable Name]");
+                System.out.println("\tquery [BT Name] [OrderType] [OrderBy] [RowFilter] [ColFilter] [ValFilter] [NumBuf]");
+                System.out.println("**********************************");
                 String line = scanner.nextLine();
                 String[] params = line.split(" ");
                 if(params[0].equalsIgnoreCase("batchinsert"))
@@ -32,7 +36,7 @@ public class InsertTest implements GlobalConst{
                     if(first){
                         dbpath = "/tmp/" + System.getProperty("user.name/") + fname + ".db";
                         logpath = "/tmp/" + System.getProperty("user.name/") + tablename + ".log";
-                        sysdef = new SystemDefs(dbpath, dbtype, 10500, 100, "Clock");
+                        sysdef = new SystemDefs(dbpath, dbtype, 10500, 100, "MRU");
 
                         String newdbpath;
                         String newlogpath;
