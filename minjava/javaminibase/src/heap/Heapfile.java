@@ -333,18 +333,26 @@ public class Heapfile implements Filetype, GlobalConst {
 		HFPage currentDirPage = new HFPage();
 		// Page pageinbuffer = new Page();
 
-		while (currentDirPageId.pid != INVALID_PAGE) {
-			pinPage(currentDirPageId, currentDirPage, false);
-			MID mid = new MID();
-			Map amap;
-			for (mid = currentDirPage.firstMap(); mid != null; mid = currentDirPage.nextMap(mid)) {
-				amap = currentDirPage.getMap(mid);
-				rowSet.add(amap.getRowLabel());
-			}
+		boolean done = false;
+		Map aMapfd = null;
+		String rowlabname ;
+		MID mid = new MID();
+		Scan scan = null;
+		scan = this.openScan();
 
-			nextDirPageId = currentDirPage.getNextPage();
-			unpinPage(currentDirPageId, false);
-			currentDirPageId.pid = nextDirPageId.pid;
+		while (!done) {
+			try {
+				aMapfd = scan.getNext(mid);
+				if (aMapfd == null) {
+					done = true;
+					break;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			rowlabname = aMapfd.getRowLabel();
+			rowSet.add(aMapfd.getRowLabel());
+
 		}
 		return rowSet.size();
 	}
@@ -365,20 +373,25 @@ public class Heapfile implements Filetype, GlobalConst {
 		PageId currentDirPageId = new PageId(_firstDirPageId.pid);
 		PageId nextDirPageId = new PageId(0);
 		HFPage currentDirPage = new HFPage();
-		// Page pageinbuffer = new Page();
+		boolean done = false;
+		Map aMapfd = null;
+		String collabname ;
+		MID mid = new MID();
+		Scan scan = null;
+		scan = this.openScan();
 
-		while (currentDirPageId.pid != INVALID_PAGE) {
-			pinPage(currentDirPageId, currentDirPage, false);
-			MID mid = new MID();
-			Map amap;
-			for (mid = currentDirPage.firstMap(); mid != null; mid = currentDirPage.nextMap(mid)) {
-				amap = currentDirPage.getMap(mid);
-				colSet.add(amap.getColumnLabel());
+		while (!done) {
+			try {
+				aMapfd = scan.getNext(mid);
+
+				if (aMapfd == null) {
+					done = true;
+					break;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-
-			nextDirPageId = currentDirPage.getNextPage();
-			unpinPage(currentDirPageId, false);
-			currentDirPageId.pid = nextDirPageId.pid;
+			colSet.add(aMapfd.getColumnLabel());
 		}
 		return colSet.size();
 	}

@@ -185,28 +185,19 @@ public class batchInsert implements GlobalConst {
 
   public static void insertTable(String datafilename, String tablename)
       throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
-
-    InsertBTmap(datafilename, tablename);
-    System.out.println("Diskpage read " + PCounter.rcounter + " Disk page written " + PCounter.wcounter);
-
+    boolean status_1 = false;
+    status_1 = InsertBTmap(datafilename, tablename);
+    if ( status_1 == true){
+      System.out.println("Diskpage read " + PCounter.rcounter + " Disk page written " + PCounter.wcounter);
+    }
   }// end of main
 
   public static boolean InsertBTmap(String datafileN, String tablename)
       throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
-
+    boolean status = true;
     bigt big = null;
-    if (SystemDefs.JavabaseDB.table == null) {
-      big = new bigt(tablename, SystemDefs.JavabaseDB.dbType);
-      System.out.println("JavabaseDB name: " + SystemDefs.JavabaseDB.table.name);
-      System.out.println("datafileN: " + datafileN);
-    } else if (SystemDefs.JavabaseDB.table.name.equals(tablename)) {
-      big = SystemDefs.JavabaseDB.table;
-      System.out.println("Table exist.");
-    } else {
-      System.out.println("defname: " + SystemDefs.JavabaseDB.table.name);
-      System.out.println("datafileN: " + datafileN);
-      System.err.println("Table name not match..");
-    }
+    new bigt(tablename, SystemDefs.JavabaseDB.dbType);
+    big = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
 
     BufferedReader br = null;
     int linecount = 0;
@@ -215,29 +206,15 @@ public class batchInsert implements GlobalConst {
     int recleng2 = MAP_LEN;
 
     System.out.println("\n  Test 1: Insert and scan fixed-size records\n");
-    boolean status = true;
     MID rid = new MID();
     Heapfile f = null;
 
     boolean found_delete_flag = true;
 
     System.out.println("  - Create a heap file\n");
-    try {
-      // f = new Heapfile("file_1");
-      f = new Heapfile(tablename);
-    } catch (Exception e) {
-      status = false;
-      System.err.println("*** Could not create heap file\n");
-      e.printStackTrace();
-    }
 
     if (status == true) {
-      System.out.println("  - Add " + linecount + " records to the file\n");
-
       try {
-        int rowmax = 0;
-        int colmax = 0;
-        int valmax = 0;
         br = new BufferedReader(new FileReader(datafileN));
         while ((line = br.readLine()) != null) {
           String[] arryfields = line.split(csvSplitBy);
@@ -245,13 +222,6 @@ public class batchInsert implements GlobalConst {
           String columnLabel = arryfields[1];
           String value = arryfields[2];
           String timeStamp = arryfields[3];
-
-          if(rowLabel.length() > rowmax)
-            rowmax = rowLabel.length();
-          if(columnLabel.length() > colmax)
-            colmax = columnLabel.length();
-          if(value.length() > valmax)
-            valmax = value.length();
 
           // fixed length record
           DummyRecord rec = new DummyRecord(recleng2);
@@ -422,7 +392,7 @@ class DummyRecord implements GlobalConst {
    * constructor: translate a tuple to a DummyRecord object it will make a copy of
    * the data in the tuple
    * 
-   * @param atuple: the input tuple
+   * @param _atuple: the input tuple
    */
   public DummyRecord(Map _atuple) throws java.io.IOException {
     data = new byte[_atuple.getLength()];

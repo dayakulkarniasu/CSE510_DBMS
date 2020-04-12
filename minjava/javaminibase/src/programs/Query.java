@@ -31,24 +31,35 @@ public class Query {
 		{
 			System.out.println("Database not exist.");
 		}
-		else if(SystemDefs.JavabaseDB.table == null)
+		else if(SystemDefs.JavabaseDB.table[0] == null)
 		{
-			System.out.println("Table not exist.");
+			System.out.println("Database does not have any Table.");
 		}
-		else if(!SystemDefs.JavabaseDB.table.name.equals(_btname))
-		{
-			System.out.println("Table name not match.");
-		}
-		else
-		{
-			bigtable = SystemDefs.JavabaseDB.table;
-			btname = _btname;
-			type = _type;
-			ordertype = _ordertype;
-			rowfilter = _rowfilter;
-			columnfilter = _columnfilter;
-			valuefilter = _valuefilter;
-			numbuf = _numbuf;
+		else {
+			boolean found = false;
+			int i;
+			for (i=0; i < SystemDefs.JavabaseDB.NumberOfTables - 1; i++) {
+				if ( _btname.equals(SystemDefs.JavabaseDB.table[i].name)) {
+					SystemDefs.JavabaseDB.CurrentTableIndex = i ;
+					found = true;
+					System.out.println("bigt: DB existing");
+					System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[i].name);
+				}
+			}
+			if ( found == false) {
+				System.out.println("Table name not match.");
+			}
+			else
+			{
+				bigtable = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
+				btname = _btname;
+				type = _type;
+				ordertype = _ordertype;
+				rowfilter = _rowfilter;
+				columnfilter = _columnfilter;
+				valuefilter = _valuefilter;
+				numbuf = _numbuf;
+			}
 		}
 	}
 

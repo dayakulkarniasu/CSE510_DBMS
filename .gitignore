@@ -2,6 +2,7 @@
 CSE510_DBMS.iml
 minjava/javaminibase/src/javadoc/*
 out/*
+.idea/*
 minjava/javaminibase/src/Makefile
 minjava/javaminibase/src/BigT/Makefile
 minjava/javaminibase/src/btree/Makefile
@@ -16,3 +17,7 @@ minjava/javaminibase/src/iterator/Makefile
 minjava/javaminibase/src/javadoc/*
 minjava/javaminibase/src/META-INF/*
 minjava/javaminibase/src/programs/*.class
+minjava/javaminibase/src/BigT/*.class
+minjava/javaminibase/src/bufmgr/*.class
+
+
