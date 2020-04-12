@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 import java.io.*;
 
-public class InsertTest implements GlobalConst{
+public class InsertTest implements GlobalConst {
     public static void main(String[] args) throws Exception {
         boolean first = true;
         String dbpath;
@@ -19,38 +19,35 @@ public class InsertTest implements GlobalConst{
         boolean found_delete_flag = true;
 
         Scanner scanner = new Scanner(System.in);
-        try{
-            while(true){
+        try {
+            while (true) {
                 System.out.println("**********************************");
                 System.out.println("Input batchinsert or query or mapinsert or getCounts or quit");
                 System.out.println("\tbatchinsert [CSV File] [OrderType] [BigTable Name]");
-                System.out.println("\tquery [BT Name] [OrderType] [OrderBy] [RowFilter] [ColFilter] [ValFilter] [NumBuf]");
+                System.out.println(
+                        "\tquery [BT Name] [OrderType] [OrderBy] [RowFilter] [ColFilter] [ValFilter] [NumBuf]");
                 System.out.println("**********************************");
                 String line = scanner.nextLine();
                 String[] params = line.split(" ");
                 String fname = "";
-                int dbtype ;
+                int dbtype;
                 String tablename = "";
                 String input_RL = "";
                 String input_CL = "";
                 String input_VL = "";
-                int input_TS = 0, input_dbtype = 999 ;
-                if(params[0].equalsIgnoreCase("batchinsert"))
-                {
-                    if (params.length  == 3)
-                    {
+                int input_TS = 0, input_dbtype = 999;
+                if (params[0].equalsIgnoreCase("batchinsert")) {
+                    if (params.length == 3) {
                         fname = params[1];
                         dbtype = 999;
                         tablename = params[2];
-                    }
-                    else
-                    {
+                    } else {
                         fname = params[1];
                         dbtype = Integer.parseInt(params[2]);
                         tablename = params[3];
                     }
 
-                    if(first){
+                    if (first) {
                         dbpath = "/tmp/" + System.getProperty("user.name") + fname + ".db";
                         logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
                         System.out.println("dbpath in Inserttest : " + dbpath);
@@ -61,10 +58,10 @@ public class InsertTest implements GlobalConst{
                         String remove_logcmd;
                         String remove_dbcmd;
                         String remove_cmd = "/bin/rm -rf ";
-                    
+
                         newdbpath = dbpath;
                         newlogpath = logpath;
-                    
+
                         remove_logcmd = remove_cmd + logpath;
                         remove_dbcmd = remove_cmd + dbpath;
 
@@ -77,9 +74,7 @@ public class InsertTest implements GlobalConst{
                         first = false;
                     }
                     batchInsert.insertTable(fname, tablename);
-                }
-                else if(params[0].equalsIgnoreCase("query"))
-                {
+                } else if (params[0].equalsIgnoreCase("query")) {
                     String btname = params[1];
                     int dbtype1 = Integer.parseInt(params[2]);
                     int ordertype = Integer.parseInt(params[3]);
@@ -90,18 +85,16 @@ public class InsertTest implements GlobalConst{
 
                     Query query = new Query(btname, dbtype1, ordertype, rowfilter, colfilter, valfilter, numbuf);
                     query.runquery();
-                }
-                else if(params[0].equalsIgnoreCase("getCounts"))
-                {
-                    bigt  big = null;
-                    int i =0;
-                    for (i = 0; i <SystemDefs.JavabaseDB.NumberOfTables ; i++){
-                        big = SystemDefs.JavabaseDB.table[i] ;
+                } else if (params[0].equalsIgnoreCase("getCounts")) {
+                    bigt big = null;
+                    int i = 0;
+                    for (i = 0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
+                        big = SystemDefs.JavabaseDB.table[i];
                         if (big == null) {
-                            //big = new bigt(tablename, SystemDefs.JavabaseDB.dbType);
+                            // big = new bigt(tablename, SystemDefs.JavabaseDB.dbType);
                             System.out.println("JavabaseDB name is Null : " + SystemDefs.JavabaseDB.table[i].name);
                             System.out.println("Exiting...... ");
-                        } else  {
+                        } else {
                             big = SystemDefs.JavabaseDB.table[i];
                             System.out.println("Table exist and Name is : " + SystemDefs.JavabaseDB.table[i].name);
                             System.out.println("********** ");
@@ -111,33 +104,27 @@ public class InsertTest implements GlobalConst{
                             System.out.println("********** ");
                         }
                     }
-                }
-                else if(params[0].equalsIgnoreCase("mapinsert"))
-                {
+                } else if (params[0].equalsIgnoreCase("mapinsert")) {
                     System.out.println("No OF parameters : " + params.length);
-                    if (params.length  == 7)
-                    {
+                    if (params.length == 7) {
                         input_RL = params[1];
                         input_CL = params[2];
                         input_VL = params[3];
                         input_TS = Integer.parseInt(params[4]);
                         input_dbtype = Integer.parseInt(params[5]);
                         tablename = params[6];
-                    }
-                    else if (params.length  == 6)
-                    {
+                    } else if (params.length == 6) {
                         input_RL = params[1];
                         input_CL = params[2];
                         input_VL = params[3];
                         input_TS = Integer.parseInt(params[4]);
                         input_dbtype = 999;
                         tablename = params[5];
-                    }
-                    else {
+                    } else {
                         System.out.println("Invalid number of Arguments.... ");
-                        return ;
+                        return;
                     }
-                    if(first){
+                    if (first) {
                         dbpath = "/tmp/" + System.getProperty("user.name") + fname + ".db";
                         logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
                         System.out.println("dbpath in Inserttest : " + dbpath);
@@ -190,28 +177,25 @@ public class InsertTest implements GlobalConst{
                             rid = big.insertMap(recMap.getMapByteArray());
                         }
                     } catch (Exception e) {
-                        //status = false;
+                        // status = false;
                         System.err.println("*** Error inserting Map ***  \n");
                         e.printStackTrace();
                     }
-                    if (rid == null){
+                    if (rid == null) {
                         System.out.println("Could not insert the Map.....");
                     }
-                      /*
-                      batchInsert.insertTable(fname, tablename);
-                      */
-                }
-                else {
-                    if(params[0].equalsIgnoreCase("q") || params[0].equalsIgnoreCase("quit")) {
+                    /*
+                     * batchInsert.insertTable(fname, tablename);
+                     */
+                } else {
+                    if (params[0].equalsIgnoreCase("q") || params[0].equalsIgnoreCase("quit")) {
                         System.out.println("exiting");
                         scanner.close();
                     }
                 }
             }
-        }
-        catch(IllegalStateException e)
-        {
+        } catch (IllegalStateException e) {
             System.out.println("exiting");
         }
-      }// end of main
+    }// end of main
 }
