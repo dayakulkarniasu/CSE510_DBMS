@@ -15,11 +15,20 @@ public abstract class pnodePQ {
   /** the field number of the sorting field */
   protected int fld_no;
 
+  /** an array of the field numbers of the sorting field */
+  protected int[] fld_nos;
+
   /** the attribute type of the sorting field */
   protected AttrType fld_type;
 
+  /** an array the attribute types of the sorting field */
+  protected AttrType[] fld_types;
+
   /** the sorting order (Ascending or Descending) */
   protected MapOrder sort_order;
+
+  /** whether sorting in single field */
+  protected boolean single = true;
 
   /**
    * class constructor, set <code>count</code> to <code>0</code>.
@@ -78,8 +87,16 @@ public abstract class pnodePQ {
    * @exception TupleUtilsException error in tuple compare routines
    */
   public int pnodeCMP(pnode a, pnode b) throws IOException, UnknowAttrType, MapUtilsException {
-    int ans = MapUtils.CompareMapWithMap(fld_type, a.map, fld_no, b.map, fld_no);
-    return ans;
+    if(single)
+    {
+      int ans = MapUtils.CompareMapWithMap(fld_type, a.map, fld_no, b.map, fld_no);
+      return ans;
+    }
+    else
+    {
+      int ans = MapUtils.CompareMapWithMap(fld_types, a.map, fld_nos, b.map, fld_nos);
+      return ans;
+    }
   }
 
   /**

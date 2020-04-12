@@ -75,24 +75,21 @@ public class MakeIndex {
                     // Index on RowLabel
                     key = amap.getRowLabel();
                     SystemDefs.JavabaseDB.indexStrat1.insert(new StringKey(key), mid);
-                    System.out.println("key: " + key + ", mid(pid, slotno): " + mid.pageNo + "," + mid.slotNo);
-                    System.out.println();
+                    System.out.println("key mid: " + key + " " + mid.pageNo + " " + mid.slotNo);
                     break;
                 case 3:
                     // Index on ColumnLabel
                     key = amap.getColumnLabel();
                     SystemDefs.JavabaseDB.indexStrat1.insert(new StringKey(key), mid);
-                    System.out.println();
                     break;
                 case 4:
                     // Index on combKey for ColumnLabel and RowLabel & Index on TimeStamp
                     key = String.format("%s %s", amap.getColumnLabel(), amap.getRowLabel());
                     key2 = amap.getTimeStamp();
                     SystemDefs.JavabaseDB.indexStrat1.insert(new StringKey(key), mid);
-                    System.out.println("key: " + key + ", mid(pid, slotno): " + mid.pageNo + "," + mid.slotNo);
+                    System.out.println("key mid: " + key + " " + mid.pageNo + " " + mid.slotNo);
                     SystemDefs.JavabaseDB.indexStrat2.insert(new IntegerKey(key2), mid);
-                    System.out.println("key2: " + key2 + ", mid(pid, slotno): " + mid.pageNo + "," + mid.slotNo);
-                    System.out.println();
+                    System.out.println("key2 mid2: " + key2 + " " + mid.pageNo + " " + mid.slotNo);
                     
                     break;
                 case 5:
@@ -100,10 +97,9 @@ public class MakeIndex {
                     key = String.format("%s %s", amap.getRowLabel(), amap.getValue());
                     key2 = amap.getTimeStamp();
                     SystemDefs.JavabaseDB.indexStrat1.insert(new StringKey(key), mid);
-                    System.out.println("key: " + key + ", mid(pid, slotno): " + mid.pageNo + "," + mid.slotNo);
+                    System.out.println("key mid: " + key + " " + mid.pageNo + " " + mid.slotNo);
                     SystemDefs.JavabaseDB.indexStrat2.insert(new IntegerKey(key2), mid);
-                    System.out.println("key2: " + key2 + ", mid(pid, slotno): " + mid.pageNo + "," + mid.slotNo);
-                    System.out.println();
+                    System.out.println("key2 mid2: " + key2 + " " + mid.pageNo + " " + mid.slotNo);
                     break;
             }
         }

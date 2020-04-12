@@ -544,16 +544,7 @@ public class HFPage extends Page implements ConstSlot, GlobalConst {
     }
 
     else {
-
-      System.out.println();
-      System.out.println("slotNo: " + slotNo + "sloCnt: " + slotCnt + "mapLen: " + mapLen + "pageNo.pid: " + pageNo.pid
-          + "curPage.pid: " + curPage.pid);
-      System.out.println();
-
-      Runtime.getRuntime().exit(1);
-      
       throw new InvalidSlotNumberException(null, "HEAPFILE: INVALID_SLOTNO");
-
     }
 
   }
