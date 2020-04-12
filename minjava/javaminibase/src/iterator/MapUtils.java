@@ -314,4 +314,117 @@ public class MapUtils {
         }
         return res_str_sizes;
     }
+
+    /**
+     * This function compares a map with another map in respective field, and
+     * returns:
+     *
+     * 0 if the two are equal, 1 if the map is greater, -1 if the map is
+     * smaller,
+     *
+     * @param fldType[]   an array of the type of the field being compared.
+     * @param t1          one map.
+     * @param t2          another map.
+     * @param t1_fld_no[] an array of the field numbers in the tuples to be compared.
+     * @param t2_fld_no[] an array of the field numbers in the tuples to be compared.
+     * @exception UnknowAttrType      don't know the attribute type
+     * @exception IOException         some I/O fault
+     * @exception TupleUtilsException exception from this class
+     * @return 0 if the two are equal, 1 if the map is greater, -1 if the map is
+     *         smaller,
+     */
+    public static int CompareMapWithMap(AttrType[] fldTypes, Map t1, int[] t1_fld_no, Map t2, int[] t2_fld_no)
+            throws IOException, UnknowAttrType, MapUtilsException {
+        int t1_i, t2_i;
+        float t1_r, t2_r;
+        String t1_s, t2_s;
+
+        for(int i = 0; i < fldTypes.length; i++)
+        {
+            switch (fldTypes[i].attrType) {
+                case AttrType.attrInteger: // Compare two integers.
+                    try {
+                        t1_i = t1.getIntFld(t1_fld_no[i]);
+                        t2_i = t2.getIntFld(t2_fld_no[i]);
+                    } catch (FieldNumberOutOfBoundException e) {
+                        throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
+                    }
+                    if (t1_i == t2_i)
+                    {
+                        if(i == fldTypes.length-1)
+                            return 0;
+                        else
+                            continue;
+                    }
+                    if (t1_i < t2_i)
+                        return -1;
+                    if (t1_i > t2_i)
+                        return 1;
+        
+                case AttrType.attrReal: // Compare two floats
+                    try {
+                        t1_r = t1.getFloFld(t1_fld_no[i]);
+                        t2_r = t2.getFloFld(t2_fld_no[i]);
+                    } catch (FieldNumberOutOfBoundException e) {
+                        throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
+                    }
+                    if (t1_r == t2_r)
+                    {
+                        if(i == fldTypes.length-1)
+                            return 0;
+                        else
+                            continue;
+                    }
+                    if (t1_r < t2_r)
+                        return -1;
+                    if (t1_r > t2_r)
+                        return 1;
+        
+                case AttrType.attrString: // Compare two strings
+                    try {
+                        t1_s = t1.getStrFld(t1_fld_no[i]);
+                        t2_s = t2.getStrFld(t2_fld_no[i]);
+                    } catch (FieldNumberOutOfBoundException e) {
+                        throw new MapUtilsException(e, "FieldNumberOutOfBoundException is caught by TupleUtils.java");
+                    }
+        
+                    // Now handle the special case that is posed by the max_values for strings...
+                    if (t1_s.compareTo(t2_s) > 0)
+                        return 1;
+                    if (t1_s.compareTo(t2_s) < 0)
+                        return -1;
+                    if (t1_s.compareTo(t2_s) == 0)
+                    {
+                        if(i == fldTypes.length-1)
+                            return 0;
+                        else
+                            continue;
+                    }
+                default:
+        
+                    throw new UnknowAttrType(null, "Don't know how to handle attrSymbol, attrNull");
+        
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * This function compares map1 with another map2 whose field number is same
+     * as the map1
+     *
+     * @param fldType[]   the type of the field being compared.
+     * @param m1          one map
+     * @param value       another map.
+     * @param m1_fld_no[] the field numbers in the tuples to be compared.
+     * @return 0 if the two are equal, 1 if the map is greater, -1 if the map is
+     *         smaller,
+     * @exception UnknowAttrType      don't know the attribute type
+     * @exception IOException         some I/O fault
+     * @exception TupleUtilsException exception from this class
+     */
+    public static int CompareMapWithValue(AttrType[] fldType, Map m1, int[] m1_fld_no, Map value)
+            throws IOException, UnknowAttrType, MapUtilsException {
+        return CompareMapWithMap(fldType, m1, m1_fld_no, value, m1_fld_no);
+    }
 }
