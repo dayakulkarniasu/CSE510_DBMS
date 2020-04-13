@@ -24,8 +24,7 @@ public class InsertTest implements GlobalConst {
                 System.out.println("**********************************");
                 System.out.println("Input batchinsert or query or mapinsert or getCounts or quit");
                 System.out.println("\tbatchinsert [CSV File] [OrderType] [BigTable Name]");
-                System.out.println(
-                        "\tquery [BT Name] [OrderType] [OrderBy] [RowFilter] [ColFilter] [ValFilter] [NumBuf]");
+                System.out.println("\tquery [BT Name] [OrderType] [OrderBy] [RowFilter] [ColFilter] [ValFilter] [NumBuf]");
                 System.out.println("**********************************");
                 String line = scanner.nextLine();
                 String[] params = line.split(" ");
@@ -89,7 +88,8 @@ public class InsertTest implements GlobalConst {
                     bigt big = null;
                     int i = 0;
                     for (i = 0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
-                        big = SystemDefs.JavabaseDB.table[i];
+                        big = SystemDefs.JavabaseDB.table[i];                    
+                        // System.out.println("big: "+big);//test code
                         if (big == null) {
                             // big = new bigt(tablename, SystemDefs.JavabaseDB.dbType);
                             System.out.println("JavabaseDB name is Null : " + SystemDefs.JavabaseDB.table[i].name);
