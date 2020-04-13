@@ -7,7 +7,8 @@ import btree.BTreeFile;
 import global.*;
 import index.MakeIndex;
 import BigT.*;
-import heap.*;
+import heap.* ;
+
 
 public class bigDB implements GlobalConst {
 
@@ -19,7 +20,6 @@ public class bigDB implements GlobalConst {
     public bigt[] table = new bigt[Max_table];
     public static int CurrentTableIndex = 0;
     public static int NumberOfTables = 0;
-
     /**
      * Constructor for the big table database. type is an integer denoting the
      * different clustering and indexing strategies you will use for the graph
@@ -35,12 +35,14 @@ public class bigDB implements GlobalConst {
      *
      * @param type
      */
-    public bigDB(int type) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
+    public bigDB(int type)
+            throws HFException, HFBufMgrException, HFDiskMgrException, IOException  {
         // initialize read page and write page counter
         bigt b1 = new bigt(888);
         int i = 0;
         System.out.println("bigt b1 name : " + b1.name);
-        for (i = 0; i < Max_table; i++) {
+        for (i=0; i < Max_table ; i++)
+        {
             this.table[i] = b1;
         }
         dbType = type;
@@ -50,13 +52,15 @@ public class bigDB implements GlobalConst {
     /**
      * default constructor.
      */
-    public bigDB() throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
+    public bigDB()
+            throws HFException, HFBufMgrException, HFDiskMgrException, IOException  {
         // initialize read page and write page counter
         dbType = 1;
         bigt b1 = new bigt(888);
         int i = 0;
         System.out.println("bigt b1 name : " + b1.name);
-        for (i = 0; i < Max_table; i++) {
+        for (i=0; i < Max_table ; i++)
+        {
             this.table[i] = b1;
         }
         PCounter.initialize();
@@ -153,30 +157,30 @@ public class bigDB implements GlobalConst {
         fp.close();
     }
 
-    public void setStrategy() {
+    public void setStrategy(){
         switch (dbType) {
-        case 1:
-            // No Index
-            break;
-        case 2:
-            // Index on RowLabel
-            indexStrat1 = MakeIndex.IndexForOneKey(PropertyType.RowLabel);
-            break;
-        case 3:
-            // Index on ColumnLabel
-            indexStrat1 = MakeIndex.IndexForOneKey(PropertyType.ColumnLabel);
-            break;
-        case 4:
-            // Index on combKey for ColumnLabel and RowLabel & Index on TimeStamp
-            indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.ColumnLabel, PropertyType.RowLabel);
-            indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
+            case 1:
+                // No Index
+                break;
+            case 2:
+                // Index on RowLabel
+                indexStrat1 = MakeIndex.IndexForOneKey(PropertyType.RowLabel);
+                break;
+            case 3:
+                // Index on ColumnLabel
+                indexStrat1 = MakeIndex.IndexForOneKey(PropertyType.ColumnLabel);
+                break;
+            case 4:
+                // Index on combKey for ColumnLabel and RowLabel & Index on TimeStamp
+                indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.ColumnLabel, PropertyType.RowLabel);
+                indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
 
-            break;
-        case 5:
-            // Index on combKey for RowLabel and Value & Index on TimeStamp
-            indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.RowLabel, PropertyType.Value);
-            indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
-            break;
+                break;
+            case 5:
+                // Index on combKey for RowLabel and Value & Index on TimeStamp
+                indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.RowLabel, PropertyType.Value);
+                indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
+                break;
         }
 
     }
@@ -339,7 +343,7 @@ public class bigDB implements GlobalConst {
                 }
 
             } // end of forloop02
-              // Unpin the space-map page.
+            // Unpin the space-map page.
 
             unpinPage(pgid, false /* undirty */);
 

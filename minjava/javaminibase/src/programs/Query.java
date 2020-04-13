@@ -35,8 +35,9 @@ public class Query {
 		} else {
 			boolean found = false;
 			int i;
-			System.out.println(SystemDefs.JavabaseDB.NumberOfTables+","+SystemDefs.JavabaseDB.table[0].name);//test output results: 0,myBigTable
+			System.out.println("btname " + _btname);
 			for (i = 0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
+				System.out.println("tables: " + i + " " + SystemDefs.JavabaseDB.table[i].name);
 				if (_btname.equals(SystemDefs.JavabaseDB.table[i].name)) {
 					SystemDefs.JavabaseDB.CurrentTableIndex = i;
 					found = true;
@@ -46,7 +47,6 @@ public class Query {
 			}
 			if (found == false) {
 				System.out.println("Table name not match.");
-				System.exit(1);
 			} else {
 				bigtable = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
 				btname = _btname;
@@ -72,7 +72,9 @@ public class Query {
 		// type 5 - rowLabel combined value index, and timestamp index
 		int readBeforeQuery = PCounter.rcounter;
 		int writeBeforeQuery = PCounter.wcounter;
-
+		if (bigtable == null) {
+			return;
+		}
 		Stream stream = new Stream(bigtable, ordertype, rowfilter, columnfilter, valuefilter);
 
 		System.out.println("Query: initialized stream.");

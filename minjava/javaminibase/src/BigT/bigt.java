@@ -40,15 +40,14 @@ public class bigt implements Tabletype, GlobalConst {
             SystemDefs.JavabaseDB.CurrentTableIndex = 0;
             SystemDefs.JavabaseDB.NumberOfTables = 1;
             System.out.println("bigt: Setting up DB");
-            System.out.println(
-                    "bigDB tablename: " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name);
+            System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name);
             System.out.println("Heap File Name : " + name + " BTType : " + BTType);
         } else {
             boolean found = false;
             int i;
-            for (i = 0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
-                if (name.equals(SystemDefs.JavabaseDB.table[i].name)) {
-                    SystemDefs.JavabaseDB.CurrentTableIndex = i;
+            for (i=0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
+                if ( name.equals(SystemDefs.JavabaseDB.table[i].name)) {
+                    SystemDefs.JavabaseDB.CurrentTableIndex = i ;
                     found = true;
                     System.out.println("bigt: DB existing");
                     System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[i].name);
@@ -60,11 +59,10 @@ public class bigt implements Tabletype, GlobalConst {
                 hf = new Heapfile(name);
                 BTType = type;
                 SystemDefs.JavabaseDB.CurrentTableIndex = SystemDefs.JavabaseDB.NumberOfTables;
-                SystemDefs.JavabaseDB.NumberOfTables++;
+                SystemDefs.JavabaseDB.NumberOfTables++ ;
                 SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex] = this;
                 System.out.println("bigt: Setting up DB, this.name = " + this.name);
-                System.out.println("bigDB tablename: "
-                        + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name);
+                System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name);
                 System.out.println("Heap File Name : " + name + " BTType : " + BTType);
             }
         }
@@ -83,25 +81,21 @@ public class bigt implements Tabletype, GlobalConst {
             SystemDefs.JavabaseDB.table[0] = this;
             SystemDefs.JavabaseDB.CurrentTableIndex = 0;
             SystemDefs.JavabaseDB.NumberOfTables = 1;
-            /*
-             * System.out.println("bigt: Setting up DB");
-             * System.out.println("bigDB tablename: " +
-             * SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name);
-             * System.out.println("Heap File Name : " + name + " BTType : " + BTType);
-             */
+/*          System.out.println("bigt: Setting up DB");
+          System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name);
+          System.out.println("Heap File Name : " + name + " BTType : " + BTType);
+*/
         } else {
             boolean found = false;
             int i;
-            for (i = 0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
-                if (name.equals(SystemDefs.JavabaseDB.table[i].name)) {
-                    SystemDefs.JavabaseDB.CurrentTableIndex = i;
+            for (i=0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
+                if ( name.equals(SystemDefs.JavabaseDB.table[i].name)) {
+                    SystemDefs.JavabaseDB.CurrentTableIndex = i ;
                     // this = SystemDefs.JavabaseDB.table[i] ;
                     found = true;
-                    /*
-                     * System.out.println("bigt: DB existing");
-                     * System.out.println("bigDB tablename: " +
-                     * SystemDefs.JavabaseDB.table[i].name);
-                     */
+/*                   System.out.println("bigt: DB existing");
+                   System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[i].name);
+*/
                 }
             }
             if (found == false) {
@@ -110,14 +104,12 @@ public class bigt implements Tabletype, GlobalConst {
                 hf = new Heapfile(name);
                 BTType = 1;
                 SystemDefs.JavabaseDB.CurrentTableIndex = SystemDefs.JavabaseDB.NumberOfTables;
-                SystemDefs.JavabaseDB.NumberOfTables++;
+                SystemDefs.JavabaseDB.NumberOfTables++ ;
                 SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex] = this;
-                /*
-                 * System.out.println("bigt: Setting up DB, this.name = " + this.name);
-                 * System.out.println("bigDB tablename: " +
-                 * SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name);
-                 * System.out.println("Heap File Name : " + name + " BTType : " + BTType);
-                 */
+/*                 System.out.println("bigt: Setting up DB, this.name = " + this.name);
+                 System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name);
+                 System.out.println("Heap File Name : " + name + " BTType : " + BTType);
+*/
             }
         }
     } // end of constructor

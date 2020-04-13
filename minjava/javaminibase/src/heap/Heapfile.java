@@ -426,7 +426,7 @@ public class Heapfile implements Filetype, GlobalConst {
 		HFPage nextDirPage = new HFPage();
 		PageId currentDirPageId = new PageId(_firstDirPageId.pid);
 		PageId nextDirPageId = new PageId(); // OK
-		System.out.println("in the heap file insert map function - entry point, FirstDirectory page no: " + _firstDirPageId.pid );
+		System.out.println("in the heap file insert map function - entry point, FirstDirectory page no  : " + _firstDirPageId.pid );
 
 		pinPage(currentDirPageId, currentDirPage, false/* Rdisk */);
 
