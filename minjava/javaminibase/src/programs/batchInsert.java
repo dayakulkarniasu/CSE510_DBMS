@@ -82,10 +82,9 @@ public class batchInsert implements GlobalConst {
 
           if ((fd_rowLabel.equals(rec.rowlabname)) && (fd_columnLabel.equals(rec.collabname))) {
 
-            System.out.println();
+            if(i==0) System.out.println();
             System.out.println("rec.row " + i + " :" + rec.rowlabname + " rec.col : " + rec.collabname
                 + " rec.timestamp : " + rec.timestampname + " rec.value : " + rec.valuename);
-            System.out.println();
 
             no_of_maps++;
 
@@ -135,7 +134,6 @@ public class batchInsert implements GlobalConst {
       System.out.println();
       // end output
 
-      System.out.println();
       System.out.println("rid1.pageNo:" + pgid1 + " rid1.slotNo:" + slotno1);
       System.out.println("rid2.pageNo:" + pgid2 + " rid2.slotNo:" + slotno2);
       System.out.println("rid3.pageNo:" + pgid3 + " rid3.slotNo:" + slotno3);
