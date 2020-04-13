@@ -25,32 +25,27 @@ public class Query {
 	int numbuf;
 
 	// constructor
-	public Query(String _btname, int _type, int _ordertype, String _rowfilter, String _columnfilter, String _valuefilter, int _numbuf)
-	{
-		if(SystemDefs.JavabaseDB == null)
-		{
+	public Query(String _btname, int _type, int _ordertype, String _rowfilter, String _columnfilter,
+			String _valuefilter, int _numbuf) {
+		if (SystemDefs.JavabaseDB == null) {
 			System.out.println("Database not exist.");
-		}
-		else if(SystemDefs.JavabaseDB.table[0] == null)
-		{
+			System.exit(1);
+		} else if (SystemDefs.JavabaseDB.table[0] == null) {
 			System.out.println("Database does not have any Table.");
-		}
-		else {
+		} else {
 			boolean found = false;
 			int i;
-			for (i=0; i < SystemDefs.JavabaseDB.NumberOfTables - 1; i++) {
-				if ( _btname.equals(SystemDefs.JavabaseDB.table[i].name)) {
-					SystemDefs.JavabaseDB.CurrentTableIndex = i ;
+			for (i = 0; i < SystemDefs.JavabaseDB.NumberOfTables - 1; i++) {
+				if (_btname.equals(SystemDefs.JavabaseDB.table[i].name)) {
+					SystemDefs.JavabaseDB.CurrentTableIndex = i;
 					found = true;
 					System.out.println("bigt: DB existing");
 					System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[i].name);
 				}
 			}
-			if ( found == false) {
+			if (found == false) {
 				System.out.println("Table name not match.");
-			}
-			else
-			{
+			} else {
 				bigtable = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
 				btname = _btname;
 				type = _type;
@@ -65,7 +60,8 @@ public class Query {
 
 	public void runquery() throws Exception {
 
-		//Stream(bigt bigtable, int orderType, String rowFilter, String columnFilter, String valueFilter)
+		// Stream(bigt bigtable, int orderType, String rowFilter, String columnFilter,
+		// String valueFilter)
 		// type - index type
 		// type 1 - no index
 		// type 2 - rowLabel index
@@ -86,20 +82,17 @@ public class Query {
 		types[2] = new AttrType(AttrType.attrString);
 		types[3] = new AttrType(AttrType.attrInteger);
 
-		try{
+		try {
 			map = stream.getNext();
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		while(map != null)
-		{
+		while (map != null) {
 			map.print(types);
 			map = stream.getNext();
 		}
-		System.out.println("Diskpage read " + (PCounter.rcounter-readBeforeQuery) + " Disk page written " + (PCounter.wcounter-writeBeforeQuery));
+		System.out.println("Diskpage read " + (PCounter.rcounter - readBeforeQuery) + " Disk page written "
+				+ (PCounter.wcounter - writeBeforeQuery));
 	}
 }
-
