@@ -34,4 +34,13 @@ public interface GlobalConst {
   public static final int STR_LEN = 32;
   public static final int MAP_LEN = 118;
   public static final int MAPHEADER_LEN = 12;
+
+  /**
+   * Map Data
+   */
+  public static final int ROW_LABEL = 1;
+  public static final int COL_LABEL = 2;
+  public static final int MAP_VAL = 3;
+  public static final int MAP_TS = 4;
+
 }

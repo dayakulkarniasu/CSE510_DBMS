@@ -4,6 +4,8 @@ import btree.*;
 import global.*;
 import BigT.*;
 import heap.*;
+import iterator.RowJoin;
+
 import java.util.Scanner;
 
 import java.io.*;
@@ -21,11 +23,31 @@ public class InsertTest implements GlobalConst{
         Scanner scanner = new Scanner(System.in);
         try{
             while(true){
-                System.out.println("**********************************");
-                System.out.println("Input batchinsert or query or mapinsert or getCounts or quit");
-                System.out.println("\tbatchinsert [CSV File] [OrderType] [BigTable Name]");
-                System.out.println("\tquery [BT Name] [OrderType] [OrderBy] [RowFilter] [ColFilter] [ValFilter] [NumBuf]");
-                System.out.println("**********************************");
+                System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                System.out.println("+");
+                System.out.println("+\tCommands");
+                System.out.println("+");
+                System.out.println("+\tbatchinsert");
+                System.out.println("+");
+                System.out.println("+\tbatchinsert [DataFile] [OrderType] [BTName]");
+                System.out.println("+");
+                System.out.println("+\tquery");
+                System.out.println("+");
+                System.out.println("+\tquery [BTName] [OrderType] [OrderBy] [RF] [CF] [VF] [NumBuf]");
+                System.out.println("+");
+                System.out.println("+\tmapinsert");
+                System.out.println("+");
+                System.out.println("+\tmapinsert [RL] [CL] [V] [TS] [Type] [BTName] [NumBuf]");
+                System.out.println("+");
+                System.out.println("+\tgetCounts");
+                System.out.println("+");
+                System.out.println("+\trowjoin");
+                System.out.println("+\trowjoin [BT1] [BT2] [BTResult] [CF] [NumBuf]");
+                System.out.println("+");
+                System.out.println("+\tquit");
+                System.out.println("+");
+                System.out.println("+");
+                System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                 String line = scanner.nextLine();
                 String[] params = line.split(" ");
                 String fname = "";
@@ -200,6 +222,24 @@ public class InsertTest implements GlobalConst{
                       /*
                       batchInsert.insertTable(fname, tablename);
                       */
+                }
+                else if(params[0].equalsIgnoreCase("rowjoin")){
+                    String BTName1 = params[1];
+                    String BTName2 = params[2];
+                    String BTResult = params[3];
+                    String ColumnFilter = params[4];
+                    int NumBuf = Integer.parseInt(params[5]);
+                    bigt big = null;
+                    for (int i=0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
+                        if ( BTName1.equals(SystemDefs.JavabaseDB.table[i].name)) {
+                            big = SystemDefs.JavabaseDB.table[i];
+                        }
+                    }
+                    Stream s = new Stream(big, 1, "*", ColumnFilter, "*", NumBuf);
+                    RowJoin rj = new RowJoin(NumBuf, s, BTName2, ColumnFilter);
+                    Map test = null;
+                    rj.get_next().print(MapSchema.MapAttrType());
+                    //while((test = rj.get_next()) )
                 }
                 else {
                     if(params[0].equalsIgnoreCase("q") || params[0].equalsIgnoreCase("quit")) {

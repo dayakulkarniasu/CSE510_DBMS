@@ -16,12 +16,12 @@ public class Projection {
 	 * Jtuple,before calling this mehtod. we know that this two map can join in the
 	 * common field
 	 * 
-	 * @param t1         The Map will be joined with t2
-	 * @param type1[]    The array used to store the each attribute type
-	 * @param t2         The Map will be joined with t1
-	 * @param type2[]    The array used to store the each attribute type
+	 * @param m1         The Map will be joined with t2
+	 * @param type1    The array used to store the each attribute type
+	 * @param m2         The Map will be joined with t1
+	 * @param type2    The array used to store the each attribute type
 	 * @param Jmap       the returned Map
-	 * @param perm_mat[] shows what input fields go where in the output map
+	 * @param perm_mat shows what input fields go where in the output map
 	 * @param nOutFlds   number of outer relation field
 	 * @exception UnknowAttrType                 attrbute type does't match
 	 * @exception FieldNumberOutOfBoundException field number exceeds limit
@@ -73,12 +73,44 @@ public class Projection {
 	}
 
 	/**
+	 * Map t1 and Map t2 will be joined, and the result will be stored in Map
+	 * Jtuple,before calling this mehtod. we know that this two map can join in the
+	 * common field
+	 *
+	 * @param m1         The Map will be joined with t2
+	 * @param type1    The array used to store the each attribute type
+	 * @param m2         The Map will be joined with t1
+	 * @param type2    The array used to store the each attribute type
+	 * @param Jmap       the returned Map
+	 * @param perm_mat shows what input fields go where in the output map
+	 * @param nOutFlds   number of outer relation field
+	 * @exception UnknowAttrType                 attrbute type does't match
+	 * @exception FieldNumberOutOfBoundException field number exceeds limit
+	 * @exception IOException                    some I/O fault
+	 */
+	public static void RowJoin(Map m1, AttrType type1[], Map m2, AttrType type2[], Map Jmap, FldSpec perm_mat[],
+							int nOutFlds) throws UnknowAttrType, FieldNumberOutOfBoundException, IOException {
+		for (int i = 0; i < nOutFlds; i++) {
+			switch (type1[perm_mat[i].offset-1].attrType){
+				case AttrType.attrInteger:
+					Jmap.setIntFld(i + 1, m1.getIntFld(perm_mat[i].offset));
+					break;
+				case AttrType.attrString:
+					String newRowLabel = m1.getStrFld(perm_mat[i].offset).concat(":"+m2.getStrFld(perm_mat[i].offset));
+					Jmap.setStrFld(i+1, newRowLabel);
+					break;
+			}
+		}
+		return;
+	}
+
+	/**
 	 * Map t1 will be projected the result will be stored in Map Jtuple
 	 * 
-	 * @param t1         The Map will be projected
-	 * @param type1[]    The array used to store the each attribute type
+	 * @param m1         The Map will be projected
+	 * @param type1    The array used to store the each attribute type
 	 * @param Jmap       the returned Map
-	 * @param perm_mat[] shows what input fields go where in the output map
+	 * @param perm_mat shows what input fields go where in the output map
 	 * @param nOutFlds   number of outer relation field
 	 * @exception UnknowAttrType                 attrbute type doesn't match
 	 * @exception WrongPermat                    wrong FldSpec argument

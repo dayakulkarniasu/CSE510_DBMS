@@ -79,7 +79,7 @@ public class Query {
 		if(bigtable == null){
 			return;
 		}
-		Stream stream = new Stream(bigtable, ordertype, rowfilter, columnfilter, valuefilter);
+		Stream stream = new Stream(bigtable, ordertype, rowfilter, columnfilter, valuefilter, numbuf);
 
 		System.out.println("Query: initialized stream.");
 
