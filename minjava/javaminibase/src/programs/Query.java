@@ -29,7 +29,7 @@ public class Query {
 			String _valuefilter, int _numbuf) {
 		if (SystemDefs.JavabaseDB == null) {
 			System.out.println("Database not exist.");
-			return;
+			System.exit(1);
 		} else if (SystemDefs.JavabaseDB.table[0] == null) {
 			System.out.println("Database does not have any Table.");
 		} else {
@@ -75,7 +75,7 @@ public class Query {
 		if (bigtable == null) {
 			return;
 		}
-		Stream stream = new Stream(bigtable, ordertype, rowfilter, columnfilter, valuefilter);
+		Stream stream = new Stream(bigtable, ordertype, rowfilter, columnfilter, valuefilter, numbuf);
 
 		System.out.println("Query: initialized stream.");
 

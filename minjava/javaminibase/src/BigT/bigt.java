@@ -163,6 +163,6 @@ public class bigt implements Tabletype, GlobalConst {
     public Stream openStream(int orderType, String rowFilter, String columnFilter, String valueFilter)
             throws InvalidTupleSizeException, IndexException, InvalidTypeException, UnknownIndexTypeException,
             IOException {
-        return new Stream(null, orderType, valueFilter, valueFilter, valueFilter);
+        return new Stream(null, orderType, rowFilter, columnFilter, valueFilter, 12);
     }
 }
