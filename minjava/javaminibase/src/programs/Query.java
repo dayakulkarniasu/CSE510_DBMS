@@ -29,7 +29,7 @@ public class Query {
 			String _valuefilter, int _numbuf) {
 		if (SystemDefs.JavabaseDB == null) {
 			System.out.println("Database not exist.");
-			System.exit(1);
+			return;
 		} else if (SystemDefs.JavabaseDB.table[0] == null) {
 			System.out.println("Database does not have any Table.");
 		} else {
