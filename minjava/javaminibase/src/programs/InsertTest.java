@@ -13,7 +13,7 @@ public class InsertTest implements GlobalConst{
         boolean first = true;
         String dbpath;
         String logpath;
-
+        
         SystemDefs sysdef = null;
         int recleng2 = MAP_LEN;
         boolean found_delete_flag = true;
