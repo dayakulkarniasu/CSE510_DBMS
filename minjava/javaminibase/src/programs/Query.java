@@ -35,7 +35,8 @@ public class Query {
 		} else {
 			boolean found = false;
 			int i;
-			for (i = 0; i < SystemDefs.JavabaseDB.NumberOfTables - 1; i++) {
+			System.out.println(SystemDefs.JavabaseDB.NumberOfTables+","+SystemDefs.JavabaseDB.table[0].name);//test output results: 0,myBigTable
+			for (i = 0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
 				if (_btname.equals(SystemDefs.JavabaseDB.table[i].name)) {
 					SystemDefs.JavabaseDB.CurrentTableIndex = i;
 					found = true;
@@ -45,6 +46,7 @@ public class Query {
 			}
 			if (found == false) {
 				System.out.println("Table name not match.");
+				System.exit(1);
 			} else {
 				bigtable = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
 				btname = _btname;
