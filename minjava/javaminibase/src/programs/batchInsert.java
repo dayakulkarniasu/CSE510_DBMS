@@ -187,7 +187,7 @@ public class batchInsert implements GlobalConst {
       throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
     boolean status_1 = false;
     status_1 = InsertBTmap(datafilename, tablename);
-    if ( status_1 == true){
+    if (status_1 == true) {
       System.out.println("Diskpage read " + PCounter.rcounter + " Disk page written " + PCounter.wcounter);
     }
   }// end of main
@@ -256,7 +256,8 @@ public class batchInsert implements GlobalConst {
 
           linecount++;
         } // end of while loop
-        // System.out.println("rowmax: " + rowmax + " colmax: " + colmax + "valmax" + valmax);
+        // System.out.println("rowmax: " + rowmax + " colmax: " + colmax + "valmax" +
+        // valmax);
         System.out.println("After reading the file, LineCoiunt = " + linecount);
 
       } // end of try
