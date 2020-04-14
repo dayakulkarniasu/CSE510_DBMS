@@ -35,7 +35,7 @@ public class QueryHelper {
         }
         // If ColumnFilter is a range, create a range expression
         if (isRangeQuery(columnFilter)) {
-            String[] bounds = getBounds(rowFilter);
+            String[] bounds = getBounds(columnFilter);
             for (CondExpr expr : rangeQuery(bounds[0], bounds[1], 2)) {
                 query.add(expr);
             }
@@ -47,8 +47,9 @@ public class QueryHelper {
 
         // If ValueFilter is a range, create a range expression
         if (isRangeQuery(valueFilter)) {
-            String[] bounds = getBounds(rowFilter);
-            System.out.println(Arrays.toString(bounds));// test output
+            String[] bounds = getBounds(valueFilter);
+            // System.out.println(isRangeQuery(valueFilter));
+            System.out.println(bounds[0]+","+bounds[1]);// test output
             for (CondExpr expr : rangeQuery(bounds[0], bounds[1], 3)) {
                 query.add(expr);
             }
