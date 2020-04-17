@@ -171,15 +171,12 @@ public class bigDB implements GlobalConst {
                 indexStrat1 = MakeIndex.IndexForOneKey(PropertyType.ColumnLabel);
                 break;
             case 4:
-                // Index on combKey for ColumnLabel and RowLabel & Index on TimeStamp
+                // Index on combKey for ColumnLabel and RowLabel
                 indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.ColumnLabel, PropertyType.RowLabel);
-                indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
-
                 break;
             case 5:
-                // Index on combKey for RowLabel and Value & Index on TimeStamp
+                // Index on combKey for RowLabel and Value
                 indexStrat1 = MakeIndex.IndexForCombinedKey(PropertyType.RowLabel, PropertyType.Value);
-                indexStrat2 = MakeIndex.IndexForOneKey(PropertyType.TimeStamp);
                 break;
         }
 

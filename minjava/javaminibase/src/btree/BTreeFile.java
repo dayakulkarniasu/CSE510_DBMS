@@ -317,6 +317,10 @@ public class BTreeFile extends IndexFile implements GlobalConst {
 			if (headerPage.get_keyType() != AttrType.attrInteger) {
 				throw new KeyNotMatchException(null, "");
 			}
+		} else if (key instanceof CombinedKey) {
+			if (headerPage.get_keyType() != AttrType.attrCombined) {
+				throw new KeyNotMatchException(null, "");
+			}
 		} else
 			throw new KeyNotMatchException(null, "");
 

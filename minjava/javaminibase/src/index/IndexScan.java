@@ -38,6 +38,7 @@ public class IndexScan extends Iterator {
   public IndexScan(IndexType index, final String relName, final String indName, AttrType types[], short str_sizes[],
       int noInFlds, int noOutFlds, FldSpec outFlds[], CondExpr selects[], final int fldNum, final boolean indexOnly)
       throws IndexException, InvalidTypeException, InvalidTupleSizeException, UnknownIndexTypeException, IOException {
+    single = true;
     _fldNum = fldNum;
     _noInFlds = noInFlds;
     _types = types;
@@ -98,8 +99,80 @@ public class IndexScan extends Iterator {
       throw new UnknownIndexTypeException("Only BTree index is supported so far");
 
     }
+  }
+
+  // similar to previous constructor but replaced fldNum with fldNums[]
+  public IndexScan(IndexType index, final String relName, final String indName, AttrType types[], short str_sizes[],
+                   int noInFlds, int noOutFlds, FldSpec outFlds[], CondExpr selects[], final int[] fldNums, final boolean indexOnly)
+          throws IndexException, InvalidTypeException, InvalidTupleSizeException, UnknownIndexTypeException, IOException {
+    single = false;
+    _fldNums = new int[fldNums.length];
+    for(int i = 1; i < fldNums.length; i++)
+    {
+      _fldNums[i] = fldNums[i];
+    }
+    _noInFlds = noInFlds;
+    _types = types;
+    _s_sizes = str_sizes;
+
+    AttrType[] Jtypes = new AttrType[noOutFlds];
+    short[] ts_sizes;
+    Jmap = new Map();
+
+    try {
+      ts_sizes = MapUtils.setup_op_map(Jmap, Jtypes, types, noInFlds, str_sizes, outFlds, noOutFlds);
+    } catch (MapUtilsException e) {
+      throw new IndexException(e, "IndexScan.java: TupleUtilsException caught from TupleUtils.setup_op_tuple()");
+    } catch (InvalidRelation e) {
+      throw new IndexException(e, "IndexScan.java: InvalidRelation caught from TupleUtils.setup_op_tuple()");
+    }
+
+    _selects = selects;
+    perm_mat = outFlds;
+    _noOutFlds = noOutFlds;
+    map1 = new Map();
+    try {
+      map1.setHdr((short) noInFlds, types, str_sizes);
+    } catch (Exception e) {
+      throw new IndexException(e, "IndexScan.java: Heapfile error");
+    }
+
+    t1_size = map1.size();
+    index_only = indexOnly; // added by bingjie miao
+
+    try {
+      f = new Heapfile(relName);
+    } catch (Exception e) {
+      throw new IndexException(e, "IndexScan.java: Heapfile not created");
+    }
+
+    switch (index.indexType) {
+      // linear hashing is not yet implemented
+      case IndexType.B_Index:
+        // error check the select condition
+        // must be of the type: value op symbol || symbol op value
+        // but not symbol op symbol || value op value
+        try {
+          indFile = new BTreeFile(indName);
+        } catch (Exception e) {
+          throw new IndexException(e, "IndexScan.java: BTreeFile exceptions caught from BTreeFile constructor");
+        }
+
+        try {
+          indScan = (BTFileScan) IndexUtils.BTree_scan(selects, indFile);
+        } catch (Exception e) {
+          throw new IndexException(e, "IndexScan.java: BTreeFile exceptions caught from IndexUtils.BTree_scan().");
+        }
+
+        break;
+      case IndexType.None:
+      default:
+        throw new UnknownIndexTypeException("Only BTree index is supported so far");
+
+    }
 
   }
+
 
   /**
    * returns the next map. if <code>index_only</code>, only returns the key value
@@ -125,50 +198,78 @@ public class IndexScan extends Iterator {
     while (nextentry != null) {
       if (index_only) {
         // only need to return the key
+        if(single)
+        {
+          AttrType[] attrType = new AttrType[1];
+          short[] s_sizes = new short[1];
 
-        AttrType[] attrType = new AttrType[1];
-        short[] s_sizes = new short[1];
+          if (_types[_fldNum - 1].attrType == AttrType.attrInteger) {
+            attrType[0] = new AttrType(AttrType.attrInteger);
+            try {
+              Jmap.setHdr((short) 1, attrType, s_sizes);
+            } catch (Exception e) {
+              throw new IndexException(e, "IndexScan.java: Heapfile error");
+            }
 
-        if (_types[_fldNum - 1].attrType == AttrType.attrInteger) {
-          attrType[0] = new AttrType(AttrType.attrInteger);
-          try {
-            Jmap.setHdr((short) 1, attrType, s_sizes);
-          } catch (Exception e) {
-            throw new IndexException(e, "IndexScan.java: Heapfile error");
+            try {
+              Jmap.setIntFld(1, ((IntegerKey) nextentry.key).getKey().intValue());
+            } catch (Exception e) {
+              throw new IndexException(e, "IndexScan.java: Heapfile error");
+            }
+          } else if (_types[_fldNum - 1].attrType == AttrType.attrString) {
+
+            attrType[0] = new AttrType(AttrType.attrString);
+            // calculate string size of _fldNum
+            int count = 0;
+            for (int i = 0; i < _fldNum; i++) {
+              if (_types[i].attrType == AttrType.attrString)
+                count++;
+            }
+            s_sizes[0] = _s_sizes[count - 1];
+
+            try {
+              Jmap.setHdr((short) 1, attrType, s_sizes);
+            } catch (Exception e) {
+              throw new IndexException(e, "IndexScan.java: Heapfile error");
+            }
+
+            try {
+              Jmap.setStrFld(1, ((StringKey) nextentry.key).getKey());
+            } catch (Exception e) {
+              throw new IndexException(e, "IndexScan.java: Heapfile error");
+            }
+          } else {
+            // attrReal not supported for now
+            throw new UnknownKeyTypeException("Only Integer and String keys are supported so far");
           }
-
-          try {
-            Jmap.setIntFld(1, ((IntegerKey) nextentry.key).getKey().intValue());
-          } catch (Exception e) {
-            throw new IndexException(e, "IndexScan.java: Heapfile error");
-          }
-        } else if (_types[_fldNum - 1].attrType == AttrType.attrString) {
-
-          attrType[0] = new AttrType(AttrType.attrString);
-          // calculate string size of _fldNum
-          int count = 0;
-          for (int i = 0; i < _fldNum; i++) {
-            if (_types[i].attrType == AttrType.attrString)
-              count++;
-          }
-          s_sizes[0] = _s_sizes[count - 1];
-
-          try {
-            Jmap.setHdr((short) 1, attrType, s_sizes);
-          } catch (Exception e) {
-            throw new IndexException(e, "IndexScan.java: Heapfile error");
-          }
-
-          try {
-            Jmap.setStrFld(1, ((StringKey) nextentry.key).getKey());
-          } catch (Exception e) {
-            throw new IndexException(e, "IndexScan.java: Heapfile error");
-          }
-        } else {
-          // attrReal not supported for now
-          throw new UnknownKeyTypeException("Only Integer and String keys are supported so far");
+          return Jmap;
         }
-        return Jmap;
+        else
+        {
+          AttrType[] attrType = new AttrType[]{new AttrType(AttrType.attrString), new AttrType(AttrType.attrString)};
+          short[] s_sizes = new short[]{GlobalConst.STR_LEN, GlobalConst.STR_LEN};
+
+          try {
+            Jmap.setHdr((short) 2, attrType, s_sizes);
+          } catch (Exception e) {
+            throw new IndexException(e, "IndexScan.java: Heapfile error");
+          }
+
+          String[] keys = ((CombinedKey) nextentry.key).getKey();
+
+          try {
+            Jmap.setStrFld(1, keys[0]);
+          } catch (Exception e) {
+            throw new IndexException(e, "IndexScan.java: Heapfile error");
+          }
+
+          try {
+            Jmap.setStrFld(2, keys[1]);
+          } catch (Exception e) {
+            throw new IndexException(e, "IndexScan.java: Heapfile error");
+          }
+          return Jmap;
+        }
       }
 
       // not index_only, need to return the whole map
@@ -248,5 +349,6 @@ public class IndexScan extends Iterator {
   private int t1_size;
   private int _fldNum;
   private boolean index_only;
-
+  private int[] _fldNums;
+  private boolean single = true;
 }

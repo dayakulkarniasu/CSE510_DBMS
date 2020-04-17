@@ -50,6 +50,14 @@ public class BT implements GlobalConst {
       return (((IntegerKey) key1).getKey()).intValue() - (((IntegerKey) key2).getKey()).intValue();
     } else if ((key1 instanceof StringKey) && (key2 instanceof StringKey)) {
       return ((StringKey) key1).getKey().compareTo(((StringKey) key2).getKey());
+    } else if ((key1 instanceof CombinedKey) && (key2 instanceof CombinedKey)) {
+      String[] skey1 = ((CombinedKey) key1).getKey();
+      String[] skey2 = ((CombinedKey) key2).getKey();
+      if(skey1[0].compareTo(skey2[0]) == 0){
+        return skey1[0].compareTo(skey2[0]);
+      } else{
+        return skey1[1].compareTo(skey2[1]);
+      }
     }
 
     else {
@@ -67,14 +75,19 @@ public class BT implements GlobalConst {
    */
   protected final static int getKeyLength(KeyClass key) throws KeyNotMatchException, IOException {
     if (key instanceof StringKey) {
-      OutputStream out = new ByteArrayOutputStream();
-      DataOutputStream outstr = new DataOutputStream(out);
-      outstr.writeUTF(((StringKey) key).getKey());
-      return outstr.size();
-    } else if (key instanceof IntegerKey)
+      // OutputStream out = new ByteArrayOutputStream();
+      // DataOutputStream outstr = new DataOutputStream(out);
+      // outstr.writeUTF(((StringKey) key).getKey());
+      // return outstr.size();
+      return STR_LEN;
+    } else if (key instanceof IntegerKey) {
       return 4;
-    else
+    } else if (key instanceof CombinedKey){
+      return STR_LEN*2;
+    }
+    else {
       throw new KeyNotMatchException(null, "key types do not match");
+    }
   }
 
   /**
@@ -153,7 +166,11 @@ public class BT implements GlobalConst {
       } else if (keyType == AttrType.attrString) {
         // System.out.println(" offset "+ offset + " " + length + " "+n);
         key = new StringKey(Convert.getStrValue(offset, from, length - n));
-      } else
+      } else if (keyType == AttrType.attrCombined) {
+        key = new CombinedKey(Convert.getStrValue(offset, from, STR_LEN),
+                Convert.getStrValue(offset + STR_LEN, from, STR_LEN));
+      }
+      else
         throw new KeyNotMatchException(null, "key types do not match");
 
       return new KeyDataEntry(key, data);
@@ -191,7 +208,12 @@ public class BT implements GlobalConst {
         Convert.setIntValue(((IntegerKey) entry.key).getKey().intValue(), 0, data);
       } else if (entry.key instanceof StringKey) {
         Convert.setStrValue(((StringKey) entry.key).getKey(), 0, data);
-      } else
+      }else if (entry.key instanceof CombinedKey) {
+        String[] keys = ((CombinedKey) entry.key).getKey();
+        Convert.setStrValue(keys[0], 0, data);
+        Convert.setStrValue(keys[1], STR_LEN, data);
+      }
+      else
         throw new KeyNotMatchException(null, "key types do not match");
 
       if (entry.data instanceof IndexData) {
@@ -268,7 +290,9 @@ public class BT implements GlobalConst {
         if (keyType == AttrType.attrString)
           System.out
               .println(i + " (key, [pageNo, slotNo]):   (" + (StringKey) entry.key + ",  " + (LeafData) entry.data);
-
+        if (keyType == AttrType.attrCombined)
+          System.out.println(
+                  i + " (key, [pageNo, slotNo]):   (" + (CombinedKey) entry.key + ",  " + (LeafData) entry.data + " )");
         i++;
       }
 

@@ -624,7 +624,7 @@ public class Heapfile implements Filetype, GlobalConst {
 		System.out.println("MID : SlotNo = " + mid.slotNo + " PageNo = " + mid.pageNo.pid);
 		// Each insertion of a map into the BigTable also adds into the corresponding
 		// Index based upon the type of the BigTable.
-		MakeIndex.InsertIntoIndex(new Map(mapPtr, mapPtr.length, 0), mid);
+		MakeIndex.InsertIntoIndex(new Map(mapPtr, 0, mapPtr.length), mid);
 		return mid;
 
 	}

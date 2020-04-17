@@ -38,6 +38,10 @@ public class KeyDataEntry {
          this.key = new IntegerKey(((IntegerKey) key).getKey());
       else if (key instanceof StringKey)
          this.key = new StringKey(((StringKey) key).getKey());
+      else if (key instanceof CombinedKey) {
+         String[] keys = ((CombinedKey) key).getKey();
+         this.key = new CombinedKey(keys[0], keys[1]);
+      }
    };
 
    /**
@@ -65,6 +69,10 @@ public class KeyDataEntry {
          this.key = new IntegerKey(((IntegerKey) key).getKey());
       else if (key instanceof StringKey)
          this.key = new StringKey(((StringKey) key).getKey());
+      else if (key instanceof CombinedKey) {
+         String[] keys = ((CombinedKey) key).getKey();
+         this.key = new CombinedKey(keys[0], keys[1]);
+      }
    };
 
    /**
@@ -83,7 +91,10 @@ public class KeyDataEntry {
          this.key = new IntegerKey(((IntegerKey) key).getKey());
       else if (key instanceof StringKey)
          this.key = new StringKey(((StringKey) key).getKey());
-
+      else if (key instanceof CombinedKey) {
+         String[] keys = ((CombinedKey) key).getKey();
+         this.key = new CombinedKey(keys[0], keys[1]);
+      }
       if (data instanceof IndexData)
          this.data = new IndexData(((IndexData) data).getData());
       else if (data instanceof LeafData)
@@ -101,8 +112,13 @@ public class KeyDataEntry {
 
       if (key instanceof IntegerKey)
          st1 = ((IntegerKey) key).getKey().equals(((IntegerKey) entry.key).getKey());
-      else
+      else if (key instanceof StringKey)
          st1 = ((StringKey) key).getKey().equals(((StringKey) entry.key).getKey());
+      else {
+         String[] keys = ((CombinedKey) key).getKey();
+         String[] entrykeys = ((CombinedKey) entry.key).getKey();
+         st1 = keys[0].equals(entrykeys[0]) && keys[1].equals(entrykeys[1]);
+      }
 
       if (data instanceof IndexData)
          st2 = ((IndexData) data).getData().pid == ((IndexData) entry.data).getData().pid;
