@@ -185,16 +185,16 @@ public class batchInsert implements GlobalConst {
     return true;
   }
 
-  public static void insertTable(String datafilename, String tablename, int InputIndexType)
+  public static void insertTable(String datafilename, String tablename, int InputIndexType, int NumBuf)
       throws HFException, HFBufMgrException, HFDiskMgrException, IOException, iterator.FileScanException, iterator.MapUtilsException, iterator.InvalidRelation {
     boolean status_1 = false;
-    status_1 = ReadFromFile(datafilename, tablename, InputIndexType);
+    status_1 = ReadFromFile(datafilename, tablename, InputIndexType, NumBuf);
     if ( status_1 == true){
       System.out.println("Diskpage read " + PCounter.rcounter + " Disk page written " + PCounter.wcounter);
     }
   }// end of main
 
-  public static boolean ReadFromFile(String datafileN, String tablename , int InputIndexType_1)
+  public static boolean ReadFromFile(String datafileN, String tablename , int InputIndexType_1, int NumBuf)
           throws HFException, HFBufMgrException, HFDiskMgrException, IOException, FileScanException, MapUtilsException, iterator.InvalidRelation {
     boolean status = true;
     bigt big = null;
@@ -252,8 +252,7 @@ public class batchInsert implements GlobalConst {
     short[] strLengths = MapSchema.MapStrLengths();
     // Sort by order type passed in
     FileScan fscan = new FileScan(f, attrTypes, strLengths, fldCount, fldCount, output, null);
-    //TODO numbuf is set to 50 right now, but need to change program to pass in as param
-    Iterator sort = BuildSortOrder(fscan, attrTypes, strLengths, InputIndexType_1,50);
+    Iterator sort = BuildSortOrder(fscan, attrTypes, strLengths, InputIndexType_1,NumBuf);
     try {
       Map temp = new Map(GlobalConst.MAP_LEN);
       temp.setHdr((short) MapSchema.MapFldCount(), MapSchema.MapAttrType(), MapSchema.MapStrLengths());
@@ -268,76 +267,7 @@ public class batchInsert implements GlobalConst {
     catch (Exception e){
       e.printStackTrace();
     }
-
-//      temp.setRowLabel(rowLabel);
-//      temp.setColumnLabel(columnLabel);
-//      temp.setValue(value);
-//      temp.setTimeStamp(Integer.parseInt(timeStamp));
-//    if (status == true) {
-//      System.out.println("In batchInsert - Scan the records just inserted\n");
-//
-//      try {
-//        scan = big.hf.openScan();
-//        // System.out.println (" In batchInsert - done with f.openScan() \n") ;
-//      } catch (Exception e) {
-//        status = false;
-//        System.err.println("*** Error opening scan\n");
-//        e.printStackTrace();
-//      }
-//    }
-
-//    if (status == true) {
-//      int len, i = 0;
-//      DummyRecord rec = null;
-//      Map aMap = new Map();
-//
-//      boolean done = false;
-//      while (!done) {
-//        try {
-//
-//          aMap = scan.getNext(rid);
-//          if (aMap == null) {
-//            done = true;
-//            break;
-//          }
-//        } catch (Exception e) {
-//          status = false;
-//          e.printStackTrace();
-//        }
-//
-//        if (status == true && !done) {
-//          try {
-//            rec = new DummyRecord(aMap);
-//          } catch (Exception e) {
-//            System.err.println("" + e);
-//            e.printStackTrace();
-//          }
-//
-//          len = aMap.getLength();
-//          if (len != recleng2) {
-//            System.err.println("*** Record " + i + " had unexpected length " + len + "\n");
-//            status = false;
-//            break;
-//          } else if (SystemDefs.JavabaseBM.getNumUnpinnedBuffers() == SystemDefs.JavabaseBM.getNumBuffers()) {
-//            System.err.println("On record " + i + ":\n");
-//            System.err.println("*** The heap-file scan has not left its " + "page pinned\n");
-//            status = false;
-//            break;
-//          }
-//          System.out.println("record: " + i);
-//          System.out.println("rec.row " + i + " : " + rec.rowlabname);
-//          System.out.println("rec.col " + i + " : " + rec.collabname);
-//          System.out.println("rec.timestamp " + i + " : " + rec.timestampname);
-//          System.out.println("rec.value " + i + " : " + rec.valuename);
-//          System.out.println();
-//        }
-//        ++i;
-//      } // end of while not done
-//
-//    } // end of bigger status ok
-//
-//    if (status == true)
-//      System.out.println("Test 1 completed successfully.\n");
+    // Close everything or we an error is thrown
     try{
       sort.close();
       fscan.close();
@@ -346,7 +276,6 @@ public class batchInsert implements GlobalConst {
     catch (Exception e){
       e.printStackTrace();
     }
-
     return status;
   }
 
