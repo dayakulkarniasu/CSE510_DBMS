@@ -1,36 +1,36 @@
 package global;
 
-/** 
+/**
  * Enumeration class for AttrType
  * 
  */
 
 public class AttrType {
 
-  public static final int attrString  = 0;
+  public static final int attrString = 0;
   public static final int attrInteger = 1;
-  public static final int attrReal    = 2;
-  public static final int attrSymbol  = 3;
-  public static final int attrNull    = 4;
-  
+  public static final int attrReal = 2;
+  public static final int attrSymbol = 3;
+  public static final int attrNull = 4;
+  public static final int attrCombined = 5;
+
   public int attrType;
 
-  /** 
-   * AttrType Constructor
-   * <br>
-   * An attribute type of String can be defined as 
+  /**
+   * AttrType Constructor <br>
+   * An attribute type of String can be defined as
    * <ul>
-   * <li>   AttrType attrType = new AttrType(AttrType.attrString);
+   * <li>AttrType attrType = new AttrType(AttrType.attrString);
    * </ul>
    * and subsequently used as
    * <ul>
-   * <li>   if (attrType.attrType == AttrType.attrString) ....
+   * <li>if (attrType.attrType == AttrType.attrString) ....
    * </ul>
    *
    * @param _attrType The types of attributes available in this class
    */
 
-  public AttrType (int _attrType) {
+  public AttrType(int _attrType) {
     attrType = _attrType;
   }
 
