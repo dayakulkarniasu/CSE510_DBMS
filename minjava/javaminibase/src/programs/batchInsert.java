@@ -5,7 +5,9 @@ import diskmgr.PCounter;
 import global.*;
 import BigT.*;
 import heap.*;
+import iterator.*;
 
+import javax.sound.midi.MidiChannel;
 import java.io.*;
 
 public class batchInsert implements GlobalConst {
@@ -184,13 +186,223 @@ public class batchInsert implements GlobalConst {
   }
 
   public static void insertTable(String datafilename, String tablename, int InputIndexType)
-      throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
+      throws HFException, HFBufMgrException, HFDiskMgrException, IOException, iterator.FileScanException, iterator.MapUtilsException, iterator.InvalidRelation {
     boolean status_1 = false;
-    status_1 = InsertBTmap(datafilename, tablename, InputIndexType);
+    status_1 = ReadFromFile(datafilename, tablename, InputIndexType);
     if ( status_1 == true){
       System.out.println("Diskpage read " + PCounter.rcounter + " Disk page written " + PCounter.wcounter);
     }
   }// end of main
+
+  public static boolean ReadFromFile(String datafileN, String tablename , int InputIndexType_1)
+          throws HFException, HFBufMgrException, HFDiskMgrException, IOException, FileScanException, MapUtilsException, iterator.InvalidRelation {
+    boolean status = true;
+    bigt big = null;
+    new bigt(tablename,  InputIndexType_1);
+    big = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
+
+    BufferedReader br = null;
+    int linecount = 0;
+    String line = "";
+    String csvSplitBy = ",";
+    MID rid = new MID();
+    // Temporary HeapFile to read from file
+    Heapfile f = new Heapfile(null);
+    boolean found_delete_flag = true;
+
+    if (status == true) {
+      try {
+        br = new BufferedReader(new FileReader(datafileN));
+        while ((line = br.readLine()) != null) {
+          String[] arryfields = line.split(csvSplitBy);
+          // Get User Input
+          String rowLabel = arryfields[0];
+          String columnLabel = arryfields[1];
+          String value = arryfields[2];
+          String timeStamp = arryfields[3];
+          // Create map
+          Map temp = new Map(GlobalConst.MAP_LEN);
+          temp.setHdr((short) MapSchema.MapFldCount(), MapSchema.MapAttrType(), MapSchema.MapStrLengths());
+          temp.setRowLabel(rowLabel);
+          temp.setColumnLabel(columnLabel);
+          temp.setValue(value);
+          temp.setTimeStamp(Integer.parseInt(timeStamp));
+          try {
+              rid = f.insertMap(temp.getMapByteArray());
+//            }
+          } catch (Exception e) {
+            status = false;
+            System.err.println("*** Error inserting record " + linecount + "\n");
+            e.printStackTrace();
+          }
+          linecount++;
+        }
+      } // end of try
+      catch (Exception e) {
+        e.printStackTrace();
+      }
+    } // if status okay
+
+    // Sort by RL CL TS DESC
+    // This makes it easier to find duplicate maps
+    // and we can make one pass
+    AttrType[] attrTypes = MapSchema.MapAttrType();
+    short fldCount = (short) MapSchema.MapFldCount();
+    FldSpec[] output = MapSchema.OutputMapSchema();
+    short[] strLengths = MapSchema.MapStrLengths();
+    // Sort by RL CL TS DESC
+    // This makes it easier to find duplicate maps
+    // and we can make one pass
+    FileScan fscan = new FileScan(f, attrTypes, strLengths, fldCount, fldCount, output, null);
+    //TODO numbuf is set to 50 right now, but need to change program to pass in as param
+    Iterator sort = BuildSortOrder(fscan, attrTypes, strLengths, InputIndexType_1,50);
+    try {
+      Map temp = new Map(GlobalConst.MAP_LEN);
+      temp.setHdr((short) MapSchema.MapFldCount(), MapSchema.MapAttrType(), MapSchema.MapStrLengths());
+      MID mid = new MID();
+      temp = sort.get_next();
+      while (temp != null) {
+        Map amap = new Map(temp.getMapByteArray(), 0, GlobalConst.MAP_LEN);
+        mid = big.insertMap(amap.getMapByteArray());
+        temp = sort.get_next();
+      }
+    }
+    catch (Exception e){
+      e.printStackTrace();
+    }
+
+//      temp.setRowLabel(rowLabel);
+//      temp.setColumnLabel(columnLabel);
+//      temp.setValue(value);
+//      temp.setTimeStamp(Integer.parseInt(timeStamp));
+//    if (status == true) {
+//      System.out.println("In batchInsert - Scan the records just inserted\n");
+//
+//      try {
+//        scan = big.hf.openScan();
+//        // System.out.println (" In batchInsert - done with f.openScan() \n") ;
+//      } catch (Exception e) {
+//        status = false;
+//        System.err.println("*** Error opening scan\n");
+//        e.printStackTrace();
+//      }
+//    }
+
+//    if (status == true) {
+//      int len, i = 0;
+//      DummyRecord rec = null;
+//      Map aMap = new Map();
+//
+//      boolean done = false;
+//      while (!done) {
+//        try {
+//
+//          aMap = scan.getNext(rid);
+//          if (aMap == null) {
+//            done = true;
+//            break;
+//          }
+//        } catch (Exception e) {
+//          status = false;
+//          e.printStackTrace();
+//        }
+//
+//        if (status == true && !done) {
+//          try {
+//            rec = new DummyRecord(aMap);
+//          } catch (Exception e) {
+//            System.err.println("" + e);
+//            e.printStackTrace();
+//          }
+//
+//          len = aMap.getLength();
+//          if (len != recleng2) {
+//            System.err.println("*** Record " + i + " had unexpected length " + len + "\n");
+//            status = false;
+//            break;
+//          } else if (SystemDefs.JavabaseBM.getNumUnpinnedBuffers() == SystemDefs.JavabaseBM.getNumBuffers()) {
+//            System.err.println("On record " + i + ":\n");
+//            System.err.println("*** The heap-file scan has not left its " + "page pinned\n");
+//            status = false;
+//            break;
+//          }
+//          System.out.println("record: " + i);
+//          System.out.println("rec.row " + i + " : " + rec.rowlabname);
+//          System.out.println("rec.col " + i + " : " + rec.collabname);
+//          System.out.println("rec.timestamp " + i + " : " + rec.timestampname);
+//          System.out.println("rec.value " + i + " : " + rec.valuename);
+//          System.out.println();
+//        }
+//        ++i;
+//      } // end of while not done
+//
+//    } // end of bigger status ok
+//
+//    if (status == true)
+//      System.out.println("Test 1 completed successfully.\n");
+    try{
+      sort.close();
+      fscan.close();
+      f.deleteFile();
+    }
+    catch (Exception e){
+      e.printStackTrace();
+    }
+
+    return status;
+  }
+
+  private static Iterator BuildSortOrder(Iterator fscan, AttrType[] attrType, short[] attrSize, int orderType, int numbuf){
+    if(orderType == OrderType.type1)
+      return fscan;
+
+    MapOrder ReturnOrder = new MapOrder(MapOrder.Ascending);
+    // the fields we will sort
+    int[] sort_flds = null;
+    // the length of those fields
+    int[] fld_lens = null;
+    int sort_fld = -1;
+    int fld_len = -1;
+    switch (orderType){
+      //No Index, No Order
+      case OrderType.type1:
+        break;
+      //rowLabel Index and Order
+      case OrderType.type2:
+        sort_fld = 1;
+        fld_len = STR_LEN;
+        break;
+      //colLabel Index and Order
+      case OrderType.type3:
+        sort_fld = 2;
+        fld_len = STR_LEN;
+        break;
+      //colLabel & rowLabel Index and Order
+      case OrderType.type4:
+        sort_flds = new int[]{2, 1};
+        fld_lens = new int[]{STR_LEN, STR_LEN};
+        break;
+      //rowLabel % value Index and Order
+      case OrderType.type5:
+        sort_flds = new int[]{1, 3};
+        fld_lens = new int[]{STR_LEN, STR_LEN};
+        break;
+    }
+    Sort sort = null;
+    try{
+      if(orderType == OrderType.type2 || orderType == OrderType.type3){
+        sort = new Sort(attrType, (short) 4, attrSize, fscan, sort_fld, ReturnOrder, fld_len, numbuf);
+      }
+      else
+        sort = new Sort(attrType, (short) 4, attrSize, fscan, sort_flds, ReturnOrder, fld_lens, numbuf);
+    }
+    catch (Exception e){
+      e.printStackTrace();
+    }
+    return sort;
+  }
+
+
 
   public static boolean InsertBTmap(String datafileN, String tablename , int InputIndexType_1)
       throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
