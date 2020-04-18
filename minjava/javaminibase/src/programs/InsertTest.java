@@ -29,7 +29,7 @@ public class InsertTest implements GlobalConst{
                 System.out.println("+");
                 System.out.println("+\tbatchinsert");
                 System.out.println("+");
-                System.out.println("+\tbatchinsert [DataFile] [OrderType] [BTName]");
+                System.out.println("+\tbatchinsert [DataFile] [OrderType] [BTName] [NumBuf]");
                 System.out.println("+");
                 System.out.println("+\tquery");
                 System.out.println("+");
@@ -53,6 +53,7 @@ public class InsertTest implements GlobalConst{
                 String fname = "";
                 int dbtype ;
                 String tablename = "";
+                int NumBuf = 0;
                 String input_RL = "";
                 String input_CL = "";
                 String input_VL = "";
@@ -64,12 +65,14 @@ public class InsertTest implements GlobalConst{
                         fname = params[1];
                         dbtype = 999;
                         tablename = params[2];
+                        NumBuf = Integer.parseInt(params[3]);
                     }
                     else
                     {
                         fname = params[1];
                         dbtype = Integer.parseInt(params[2]);
                         tablename = params[3];
+                        NumBuf = Integer.parseInt(params[4]);
                     }
                     System.out.println("Input File name in Inserttest : " + fname + " IndexType : " + dbtype);
                     if(first){
@@ -98,7 +101,7 @@ public class InsertTest implements GlobalConst{
                         }
                         first = false;
                     }
-                    batchInsert.insertTable(fname, tablename, dbtype);
+                    batchInsert.insertTable(fname, tablename, dbtype, NumBuf);
                 }
                 else if(params[0].equalsIgnoreCase("query"))
                 {
@@ -227,7 +230,7 @@ public class InsertTest implements GlobalConst{
                     String BTName2 = params[2];
                     String BTResult = params[3];
                     String ColumnFilter = params[4];
-                    int NumBuf = Integer.parseInt(params[5]);
+                    NumBuf = Integer.parseInt(params[5]);
                     bigt big = null;
                     for (int i=0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
                         if ( BTName1.equals(SystemDefs.JavabaseDB.table[i].name)) {
