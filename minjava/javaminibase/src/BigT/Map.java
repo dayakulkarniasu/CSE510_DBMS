@@ -99,7 +99,6 @@ public class Map implements GlobalConst {
   public String getRowLabel() throws IOException {
         String tmp = null;
         short val1, val2 ;
-        //System.out.println("in the getRowLabel()  - entry point");
         try {
           val1 = Convert.getShortValue(map_offset + 2,   data);
         //   System.out.println("data_length: " + data.length);
@@ -565,7 +564,7 @@ public class Map implements GlobalConst {
         fldOffset = new short[numFlds + 1];
         int pos = map_offset + 2; // start position for fldOffset[]
 
-          fldOffset[0] = (short) (MAPHEADER_LEN);
+        fldOffset[0] = (short) (MAPHEADER_LEN + map_offset);
         Convert.setShortValue(fldOffset[0], pos, data);
         pos += 2;
         short strCount = 0;

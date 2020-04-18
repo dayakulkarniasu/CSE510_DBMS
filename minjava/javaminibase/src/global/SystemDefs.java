@@ -37,7 +37,7 @@ public class SystemDefs {
       }
 
       public void init(String dbname, int dbType, String logname, int num_pgs, int maxlogsize, int bufpoolsize,
-                  String replacement_policy) {
+                       String replacement_policy) {
 
             boolean status = true;
             JavabaseBM = null;
@@ -48,9 +48,11 @@ public class SystemDefs {
 
             try {
                   JavabaseBM = new BufMgr(bufpoolsize, replacement_policy);
-                  if (dbType == 999) {
+                  if ( dbType == 999)
+                  {
                         JavabaseDB = new bigDB();
-                  } else {
+                  }
+                  else {
                         JavabaseDB = new bigDB(dbType);
                   }
             } catch (Exception e) {
@@ -64,6 +66,7 @@ public class SystemDefs {
             MINIBASE_DBNAME = new String(JavabaseDBName);
 
             // create or open the DB
+
             if ((MINIBASE_RESTART_FLAG) || (num_pgs == 0)) {// open an existing database
                   try {
                         JavabaseDB.openDB(dbname);

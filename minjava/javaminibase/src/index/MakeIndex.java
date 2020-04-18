@@ -43,10 +43,10 @@ public class MakeIndex {
      * @return a btf file with a combined key setup that will be assigned to the bigDB class and accessible globally
      */
     public static BTreeFile IndexForCombinedKey(java.lang.String propName1, java.lang.String propName2) {
-        int keyType = AttrType.attrString;
-        int keySize = MAXLEN_COMB_KEY;
+        int keyType = AttrType.attrCombined;
+        int keySize = GlobalConst.STR_LEN*2;
         int delete_Fashion =1;
-        String keyName = propName1 + " " +propName2;
+        String keyName = propName1 + "_" +propName2;
         BTreeFile btf = null;
         try {
             btf = new BTreeFile(String.format("btree-", keyName), keyType, keySize, delete_Fashion);
@@ -65,7 +65,8 @@ public class MakeIndex {
      */
     public static void InsertIntoIndex(Map amap , MID mid){
         String key = null;
-        int key2 = 0;
+        String key2 = null;
+        // int key2 = 0;
         try{
             switch (SystemDefs.JavabaseDB.dbType){
                 case 1:
@@ -79,27 +80,25 @@ public class MakeIndex {
                     break;
                 case 3:
                     // Index on ColumnLabel
+                    System.out.println("map offset: " + amap.getOffset());
                     key = amap.getColumnLabel();
                     SystemDefs.JavabaseDB.indexStrat1.insert(new StringKey(key), mid);
                     break;
                 case 4:
                     // Index on combKey for ColumnLabel and RowLabel & Index on TimeStamp
-                    key = String.format("%s %s", amap.getColumnLabel(), amap.getRowLabel());
-                    key2 = amap.getTimeStamp();
-                    SystemDefs.JavabaseDB.indexStrat1.insert(new StringKey(key), mid);
-                    System.out.println("key mid: " + key + " " + mid.pageNo + " " + mid.slotNo);
-                    SystemDefs.JavabaseDB.indexStrat2.insert(new IntegerKey(key2), mid);
-                    System.out.println("key2 mid2: " + key2 + " " + mid.pageNo + " " + mid.slotNo);
-                    
+                    // Index on combKey for ColumnLabel and RowLabel
+                    key = amap.getColumnLabel();
+                    key2 = amap.getRowLabel();
+                    SystemDefs.JavabaseDB.indexStrat1.insert(new CombinedKey(key, key2), mid);
+                    System.out.println("key mid: " + key + "_" + key2 + " " + mid.pageNo + " " + mid.slotNo);
                     break;
                 case 5:
                     // Index on combKey for RowLabel and Value & Index on TimeStamp
-                    key = String.format("%s %s", amap.getRowLabel(), amap.getValue());
-                    key2 = amap.getTimeStamp();
-                    SystemDefs.JavabaseDB.indexStrat1.insert(new StringKey(key), mid);
-                    System.out.println("key mid: " + key + " " + mid.pageNo + " " + mid.slotNo);
-                    SystemDefs.JavabaseDB.indexStrat2.insert(new IntegerKey(key2), mid);
-                    System.out.println("key2 mid2: " + key2 + " " + mid.pageNo + " " + mid.slotNo);
+                    // Index on combKey for RowLabel and Value
+                    key = amap.getRowLabel();
+                    key2 = amap.getValue();
+                    SystemDefs.JavabaseDB.indexStrat1.insert(new CombinedKey(key, key2), mid);
+                    System.out.println("key mid: " + key + "_" + key2 + " " + mid.pageNo + " " + mid.slotNo);
                     break;
             }
         }
