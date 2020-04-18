@@ -29,8 +29,8 @@ public class FileScan extends Iterator {
    * constructor
    * 
    * @param file_name  heapfile to be opened
-   * @param in1[]      array showing what the attributes of the input fields are.
-   * @param s1_sizes[] shows the length of the string fields.
+   * @param in1      array showing what the attributes of the input fields are.
+   * @param s1_sizes shows the length of the string fields.
    * @param len_in1    number of attributes in the input tuple
    * @param n_out_flds number of fields in the out tuple
    * @param proj_list  shows what input fields go where in the output tuple
@@ -66,6 +66,59 @@ public class FileScan extends Iterator {
 
     try {
       f = new Heapfile(file_name);
+
+    } catch (Exception e) {
+      throw new FileScanException(e, "Create new heapfile failed");
+    }
+
+    try {
+      scan = f.openScan();
+    } catch (Exception e) {
+      throw new FileScanException(e, "openScan() failed");
+    }
+  }
+
+  /**
+   * constructor
+   *
+   * @param file  heapfile to be opened
+   * @param in1      array showing what the attributes of the input fields are.
+   * @param s1_sizes shows the length of the string fields.
+   * @param len_in1    number of attributes in the input tuple
+   * @param n_out_flds number of fields in the out tuple
+   * @param proj_list  shows what input fields go where in the output tuple
+   * @param outFilter  select expressions
+   * @exception IOException         some I/O fault
+   * @exception FileScanException   exception from this class
+   * @exception TupleUtilsException exception from this class
+   * @exception InvalidRelation     invalid relation
+   */
+  public FileScan(Heapfile file, AttrType in1[], short s1_sizes[], short len_in1, int n_out_flds,
+                  FldSpec[] proj_list, CondExpr[] outFilter)
+          throws IOException, FileScanException, MapUtilsException, InvalidRelation {
+    _in1 = in1;
+    in1_len = len_in1;
+    s_sizes = s1_sizes;
+
+    Jmap = new Map();
+    AttrType[] Jtypes = new AttrType[n_out_flds];
+    short[] ts_size;
+    ts_size = MapUtils.setup_op_map(Jmap, Jtypes, in1, len_in1, s1_sizes, proj_list, n_out_flds);
+
+    OutputFilter = outFilter;
+    perm_mat = proj_list;
+    nOutFlds = n_out_flds;
+    map1 = new Map();
+
+    try {
+      map1.setHdr(in1_len, _in1, s1_sizes);
+    } catch (Exception e) {
+      throw new FileScanException(e, "setHdr() failed");
+    }
+    t1_size = map1.size();
+
+    try {
+      f = file;
 
     } catch (Exception e) {
       throw new FileScanException(e, "Create new heapfile failed");

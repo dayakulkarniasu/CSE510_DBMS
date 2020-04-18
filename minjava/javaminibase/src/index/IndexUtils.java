@@ -132,6 +132,21 @@ public class IndexUtils {
 				 * ((BTreeFile)indFile).new_scan(key1, key2); } else { indScan =
 				 * ((BTreeFile)indFile).new_scan(key2, key1); } return indScan;
 				 */
+			case AttrType.attrCombined:
+				String[] keys1 = ((CombinedKey) key1).getKey();
+				String[] keys2 = ((CombinedKey) key2).getKey();
+				if (keys1[0].compareTo(keys2[0]) < 0) {
+					indScan = ((BTreeFile) indFile).new_scan(key1, key2);
+				} else if (keys1[0].compareTo(keys2[0]) > 0) {
+					indScan = ((BTreeFile) indFile).new_scan(key2, key1);
+				} else {
+					if (keys1[1].compareTo(keys2[1]) < 0) {
+						indScan = ((BTreeFile) indFile).new_scan(key1, key2);
+					} else {
+						indScan = ((BTreeFile) indFile).new_scan(key2, key1);
+					}
+				}
+				return indScan;
 			default:
 				// error condition
 				throw new UnknownKeyTypeException("IndexUtils.java: Only Integer and String keys are supported so far");

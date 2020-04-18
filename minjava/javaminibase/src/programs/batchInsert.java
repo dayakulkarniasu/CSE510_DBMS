@@ -183,20 +183,20 @@ public class batchInsert implements GlobalConst {
     return true;
   }
 
-  public static void insertTable(String datafilename, String tablename)
+  public static void insertTable(String datafilename, String tablename, int InputIndexType)
       throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
     boolean status_1 = false;
-    status_1 = InsertBTmap(datafilename, tablename);
+    status_1 = InsertBTmap(datafilename, tablename, InputIndexType);
     if ( status_1 == true){
       System.out.println("Diskpage read " + PCounter.rcounter + " Disk page written " + PCounter.wcounter);
     }
   }// end of main
 
-  public static boolean InsertBTmap(String datafileN, String tablename)
+  public static boolean InsertBTmap(String datafileN, String tablename , int InputIndexType_1)
       throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
     boolean status = true;
     bigt big = null;
-    new bigt(tablename, SystemDefs.JavabaseDB.dbType);
+    new bigt(tablename,  InputIndexType_1);
     big = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
 
     BufferedReader br = null;

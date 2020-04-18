@@ -61,7 +61,7 @@ public class Stream implements GlobalConst {
         System.out.println("rowfilter: " + rowFilter + " colfilter: " + columnFilter + " valfilter: " + valueFilter);
 
         try {
-            fscan = new FileScan(bigtable.name, attrType, attrSize, (short) 4, 4, schema, outFilter[0] == null ? null : outFilter );
+            fscan = new FileScan(bigtable.hf, attrType, attrSize, (short) 4, 4, schema, outFilter[0] == null ? null : outFilter );
         }
         catch (Exception e) {
             e.printStackTrace();

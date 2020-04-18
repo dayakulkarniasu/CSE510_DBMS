@@ -5,4 +5,5 @@ public class Operand {
   public String string;
   public int integer;
   public float real;
+  public String[] strings;
 }

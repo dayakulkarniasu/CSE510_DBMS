@@ -33,7 +33,7 @@ public class InsertTest implements GlobalConst{
                 System.out.println("+");
                 System.out.println("+\tquery");
                 System.out.println("+");
-                System.out.println("+\tquery [BTName] [OrderType] [OrderBy] [RF] [CF] [VF] [NumBuf]");
+                System.out.println("+\tquery [BTName] [OrderBy] [RF] [CF] [VF] [NumBuf]");
                 System.out.println("+");
                 System.out.println("+\tmapinsert");
                 System.out.println("+");
@@ -71,9 +71,9 @@ public class InsertTest implements GlobalConst{
                         dbtype = Integer.parseInt(params[2]);
                         tablename = params[3];
                     }
-
+                    System.out.println("Input File name in Inserttest : " + fname + " IndexType : " + dbtype);
                     if(first){
-                        dbpath = "/tmp/" + System.getProperty("user.name") /*+ fname*/  + ".db";
+                        dbpath = "/tmp/" + System.getProperty("user.name") + fname  + ".db";
                         logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
                         System.out.println("dbpath in Inserttest : " + dbpath);
                         sysdef = new SystemDefs(dbpath, dbtype, 10500, 100, "MRU");
@@ -98,19 +98,18 @@ public class InsertTest implements GlobalConst{
                         }
                         first = false;
                     }
-                    batchInsert.insertTable(fname, tablename);
+                    batchInsert.insertTable(fname, tablename, dbtype);
                 }
                 else if(params[0].equalsIgnoreCase("query"))
                 {
                     String btname = params[1];
-                    int dbtype1 = Integer.parseInt(params[2]);
-                    int ordertype = Integer.parseInt(params[3]);
-                    String rowfilter = params[4];
-                    String colfilter = params[5];
-                    String valfilter = params[6];
-                    int numbuf = Integer.parseInt(params[7]);
+                    int ordertype = Integer.parseInt(params[2]);
+                    String rowfilter = params[3];
+                    String colfilter = params[4];
+                    String valfilter = params[5];
+                    int numbuf = Integer.parseInt(params[6]);
 
-                    Query query = new Query(btname, dbtype1, ordertype, rowfilter, colfilter, valfilter, numbuf);
+                    Query query = new Query(btname, ordertype, rowfilter, colfilter, valfilter, numbuf);
                     query.runquery();
                 }
                 else if(params[0].equalsIgnoreCase("getCounts"))
@@ -125,7 +124,7 @@ public class InsertTest implements GlobalConst{
                             System.out.println("Exiting...... ");
                         } else  {
                             big = SystemDefs.JavabaseDB.table[i];
-                            System.out.println("Table exist and Name is : " + SystemDefs.JavabaseDB.table[i].name);
+                            System.out.println("Table Name : " + SystemDefs.JavabaseDB.table[i].name + " HeapFileName : " + SystemDefs.JavabaseDB.table[i].heapFileName + " Index Type : " + SystemDefs.JavabaseDB.table[i].BTType);
                             System.out.println("********** ");
                             System.out.println("No. Of Maps : " + big.getMapCnt());
                             System.out.println("No. Of Distinct RowLabels : " + big.getRowCnt());
