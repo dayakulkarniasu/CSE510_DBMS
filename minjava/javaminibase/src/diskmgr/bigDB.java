@@ -115,7 +115,7 @@ public class bigDB implements GlobalConst {
         File DBfile = new File(name);
         DBfile.delete();
 
-        // Creaat a random access file
+        // Creat a random access file
         fp = new RandomAccessFile(fname, "rw");
 
         // Make the file num_pages pages long, filled with zeroes.
