@@ -71,9 +71,9 @@ public class InsertTest implements GlobalConst{
                         dbtype = Integer.parseInt(params[2]);
                         tablename = params[3];
                     }
-
+                    System.out.println("Input File name in Inserttest : " + fname + " IndexType : " + dbtype);
                     if(first){
-                        dbpath = "/tmp/" + System.getProperty("user.name") /*+ fname*/  + ".db";
+                        dbpath = "/tmp/" + System.getProperty("user.name") + fname  + ".db";
                         logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
                         System.out.println("dbpath in Inserttest : " + dbpath);
                         sysdef = new SystemDefs(dbpath, dbtype, 10500, 100, "MRU");
@@ -98,7 +98,7 @@ public class InsertTest implements GlobalConst{
                         }
                         first = false;
                     }
-                    batchInsert.insertTable(fname, tablename);
+                    batchInsert.insertTable(fname, tablename , dbtype);
                 }
                 else if(params[0].equalsIgnoreCase("query"))
                 {
@@ -125,8 +125,7 @@ public class InsertTest implements GlobalConst{
                             System.out.println("Exiting...... ");
                         } else  {
                             big = SystemDefs.JavabaseDB.table[i];
-                            System.out.println("Table exist and Name is : " + SystemDefs.JavabaseDB.table[i].name);
-                            System.out.println("********** ");
+                            System.out.println("Table Name : " + SystemDefs.JavabaseDB.table[i].name + " HeapFileName : " + SystemDefs.JavabaseDB.table[i].heapFileName + " Index Type : " + SystemDefs.JavabaseDB.table[i].BTType);                            System.out.println("********** ");
                             System.out.println("No. Of Maps : " + big.getMapCnt());
                             System.out.println("No. Of Distinct RowLabels : " + big.getRowCnt());
                             System.out.println("No. Of Distinct ColumnLabels : " + big.getColumnCnt());
