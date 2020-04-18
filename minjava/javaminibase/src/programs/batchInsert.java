@@ -242,7 +242,7 @@ public class batchInsert implements GlobalConst {
         e.printStackTrace();
       }
     } // if status okay
-
+    //TODO Bring Duplicate Map Elimination back
     // Sort by RL CL TS DESC
     // This makes it easier to find duplicate maps
     // and we can make one pass
@@ -250,9 +250,7 @@ public class batchInsert implements GlobalConst {
     short fldCount = (short) MapSchema.MapFldCount();
     FldSpec[] output = MapSchema.OutputMapSchema();
     short[] strLengths = MapSchema.MapStrLengths();
-    // Sort by RL CL TS DESC
-    // This makes it easier to find duplicate maps
-    // and we can make one pass
+    // Sort by order type passed in
     FileScan fscan = new FileScan(f, attrTypes, strLengths, fldCount, fldCount, output, null);
     //TODO numbuf is set to 50 right now, but need to change program to pass in as param
     Iterator sort = BuildSortOrder(fscan, attrTypes, strLengths, InputIndexType_1,50);
