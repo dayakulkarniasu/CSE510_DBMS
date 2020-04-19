@@ -352,8 +352,8 @@ public class RowJoin extends Iterator {
         // exhausted, => set get_from_outer = TRUE, go to top of loop
       }
       // if at last element, close
-      if(eof)
-        outer_map = null;
+//      if(eof)
+//        outer_map = null;
       get_from_outer = true; // Loop back to top and get next outer tuple.
       outer_map = peek;
     } while (true);
