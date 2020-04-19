@@ -134,6 +134,7 @@ public class bigt implements Tabletype, GlobalConst {
         this.heapFileName = btName;
         this.hf = new Heapfile(btName);
         this.BTType = 1;
+        int count = 0;
         Map test = new Map(GlobalConst.MAP_LEN);
         while((test = am.get_next()) != null){
             System.out.println("++++++++++++++++++++++");
@@ -143,10 +144,19 @@ public class bigt implements Tabletype, GlobalConst {
             System.out.println("TS " + test.getTimeStamp());
             Map amap = new Map(test.getMapByteArray(), 0, GlobalConst.MAP_LEN);
             this.hf.insertMap(amap.getMapByteArray());
+            count++;
         }
-        SystemDefs.JavabaseDB.CurrentTableIndex = SystemDefs.JavabaseDB.NumberOfTables;
-        SystemDefs.JavabaseDB.NumberOfTables++ ;
-        SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex] = this;
+        // Were any records added?
+        // if not, do not create bt
+        if(count != 0){
+            SystemDefs.JavabaseDB.CurrentTableIndex = SystemDefs.JavabaseDB.NumberOfTables;
+            SystemDefs.JavabaseDB.NumberOfTables++ ;
+            SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex] = this;
+        }
+        else{
+            this.hf.deleteFile();
+        }
+
     } // end of constructor
 
     // Delete the bigtable from the database.

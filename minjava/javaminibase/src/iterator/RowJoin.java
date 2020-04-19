@@ -10,8 +10,10 @@ import heap.InvalidTypeException;
 import heap.Scan;
 import index.IndexException;
 import global.GlobalConst;
+import programs.Query;
 
 import java.awt.desktop.SystemSleepEvent;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -33,7 +35,7 @@ public class RowJoin extends Iterator {
   private int n_buf_pgs; // # of buffer pages available.
   private boolean done, // Is the join complete
       get_from_outer; // if TRUE, a tuple is got from outer
-  private Map outer_map, inner_map;
+  private Map outer_map, inner_map, peek;
   private Map Jmap; // Joined tuple
   private FldSpec perm_mat[];
   private int nOutFlds;
@@ -122,8 +124,16 @@ public class RowJoin extends Iterator {
     }
 
     try {
-      hf = new Heapfile(RightBigTName);
-      hfName = RightBigTName;
+      // Sort the Heapfile on RL CL TS by asc
+      // This makes it easier to find the
+      // latest value for each CL to determine
+      // whether to compare val
+      FileScan fscan = new FileScan(RightBigTName, Schema, MapStrLengths, (short) MapFldCount, MapFldCount, OutputSchema, RightFilter);
+      Iterator sort = SortHelper.BuildSortOrder(fscan, Schema, MapStrLengths, OrderType.type1, amtofmem);
+      this.hf = HeapHelper.BuildHeap(sort);
+      hfName = "rowjoin";
+      fscan.close();
+      sort.close();
       //outer_map = new Map(outer.get_next());
 
     } catch (Exception e) {
@@ -148,7 +158,7 @@ public class RowJoin extends Iterator {
    * @exception Exception                 other exceptions
    *
    */
-  public Map get_next() throws IOException, JoinsException, IndexException, InvalidTupleSizeException,
+  public Map get_next2() throws IOException, JoinsException, IndexException, InvalidTupleSizeException,
       InvalidTypeException, PageNotReadException, MapUtilsException, PredEvalException, SortException,
       LowMemException, UnknowAttrType, UnknownKeyTypeException, Exception {
     // This is a DUMBEST form of a join, not making use of any key information...
@@ -158,14 +168,7 @@ public class RowJoin extends Iterator {
     if(outer_map == null){
       outer_map = outer.get_next();
     }
-
-    //outer_map = new Map(outer.get_next());
     do {
-//      System.out.println("///////////- Repeat RightScan -/////////////");
-//      System.out.println("****************************************");
-//      System.out.print("\t:");
-//      outer_map.print(MapSchema.MapAttrType());
-
       // If get_from_outer is true, Get a tuple from the outer, delete
       // an existing scan on the file, and reopen a new scan on the file.
       // If a get_next on the outer returns DONE?, then the nested loops
@@ -198,57 +201,37 @@ public class RowJoin extends Iterator {
       // Left Table is ordered by RL CL TS
       // We check the latest value per RL-CL
       boolean eof = false;
-      Map peek = null;
-      while(outer_map != null){
-        peek = outer.get_next();
-        //Map peek = new Map(outer.get_next().getMapByteArray(), 0, GlobalConst.MAP_LEN);
-        //peek.setHdr((short) MapSchema.MapFldCount(),MapSchema.MapAttrType(), MapSchema.MapStrLengths());
-//        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
-//        System.out.println("The outer map");
-//        System.out.print("\t:");
-//        outer_map.print(MapSchema.MapAttrType());
-//        System.out.println("The peek map");
-//        System.out.print("\t:");
+      //Map peek = null;
+      //TODO
+      //peek = null;
+      findLatestMap(outer, eof);
+//      while(outer_map != null){
+//        peek = outer.get_next();
 //        if(peek != null){
-//          peek.print(MapSchema.MapAttrType());
+//          // If RL CL match, the current map is not the latest value TS
+//          peek = new Map(peek.getMapByteArray(), 0, GlobalConst.MAP_LEN);
+//          peek.setHdr((short) MapSchema.MapFldCount(),MapSchema.MapAttrType(), MapSchema.MapStrLengths());
+//          if(MapUtils.CompareMapWithMap(new AttrType(AttrType.attrString), outer_map, GlobalConst.ROW_LABEL, peek, GlobalConst.ROW_LABEL) == 0 &&
+//                  MapUtils.CompareMapWithMap(new AttrType(AttrType.attrString), outer_map, GlobalConst.COL_LABEL, peek, GlobalConst.COL_LABEL) == 0){
+//            //if(outer_map.getRowLabel().equalsIgnoreCase(peek.getRowLabel())){
+//            try{
+//              outer_map = peek;//new Map(peek.getMapByteArray(), 0, GlobalConst.MAP_LEN);;//new Map(peek.getMapByteArray(), 0 , GlobalConst.MAP_LEN);
+//              //peek.setHdr((short) MapSchema.MapFldCount(),MapSchema.MapAttrType(), MapSchema.MapStrLengths());
+//            }
+//            catch (Exception e){
+//              e.printStackTrace();
+//            }
+//          }
+//          else{
+//            //outer_map = peek;
+//            break;
+//          }
 //        }
 //        else{
-//          System.out.println("no peek");
+//          eof = true;
+//          break;
 //        }
-//        System.out.println("RL " + outer_map.getRowLabel());
-//        System.out.println("CL " + outer_map.getColumnLabel());
-//        System.out.println("V " + outer_map.getValue());
-//        System.out.println("TS " + outer_map.getTimeStamp());
-//        System.out.println("");
-//        System.out.println("RL " + peek.getRowLabel());
-//        System.out.println("TS " + peek.getTimeStamp());
-//        System.out.println("*********************************");
-
-        if(peek != null){
-          // If RL CL match, the current map is not the latest value TS
-          peek = new Map(peek.getMapByteArray(), 0, GlobalConst.MAP_LEN);
-          peek.setHdr((short) MapSchema.MapFldCount(),MapSchema.MapAttrType(), MapSchema.MapStrLengths());
-          if(MapUtils.CompareMapWithMap(new AttrType(AttrType.attrString), outer_map, GlobalConst.ROW_LABEL, peek, GlobalConst.ROW_LABEL) == 0 &&
-                  MapUtils.CompareMapWithMap(new AttrType(AttrType.attrString), outer_map, GlobalConst.COL_LABEL, peek, GlobalConst.COL_LABEL) == 0){
-            //if(outer_map.getRowLabel().equalsIgnoreCase(peek.getRowLabel())){
-            try{
-              outer_map = peek;//new Map(peek.getMapByteArray(), 0, GlobalConst.MAP_LEN);;//new Map(peek.getMapByteArray(), 0 , GlobalConst.MAP_LEN);
-              //peek.setHdr((short) MapSchema.MapFldCount(),MapSchema.MapAttrType(), MapSchema.MapStrLengths());
-            }
-            catch (Exception e){
-              e.printStackTrace();
-            }
-          }
-          else{
-            //outer_map = peek;
-            break;
-          }
-        }
-        else{
-          eof = true;
-          break;
-        }
-      }
+//      }
       if(outer_map != null){
         // The next step is to get a tuple from the inner,
         // while the inner is not completely scanned && there
@@ -263,17 +246,14 @@ public class RowJoin extends Iterator {
           inner_map.setHdr((short) in2_len, _in2, t2_str_sizescopy);
           if (PredEval.Eval(RightFilter, inner_map, null, _in2, null) == true) {
             //inner_map.print(MapSchema.MapAttrType());
-//            System.out.println("inner eval");
             if (PredEval.Eval(OutputFilter, outer_map, inner_map, _in1, _in2) == true) {
-//              System.out.println("output filter satisfied");
               // Apply a projection on the outer and inner tuples.
-              //System.out.println("OutputFilter satisfied");
               Projection.RowJoin(outer_map, _in1, inner_map, _in2, Jmap, perm_mat, nOutFlds);
               //inner = null;
-              inner.closescan();
-              hf = new Heapfile(hfName);
-              get_from_outer = true;
-              outer_map = peek;
+              //inner.closescan();
+              //hf = new Heapfile(hfName);
+              //get_from_outer = true;
+              //outer_map = peek;
               return Jmap;
             }
           }
@@ -287,7 +267,131 @@ public class RowJoin extends Iterator {
       if(eof)
         outer_map = null;
       get_from_outer = true; // Loop back to top and get next outer tuple.
+      outer_map = peek;
     } while (true);
+  }
+
+
+  public Map get_next() throws IOException, JoinsException, IndexException, InvalidTupleSizeException,
+          InvalidTypeException, PageNotReadException, MapUtilsException, PredEvalException, SortException,
+          LowMemException, UnknowAttrType, UnknownKeyTypeException, Exception {
+    // This is a DUMBEST form of a join, not making use of any key information...
+
+    if (done)
+      return null;
+    if(outer_map == null){
+      outer_map = outer.get_next();
+    }
+    do {
+      // If get_from_outer is true, Get a tuple from the outer, delete
+      // an existing scan on the file, and reopen a new scan on the file.
+      // If a get_next on the outer returns DONE?, then the nested loops
+      // join is done too.
+
+      if (get_from_outer == true) {
+        get_from_outer = false;
+        if (inner != null) // If this not the first time,
+        {
+          // close scan
+          inner.closescan();
+          inner = null;
+        }
+
+        try {
+          inner = hf.openScan();
+        } catch (Exception e) {
+          throw new NestedLoopException(e, "openScan failed");
+        }
+        boolean eof = false;
+        findLatestMap(outer, eof);
+
+        if (outer_map == null) {
+          done = true;
+          if (inner != null) {
+            inner = null;
+          }
+          return null;
+        }
+      } // ENDS: if (get_from_outer == TRUE)
+
+      // Left Table is ordered by RL CL TS
+      // We check the latest value per RL-CL
+      //Map peek = null;
+      //TODO
+      //peek = null;
+
+      if(outer_map != null){
+        // The next step is to get a tuple from the inner,
+        // while the inner is not completely scanned && there
+        // is no match (with pred),get a tuple from the inner.
+
+        MID mid = new MID();
+        while ((inner_map = inner.getNext(mid)) != null) {
+//          System.out.println("GOT SOMETHING FROM INNER MAP");
+//          System.out.println("RL " + inner_map.getRowLabel());
+
+//          inner_map = new Map(inner_map.getMapByteArray(), 0, GlobalConst.MAP_LEN);
+          inner_map.setHdr((short) in2_len, _in2, t2_str_sizescopy);
+          if (PredEval.Eval(RightFilter, inner_map, null, _in2, null) == true) {
+            //inner_map.print(MapSchema.MapAttrType());
+            if (PredEval.Eval(OutputFilter, outer_map, inner_map, _in1, _in2) == true) {
+              // Apply a projection on the outer and inner tuples.
+              Projection.RowJoin(outer_map, _in1, inner_map, _in2, Jmap, perm_mat, nOutFlds);
+              //inner = null;
+              //inner.closescan();
+              //hf = new Heapfile(hfName);
+              //get_from_outer = true;
+              //outer_map = peek;
+              return Jmap;
+            }
+          }
+        }
+
+        // There has been no match. (otherwise, we would have
+        // returned from t//he while loop. Hence, inner is
+        // exhausted, => set get_from_outer = TRUE, go to top of loop
+      }
+      // if at last element, close
+      if(eof)
+        outer_map = null;
+      get_from_outer = true; // Loop back to top and get next outer tuple.
+      outer_map = peek;
+    } while (true);
+  }
+
+
+  // Assume for now that am comes in with something
+  private void findLatestMap(Iterator am, boolean eof)
+    throws Exception{
+    //boolean eof = false;
+    System.out.println("RL " + outer_map.getRowLabel());
+    //Map peek = null;
+    while(outer_map != null){
+      peek = am.get_next();
+      if(peek != null){
+        // If RL CL match, the current map is not the latest value TS
+        peek = new Map(peek.getMapByteArray(), 0, GlobalConst.MAP_LEN);
+        peek.setHdr((short) MapSchema.MapFldCount(),MapSchema.MapAttrType(), MapSchema.MapStrLengths());
+        if(MapUtils.CompareMapWithMap(new AttrType(AttrType.attrString), outer_map, GlobalConst.ROW_LABEL, peek, GlobalConst.ROW_LABEL) == 0 &&
+                MapUtils.CompareMapWithMap(new AttrType(AttrType.attrString), outer_map, GlobalConst.COL_LABEL, peek, GlobalConst.COL_LABEL) == 0){
+          //if(outer_map.getRowLabel().equalsIgnoreCase(peek.getRowLabel())){
+          try{
+            outer_map = peek;//new Map(peek.getMapByteArray(), 0, GlobalConst.MAP_LEN);;//new Map(peek.getMapByteArray(), 0 , GlobalConst.MAP_LEN);
+            //peek.setHdr((short) MapSchema.MapFldCount(),MapSchema.MapAttrType(), MapSchema.MapStrLengths());
+          }
+          catch (Exception e){
+            e.printStackTrace();
+          }
+        }
+        else{
+          break;
+        }
+      }
+      else{
+        eof = true;
+        break;
+      }
+    }
   }
 
   /**
@@ -303,6 +407,8 @@ public class RowJoin extends Iterator {
 
       try {
         outer.close();
+        inner.closescan();
+        hf.deleteFile();
       } catch (Exception e) {
         throw new JoinsException(e, "NestedLoopsJoin.java: error in closing iterator.");
       }
