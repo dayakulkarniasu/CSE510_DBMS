@@ -11,6 +11,7 @@ import heap.Scan;
 import index.IndexException;
 import global.GlobalConst;
 
+import java.awt.desktop.SystemSleepEvent;
 import java.io.IOException;
 
 /**
@@ -38,6 +39,7 @@ public class RowJoin extends Iterator {
   private int nOutFlds;
   private Heapfile hf;
   private Scan inner;
+  private String hfName;
 
   /**
    * constructor Initialize the two relations which are joined, including relation
@@ -121,6 +123,8 @@ public class RowJoin extends Iterator {
 
     try {
       hf = new Heapfile(RightBigTName);
+      hfName = RightBigTName;
+      //outer_map = new Map(outer.get_next());
 
     } catch (Exception e) {
       throw new NestedLoopException(e, "Create new heapfile failed.");
@@ -151,12 +155,13 @@ public class RowJoin extends Iterator {
 
     if (done)
       return null;
-    outer_map = new Map(outer.get_next());
-    System.out.println("****************************************");
-    System.out.println("Entering for the first time with following tuple:");
-    System.out.print("\t");
-    outer_map.print(MapSchema.MapAttrType());
+    if(outer_map == null){
+      outer_map = outer.get_next();
+    }
+
+    //outer_map = new Map(outer.get_next());
     do {
+//      System.out.println("///////////- Repeat RightScan -/////////////");
 //      System.out.println("****************************************");
 //      System.out.print("\t:");
 //      outer_map.print(MapSchema.MapAttrType());
@@ -171,6 +176,7 @@ public class RowJoin extends Iterator {
         if (inner != null) // If this not the first time,
         {
           // close scan
+          inner.closescan();
           inner = null;
         }
 
@@ -183,10 +189,8 @@ public class RowJoin extends Iterator {
         if (outer_map == null) {
           done = true;
           if (inner != null) {
-
             inner = null;
           }
-
           return null;
         }
       } // ENDS: if (get_from_outer == TRUE)
@@ -194,8 +198,11 @@ public class RowJoin extends Iterator {
       // Left Table is ordered by RL CL TS
       // We check the latest value per RL-CL
       boolean eof = false;
+      Map peek = null;
       while(outer_map != null){
-        Map peek = outer.get_next();
+        peek = outer.get_next();
+        //Map peek = new Map(outer.get_next().getMapByteArray(), 0, GlobalConst.MAP_LEN);
+        //peek.setHdr((short) MapSchema.MapFldCount(),MapSchema.MapAttrType(), MapSchema.MapStrLengths());
 //        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
 //        System.out.println("The outer map");
 //        System.out.print("\t:");
@@ -208,15 +215,32 @@ public class RowJoin extends Iterator {
 //        else{
 //          System.out.println("no peek");
 //        }
+//        System.out.println("RL " + outer_map.getRowLabel());
+//        System.out.println("CL " + outer_map.getColumnLabel());
+//        System.out.println("V " + outer_map.getValue());
+//        System.out.println("TS " + outer_map.getTimeStamp());
+//        System.out.println("");
+//        System.out.println("RL " + peek.getRowLabel());
+//        System.out.println("TS " + peek.getTimeStamp());
+//        System.out.println("*********************************");
+
         if(peek != null){
           // If RL CL match, the current map is not the latest value TS
+          peek = new Map(peek.getMapByteArray(), 0, GlobalConst.MAP_LEN);
+          peek.setHdr((short) MapSchema.MapFldCount(),MapSchema.MapAttrType(), MapSchema.MapStrLengths());
           if(MapUtils.CompareMapWithMap(new AttrType(AttrType.attrString), outer_map, GlobalConst.ROW_LABEL, peek, GlobalConst.ROW_LABEL) == 0 &&
                   MapUtils.CompareMapWithMap(new AttrType(AttrType.attrString), outer_map, GlobalConst.COL_LABEL, peek, GlobalConst.COL_LABEL) == 0){
-
-            outer_map = new Map(outer.get_next());
+            //if(outer_map.getRowLabel().equalsIgnoreCase(peek.getRowLabel())){
+            try{
+              outer_map = peek;//new Map(peek.getMapByteArray(), 0, GlobalConst.MAP_LEN);;//new Map(peek.getMapByteArray(), 0 , GlobalConst.MAP_LEN);
+              //peek.setHdr((short) MapSchema.MapFldCount(),MapSchema.MapAttrType(), MapSchema.MapStrLengths());
+            }
+            catch (Exception e){
+              e.printStackTrace();
+            }
           }
           else{
-            outer_map = peek;
+            //outer_map = peek;
             break;
           }
         }
@@ -232,15 +256,24 @@ public class RowJoin extends Iterator {
 
         MID mid = new MID();
         while ((inner_map = inner.getNext(mid)) != null) {
+//          System.out.println("GOT SOMETHING FROM INNER MAP");
+//          System.out.println("RL " + inner_map.getRowLabel());
+
+//          inner_map = new Map(inner_map.getMapByteArray(), 0, GlobalConst.MAP_LEN);
           inner_map.setHdr((short) in2_len, _in2, t2_str_sizescopy);
           if (PredEval.Eval(RightFilter, inner_map, null, _in2, null) == true) {
             //inner_map.print(MapSchema.MapAttrType());
-            System.out.println("inner eval");
+//            System.out.println("inner eval");
             if (PredEval.Eval(OutputFilter, outer_map, inner_map, _in1, _in2) == true) {
-              System.out.println("output filter satisfied");
+//              System.out.println("output filter satisfied");
               // Apply a projection on the outer and inner tuples.
               //System.out.println("OutputFilter satisfied");
               Projection.RowJoin(outer_map, _in1, inner_map, _in2, Jmap, perm_mat, nOutFlds);
+              //inner = null;
+              inner.closescan();
+              hf = new Heapfile(hfName);
+              get_from_outer = true;
+              outer_map = peek;
               return Jmap;
             }
           }

@@ -5,6 +5,7 @@ import global.*;
 import heap.*;
 import index.IndexException;
 import index.UnknownIndexTypeException;
+import iterator.Iterator;
 
 interface Tabletype {
     int TEMP = 0;
@@ -126,6 +127,26 @@ public class bigt implements Tabletype, GlobalConst {
 //*/
 //            }
 //        }
+    } // end of constructor
+
+    public bigt(Iterator am, String btName) throws Exception {
+        this.name = btName;
+        this.heapFileName = btName;
+        this.hf = new Heapfile(btName);
+        this.BTType = 1;
+        Map test = new Map(GlobalConst.MAP_LEN);
+        while((test = am.get_next()) != null){
+            System.out.println("++++++++++++++++++++++");
+            System.out.println("RL " + test.getRowLabel());
+            System.out.println("CL " + test.getColumnLabel());
+            System.out.println("V " + test.getValue());
+            System.out.println("TS " + test.getTimeStamp());
+            Map amap = new Map(test.getMapByteArray(), 0, GlobalConst.MAP_LEN);
+            this.hf.insertMap(amap.getMapByteArray());
+        }
+        SystemDefs.JavabaseDB.CurrentTableIndex = SystemDefs.JavabaseDB.NumberOfTables;
+        SystemDefs.JavabaseDB.NumberOfTables++ ;
+        SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex] = this;
     } // end of constructor
 
     // Delete the bigtable from the database.
