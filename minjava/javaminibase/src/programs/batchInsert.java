@@ -254,6 +254,30 @@ public class batchInsert implements GlobalConst {
     FileScan fscan = new FileScan(f, attrTypes, strLengths, fldCount, fldCount, output, null);
     Iterator sort = BuildSortOrder(fscan, attrTypes, strLengths, InputIndexType_1,NumBuf);
     try {
+      // build or open btreefile. File format: tablename + '-btree-' + type.
+      BTreeFile btf = null;
+      switch(InputIndexType_1)
+      {
+        case OrderType.type1:
+          // no index
+          break;
+        case OrderType.type2:
+          // index and sort by row label
+          btf = new BTreeFile(String.format("%s-btree-%s", tablename, new Integer(InputIndexType_1).toString()), AttrType.attrString, STR_LEN, 1);
+          break;
+        case OrderType.type3:
+          // index and sort by col label
+          btf = new BTreeFile(String.format("%s-btree-%s", tablename, new Integer(InputIndexType_1).toString()), AttrType.attrString, STR_LEN, 1);
+          break;
+        case OrderType.type4:
+          // index and sort by col + row
+          btf = new BTreeFile(String.format("%s-btree-%s", tablename, new Integer(InputIndexType_1).toString()), AttrType.attrCombined, STR_LEN*2, 1);
+          break;
+        case OrderType.type5:
+          // index and sort by row + value
+          btf = new BTreeFile(String.format("%s-btree-%s", tablename, new Integer(InputIndexType_1).toString()), AttrType.attrCombined, STR_LEN*2, 1);
+          break;
+      }
       Map temp = new Map(GlobalConst.MAP_LEN);
       temp.setHdr((short) MapSchema.MapFldCount(), MapSchema.MapAttrType(), MapSchema.MapStrLengths());
       MID mid = new MID();
@@ -261,6 +285,23 @@ public class batchInsert implements GlobalConst {
       while (temp != null) {
         Map amap = new Map(temp.getMapByteArray(), 0, GlobalConst.MAP_LEN);
         mid = big.insertMap(amap.getMapByteArray());
+        switch(InputIndexType_1)
+        {
+          case OrderType.type1:
+            break;
+          case OrderType.type2:
+            btf.insert(new StringKey(amap.getRowLabel()), mid);
+            break;
+          case OrderType.type3:
+            btf.insert(new StringKey(amap.getColumnLabel()), mid);
+            break;
+          case OrderType.type4:
+            btf.insert(new CombinedKey(amap.getColumnLabel(), amap.getRowLabel()), mid);
+            break;
+          case OrderType.type5:
+            btf.insert(new CombinedKey(amap.getRowLabel(), amap.getValue()), mid);
+            break;
+        }
         temp = sort.get_next();
       }
     }
