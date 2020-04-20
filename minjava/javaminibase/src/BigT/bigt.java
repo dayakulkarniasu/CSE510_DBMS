@@ -5,6 +5,7 @@ import global.*;
 import heap.*;
 import index.IndexException;
 import index.UnknownIndexTypeException;
+import iterator.Iterator;
 
 interface Tabletype {
     int TEMP = 0;
@@ -19,7 +20,8 @@ public class bigt implements Tabletype, GlobalConst {
 
     public String name;
     public Heapfile hf;
-    private int BTType;
+    public int BTType;
+    public String heapFileName ;
 
     // Initialize the big table. A null name produces a temporary heapfile while
     // will be deleted
@@ -32,37 +34,43 @@ public class bigt implements Tabletype, GlobalConst {
     // bigtable.
     public bigt(String name, int type) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
         System.out.println("bigt: NumberOfTables : " + SystemDefs.JavabaseDB.NumberOfTables);
+        String inputTableName ;
+        inputTableName = name + String.valueOf(type) ;
+        System.out.println("Input Table Name : " + inputTableName );
         if (SystemDefs.JavabaseDB.NumberOfTables == 0) {
             this.name = name;
-            hf = new Heapfile(name);
+            heapFileName = inputTableName ;
+            hf = new Heapfile(heapFileName);
             BTType = type;
             SystemDefs.JavabaseDB.table[0] = this;
             SystemDefs.JavabaseDB.CurrentTableIndex = 0;
             SystemDefs.JavabaseDB.NumberOfTables = 1;
             System.out.println("bigt: Setting up DB");
-            System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name);
+            System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name + " Heapfile name = " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].heapFileName);
             System.out.println("Heap File Name : " + name + " BTType : " + BTType);
         } else {
             boolean found = false;
-            int i;
-            for (i=0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
-                if ( name.equals(SystemDefs.JavabaseDB.table[i].name)) {
+            for (int i=0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
+                if (name.equals(SystemDefs.JavabaseDB.table[i].name) &&
+                    type == SystemDefs.JavabaseDB.table[i].BTType) {
                     SystemDefs.JavabaseDB.CurrentTableIndex = i ;
                     found = true;
                     System.out.println("bigt: DB existing");
-                    System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[i].name);
+                    System.out.println("bigDB heapFileName : " + SystemDefs.JavabaseDB.table[i].heapFileName);
                 }
             }
+
             if (found == false) {
                 System.out.println("bigt: Could not find tablename, creating a new heapfile ");
                 this.name = name;
+                this.heapFileName = inputTableName;
                 hf = new Heapfile(name);
                 BTType = type;
                 SystemDefs.JavabaseDB.CurrentTableIndex = SystemDefs.JavabaseDB.NumberOfTables;
                 SystemDefs.JavabaseDB.NumberOfTables++ ;
                 SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex] = this;
                 System.out.println("bigt: Setting up DB, this.name = " + this.name);
-                System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name);
+                System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name + " Heapfile name = " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].heapFileName);
                 System.out.println("Heap File Name : " + name + " BTType : " + BTType);
             }
         }
@@ -71,47 +79,86 @@ public class bigt implements Tabletype, GlobalConst {
     public bigt(int Type) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
         this.name = "HeapFile_1";
         BTType = Type;
+        this.heapFileName = "HeapFile_1" ;
     }
 
-    public bigt(String name) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
-        if (SystemDefs.JavabaseDB.NumberOfTables == 0) {
-            this.name = name;
-            hf = new Heapfile(name);
-            BTType = 1;
-            SystemDefs.JavabaseDB.table[0] = this;
-            SystemDefs.JavabaseDB.CurrentTableIndex = 0;
-            SystemDefs.JavabaseDB.NumberOfTables = 1;
-/*          System.out.println("bigt: Setting up DB");
-          System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name);
-          System.out.println("Heap File Name : " + name + " BTType : " + BTType);
-*/
-        } else {
-            boolean found = false;
-            int i;
-            for (i=0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
-                if ( name.equals(SystemDefs.JavabaseDB.table[i].name)) {
-                    SystemDefs.JavabaseDB.CurrentTableIndex = i ;
-                    // this = SystemDefs.JavabaseDB.table[i] ;
-                    found = true;
-/*                   System.out.println("bigt: DB existing");
-                   System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[i].name);
-*/
-                }
-            }
-            if (found == false) {
-                System.out.println("bigt: Could not find tablename, creating a new heapfile ");
-                this.name = name;
-                hf = new Heapfile(name);
-                BTType = 1;
-                SystemDefs.JavabaseDB.CurrentTableIndex = SystemDefs.JavabaseDB.NumberOfTables;
-                SystemDefs.JavabaseDB.NumberOfTables++ ;
-                SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex] = this;
-/*                 System.out.println("bigt: Setting up DB, this.name = " + this.name);
-                 System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name);
-                 System.out.println("Heap File Name : " + name + " BTType : " + BTType);
-*/
-            }
+    public bigt() throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
+        this.name = "TEMP";
+        this.heapFileName = this.name;
+        this.hf = new Heapfile(null);
+        this.BTType = -1;
+        //        String inputTableName ;
+//        inputTableName = name + String.valueOf(1) ;
+//        if (SystemDefs.JavabaseDB.NumberOfTables == 0) {
+//            this.name = name;
+//            heapFileName = inputTableName ;
+//            hf = new Heapfile(heapFileName);
+//            BTType = 1;
+//            SystemDefs.JavabaseDB.table[0] = this;
+//            SystemDefs.JavabaseDB.CurrentTableIndex = 0;
+//            SystemDefs.JavabaseDB.NumberOfTables = 1;
+///*          System.out.println("bigt: Setting up DB");
+//          System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name);
+//          System.out.println("Heap File Name : " + name + " BTType : " + BTType);
+//*/
+//        } else {
+//            boolean found = false;
+//            int i;
+//            for (i=0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
+//                if ( name.equals(SystemDefs.JavabaseDB.table[i].name)) {
+//                    SystemDefs.JavabaseDB.CurrentTableIndex = i ;
+//                    // this = SystemDefs.JavabaseDB.table[i] ;
+//                    found = true;
+///*                   System.out.println("bigt: DB existing");
+//                   System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[i].name);
+//*/
+//                }
+//            }
+//            if (found == false) {
+//                System.out.println("bigt: Could not find tablename, creating a new heapfile ");
+//                this.name = name;
+//                heapFileName = inputTableName ;
+//                hf = new Heapfile(heapFileName);
+//                BTType = 1;
+//                SystemDefs.JavabaseDB.CurrentTableIndex = SystemDefs.JavabaseDB.NumberOfTables;
+//                SystemDefs.JavabaseDB.NumberOfTables++ ;
+//                SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex] = this;
+///*                 System.out.println("bigt: Setting up DB, this.name = " + this.name);
+//                 System.out.println("bigDB tablename: " + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name);
+//                 System.out.println("Heap File Name : " + name + " BTType : " + BTType);
+//*/
+//            }
+//        }
+    } // end of constructor
+
+    public bigt(Iterator am, String btName) throws Exception {
+        this.name = btName;
+        this.heapFileName = btName;
+        this.hf = new Heapfile(btName);
+        this.BTType = 1;
+        int count = 0;
+        Map test = new Map(GlobalConst.MAP_LEN);
+        while((test = am.get_next()) != null){
+            System.out.println("++++++++++++++++++++++");
+            System.out.println("RL " + test.getRowLabel());
+            System.out.println("CL " + test.getColumnLabel());
+            System.out.println("V " + test.getValue());
+            System.out.println("TS " + test.getTimeStamp());
+            Map amap = new Map(test.getMapByteArray(), 0, GlobalConst.MAP_LEN);
+            this.hf.insertMap(amap.getMapByteArray());
+            count++;
         }
+        // Were any records added?
+        // if not, do not create bt
+        if(count != 0){
+            SystemDefs.JavabaseDB.CurrentTableIndex = SystemDefs.JavabaseDB.NumberOfTables;
+            SystemDefs.JavabaseDB.NumberOfTables++ ;
+            SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex] = this;
+        }
+        else{
+            this.hf.deleteFile();
+        }
+
     } // end of constructor
 
     // Delete the bigtable from the database.

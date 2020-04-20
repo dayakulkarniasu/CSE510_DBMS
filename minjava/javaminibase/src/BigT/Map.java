@@ -84,7 +84,7 @@ public class Map implements GlobalConst {
      */
 
     public Map(int size) {
-        // Creat a new map
+        // Create a new map
         data = new byte[size];
         map_offset = 0;
         map_length = size;

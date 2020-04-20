@@ -255,7 +255,9 @@ class Clock extends Replacer {
         state_bit[head].state = Available;
 
       if (num == 2 * numBuffers) {
+
         throw new BufferPoolExceededException(null, "BUFMGR: BUFFER_EXCEEDED.");
+
       }
       ++num;
       head = (head + 1) % numBuffers;

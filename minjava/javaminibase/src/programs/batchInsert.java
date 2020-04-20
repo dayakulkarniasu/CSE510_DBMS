@@ -5,7 +5,9 @@ import diskmgr.PCounter;
 import global.*;
 import BigT.*;
 import heap.*;
+import iterator.*;
 
+import javax.sound.midi.MidiChannel;
 import java.io.*;
 
 public class batchInsert implements GlobalConst {
@@ -183,20 +185,200 @@ public class batchInsert implements GlobalConst {
     return true;
   }
 
-  public static void insertTable(String datafilename, String tablename)
-      throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
+  public static void insertTable(String datafilename, String tablename, int InputIndexType, int NumBuf)
+      throws HFException, HFBufMgrException, HFDiskMgrException, IOException, iterator.FileScanException, iterator.MapUtilsException, iterator.InvalidRelation {
     boolean status_1 = false;
-    status_1 = InsertBTmap(datafilename, tablename);
+    status_1 = ReadFromFile(datafilename, tablename, InputIndexType, NumBuf);
     if ( status_1 == true){
       System.out.println("Diskpage read " + PCounter.rcounter + " Disk page written " + PCounter.wcounter);
     }
   }// end of main
 
-  public static boolean InsertBTmap(String datafileN, String tablename)
+  public static boolean ReadFromFile(String datafileN, String tablename , int InputIndexType_1, int NumBuf)
+          throws HFException, HFBufMgrException, HFDiskMgrException, IOException, FileScanException, MapUtilsException, iterator.InvalidRelation {
+    boolean status = true;
+    BufferedReader br = null;
+    int linecount = 0;
+    String line = "";
+    String csvSplitBy = ",";
+    MID rid = new MID();
+    // Temporary HeapFile to read from file
+    Heapfile f = new Heapfile(null);
+    boolean found_delete_flag = true;
+
+    if (status == true) {
+      try {
+        br = new BufferedReader(new FileReader(datafileN));
+        while ((line = br.readLine()) != null) {
+          String[] arryfields = line.split(csvSplitBy);
+          // Get User Input
+          String rowLabel = arryfields[0];
+          String columnLabel = arryfields[1];
+          String value = arryfields[2];
+          String timeStamp = arryfields[3];
+          // Create map
+          Map temp = new Map(GlobalConst.MAP_LEN);
+          temp.setHdr((short) MapSchema.MapFldCount(), MapSchema.MapAttrType(), MapSchema.MapStrLengths());
+          temp.setRowLabel(rowLabel);
+          temp.setColumnLabel(columnLabel);
+          temp.setValue(value);
+          temp.setTimeStamp(Integer.parseInt(timeStamp));
+          try {
+              rid = f.insertMap(temp.getMapByteArray());
+//            }
+          } catch (Exception e) {
+            status = false;
+            System.err.println("*** Error inserting record " + linecount + "\n");
+            e.printStackTrace();
+          }
+          linecount++;
+        }
+      } // end of try
+      catch (Exception e) {
+        e.printStackTrace();
+      }
+    } // if status okay
+    //TODO Bring Duplicate Map Elimination back
+    // Sort by RL CL TS DESC
+    // This makes it easier to find duplicate maps
+    // and we can make one pass
+
+    if(linecount == 0)
+      return false;
+    bigt big = null;
+    new bigt(tablename,  InputIndexType_1);
+    big = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
+    AttrType[] attrTypes = MapSchema.MapAttrType();
+    short fldCount = (short) MapSchema.MapFldCount();
+    FldSpec[] output = MapSchema.OutputMapSchema();
+    short[] strLengths = MapSchema.MapStrLengths();
+    // Sort by order type passed in
+    FileScan fscan = new FileScan(f, attrTypes, strLengths, fldCount, fldCount, output, null);
+    Iterator sort = BuildSortOrder(fscan, attrTypes, strLengths, InputIndexType_1,NumBuf);
+    try {
+      // build or open btreefile. File format: tablename + '-btree-' + type.
+      BTreeFile btf = null;
+      switch(InputIndexType_1)
+      {
+        case OrderType.type1:
+          // no index
+          break;
+        case OrderType.type2:
+          // index and sort by row label
+          btf = new BTreeFile(String.format("%s-btree-%s", tablename, new Integer(InputIndexType_1).toString()), AttrType.attrString, STR_LEN, 1);
+          break;
+        case OrderType.type3:
+          // index and sort by col label
+          btf = new BTreeFile(String.format("%s-btree-%s", tablename, new Integer(InputIndexType_1).toString()), AttrType.attrString, STR_LEN, 1);
+          break;
+        case OrderType.type4:
+          // index and sort by col + row
+          btf = new BTreeFile(String.format("%s-btree-%s", tablename, new Integer(InputIndexType_1).toString()), AttrType.attrCombined, STR_LEN*2, 1);
+          break;
+        case OrderType.type5:
+          // index and sort by row + value
+          btf = new BTreeFile(String.format("%s-btree-%s", tablename, new Integer(InputIndexType_1).toString()), AttrType.attrCombined, STR_LEN*2, 1);
+          break;
+      }
+      Map temp = new Map(GlobalConst.MAP_LEN);
+      temp.setHdr((short) MapSchema.MapFldCount(), MapSchema.MapAttrType(), MapSchema.MapStrLengths());
+      MID mid = new MID();
+      temp = sort.get_next();
+      while (temp != null) {
+        Map amap = new Map(temp.getMapByteArray(), 0, GlobalConst.MAP_LEN);
+        mid = big.insertMap(amap.getMapByteArray());
+        switch(InputIndexType_1)
+        {
+          case OrderType.type1:
+            break;
+          case OrderType.type2:
+            btf.insert(new StringKey(amap.getRowLabel()), mid);
+            break;
+          case OrderType.type3:
+            btf.insert(new StringKey(amap.getColumnLabel()), mid);
+            break;
+          case OrderType.type4:
+            btf.insert(new CombinedKey(amap.getColumnLabel(), amap.getRowLabel()), mid);
+            break;
+          case OrderType.type5:
+            btf.insert(new CombinedKey(amap.getRowLabel(), amap.getValue()), mid);
+            break;
+        }
+        temp = sort.get_next();
+      }
+    }
+    catch (Exception e){
+      e.printStackTrace();
+    }
+    // Close everything or we an error is thrown
+    try{
+      sort.close();
+      fscan.close();
+      f.deleteFile();
+    }
+    catch (Exception e){
+      e.printStackTrace();
+    }
+    return status;
+  }
+
+  private static Iterator BuildSortOrder(Iterator fscan, AttrType[] attrType, short[] attrSize, int orderType, int numbuf){
+    if(orderType == OrderType.type1)
+      return fscan;
+
+    MapOrder ReturnOrder = new MapOrder(MapOrder.Ascending);
+    // the fields we will sort
+    int[] sort_flds = null;
+    // the length of those fields
+    int[] fld_lens = null;
+    int sort_fld = -1;
+    int fld_len = -1;
+    switch (orderType){
+      //No Index, No Order
+      case OrderType.type1:
+        break;
+      //rowLabel Index and Order
+      case OrderType.type2:
+        sort_fld = 1;
+        fld_len = STR_LEN;
+        break;
+      //colLabel Index and Order
+      case OrderType.type3:
+        sort_fld = 2;
+        fld_len = STR_LEN;
+        break;
+      //colLabel & rowLabel Index and Order
+      case OrderType.type4:
+        sort_flds = new int[]{2, 1};
+        fld_lens = new int[]{STR_LEN, STR_LEN};
+        break;
+      //rowLabel % value Index and Order
+      case OrderType.type5:
+        sort_flds = new int[]{1, 3};
+        fld_lens = new int[]{STR_LEN, STR_LEN};
+        break;
+    }
+    Sort sort = null;
+    try{
+      if(orderType == OrderType.type2 || orderType == OrderType.type3){
+        sort = new Sort(attrType, (short) 4, attrSize, fscan, sort_fld, ReturnOrder, fld_len, numbuf);
+      }
+      else
+        sort = new Sort(attrType, (short) 4, attrSize, fscan, sort_flds, ReturnOrder, fld_lens, numbuf);
+    }
+    catch (Exception e){
+      e.printStackTrace();
+    }
+    return sort;
+  }
+
+
+
+  public static boolean InsertBTmap(String datafileN, String tablename , int InputIndexType_1)
       throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
     boolean status = true;
     bigt big = null;
-    new bigt(tablename, SystemDefs.JavabaseDB.dbType);
+    new bigt(tablename,  InputIndexType_1);
     big = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
 
     BufferedReader br = null;

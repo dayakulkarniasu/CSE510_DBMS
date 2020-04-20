@@ -96,8 +96,12 @@ public class Projection {
 					Jmap.setIntFld(i + 1, m1.getIntFld(perm_mat[i].offset));
 					break;
 				case AttrType.attrString:
-					String newRowLabel = m1.getStrFld(perm_mat[i].offset).concat(":"+m2.getStrFld(perm_mat[i].offset));
-					Jmap.setStrFld(i+1, newRowLabel);
+					String label;
+					if(i == GlobalConst.COL_LABEL-1 || i == GlobalConst.MAP_VAL-1)
+						label = m1.getStrFld(perm_mat[i].offset);
+					else
+						label = m1.getStrFld(perm_mat[i].offset).concat(":"+m2.getStrFld(perm_mat[i].offset));
+					Jmap.setStrFld(i+1, label);
 					break;
 			}
 		}

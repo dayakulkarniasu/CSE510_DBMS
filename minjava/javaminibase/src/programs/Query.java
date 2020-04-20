@@ -4,6 +4,7 @@ package programs;
 import btree.BTreeFile;
 import global.*;
 import BigT.*;
+import heap.Scan;
 import heap.Tuple;
 import java.io.*;
 import java.util.StringTokenizer;
@@ -17,7 +18,6 @@ public class Query {
 
 	bigt bigtable;
 	String btname;
-	int type;
 	int ordertype;
 	String rowfilter;
 	String columnfilter;
@@ -25,7 +25,7 @@ public class Query {
 	int numbuf;
 
 	// constructor
-	public Query(String _btname, int _type, int _ordertype, String _rowfilter, String _columnfilter,
+	public Query(String _btname, int _ordertype, String _rowfilter, String _columnfilter,
 			String _valuefilter, int _numbuf) {
 		if (SystemDefs.JavabaseDB == null) {
 			System.out.println("Database not exist.");
@@ -48,28 +48,23 @@ public class Query {
 			if (found == false) {
 				System.out.println("Table name not match.");
 			} else {
-				bigtable = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
-				btname = _btname;
-				type = _type;
-				ordertype = _ordertype;
-				rowfilter = _rowfilter;
-				columnfilter = _columnfilter;
-				valuefilter = _valuefilter;
-				numbuf = _numbuf;
+				try{
+					bigtable = VirtualBigTable.Create(_btname);
+					btname = _btname;
+					ordertype = _ordertype;
+					rowfilter = _rowfilter;
+					columnfilter = _columnfilter;
+					valuefilter = _valuefilter;
+					numbuf = _numbuf;
+				}
+				catch (Exception e){
+					e.printStackTrace();
+				}
 			}
 		}
 	}
 
 	public void runquery() throws Exception {
-
-		// Stream(bigt bigtable, int orderType, String rowFilter, String columnFilter,
-		// String valueFilter)
-		// type - index type
-		// type 1 - no index
-		// type 2 - rowLabel index
-		// type 3 - columnLabel index
-		// type 4 - columnLabel combined rowLabel index, and timestamp index
-		// type 5 - rowLabel combined value index, and timestamp index
 		int readBeforeQuery = PCounter.rcounter;
 		int writeBeforeQuery = PCounter.wcounter;
 		if (bigtable == null) {
@@ -80,11 +75,7 @@ public class Query {
 		System.out.println("Query: initialized stream.");
 
 		Map map = null;
-		AttrType[] types = new AttrType[4];
-		types[0] = new AttrType(AttrType.attrString);
-		types[1] = new AttrType(AttrType.attrString);
-		types[2] = new AttrType(AttrType.attrString);
-		types[3] = new AttrType(AttrType.attrInteger);
+		AttrType[] types = MapSchema.MapAttrType();
 
 		try {
 			map = stream.getNext();
@@ -98,5 +89,6 @@ public class Query {
 		}
 		System.out.println("Diskpage read " + (PCounter.rcounter - readBeforeQuery) + " Disk page written "
 				+ (PCounter.wcounter - writeBeforeQuery));
+		bigtable.hf.deleteFile();
 	}
 }
