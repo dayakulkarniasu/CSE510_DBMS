@@ -79,7 +79,7 @@ public class InsertTest implements GlobalConst{
                         dbpath = "/tmp/" + System.getProperty("user.name") + fname  + ".db";
                         logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
                         System.out.println("dbpath in Inserttest : " + dbpath);
-                        sysdef = new SystemDefs(dbpath, dbtype, 10500, 100, "MRU");
+                        sysdef = new SystemDefs(dbpath, dbtype, 10500, 100, "Clock");
 
                         String newdbpath;
                         String newlogpath;
@@ -239,17 +239,8 @@ public class InsertTest implements GlobalConst{
                     }
                     Stream s = new Stream(big, 1, "*", ColumnFilter, "*", NumBuf);
                     RowJoin rj = new RowJoin(NumBuf, s, BTName2, ColumnFilter);
-                    //rj.close();
-                    bigt abc = new bigt(rj, BTResult);
-//                    Map test = new Map(GlobalConst.MAP_LEN);
-//                    while((test = rj.get_next()) != null){
-//                        System.out.println("++++++++++++++++++++++");
-//                        System.out.println("RL " + test.getRowLabel());
-//                        System.out.println("CL " + test.getColumnLabel());
-//                        System.out.println("V " + test.getValue());
-//                        System.out.println("TS " + test.getTimeStamp());
-//                    }
-                    //while((test = rj.get_next()) )
+                    //new bigt(rj, BTResult);
+                    rj.close();
                 }
                 else {
                     if(params[0].equalsIgnoreCase("q") || params[0].equalsIgnoreCase("quit")) {
