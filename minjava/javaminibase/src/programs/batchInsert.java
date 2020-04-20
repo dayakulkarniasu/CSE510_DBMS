@@ -6,7 +6,6 @@ import global.*;
 import BigT.*;
 import heap.*;
 import iterator.*;
-import sun.security.rsa.RSAUtil.KeyType;
 
 import javax.sound.midi.MidiChannel;
 import java.io.*;

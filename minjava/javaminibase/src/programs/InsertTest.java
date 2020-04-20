@@ -239,8 +239,16 @@ public class InsertTest implements GlobalConst{
                     }
                     Stream s = new Stream(big, 1, "*", ColumnFilter, "*", NumBuf);
                     RowJoin rj = new RowJoin(NumBuf, s, BTName2, ColumnFilter);
-                    Map test = null;
-                    rj.get_next().print(MapSchema.MapAttrType());
+                    //rj.close();
+                    bigt abc = new bigt(rj, BTResult);
+//                    Map test = new Map(GlobalConst.MAP_LEN);
+//                    while((test = rj.get_next()) != null){
+//                        System.out.println("++++++++++++++++++++++");
+//                        System.out.println("RL " + test.getRowLabel());
+//                        System.out.println("CL " + test.getColumnLabel());
+//                        System.out.println("V " + test.getValue());
+//                        System.out.println("TS " + test.getTimeStamp());
+//                    }
                     //while((test = rj.get_next()) )
                 }
                 else {
