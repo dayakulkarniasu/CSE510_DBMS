@@ -197,10 +197,6 @@ public class batchInsert implements GlobalConst {
   public static boolean ReadFromFile(String datafileN, String tablename , int InputIndexType_1, int NumBuf)
           throws HFException, HFBufMgrException, HFDiskMgrException, IOException, FileScanException, MapUtilsException, iterator.InvalidRelation {
     boolean status = true;
-    bigt big = null;
-    new bigt(tablename,  InputIndexType_1);
-    big = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
-
     BufferedReader br = null;
     int linecount = 0;
     String line = "";
@@ -246,6 +242,12 @@ public class batchInsert implements GlobalConst {
     // Sort by RL CL TS DESC
     // This makes it easier to find duplicate maps
     // and we can make one pass
+
+    if(linecount == 0)
+      return false;
+    bigt big = null;
+    new bigt(tablename,  InputIndexType_1);
+    big = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
     AttrType[] attrTypes = MapSchema.MapAttrType();
     short fldCount = (short) MapSchema.MapFldCount();
     FldSpec[] output = MapSchema.OutputMapSchema();

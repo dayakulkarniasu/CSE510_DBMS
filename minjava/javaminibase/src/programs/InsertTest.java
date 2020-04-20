@@ -239,7 +239,7 @@ public class InsertTest implements GlobalConst{
                     }
                     Stream s = new Stream(big, 1, "*", ColumnFilter, "*", NumBuf);
                     RowJoin rj = new RowJoin(NumBuf, s, BTName2, ColumnFilter);
-                    //new bigt(rj, BTResult);
+                    new bigt(rj, BTResult);
                     rj.close();
                 }
                 else {
