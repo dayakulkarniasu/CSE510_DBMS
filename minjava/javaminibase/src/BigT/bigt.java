@@ -40,9 +40,9 @@ public class bigt implements Tabletype, GlobalConst {
         System.out.println("Input Table Name : " + name);
         if (SystemDefs.JavabaseDB.NumberOfTables == 0) {
             // this.name = name;
-            this.name = inputTableName;
+            this.name = name;
             heapFileName = inputTableName;
-            hf = new Heapfile(heapFileName);
+            hf = new Heapfile(name);
             BTType = type;
             SystemDefs.JavabaseDB.table[0] = this;
             SystemDefs.JavabaseDB.CurrentTableIndex = 0;
@@ -68,9 +68,9 @@ public class bigt implements Tabletype, GlobalConst {
             if (found == false) {
                 System.out.println("bigt: Could not find tablename, creating a new heapfile ");
                 // this.name = name;
-                this.name = inputTableName;
+                this.name = name;
                 this.heapFileName = inputTableName;
-                hf = new Heapfile(inputTableName);
+                hf = new Heapfile(name);
                 BTType = type;
                 SystemDefs.JavabaseDB.CurrentTableIndex = SystemDefs.JavabaseDB.NumberOfTables;
                 SystemDefs.JavabaseDB.NumberOfTables++;
