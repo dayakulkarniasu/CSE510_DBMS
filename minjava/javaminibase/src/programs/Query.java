@@ -1,15 +1,8 @@
-
 package programs;
 
-import btree.BTreeFile;
 import global.*;
 import BigT.*;
-import heap.Scan;
-import heap.Tuple;
-import java.io.*;
-import java.util.StringTokenizer;
 import diskmgr.PCounter;
-import iterator.*;
 
 //piazza notes?: So I think we can clear this hashtable using flushAllPages() -> this method writes all the dirty pages to disk and clears the hashtable or 
 //create a new instance of buffer manager everytime, but I think making it work with the flushAllPages() would be a better solution-need to be double check

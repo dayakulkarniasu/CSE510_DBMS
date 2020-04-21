@@ -5,11 +5,11 @@ import iterator.RelSpec;
 
 public class MapSchema {
 
-    public static int MapFldCount(){
+    public static int MapFldCount() {
         return 4;
     }
 
-    public static short[] MapStrLengths(){
+    public static short[] MapStrLengths() {
         short[] attrSize = new short[3];
         attrSize[0] = GlobalConst.STR_LEN;
         attrSize[1] = GlobalConst.STR_LEN;
@@ -17,7 +17,7 @@ public class MapSchema {
         return attrSize;
     }
 
-    public static AttrType[] MapAttrType(){
+    public static AttrType[] MapAttrType() {
         AttrType[] attrType = new AttrType[4];
         attrType[0] = new AttrType(AttrType.attrString);
         attrType[1] = new AttrType(AttrType.attrString);
@@ -26,7 +26,7 @@ public class MapSchema {
         return attrType;
     }
 
-    public static FldSpec[] OutputMapSchema(){
+    public static FldSpec[] OutputMapSchema() {
         FldSpec[] schema = new FldSpec[4];
         RelSpec rel = new RelSpec(RelSpec.outer);
         schema[0] = new FldSpec(rel, 1);

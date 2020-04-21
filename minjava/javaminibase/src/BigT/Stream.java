@@ -15,7 +15,9 @@ import java.io.IOException;
 public class Stream implements GlobalConst {
 
     private int nscan = 0;
-    /** The bigT that will be used for creating sorted btree files to return results */
+    /**
+     * The bigT that will be used for creating sorted btree files to return results
+     */
     private bigt _bigTable;
     /**
      * Strings are set to use size 62 bytes, 2 extra bytes are added when setting
@@ -35,9 +37,9 @@ public class Stream implements GlobalConst {
      * @throws InvalidTypeException
      * @throws IndexException
      */
-    public Stream(bigt bigtable, int orderType, String rowFilter, String columnFilter,
-            String valueFilter, int numbuf) throws InvalidTupleSizeException, IOException, IndexException,
-            InvalidTypeException, UnknownIndexTypeException {
+    public Stream(bigt bigtable, int orderType, String rowFilter, String columnFilter, String valueFilter, int numbuf)
+            throws InvalidTupleSizeException, IOException, IndexException, InvalidTypeException,
+            UnknownIndexTypeException {
 
         _bigTable = bigtable;
         AttrType[] attrType = MapSchema.MapAttrType();
@@ -47,8 +49,7 @@ public class Stream implements GlobalConst {
         try {
             // set the header info for the new map
             m.setHdr((short) 4, attrType, attrSize);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         // used to define what output of fscan will look like
@@ -61,9 +62,9 @@ public class Stream implements GlobalConst {
         System.out.println("rowfilter: " + rowFilter + " colfilter: " + columnFilter + " valfilter: " + valueFilter);
 
         try {
-            fscan = new FileScan(bigtable.hf, attrType, attrSize, (short) 4, 4, schema, outFilter[0] == null ? null : outFilter );
-        }
-        catch (Exception e) {
+            fscan = new FileScan(bigtable.hf, attrType, attrSize, (short) 4, 4, schema,
+                    outFilter[0] == null ? null : outFilter);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -74,46 +75,44 @@ public class Stream implements GlobalConst {
         QueryResultSet = queryResults;
     }
 
-    private Iterator BuildSortOrder(Iterator fscan, AttrType[] attrType, short[] attrSize, int orderType, int numbuf){
+    private Iterator BuildSortOrder(Iterator fscan, AttrType[] attrType, short[] attrSize, int orderType, int numbuf) {
         MapOrder ReturnOrder = new MapOrder(MapOrder.Ascending);
         // the fields we will sort
         int[] sort_flds = null;
         // the length of those fields
         int[] fld_lens = null;
-        switch (orderType){
-            //results ordered by rowLabel then columnLabel then time stamp
-            case OrderType.type1:
-                sort_flds = new int[]{1, 2, 4};
-                fld_lens = new int[]{STR_LEN, STR_LEN, 4};
+        switch (orderType) {
+        // results ordered by rowLabel then columnLabel then time stamp
+        case OrderType.type1:
+            sort_flds = new int[] { 1, 2, 4 };
+            fld_lens = new int[] { STR_LEN, STR_LEN, 4 };
             break;
-            //ordered columnLabel, rowLabel, timestamp
-            case OrderType.type2:
-                sort_flds = new int[]{2, 1, 4};
-                fld_lens = new int[]{STR_LEN, STR_LEN, 4};
-                break;
-            //row label then timestamp
-            case OrderType.type3:
-                sort_flds = new int[]{1, 4};
-                fld_lens = new int[]{STR_LEN, 4};
-                break;
-            //column label then time stamp
-            case OrderType.type4:
-                sort_flds = new int[]{2, 4};
-                fld_lens = new int[]{STR_LEN, 4};
-                break;
-            //time stamp
-            case OrderType.type5:
-                break;
+        // ordered columnLabel, rowLabel, timestamp
+        case OrderType.type2:
+            sort_flds = new int[] { 2, 1, 4 };
+            fld_lens = new int[] { STR_LEN, STR_LEN, 4 };
+            break;
+        // row label then timestamp
+        case OrderType.type3:
+            sort_flds = new int[] { 1, 4 };
+            fld_lens = new int[] { STR_LEN, 4 };
+            break;
+        // column label then time stamp
+        case OrderType.type4:
+            sort_flds = new int[] { 2, 4 };
+            fld_lens = new int[] { STR_LEN, 4 };
+            break;
+        // time stamp
+        case OrderType.type5:
+            break;
         }
         Sort sort = null;
-        try{
-            if(orderType == OrderType.type5){
+        try {
+            if (orderType == OrderType.type5) {
                 sort = new Sort(attrType, (short) 4, attrSize, fscan, 4, ReturnOrder, 4, numbuf);
-            }
-            else
+            } else
                 sort = new Sort(attrType, (short) 4, attrSize, fscan, sort_flds, ReturnOrder, fld_lens, numbuf);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return sort;
@@ -121,6 +120,7 @@ public class Stream implements GlobalConst {
 
     /**
      * Retrieves the next map in the sorted order stream.
+     * 
      * @return
      */
     public Map getNext() {
@@ -137,7 +137,7 @@ public class Stream implements GlobalConst {
 
     }
 
-    public Iterator GetStreamIterator(){
+    public Iterator GetStreamIterator() {
         return QueryResultSet;
     }
 }
