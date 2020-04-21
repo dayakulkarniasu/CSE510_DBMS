@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 import java.io.*;
 
-public class InsertTest implements GlobalConst{
+public class InsertTest implements GlobalConst {
     public static void main(String[] args) throws Exception {
         boolean first = true;
         String dbpath;
@@ -21,8 +21,8 @@ public class InsertTest implements GlobalConst{
         boolean found_delete_flag = true;
 
         Scanner scanner = new Scanner(System.in);
-        try{
-            while(true){
+        try {
+            while (true) {
                 System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                 System.out.println("+");
                 System.out.println("+\tCommands");
@@ -51,32 +51,28 @@ public class InsertTest implements GlobalConst{
                 String line = scanner.nextLine();
                 String[] params = line.split(" ");
                 String fname = "";
-                int dbtype ;
+                int dbtype;
                 String tablename = "";
                 int NumBuf = 0;
                 String input_RL = "";
                 String input_CL = "";
                 String input_VL = "";
-                int input_TS = 0, input_dbtype = 999 ;
-                if(params[0].equalsIgnoreCase("batchinsert"))
-                {
-                    if (params.length  == 3)
-                    {
+                int input_TS = 0, input_dbtype = 999;
+                if (params[0].equalsIgnoreCase("batchinsert")) {
+                    if (params.length == 3) {
                         fname = params[1];
                         dbtype = 999;
                         tablename = params[2];
                         NumBuf = Integer.parseInt(params[3]);
-                    }
-                    else
-                    {
+                    } else {
                         fname = params[1];
                         dbtype = Integer.parseInt(params[2]);
                         tablename = params[3];
                         NumBuf = Integer.parseInt(params[4]);
                     }
                     System.out.println("Input File name in Inserttest : " + fname + " IndexType : " + dbtype);
-                    if(first){
-                        dbpath = "/tmp/" + System.getProperty("user.name") + fname  + ".db";
+                    if (first) {
+                        dbpath = "/tmp/" + System.getProperty("user.name") + fname + ".db";
                         logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
                         System.out.println("dbpath in Inserttest : " + dbpath);
                         sysdef = new SystemDefs(dbpath, dbtype, 10500, 100, "Clock");
@@ -86,10 +82,10 @@ public class InsertTest implements GlobalConst{
                         String remove_logcmd;
                         String remove_dbcmd;
                         String remove_cmd = "/bin/rm -rf ";
-                    
+
                         newdbpath = dbpath;
                         newlogpath = logpath;
-                    
+
                         remove_logcmd = remove_cmd + logpath;
                         remove_dbcmd = remove_cmd + dbpath;
 
@@ -102,9 +98,7 @@ public class InsertTest implements GlobalConst{
                         first = false;
                     }
                     batchInsert.insertTable(fname, tablename, dbtype, NumBuf);
-                }
-                else if(params[0].equalsIgnoreCase("query"))
-                {
+                } else if (params[0].equalsIgnoreCase("query")) {
                     String btname = params[1];
                     int ordertype = Integer.parseInt(params[2]);
                     String rowfilter = params[3];
@@ -114,20 +108,20 @@ public class InsertTest implements GlobalConst{
 
                     Query query = new Query(btname, ordertype, rowfilter, colfilter, valfilter, numbuf);
                     query.runquery();
-                }
-                else if(params[0].equalsIgnoreCase("getCounts"))
-                {
-                    bigt  big = null;
-                    int i =0;
-                    for (i = 0; i <SystemDefs.JavabaseDB.NumberOfTables ; i++){
-                        big = SystemDefs.JavabaseDB.table[i] ;
+                } else if (params[0].equalsIgnoreCase("getCounts")) {
+                    bigt big = null;
+                    int i = 0;
+                    for (i = 0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
+                        big = SystemDefs.JavabaseDB.table[i];
                         if (big == null) {
-                            //big = new bigt(tablename, SystemDefs.JavabaseDB.dbType);
+                            // big = new bigt(tablename, SystemDefs.JavabaseDB.dbType);
                             System.out.println("JavabaseDB name is Null : " + SystemDefs.JavabaseDB.table[i].name);
                             System.out.println("Exiting...... ");
-                        } else  {
+                        } else {
                             big = SystemDefs.JavabaseDB.table[i];
-                            System.out.println("Table Name : " + SystemDefs.JavabaseDB.table[i].name + " HeapFileName : " + SystemDefs.JavabaseDB.table[i].heapFileName + " Index Type : " + SystemDefs.JavabaseDB.table[i].BTType);
+                            System.out.println("Table Name : " + SystemDefs.JavabaseDB.table[i].name
+                                    + " HeapFileName : " + SystemDefs.JavabaseDB.table[i].heapFileName
+                                    + " Index Type : " + SystemDefs.JavabaseDB.table[i].BTType);
                             System.out.println("********** ");
                             System.out.println("No. Of Maps : " + big.getMapCnt());
                             System.out.println("No. Of Distinct RowLabels : " + big.getRowCnt());
@@ -135,33 +129,27 @@ public class InsertTest implements GlobalConst{
                             System.out.println("********** ");
                         }
                     }
-                }
-                else if(params[0].equalsIgnoreCase("mapinsert"))
-                {
+                } else if (params[0].equalsIgnoreCase("mapinsert")) {
                     System.out.println("No OF parameters : " + params.length);
-                    if (params.length  == 7)
-                    {
+                    if (params.length == 7) {
                         input_RL = params[1];
                         input_CL = params[2];
                         input_VL = params[3];
                         input_TS = Integer.parseInt(params[4]);
                         input_dbtype = Integer.parseInt(params[5]);
                         tablename = params[6];
-                    }
-                    else if (params.length  == 6)
-                    {
+                    } else if (params.length == 6) {
                         input_RL = params[1];
                         input_CL = params[2];
                         input_VL = params[3];
                         input_TS = Integer.parseInt(params[4]);
                         input_dbtype = 999;
                         tablename = params[5];
-                    }
-                    else {
+                    } else {
                         System.out.println("Invalid number of Arguments.... ");
-                        return ;
+                        return;
                     }
-                    if(first){
+                    if (first) {
                         dbpath = "/tmp/" + System.getProperty("user.name") + fname + ".db";
                         logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
                         System.out.println("dbpath in Inserttest : " + dbpath);
@@ -214,26 +202,25 @@ public class InsertTest implements GlobalConst{
                             rid = big.insertMap(recMap.getMapByteArray());
                         }
                     } catch (Exception e) {
-                        //status = false;
+                        // status = false;
                         System.err.println("*** Error inserting Map ***  \n");
                         e.printStackTrace();
                     }
-                    if (rid == null){
+                    if (rid == null) {
                         System.out.println("Could not insert the Map.....");
                     }
-                      /*
-                      batchInsert.insertTable(fname, tablename);
-                      */
-                }
-                else if(params[0].equalsIgnoreCase("rowjoin")){
+                    /*
+                     * batchInsert.insertTable(fname, tablename);
+                     */
+                } else if (params[0].equalsIgnoreCase("rowjoin")) {
                     String BTName1 = params[1];
                     String BTName2 = params[2];
                     String BTResult = params[3];
                     String ColumnFilter = params[4];
                     NumBuf = Integer.parseInt(params[5]);
                     bigt big = null;
-                    for (int i=0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
-                        if ( BTName1.equals(SystemDefs.JavabaseDB.table[i].name)) {
+                    for (int i = 0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
+                        if (BTName1.equals(SystemDefs.JavabaseDB.table[i].name)) {
                             big = SystemDefs.JavabaseDB.table[i];
                         }
                     }
@@ -241,18 +228,15 @@ public class InsertTest implements GlobalConst{
                     RowJoin rj = new RowJoin(NumBuf, s, BTName2, ColumnFilter);
                     new bigt(rj, BTResult);
                     rj.close();
-                }
-                else {
-                    if(params[0].equalsIgnoreCase("q") || params[0].equalsIgnoreCase("quit")) {
+                } else {
+                    if (params[0].equalsIgnoreCase("q") || params[0].equalsIgnoreCase("quit")) {
                         System.out.println("exiting");
                         scanner.close();
                     }
                 }
             }
-        }
-        catch(IllegalStateException e)
-        {
+        } catch (IllegalStateException e) {
             System.out.println("exiting");
         }
-      }// end of main
+    }// end of main
 }

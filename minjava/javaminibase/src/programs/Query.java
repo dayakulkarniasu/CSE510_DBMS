@@ -25,8 +25,8 @@ public class Query {
 	int numbuf;
 
 	// constructor
-	public Query(String _btname, int _ordertype, String _rowfilter, String _columnfilter,
-			String _valuefilter, int _numbuf) {
+	public Query(String _btname, int _ordertype, String _rowfilter, String _columnfilter, String _valuefilter,
+			int _numbuf) {
 		if (SystemDefs.JavabaseDB == null) {
 			System.out.println("Database not exist.");
 			System.exit(1);
@@ -48,7 +48,7 @@ public class Query {
 			if (found == false) {
 				System.out.println("Table name not match.");
 			} else {
-				try{
+				try {
 					bigtable = VirtualBigTable.Create(_btname);
 					btname = _btname;
 					ordertype = _ordertype;
@@ -56,8 +56,7 @@ public class Query {
 					columnfilter = _columnfilter;
 					valuefilter = _valuefilter;
 					numbuf = _numbuf;
-				}
-				catch (Exception e){
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
