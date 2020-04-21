@@ -80,6 +80,9 @@ public class InsertTest implements GlobalConst {
                         System.out.println("dbpath in Inserttest : " + dbpath);
                         sysdef = new SystemDefs(dbpath, dbtype, 10500, 100, "Clock");
 
+                        // for (bigt _bigt : SystemDefs.JavabaseDB.table)
+                        // System.out.println(_bigt.heapFileName);
+
                         String newdbpath;
                         String newlogpath;
                         String remove_logcmd;
@@ -101,6 +104,7 @@ public class InsertTest implements GlobalConst {
                         first = false;
                     }
                     batchInsert.insertTable(fname, tablename, dbtype, NumBuf);
+                    System.out.println("NumberOfTables: " + SystemDefs.JavabaseDB.NumberOfTables);
                 } else if (params[0].equalsIgnoreCase("query")) {
                     String btname = params[1];
                     int ordertype = Integer.parseInt(params[2]);

@@ -176,7 +176,8 @@ public class Map implements GlobalConst {
     public Map setRowLabel(String val) throws IOException, FieldNumberOutOfBoundException {
         try {
             this.setStrFld(1, val);
-            System.out.println(" In setRowLabel, val = " + val + " \n");
+            System.out.println("***********************************");
+            System.out.println("In setRowLabel, val = " + val); 
         } catch (FieldNumberOutOfBoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -194,7 +195,7 @@ public class Map implements GlobalConst {
     public Map setColumnLabel(String val) throws IOException, FieldNumberOutOfBoundException {
         try {
             this.setStrFld(2, val);
-            System.out.println(" In setColumnLabel, val = " + val + " \n");
+            System.out.println("In setColumnLabel, val = " + val);
         } catch (FieldNumberOutOfBoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -212,7 +213,8 @@ public class Map implements GlobalConst {
     public Map setTimeStamp(int val) throws IOException, FieldNumberOutOfBoundException {
         try {
             this.setIntFld(4, val);
-            System.out.println(" In setTimeStamp, val = " + val + " \n");
+            System.out.println("In setTimeStamp, val = " + val);
+            System.out.println("***********************************");
         } catch (FieldNumberOutOfBoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -230,7 +232,7 @@ public class Map implements GlobalConst {
     public Map setValue(String val) throws IOException, FieldNumberOutOfBoundException {
         try {
             this.setStrFld(3, val);
-            System.out.println(" In setValue, val = " + val + " \n");
+            System.out.println("In setValue, val = " + val);
         } catch (FieldNumberOutOfBoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

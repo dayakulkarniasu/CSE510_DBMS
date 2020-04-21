@@ -33,12 +33,14 @@ public class bigt implements Tabletype, GlobalConst {
     // to different clustering and indexing strategies you will use for the
     // bigtable.
     public bigt(String name, int type) throws HFException, HFBufMgrException, HFDiskMgrException, IOException {
-        System.out.println("bigt: NumberOfTables : " + SystemDefs.JavabaseDB.NumberOfTables);
+
+        System.out.println("\nbigt: NumberOfTables : " + SystemDefs.JavabaseDB.NumberOfTables);
         String inputTableName;
-        inputTableName = name + String.valueOf(type);
-        System.out.println("Input Table Name : " + inputTableName);
+        inputTableName = name + "_" + String.valueOf(type);
+        System.out.println("Input Table Name : " + name);
         if (SystemDefs.JavabaseDB.NumberOfTables == 0) {
-            this.name = name;
+            // this.name = name;
+            this.name = inputTableName;
             heapFileName = inputTableName;
             hf = new Heapfile(heapFileName);
             BTType = type;
@@ -49,11 +51,13 @@ public class bigt implements Tabletype, GlobalConst {
             System.out.println("bigDB tablename: "
                     + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].name + " Heapfile name = "
                     + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].heapFileName);
-            System.out.println("Heap File Name : " + name + " BTType : " + BTType);
+            System.out.println("HeapFile Name : "
+                    + SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex].heapFileName + " BTType : "
+                    + BTType + "\n");
         } else {
             boolean found = false;
             for (int i = 0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
-                if (name.equals(SystemDefs.JavabaseDB.table[i].name) && type == SystemDefs.JavabaseDB.table[i].BTType) {
+                if (inputTableName.equals(SystemDefs.JavabaseDB.table[i].name) && type == SystemDefs.JavabaseDB.table[i].BTType) {
                     SystemDefs.JavabaseDB.CurrentTableIndex = i;
                     found = true;
                     System.out.println("bigt: DB existing");
@@ -63,9 +67,10 @@ public class bigt implements Tabletype, GlobalConst {
 
             if (found == false) {
                 System.out.println("bigt: Could not find tablename, creating a new heapfile ");
-                this.name = name;
+                // this.name = name;
+                this.name = inputTableName;
                 this.heapFileName = inputTableName;
-                hf = new Heapfile(name);
+                hf = new Heapfile(inputTableName);
                 BTType = type;
                 SystemDefs.JavabaseDB.CurrentTableIndex = SystemDefs.JavabaseDB.NumberOfTables;
                 SystemDefs.JavabaseDB.NumberOfTables++;
