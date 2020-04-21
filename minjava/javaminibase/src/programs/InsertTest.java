@@ -76,8 +76,13 @@ public class InsertTest implements GlobalConst{
                     }
                     System.out.println("Input File name in Inserttest : " + fname + " IndexType : " + dbtype);
                     if(first){
-                        dbpath = "/tmp/" + System.getProperty("user.name") + fname  + ".db";
-                        logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
+                        String[] strArr = fname.split("/");
+                        String str = strArr[strArr.length - 1];
+                        String _fname = str.substring(0, str.length() - 5);
+                        dbpath = "/tmp/" + System.getProperty("user.name") + "_" + _fname + ".db";
+                        logpath = "/tmp/" + System.getProperty("user.name") + "_" + tablename + ".log";
+                        // dbpath = "/tmp/" + System.getProperty("user.name") + fname  + ".db";
+                        // logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
                         System.out.println("dbpath in Inserttest : " + dbpath);
                         sysdef = new SystemDefs(dbpath, dbtype, 10500, 100, "Clock");
 
