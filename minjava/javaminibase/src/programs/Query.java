@@ -89,6 +89,7 @@ public class Query {
 		}
 		System.out.println("Diskpage read " + (PCounter.rcounter - readBeforeQuery) + " Disk page written "
 				+ (PCounter.wcounter - writeBeforeQuery));
-		bigtable.hf.deleteFile();
+		// bigtable.hf.deleteFile();
+		stream.close();
 	}
 }
