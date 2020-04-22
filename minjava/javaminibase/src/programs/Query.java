@@ -1,6 +1,7 @@
 package programs;
 
 import global.*;
+import iterator.MapUtils;
 import BigT.*;
 import diskmgr.PCounter;
 
@@ -70,17 +71,24 @@ public class Query {
 		AttrType[] types = MapSchema.MapAttrType();
 
 		try {
-			map = stream.getNext();
+			map = new Map(stream.getNext());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		while (map != null) {
 			map.print(types);
-			map = stream.getNext();
+			Map tmp_map = stream.getNext();
+			while (tmp_map != null && MapUtils.Equal(map, tmp_map, types, 4)) {
+				tmp_map = stream.getNext();
+			}
+			if (tmp_map == null)
+				break;
+			map = new Map(tmp_map);
 		}
 		System.out.println("Diskpage read " + (PCounter.rcounter - readBeforeQuery) + " Disk page written "
 				+ (PCounter.wcounter - writeBeforeQuery));
 		bigtable.hf.deleteFile();
+		stream.close();
 	}
 }

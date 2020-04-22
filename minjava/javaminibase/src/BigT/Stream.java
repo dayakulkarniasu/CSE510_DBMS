@@ -140,4 +140,12 @@ public class Stream implements GlobalConst {
     public Iterator GetStreamIterator() {
         return QueryResultSet;
     }
+
+    public void close() {
+        try {
+            QueryResultSet.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

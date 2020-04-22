@@ -42,7 +42,7 @@ public class bigt implements Tabletype, GlobalConst {
             // this.name = name;
             this.name = name;
             heapFileName = inputTableName;
-            hf = new Heapfile(name);
+            hf = new Heapfile(inputTableName);
             BTType = type;
             SystemDefs.JavabaseDB.table[0] = this;
             SystemDefs.JavabaseDB.CurrentTableIndex = 0;
@@ -57,7 +57,7 @@ public class bigt implements Tabletype, GlobalConst {
         } else {
             boolean found = false;
             for (int i = 0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
-                if (inputTableName.equals(SystemDefs.JavabaseDB.table[i].name) && type == SystemDefs.JavabaseDB.table[i].BTType) {
+                if (name.equals(SystemDefs.JavabaseDB.table[i].name) && type == SystemDefs.JavabaseDB.table[i].BTType) {
                     SystemDefs.JavabaseDB.CurrentTableIndex = i;
                     found = true;
                     System.out.println("bigt: DB existing");
@@ -70,7 +70,7 @@ public class bigt implements Tabletype, GlobalConst {
                 // this.name = name;
                 this.name = name;
                 this.heapFileName = inputTableName;
-                hf = new Heapfile(name);
+                hf = new Heapfile(inputTableName);
                 BTType = type;
                 SystemDefs.JavabaseDB.CurrentTableIndex = SystemDefs.JavabaseDB.NumberOfTables;
                 SystemDefs.JavabaseDB.NumberOfTables++;

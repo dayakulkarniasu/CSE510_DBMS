@@ -179,7 +179,6 @@ public class batchInsert implements GlobalConst {
         return false;
       }
     }
-
     return true;
   }
 
@@ -438,7 +437,7 @@ public class batchInsert implements GlobalConst {
         } // end of while loop
         // System.out.println("rowmax: " + rowmax + " colmax: " + colmax + "valmax" +
         // valmax);
-        System.out.println("After reading the file, LineCoiunt = " + linecount);
+        System.out.println("After reading the file, LineCount = " + linecount);
 
       } // end of try
       catch (FileNotFoundException e) {

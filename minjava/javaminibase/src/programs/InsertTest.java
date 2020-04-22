@@ -105,6 +105,8 @@ public class InsertTest implements GlobalConst {
                     }
                     batchInsert.insertTable(fname, tablename, dbtype, NumBuf);
                     System.out.println("NumberOfTables: " + SystemDefs.JavabaseDB.NumberOfTables);
+                    // for (bigt _bigt : SystemDefs.JavabaseDB.table)
+                    //     System.out.println(_bigt.name);
                 } else if (params[0].equalsIgnoreCase("query")) {
                     String btname = params[1];
                     int ordertype = Integer.parseInt(params[2]);
