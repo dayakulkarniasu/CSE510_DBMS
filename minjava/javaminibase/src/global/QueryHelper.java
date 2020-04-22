@@ -5,6 +5,7 @@ import iterator.FldSpec;
 import iterator.RelSpec;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class QueryHelper {
@@ -33,6 +34,7 @@ public class QueryHelper {
         // If ColumnFilter is a range, create a range expression
         if(isRangeQuery(columnFilter)){
             String[] bounds = getBounds(rowFilter);
+            System.out.println(Arrays.asList(bounds));
             for (CondExpr expr : rangeQuery(bounds[0], bounds[1], 2)){
                 query.add(expr);
             }

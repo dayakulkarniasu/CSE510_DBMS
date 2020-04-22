@@ -71,7 +71,13 @@ public class Query {
 		AttrType[] types = MapSchema.MapAttrType();
 
 		try {
-			map = new Map(stream.getNext());
+			Map _map = stream.getNext();
+			if (_map != null)
+				map = new Map(_map);
+			else {
+				map = _map;
+				System.out.println("No matches.");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
