@@ -5,6 +5,7 @@ import global.*;
 import BigT.*;
 import heap.*;
 import iterator.RowJoin;
+import iterator.RowSort;
 
 import java.util.Scanner;
 
@@ -76,15 +77,10 @@ public class InsertTest implements GlobalConst{
                     }
                     System.out.println("Input File name in Inserttest : " + fname + " IndexType : " + dbtype);
                     if(first){
-                        String[] strArr = fname.split("/");
-                        String str = strArr[strArr.length - 1];
-                        String _fname = str.substring(0, str.length() - 5);
-                        dbpath = "/tmp/" + System.getProperty("user.name") + "_" + _fname + ".db";
-                        logpath = "/tmp/" + System.getProperty("user.name") + "_" + tablename + ".log";
-                        // dbpath = "/tmp/" + System.getProperty("user.name") + fname  + ".db";
-                        // logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
+                        dbpath = "/tmp/" + System.getProperty("user.name") + fname  + ".db";
+                        logpath = "/tmp/" + System.getProperty("user.name") + tablename + ".log";
                         System.out.println("dbpath in Inserttest : " + dbpath);
-                        sysdef = new SystemDefs(dbpath, dbtype, 10500, 100, "Clock");
+                        sysdef = new SystemDefs(dbpath, dbtype, 10500, 100, "MRU");
 
                         String newdbpath;
                         String newlogpath;
@@ -107,7 +103,6 @@ public class InsertTest implements GlobalConst{
                         first = false;
                     }
                     batchInsert.insertTable(fname, tablename, dbtype, NumBuf);
-                    System.out.println("NumberOfTables: " + SystemDefs.JavabaseDB.NumberOfTables);
                 }
                 else if(params[0].equalsIgnoreCase("query"))
                 {
@@ -245,8 +240,57 @@ public class InsertTest implements GlobalConst{
                     }
                     Stream s = new Stream(big, 1, "*", ColumnFilter, "*", NumBuf);
                     RowJoin rj = new RowJoin(NumBuf, s, BTName2, ColumnFilter);
-                    new bigt(rj, BTResult);
-                    rj.close();
+                    //rj.close();
+                    bigt abc = new bigt(rj, BTResult);
+//                    Map test = new Map(GlobalConst.MAP_LEN);
+//                    while((test = rj.get_next()) != null){
+//                        System.out.println("++++++++++++++++++++++");
+//                        System.out.println("RL " + test.getRowLabel());
+//                        System.out.println("CL " + test.getColumnLabel());
+//                        System.out.println("V " + test.getValue());
+//                        System.out.println("TS " + test.getTimeStamp());
+//                    }
+                    //while((test = rj.get_next()) )
+                }
+                else if(params[0].equalsIgnoreCase("rowsort")){
+                    String inBTName = params[1];
+                    String outBTName = params[2];
+                    String columnName = params[3];
+                    NumBuf = Integer.parseInt(params[4]);
+
+                    bigt big = null;
+                    for (int i=0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
+                        if ( inBTName.equals(SystemDefs.JavabaseDB.table[i].name)) {
+                            big = SystemDefs.JavabaseDB.table[i];
+                        }
+                    }
+                    Stream s = new Stream(big, 1, "*", "*", "*", NumBuf);
+
+                    RowSort rsort = new RowSort(s, new MapOrder(MapOrder.Ascending), columnName, NumBuf);
+
+                    Map temp = new Map();
+
+                    try
+                    {
+                        temp = rsort.getNext();
+                    }
+                    catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    while(temp != null)
+                    {
+                        temp.print(global.MapSchema.MapAttrType());
+                        try
+                        {
+                            temp = rsort.getNext();
+                        }
+                        catch(Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
                 }
                 else {
                     if(params[0].equalsIgnoreCase("q") || params[0].equalsIgnoreCase("quit")) {

@@ -256,6 +256,18 @@ public class Map implements GlobalConst {
     }
 
     /**
+     * Copy the map to byte array out.
+     *
+     * @return byte[], a byte array contains the map, the length of byte[] = MAP_LENGTH
+     *         of the map
+     */
+    public byte[] getMapByteSingleArray() {
+        byte[] mapcopy = new byte[MAP_LEN];
+        System.arraycopy(data, map_offset, mapcopy, 0, MAP_LEN);
+        return mapcopy;
+    }
+
+    /**
      * Print out the map
      *
      * @param type the types in the map
