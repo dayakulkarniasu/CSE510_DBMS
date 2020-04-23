@@ -103,7 +103,7 @@ public class Convert {
   public static String getStrValue(int position, byte[] data, int length) throws java.io.IOException {
     InputStream in;
     DataInputStream instr;
-    String value;
+    String value = null;
     byte tmp[] = new byte[length];
 
     // copy the value from data array out to a tmp byte array
@@ -114,7 +114,13 @@ public class Convert {
      */
     in = new ByteArrayInputStream(tmp);
     instr = new DataInputStream(in);
-    value = instr.readUTF();
+
+    try{
+      value = instr.readUTF();
+    } catch(Exception e){
+      e.printStackTrace();
+    }
+    
     return value;
   }
 

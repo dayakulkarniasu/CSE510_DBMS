@@ -255,6 +255,7 @@ public class Map implements GlobalConst {
         return mapcopy;
     }
 
+    
     /**
      * Copy the map to byte array out.
      *
