@@ -246,6 +246,7 @@ class Clock extends Replacer {
    * @throws BufferPoolExceededException.
    */
   public int pick_victim() throws BufferPoolExceededException, PagePinnedException {
+
     int num = 0;
     int numBuffers = mgr.getNumBuffers();
 
@@ -255,7 +256,9 @@ class Clock extends Replacer {
         state_bit[head].state = Available;
 
       if (num == 2 * numBuffers) {
-
+        System.out.println("************");
+        System.out.println("numBuffers:" + numBuffers + ",num:" + num);
+        System.out.println("************");
         throw new BufferPoolExceededException(null, "BUFMGR: BUFFER_EXCEEDED.");
 
       }

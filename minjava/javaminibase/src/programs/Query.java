@@ -2,6 +2,9 @@ package programs;
 
 import global.*;
 import iterator.MapUtils;
+
+import java.util.concurrent.TimeUnit;
+
 import BigT.*;
 import diskmgr.PCounter;
 
@@ -94,7 +97,7 @@ public class Query {
 		}
 		System.out.println("Diskpage read " + (PCounter.rcounter - readBeforeQuery) + " Disk page written "
 				+ (PCounter.wcounter - writeBeforeQuery));
-		bigtable.hf.deleteFile();
+		// bigtable.hf.deleteFile();
 		stream.close();
 	}
 }

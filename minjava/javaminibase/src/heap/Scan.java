@@ -177,6 +177,7 @@ public class Scan implements GlobalConst {
     _hf = hf;
 
     firstDataPage();
+    
   }
 
   /** Closes the Scan object */
@@ -235,31 +236,25 @@ public class Scan implements GlobalConst {
     try {
       dirpage = new HFPage();
       pinPage(dirpageId, (Page) dirpage, false);
-    }
-
-    catch (Exception e) {
+    } catch (Exception e) {
       // System.err.println("SCAN Error, try pinpage: " + e);
       e.printStackTrace();
     }
 
     /** now try to get a pointer to the first datapage */
     datapageMid = dirpage.firstMap();
-
     if (datapageMid != null) {
       /** there is a datapage record on the first directory page: */
 
       try {
         recmap = dirpage.getMap(datapageMid);
-      }
-
-      catch (Exception e) {
+      } catch (Exception e) {
         // System.err.println("SCAN: Chain Error in Scan: " + e);
         e.printStackTrace();
       }
 
       dpinfo = new DataPageInfo(recmap);
       datapageId.pid = dpinfo.pageId.pid;
-
     } else {
 
       /**
@@ -339,9 +334,7 @@ public class Scan implements GlobalConst {
 
     try {
       nextDataPage();
-    }
-
-    catch (Exception e) {
+    } catch (Exception e) {
       // System.err.println("SCAN Error: 1st_next 0: " + e);
       e.printStackTrace();
     }
@@ -581,6 +574,12 @@ public class Scan implements GlobalConst {
    */
   private void pinPage(PageId pageno, Page page, boolean emptyPage) throws HFBufMgrException {
 
+    // System.out.println("in spagenocan.java **pinPage** function, pageno:" + pageno);
+    // for (StackTraceElement b : Thread.currentThread().getStackTrace()) {
+    //   System.out.println(b.getClassName() + "." + b.getMethodName());// shunchi added
+    // }
+    // System.out.println();
+
     try {
       SystemDefs.JavabaseBM.pinPage(pageno, page, emptyPage);
     } catch (Exception e) {
@@ -595,6 +594,12 @@ public class Scan implements GlobalConst {
    * @see bufmgr.unpinPage
    */
   private void unpinPage(PageId pageno, boolean dirty) throws HFBufMgrException {
+
+    // System.out.println("in scan.java **unpinPage** function, pageno:" + pageno);
+    // for (StackTraceElement b : Thread.currentThread().getStackTrace()) {
+    //   System.out.println(b.getClassName() + "." + b.getMethodName());// shunchi added
+    // }
+    // System.out.println();
 
     try {
       SystemDefs.JavabaseBM.unpinPage(pageno, dirty);

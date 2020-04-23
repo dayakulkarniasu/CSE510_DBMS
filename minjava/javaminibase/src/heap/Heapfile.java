@@ -425,6 +425,11 @@ public class Heapfile implements Filetype, GlobalConst {
 		HFPage nextDirPage = new HFPage();
 		PageId currentDirPageId = new PageId(_firstDirPageId.pid);
 		PageId nextDirPageId = new PageId(); // OK
+
+		// for (StackTraceElement b : Thread.currentThread().getStackTrace()) {
+		// 	System.out.println(b.getClassName() + "." + b.getMethodName());// shunchi added
+		// }
+
 		System.out.println(
 				"in the heap file insert map function - entry point, FirstDirectory page no  : " + _firstDirPageId.pid);
 

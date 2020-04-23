@@ -78,7 +78,7 @@ public class InsertTest implements GlobalConst {
                         dbpath = "/tmp/" + System.getProperty("user.name") + "_" + _fname + ".db";
                         logpath = "/tmp/" + System.getProperty("user.name") + "_" + tablename + ".log";
                         System.out.println("dbpath in Inserttest : " + dbpath);
-                        sysdef = new SystemDefs(dbpath, dbtype, 10500, 100, "Clock");
+                        sysdef = new SystemDefs(dbpath, dbtype, 10500, 500, "Clock");
 
                         // for (bigt _bigt : SystemDefs.JavabaseDB.table)
                         // System.out.println(_bigt.heapFileName);
@@ -106,7 +106,7 @@ public class InsertTest implements GlobalConst {
                     batchInsert.insertTable(fname, tablename, dbtype, NumBuf);
                     System.out.println("NumberOfTables: " + SystemDefs.JavabaseDB.NumberOfTables);
                     // for (bigt _bigt : SystemDefs.JavabaseDB.table)
-                    //     System.out.println(_bigt.name);
+                    // System.out.println(_bigt.name);
                 } else if (params[0].equalsIgnoreCase("query")) {
                     String btname = params[1];
                     int ordertype = Integer.parseInt(params[2]);
@@ -237,12 +237,12 @@ public class InsertTest implements GlobalConst {
                     RowJoin rj = new RowJoin(NumBuf, s, BTName2, ColumnFilter);
                     new bigt(rj, BTResult);
                     rj.close();
-                } else {
-                    if (params[0].equalsIgnoreCase("q") || params[0].equalsIgnoreCase("quit")) {
-                        System.out.println("exiting");
-                        scanner.close();
-                    }
+                } else if (params[0].equalsIgnoreCase("q") || params[0].equalsIgnoreCase("quit")) {
+                    System.out.println("exiting");
+                    scanner.close();
+                    System.exit(0);
                 }
+
             }
         } catch (IllegalStateException e) {
             System.out.println("exiting");

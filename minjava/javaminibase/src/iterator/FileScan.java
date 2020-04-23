@@ -29,8 +29,8 @@ public class FileScan extends Iterator {
    * constructor
    * 
    * @param file_name  heapfile to be opened
-   * @param in1      array showing what the attributes of the input fields are.
-   * @param s1_sizes shows the length of the string fields.
+   * @param in1        array showing what the attributes of the input fields are.
+   * @param s1_sizes   shows the length of the string fields.
    * @param len_in1    number of attributes in the input tuple
    * @param n_out_flds number of fields in the out tuple
    * @param proj_list  shows what input fields go where in the output tuple
@@ -81,9 +81,9 @@ public class FileScan extends Iterator {
   /**
    * constructor
    *
-   * @param file  heapfile to be opened
-   * @param in1      array showing what the attributes of the input fields are.
-   * @param s1_sizes shows the length of the string fields.
+   * @param file       heapfile to be opened
+   * @param in1        array showing what the attributes of the input fields are.
+   * @param s1_sizes   shows the length of the string fields.
    * @param len_in1    number of attributes in the input tuple
    * @param n_out_flds number of fields in the out tuple
    * @param proj_list  shows what input fields go where in the output tuple
@@ -93,9 +93,8 @@ public class FileScan extends Iterator {
    * @exception TupleUtilsException exception from this class
    * @exception InvalidRelation     invalid relation
    */
-  public FileScan(Heapfile file, AttrType in1[], short s1_sizes[], short len_in1, int n_out_flds,
-                  FldSpec[] proj_list, CondExpr[] outFilter)
-          throws IOException, FileScanException, MapUtilsException, InvalidRelation {
+  public FileScan(Heapfile file, AttrType in1[], short s1_sizes[], short len_in1, int n_out_flds, FldSpec[] proj_list,
+      CondExpr[] outFilter) throws IOException, FileScanException, MapUtilsException, InvalidRelation {
     _in1 = in1;
     in1_len = len_in1;
     s_sizes = s1_sizes;
@@ -154,7 +153,6 @@ public class FileScan extends Iterator {
   public Map get_next() throws JoinsException, IOException, InvalidTupleSizeException, InvalidTypeException,
       PageNotReadException, PredEvalException, UnknowAttrType, FieldNumberOutOfBoundException, WrongPermat {
     MID mid = new MID();
-    ;
 
     while (true) {
       if ((map1 = scan.getNext(mid)) == null) {

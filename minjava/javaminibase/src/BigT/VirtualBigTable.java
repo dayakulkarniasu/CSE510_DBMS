@@ -1,5 +1,7 @@
 package BigT;
 
+import java.util.concurrent.TimeUnit;
+
 import global.GlobalConst;
 import global.MID;
 import global.MapSchema;
@@ -10,7 +12,7 @@ public class VirtualBigTable {
     public static bigt Create(String btName)
             throws heap.InvalidTupleSizeException, heap.HFException, heap.HFBufMgrException, heap.HFDiskMgrException,
             heap.InvalidTupleSizeException, heap.InvalidSlotNumberException, heap.SpaceNotAvailableException,
-            heap.InvalidTypeException, java.io.IOException {
+            heap.InvalidTypeException, java.io.IOException, InterruptedException {
         // Create Temporary Heap File to store all maps in the bigT
         bigt temp = new bigt();
         for (bigt bigt : SystemDefs.JavabaseDB.table) {
@@ -25,6 +27,10 @@ public class VirtualBigTable {
                     map = scan.getNext(mid);
                     mid = temp.hf.insertMap(amap.getMapByteArray());
                 }
+
+                // System.out.println(" ********** VirtualBigTable END **********");
+                // System.in.read();
+
                 scan.closescan();
             }
         }

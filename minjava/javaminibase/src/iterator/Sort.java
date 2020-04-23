@@ -52,7 +52,7 @@ public class Sort extends Iterator implements GlobalConst {
    * will then get the minimum of all runs.
    * 
    * @param map_size size (in bytes) of each map
-   * @param n_R_runs   number of runs
+   * @param n_R_runs number of runs
    * @exception IOException     from lower layers
    * @exception LowMemException there is not enough memory to sort in two passes
    *                            (a subclass of SortException).
@@ -663,8 +663,7 @@ public class Sort extends Iterator implements GlobalConst {
 
     _am = am;
     _sort_flds = new int[sort_flds.length];
-    for(int i = 0; i < sort_flds.length; i++)
-    {
+    for (int i = 0; i < sort_flds.length; i++) {
       _sort_flds[i] = sort_flds[i];
     }
     order = sort_order;
@@ -709,9 +708,9 @@ public class Sort extends Iterator implements GlobalConst {
     max_elems_in_heap = 200;
     sortFldLens = new int[sort_fld_lens.length];
     AttrType[] pnodeAttr = new AttrType[sort_fld_lens.length];
-    for(int i = 0; i < sort_fld_lens.length; i++){
+    for (int i = 0; i < sort_fld_lens.length; i++) {
       sortFldLens[i] = sort_fld_lens[i];
-      pnodeAttr[i] = in[sort_flds[i]-1];
+      pnodeAttr[i] = in[sort_flds[i] - 1];
     }
 
     Q = new pnodeSplayPQ(sort_flds, pnodeAttr, order);
@@ -743,18 +742,20 @@ public class Sort extends Iterator implements GlobalConst {
       first_time = false;
 
       // generate runs
-      if(single)
+      if (single)
         Nruns = generate_runs(max_elems_in_heap, _in[_sort_fld - 1], sortFldLen);
-      else
-      {
+      else {
         AttrType[] sortAttr = new AttrType[_sort_flds.length];
-        for(int i = 0; i < _sort_flds.length; i++)
-        {
-          sortAttr[i] = _in[_sort_flds[i]-1];
+        for (int i = 0; i < _sort_flds.length; i++) {
+          sortAttr[i] = _in[_sort_flds[i] - 1];
         }
         Nruns = generate_runs(max_elems_in_heap, sortAttr, sortFldLens);
       }
-        
+
+
+      // System.out.println(" ********** Sort.generate_runs END ******************** Sort.generate_runs END ******************** Sort.generate_runs END **********");
+      // System.in.read();
+
       // System.out.println("Generated " + Nruns + " runs");
 
       // setup state to perform merge of runs.
@@ -819,7 +820,7 @@ public class Sort extends Iterator implements GlobalConst {
   /**
    * Generate sorted runs. Using heap sort.
    * 
-   * @param max_elems   maximum number of elements in heap
+   * @param max_elems      maximum number of elements in heap
    * @param sortFldTypes[] attribute type of the sort field
    * @param sortFldLens[]  length of the sort field
    * @return number of runs generated
@@ -900,7 +901,7 @@ public class Sort extends Iterator implements GlobalConst {
       p_elems_curr_Q--;
 
       comp_res = MapUtils.CompareMapWithValue(sortFldTypes, cur_node.map, _sort_flds, lastElem); // need
-                                                                                               // map_utils.java
+      // map_utils.java
 
       if ((comp_res < 0 && order.mapOrder == MapOrder.Ascending)
           || (comp_res > 0 && order.mapOrder == MapOrder.Descending)) {
@@ -914,8 +915,7 @@ public class Sort extends Iterator implements GlobalConst {
       } else {
         // set lastElem to have the value of the current tuple,
         // need tuple_utils.java
-        for(int i = 0; i < _sort_flds.length; i++)
-        {
+        for (int i = 0; i < _sort_flds.length; i++) {
           MapUtils.SetValue(lastElem, cur_node.map, _sort_flds[i], sortFldTypes[i]);
         }
         // write map to output file, need io_bufs.java, type cast???
@@ -1104,25 +1104,24 @@ public class Sort extends Iterator implements GlobalConst {
     String s = new String(c);
     // short fld_no = 1;
 
-    for(int i = 0; i < sortFldTypes.length; i++)
-    {
+    for (int i = 0; i < sortFldTypes.length; i++) {
       switch (sortFldTypes[i].attrType) {
-        case AttrType.attrInteger:
-          // lastElem.setHdr(fld_no, junk, null);
-          lastElem.setIntFld(_sort_flds[i], Integer.MIN_VALUE);
-          break;
-        case AttrType.attrReal:
-          // lastElem.setHdr(fld-no, junk, null);
-          lastElem.setFloFld(_sort_flds[i], Float.MIN_VALUE);
-          break;
-        case AttrType.attrString:
-          // lastElem.setHdr(fld_no, junk, s_size);
-          lastElem.setStrFld(_sort_flds[i], s);
-          break;
-        default:
-          // don't know how to handle attrSymbol, attrNull
-          // System.err.println("error in sort.java");
-          throw new UnknowAttrType("Sort.java: don't know how to handle attrSymbol, attrNull");
+      case AttrType.attrInteger:
+        // lastElem.setHdr(fld_no, junk, null);
+        lastElem.setIntFld(_sort_flds[i], Integer.MIN_VALUE);
+        break;
+      case AttrType.attrReal:
+        // lastElem.setHdr(fld-no, junk, null);
+        lastElem.setFloFld(_sort_flds[i], Float.MIN_VALUE);
+        break;
+      case AttrType.attrString:
+        // lastElem.setHdr(fld_no, junk, s_size);
+        lastElem.setStrFld(_sort_flds[i], s);
+        break;
+      default:
+        // don't know how to handle attrSymbol, attrNull
+        // System.err.println("error in sort.java");
+        throw new UnknowAttrType("Sort.java: don't know how to handle attrSymbol, attrNull");
       }
     }
     return;
@@ -1147,25 +1146,24 @@ public class Sort extends Iterator implements GlobalConst {
     String s = new String(c);
     // short fld_no = 1;
 
-    for(int i = 0; i < sortFldTypes.length; i++)
-    {
+    for (int i = 0; i < sortFldTypes.length; i++) {
       switch (sortFldTypes[i].attrType) {
-        case AttrType.attrInteger:
-          // lastElem.setHdr(fld_no, junk, null);
-          lastElem.setIntFld(_sort_flds[i], Integer.MAX_VALUE);
-          break;
-        case AttrType.attrReal:
-          // lastElem.setHdr(fld_no, junk, null);
-          lastElem.setFloFld(_sort_flds[i], Float.MAX_VALUE);
-          break;
-        case AttrType.attrString:
-          // lastElem.setHdr(fld_no, junk, s_size);
-          lastElem.setStrFld(_sort_flds[i], s);
-          break;
-        default:
-          // don't know how to handle attrSymbol, attrNull
-          // System.err.println("error in sort.java");
-          throw new UnknowAttrType("Sort.java: don't know how to handle attrSymbol, attrNull");
+      case AttrType.attrInteger:
+        // lastElem.setHdr(fld_no, junk, null);
+        lastElem.setIntFld(_sort_flds[i], Integer.MAX_VALUE);
+        break;
+      case AttrType.attrReal:
+        // lastElem.setHdr(fld_no, junk, null);
+        lastElem.setFloFld(_sort_flds[i], Float.MAX_VALUE);
+        break;
+      case AttrType.attrString:
+        // lastElem.setHdr(fld_no, junk, s_size);
+        lastElem.setStrFld(_sort_flds[i], s);
+        break;
+      default:
+        // don't know how to handle attrSymbol, attrNull
+        // System.err.println("error in sort.java");
+        throw new UnknowAttrType("Sort.java: don't know how to handle attrSymbol, attrNull");
       }
     }
     return;

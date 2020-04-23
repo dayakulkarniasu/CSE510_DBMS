@@ -7,6 +7,7 @@ import iterator.*;
 import heap.*;
 import iterator.Iterator;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class will be similar to heap.Scan, however, will provide different
