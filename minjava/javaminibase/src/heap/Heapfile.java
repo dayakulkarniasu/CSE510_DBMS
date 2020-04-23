@@ -426,12 +426,12 @@ public class Heapfile implements Filetype, GlobalConst {
 		HFPage nextDirPage = new HFPage();
 		PageId currentDirPageId = new PageId(_firstDirPageId.pid);
 		PageId nextDirPageId = new PageId(); // OK
-		System.out.println("in the heap file insert map function - entry point, FirstDirectory page no  : " + _firstDirPageId.pid );
+		// System.out.println("in the heap file insert map function - entry point, FirstDirectory page no  : " + _firstDirPageId.pid );
 
 		pinPage(currentDirPageId, currentDirPage, false/* Rdisk */);
 
 		found = false;
-		System.out.println("after pin page , found = " + found);
+		// System.out.println("after pin page , found = " + found);
 		Map amap;
 		DataPageInfo dpinfo = new DataPageInfo();
 		while (found == false) { // Start While01
@@ -621,7 +621,7 @@ public class Heapfile implements Filetype, GlobalConst {
 		dpinfo_ondirpage.flushToMap();
 
 		unpinPage(currentDirPageId, true /* = DIRTY */);
-		System.out.println("MID : SlotNo = " + mid.slotNo + " PageNo = " + mid.pageNo.pid);
+		// System.out.println("MID : SlotNo = " + mid.slotNo + " PageNo = " + mid.pageNo.pid);
 		// Each insertion of a map into the BigTable also adds into the corresponding
 		// Index based upon the type of the BigTable.
 		MakeIndex.InsertIntoIndex(new Map(mapPtr, 0, mapPtr.length), mid);

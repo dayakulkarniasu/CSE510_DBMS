@@ -5,6 +5,7 @@ import global.*;
 import BigT.*;
 import heap.*;
 import iterator.RowJoin;
+import iterator.RowSort;
 
 import java.util.Scanner;
 
@@ -250,6 +251,46 @@ public class InsertTest implements GlobalConst{
 //                        System.out.println("TS " + test.getTimeStamp());
 //                    }
                     //while((test = rj.get_next()) )
+                }
+                else if(params[0].equalsIgnoreCase("rowsort")){
+                    String inBTName = params[1];
+                    String outBTName = params[2];
+                    String columnName = params[3];
+                    NumBuf = Integer.parseInt(params[4]);
+
+                    bigt big = null;
+                    for (int i=0; i < SystemDefs.JavabaseDB.NumberOfTables; i++) {
+                        if ( inBTName.equals(SystemDefs.JavabaseDB.table[i].name)) {
+                            big = SystemDefs.JavabaseDB.table[i];
+                        }
+                    }
+                    Stream s = new Stream(big, 1, "*", "*", "*", NumBuf);
+
+                    RowSort rsort = new RowSort(s, new MapOrder(MapOrder.Ascending), columnName, NumBuf);
+
+                    Map temp = new Map();
+
+                    try
+                    {
+                        temp = rsort.getNext();
+                    }
+                    catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    while(temp != null)
+                    {
+                        temp.print(global.MapSchema.MapAttrType());
+                        try
+                        {
+                            temp = rsort.getNext();
+                        }
+                        catch(Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
                 }
                 else {
                     if(params[0].equalsIgnoreCase("q") || params[0].equalsIgnoreCase("quit")) {

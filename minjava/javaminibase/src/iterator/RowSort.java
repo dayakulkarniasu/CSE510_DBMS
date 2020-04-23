@@ -9,6 +9,10 @@ import heap.*;
 
 public class RowSort {
     private Stream inStream;
+    private Heapfile _hf1;
+    private Heapfile _hf2;
+    private boolean hf1_empty = false;
+    private FileScan _fscan;
     MapOrder sort_order;
     String columnName;
     int n_pages;
@@ -63,7 +67,7 @@ public class RowSort {
             {
                 try
                 {
-                    mid = hf1.insertMap(temp.getMapByteArray());
+                    mid = hf1.insertMap(temp.getMapByteSingleArray());
                 }
                 catch(Exception e)
                 {
@@ -74,7 +78,7 @@ public class RowSort {
             {
                 try
                 {
-                    mid = hf2.insertMap(temp.getMapByteArray());
+                    mid = hf2.insertMap(temp.getMapByteSingleArray());
                 }
                 catch(Exception e)
                 {
@@ -82,6 +86,8 @@ public class RowSort {
                 }
             }
         }
+
+        stream.close();
 
         AttrType[] attrType = MapSchema.MapAttrType();
         short[] attrSize = MapSchema.MapStrLengths();
@@ -134,7 +140,7 @@ public class RowSort {
         {
             try
             {
-                hf_sorted1.insertMap(temp.getMapByteArray());
+                mid = hf_sorted1.insertMap(temp.getMapByteSingleArray());
             }
             catch(Exception e)
             {
@@ -153,12 +159,14 @@ public class RowSort {
         // close heapfile
         try
         {
-            sort.close();
+            fscan.close();
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
+
+        _hf1 = hf_sorted1;
 
         // delete hf1
         try
@@ -214,7 +222,7 @@ public class RowSort {
         {
             try
             {
-                hf_sorted2.insertMap(temp.getMapByteArray());
+                mid = hf_sorted2.insertMap(temp.getMapByteSingleArray());
             }
             catch(Exception e)
             {
@@ -233,7 +241,7 @@ public class RowSort {
         // close heapfile
         try
         {
-            sort.close();
+            fscan.close();
         }
         catch(Exception e)
         {
@@ -245,27 +253,26 @@ public class RowSort {
 
         try
         {
-            hf_idx = new Heapfile("hf_idx");
+            hf_idx = new Heapfile("rowsort_hf_idx");
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
 
-        int max_ts = Integer.MIN_VALUE;
-        Map curMap = new Map();
+        Map curMap = null;
         String rowLabel = "";
         String curRowLabel = "";
 
         try
         {
-            fscan = new FileScan(hf_idx, attrType, attrSize, (short) 4, 4, schema, null);
+            fscan = new FileScan(hf_sorted2, attrType, attrSize, (short) 4, 4, schema, null);
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
-        
+
         try
         {
             temp = fscan.get_next();
@@ -288,13 +295,14 @@ public class RowSort {
 
             // beginning of a rowlabel, insert curmap into hf_idx.
             // assume rowlabel empty only at the first map
-            if(curRowLabel != rowLabel)
+            if(!curRowLabel.equals(rowLabel))
             {
+                System.out.println(rowLabel.isEmpty());
                 if(!rowLabel.isEmpty())
                 {
                     try
                     {
-                        hf_idx.insertMap(curMap.getMapByteArray());
+                        mid = hf_idx.insertMap(curMap.getMapByteSingleArray());
                     }
                     catch(Exception e)
                     {
@@ -302,24 +310,15 @@ public class RowSort {
                     }
                 }
                 rowLabel = curRowLabel;
-                curMap = temp;
-                try
-                {
-                    max_ts = curMap.getTimeStamp();
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
+                curMap = new Map(temp.getMapByteSingleArray(), 0, GlobalConst.MAP_LEN);
             }
             else    // compare timestamps
             {
                 try
                 {
-                    if(max_ts < temp.getTimeStamp())
+                    if(curMap.getTimeStamp() <= temp.getTimeStamp())
                     {
-                        max_ts = temp.getTimeStamp();
-                        curMap = temp;
+                        curMap = new Map(temp.getMapByteSingleArray(), 0, GlobalConst.MAP_LEN);
                     }
                 }
                 catch(Exception e)
@@ -327,21 +326,188 @@ public class RowSort {
                     e.printStackTrace();
                 }
             }
+            try
+            {
+                temp = fscan.get_next();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
         }
+
         try
         {
-            fscan.close();
+            mid = hf_idx.insertMap(curMap.getMapByteSingleArray());
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
 
+        fscan.close();
         
+        Heapfile hf_merged2 = null;
+        FileScan fscan2 = null;
+
+        try
+        {
+            fscan = new FileScan(hf_idx, attrType, attrSize, (short) 4, 4, schema, null);
+            sort = new Sort(attrType, (short) 4, attrSize, fscan, 3, sort_order, GlobalConst.STR_LEN, n_pages);
+            // temp = sort.get_next();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        try
+        {
+            fscan2 = new FileScan(hf_sorted2, attrType, attrSize, (short) 4, 4, schema, null);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        try
+        {
+            hf_merged2 = new Heapfile("rowsort_merged2");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        try
+        {
+            curMap = sort.get_next();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        while(curMap != null)
+        {
+            try
+            {
+                while((temp = fscan2.get_next()) != null)
+                {
+                    if(temp.getRowLabel().equals(curMap.getRowLabel()))
+                    {
+                        System.out.println(temp.getRowLabel());
+                        hf_merged2.insertMap(temp.getMapByteSingleArray());
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+            fscan2.close();
+            try
+            {
+                fscan2 = new FileScan(hf_sorted2, attrType, attrSize, (short) 4, 4, schema, null);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+
+            try
+            {
+                curMap = sort.get_next();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        fscan.close();
+
+        // merge files
+        Heapfile hf_out = null;
+        try
+        {
+            hf_out = new Heapfile("rowsort_output");
+            fscan = new FileScan(hf_sorted1, attrType, attrSize, (short) 4, 4, schema, null);
+            temp = fscan.get_next();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        while(temp != null)
+        {
+            try
+            {
+                hf_out.insertMap(temp.getMapByteSingleArray());
+                temp = fscan.get_next();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        try
+        {
+            fscan = new FileScan(hf_merged2, attrType, attrSize, (short) 4, 4, schema, null);
+            temp = fscan.get_next();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        while(temp != null)
+        {
+            try
+            {
+                hf_out.insertMap(temp.getMapByteSingleArray());
+                temp = fscan.get_next();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        fscan.close();
+
+        try
+        {
+            hf_sorted1.deleteFile();
+            hf_merged2.deleteFile();
+            _fscan = new FileScan(hf_out, attrType, attrSize, (short) 4, 4, schema, null);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public Map getNext()
     {
-        return new Map();
+        Map amap = new Map();
+        try
+        {
+            amap = _fscan.get_next();
+            // System.out.println(amap.getColumnLabel());
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return amap;
+    }
+
+    public void close()
+    {
+        _fscan.close();
+
     }
 }

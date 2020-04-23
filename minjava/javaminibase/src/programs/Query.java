@@ -83,13 +83,16 @@ public class Query {
 			e.printStackTrace();
 		}
 
+		int n = 0;
 		while (map != null) {
 			map.print(types);
 			map = stream.getNext();
+			n++;
 		}
 		System.out.println("Diskpage read " + (PCounter.rcounter - readBeforeQuery) + " Disk page written "
 				+ (PCounter.wcounter - writeBeforeQuery));
-		// bigtable.hf.deleteFile();
+		System.out.println(n);
+		bigtable.hf.deleteFile();
 		stream.close();
 	}
 }

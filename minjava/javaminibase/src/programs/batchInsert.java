@@ -516,6 +516,7 @@ public class batchInsert implements GlobalConst {
 
     } // end of bigger status ok
 
+    scan.closescan();
     if (status == true)
       System.out.println("Test 1 completed successfully.\n");
 
