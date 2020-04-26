@@ -247,7 +247,7 @@ public class batchInsert implements GlobalConst {
     bigt big = null;
     new bigt(tablename, InputIndexType_1);
     big = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
-    
+
     AttrType[] attrTypes = MapSchema.MapAttrType();
     short fldCount = (short) MapSchema.MapFldCount();
     FldSpec[] output = MapSchema.OutputMapSchema();
