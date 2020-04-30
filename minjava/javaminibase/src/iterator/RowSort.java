@@ -43,7 +43,6 @@ public class RowSort {
         MID mid = new MID();
         String curRowLabel = "";
         String clusterRowLabel = "";
-        boolean written = false;
 
         // insert maps to two heapfiles
         while((temp = stream.getNext()) != null)
@@ -55,11 +54,6 @@ public class RowSort {
             catch(Exception e)
             {
                 e.printStackTrace();
-            }
-            
-            if(!curRowLabel.equals(clusterRowLabel))
-            {
-                written = false;
             }
 
             String colLabel = null;
@@ -81,7 +75,7 @@ public class RowSort {
                 e.printStackTrace();
             }
             
-            if(colLabel.equals(colName) && !written)
+            if(colLabel.equals(colName))
             {
                 try
                 {
@@ -92,7 +86,6 @@ public class RowSort {
                 {
                     e.printStackTrace();
                 }
-                written = true;
             }
         }
 
@@ -358,13 +351,50 @@ public class RowSort {
             }
         }
 
+        Heapfile hf_idx = null;
+        FileScan fscan = null;
+        Sort sort = null;
+        
         try
         {
-            _fscan = new FileScan(hf5, attrType, attrSize, (short) 4, 4, schema, null);
+            hf_idx = new Heapfile("rowsort_hfidx");
         }
         catch(Exception e)
         {
             e.printStackTrace();
+        }
+        
+        try
+        {
+            fscan = new FileScan(hf2, attrType, attrSize, (short) 4, 4, schema, null);
+            sort = new Sort(attrType, (short) 4, attrSize, fscan, 3, sort_order, GlobalConst.STR_LEN, n_pages);
+            // temp = sort.get_next();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        try
+        {
+            temp = sort.get_next();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        while(temp != null)
+        {
+            try
+            {
+                mid = hf_idx.insertMap(temp.getMapByteSingleArray());
+                temp = sort.get_next();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
         }
 
         // close heapfile
@@ -379,7 +409,7 @@ public class RowSort {
         }
 
         // merge files
-        FileScan fscan = null;
+        fscan = null;
         Heapfile hf_out = null;
         try
         {
@@ -428,6 +458,15 @@ public class RowSort {
             {
                 e.printStackTrace();
             }
+        }
+
+        try
+        {
+            _fscan = new FileScan(hf2, attrType, attrSize, (short) 4, 4, schema, null);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
         }
 
         fscan.close();
