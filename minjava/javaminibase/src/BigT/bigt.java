@@ -165,8 +165,9 @@ public class bigt implements Tabletype, GlobalConst {
         // Were any records added?
         // if not, do not create bt
         if (count != 0) {
-            SystemDefs.JavabaseDB.CurrentTableIndex = SystemDefs.JavabaseDB.NumberOfTables;
             SystemDefs.JavabaseDB.NumberOfTables++;
+            SystemDefs.JavabaseDB.CurrentTableIndex = SystemDefs.JavabaseDB.NumberOfTables;
+            // SystemDefs.JavabaseDB.NumberOfTables++;   
             SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex] = this;
         } else {
             this.hf.deleteFile();

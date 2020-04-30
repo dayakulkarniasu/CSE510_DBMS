@@ -389,7 +389,7 @@ public class RowJoin extends Iterator {
         break;
       }
     }
-    System.out.println("RL " + outer_map.getRowLabel() + "TS " + outer_map.getTimeStamp());
+    System.out.println("RL: " + outer_map.getRowLabel() + " TS: " + outer_map.getTimeStamp());
   }
 
   /**

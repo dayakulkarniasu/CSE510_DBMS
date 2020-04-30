@@ -235,7 +235,10 @@ public class InsertTest implements GlobalConst {
                     }
                     Stream s = new Stream(big, 1, "*", ColumnFilter, "*", NumBuf);
                     RowJoin rj = new RowJoin(NumBuf, s, BTName2, ColumnFilter);
+                    System.out.println("SystemDefs.JavabaseDB.NumberOfTables before: "+SystemDefs.JavabaseDB.NumberOfTables);
                     new bigt(rj, BTResult);
+                    System.out.println("SystemDefs.JavabaseDB.NumberOfTables after: "+SystemDefs.JavabaseDB.NumberOfTables);
+                    big = SystemDefs.JavabaseDB.table[SystemDefs.JavabaseDB.CurrentTableIndex];
                     rj.close();
                 } else if (params[0].equalsIgnoreCase("q") || params[0].equalsIgnoreCase("quit")) {
                     System.out.println("exiting");

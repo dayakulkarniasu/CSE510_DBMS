@@ -78,9 +78,7 @@ abstract class Replacer implements GlobalConst {
   public void free(int frameNo) throws PagePinnedException {
 
     if ((mgr.frameTable())[frameNo].pin_count() > 1) {
-
       throw new PagePinnedException(null, "BUFMGR: PAGE_PINNED.");
-
     }
 
     (mgr.frameTable())[frameNo].unpin();
