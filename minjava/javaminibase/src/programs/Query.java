@@ -60,6 +60,38 @@ public class Query {
 		}
 	}
 
+	// original codes
+	// public void runquery() throws Exception {
+	// int readBeforeQuery = PCounter.rcounter;
+	// int writeBeforeQuery = PCounter.wcounter;
+	// if (bigtable == null) {
+	// return;
+	// }
+	// Stream stream = new Stream(bigtable, ordertype, rowfilter, columnfilter,
+	// valuefilter, numbuf);
+
+	// System.out.println("Query: initialized stream.");
+
+	// Map map = null;
+	// AttrType[] types = MapSchema.MapAttrType();
+
+	// try {
+	// map = stream.getNext();
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+
+	// while (map != null) {
+	// map.print(types);
+	// map = stream.getNext();
+	// }
+	// System.out.println("Diskpage read " + (PCounter.rcounter - readBeforeQuery) +
+	// " Disk page written "
+	// + (PCounter.wcounter - writeBeforeQuery));
+	// bigtable.hf.deleteFile();
+	// }//original codes end
+
+	//eliminate duplicates in returned records
 	public void runquery() throws Exception {
 		int readBeforeQuery = PCounter.rcounter;
 		int writeBeforeQuery = PCounter.wcounter;
