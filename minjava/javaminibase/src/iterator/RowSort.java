@@ -136,24 +136,104 @@ public class RowSort {
             try
             {
                 curRowLabel = temp.getRowLabel();
-                curTs = temp.getTimeStamp();
             }
             catch(Exception e)
             {
                 e.printStackTrace();
             }
-            if(curTs > clusterTs)
+
+            if(!curRowLabel.equals(clusterRowLabel))
             {
-                clusterTs = curTs;
-                ts_map = new Map(temp);
+                // If new row, write the previous row.
+                if(!clusterRowLabel.isEmpty())
+                {
+                    try
+                    {
+                        mid = hf_idx_temp.insertMap(ts_map.getMapByteSingleArray());
+                    }
+                    catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+                clusterRowLabel = curRowLabel;
+                ts_map = new Map(temp.getMapByteSingleArray(), 0, GlobalConst.MAP_LEN);
+            }
+            else    // compare timestamps
+            {
+                try
+                {
+                    if(ts_map.getTimeStamp() < temp.getTimeStamp())
+                    {
+                        ts_map= new Map(temp.getMapByteSingleArray(), 0, GlobalConst.MAP_LEN);
+                    }
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            try
+            {
+                temp = fscan.get_next();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
             }
         }
+
+        try
+        {
+            mid = hf_idx_temp.insertMap(ts_map.getMapByteSingleArray());
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
        
+        Heapfile hf_idx = null;
+        fscan = null;
+        Sort sort = null;
+        
+        try
+        {
+            hf_idx = new Heapfile("rowsort_hfidx");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        try
+        {
+            fscan = new FileScan(hf_idx_temp, attrType, attrSize, (short) 4, 4, schema, null);
+            sort = new Sort(attrType, (short) 4, attrSize, fscan, 3, sort_order, GlobalConst.STR_LEN, n_pages);
+            temp = sort.get_next();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        while(temp != null)
+        {
+            try
+            {
+                mid = hf_idx.insertMap(temp.getMapByteSingleArray());
+                temp = sort.get_next();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
 
         try
         {
             fscan1 = new FileScan(hf1, attrType, attrSize, (short) 4, 4, schema, null);
-            fscan2 = new FileScan(hf2, attrType, attrSize, (short) 4, 4, schema, null);
+            fscan2 = new FileScan(hf_idx, attrType, attrSize, (short) 4, 4, schema, null);
         }
         catch(Exception e)
         {
@@ -299,7 +379,7 @@ public class RowSort {
         try
         {
             hf5 = new Heapfile("rowsort_match_sorted");
-            fscan1 = new FileScan(hf2, attrType, attrSize, (short) 4, 4, schema, null);
+            fscan1 = new FileScan(hf_idx, attrType, attrSize, (short) 4, 4, schema, null);
             fscan2 = new FileScan(hf4, attrType, attrSize, (short) 4, 4, schema, null);
         }
         catch(Exception e)
@@ -323,7 +403,6 @@ public class RowSort {
         {
             try
             {
-                // mid = hf5.insertMap(temp.getMapByteSingleArray());
                 clusterRowLabel = temp.getRowLabel();
             }
             catch(Exception e)
@@ -333,6 +412,7 @@ public class RowSort {
 
             try
             {
+                fscan2 = new FileScan(hf4, attrType, attrSize, (short) 4, 4, schema, null);
                 temp_inner = fscan2.get_next();
             }
             catch(Exception e)
@@ -381,52 +461,6 @@ public class RowSort {
             try
             {
                 temp = fscan1.get_next();
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-
-        Heapfile hf_idx = null;
-        FileScan fscan = null;
-        Sort sort = null;
-        
-        try
-        {
-            hf_idx = new Heapfile("rowsort_hfidx");
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        
-        try
-        {
-            fscan = new FileScan(hf2, attrType, attrSize, (short) 4, 4, schema, null);
-            sort = new Sort(attrType, (short) 4, attrSize, fscan, 3, sort_order, GlobalConst.STR_LEN, n_pages);
-            // temp = sort.get_next();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        try
-        {
-            temp = sort.get_next();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        while(temp != null)
-        {
-            try
-            {
-                mid = hf_idx.insertMap(temp.getMapByteSingleArray());
-                temp = sort.get_next();
             }
             catch(Exception e)
             {
@@ -497,15 +531,6 @@ public class RowSort {
             }
         }
 
-        try
-        {
-            _fscan = new FileScan(hf2, attrType, attrSize, (short) 4, 4, schema, null);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
         fscan.close();
 
         try
@@ -514,7 +539,7 @@ public class RowSort {
             // hf3.deleteFile();
             // hf4.deleteFile();
             // hf5.deleteFile();
-            // _fscan = new FileScan(hf_out, attrType, attrSize, (short) 4, 4, schema, null);
+            _fscan = new FileScan(hf_out, attrType, attrSize, (short) 4, 4, schema, null);
         }
         catch(Exception e)
         {
