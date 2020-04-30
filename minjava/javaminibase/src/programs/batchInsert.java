@@ -320,7 +320,7 @@ public class batchInsert implements GlobalConst {
     }
     // Close everything or we an error is thrown
     try {
-      sort.close();
+      // sort.close();
       fscan.close();
       f.deleteFile();
     } catch (Exception e) {

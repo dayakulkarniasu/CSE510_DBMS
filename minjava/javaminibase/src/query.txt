@@ -1,2 +1,3 @@
-batchinsert testdata.csv 1 bt
-query bt 1 1 [Dominica,EL_SALVADOR] * * 50
+batchinsert rowtest2.csv 1 bt 50
+query bt 1 * * * 50
+rowsort bt_1 bt_sorted Zebra 50
