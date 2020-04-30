@@ -553,12 +553,12 @@ public class RowSort {
 
         try
         {
-            hf2.deleteFile();
-            hf3.deleteFile();
-            hf4.deleteFile();
-            hf5.deleteFile();
-            hf_idx.deleteFile();
-            hf_idx_temp.deleteFile();
+            // hf2.deleteFile();
+            // hf3.deleteFile();
+            // hf4.deleteFile();
+            // hf5.deleteFile();
+            // hf_idx.deleteFile();
+            // hf_idx_temp.deleteFile();
             _fscan = new FileScan(hf_out, attrType, attrSize, (short) 4, 4, schema, null);
         }
         catch(Exception e)
