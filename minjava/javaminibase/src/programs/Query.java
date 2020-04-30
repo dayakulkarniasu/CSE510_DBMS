@@ -25,8 +25,8 @@ public class Query {
 	int numbuf;
 
 	// constructor
-	public Query(String _btname, int _ordertype, String _rowfilter, String _columnfilter,
-			String _valuefilter, int _numbuf) {
+	public Query(String _btname, int _ordertype, String _rowfilter, String _columnfilter, String _valuefilter,
+			int _numbuf) {
 		if (SystemDefs.JavabaseDB == null) {
 			System.out.println("Database not exist.");
 			System.exit(1);
@@ -48,7 +48,7 @@ public class Query {
 			if (found == false) {
 				System.out.println("Table name not match.");
 			} else {
-				try{
+				try {
 					bigtable = VirtualBigTable.Create(_btname);
 					btname = _btname;
 					ordertype = _ordertype;
@@ -56,14 +56,44 @@ public class Query {
 					columnfilter = _columnfilter;
 					valuefilter = _valuefilter;
 					numbuf = _numbuf;
-				}
-				catch (Exception e){
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
 	}
+	// original codes
+	// public void runquery() throws Exception {
+	// int readBeforeQuery = PCounter.rcounter;
+	// int writeBeforeQuery = PCounter.wcounter;
+	// if (bigtable == null) {
+	// return;
+	// }
+	// Stream stream = new Stream(bigtable, ordertype, rowfilter, columnfilter,
+	// valuefilter, numbuf);
 
+	// System.out.println("Query: initialized stream.");
+
+	// Map map = null;
+	// AttrType[] types = MapSchema.MapAttrType();
+
+	// try {
+	// map = stream.getNext();
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+
+	// while (map != null) {
+	// map.print(types);
+	// map = stream.getNext();
+	// }
+	// System.out.println("Diskpage read " + (PCounter.rcounter - readBeforeQuery) +
+	// " Disk page written "
+	// + (PCounter.wcounter - writeBeforeQuery));
+	// bigtable.hf.deleteFile();
+	// }//original codes end
+
+	// eliminate duplicates in returned records
 	public void runquery() throws Exception {
 		int readBeforeQuery = PCounter.rcounter;
 		int writeBeforeQuery = PCounter.wcounter;
@@ -78,17 +108,30 @@ public class Query {
 		AttrType[] types = MapSchema.MapAttrType();
 
 		try {
-			map = stream.getNext();
+			Map _map = stream.getNext();
+			if (_map != null)
+				map = new Map(_map);
+			else {
+				map = _map;
+				System.out.println("No matches.");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		while (map != null) {
 			map.print(types);
-			map = stream.getNext();
+			Map tmp_map = stream.getNext();
+			while (tmp_map != null && MapUtils.Equal(map, tmp_map, types, 4)) {
+				tmp_map = stream.getNext();
+			}
+			if (tmp_map == null)
+				break;
+			map = new Map(tmp_map);
 		}
 		System.out.println("Diskpage read " + (PCounter.rcounter - readBeforeQuery) + " Disk page written "
 				+ (PCounter.wcounter - writeBeforeQuery));
-		bigtable.hf.deleteFile();
+		// bigtable.hf.deleteFile();
+		stream.close();
 	}
 }
