@@ -80,7 +80,8 @@ public class MakeIndex {
                     break;
                 case 3:
                     // Index on ColumnLabel
-                    System.out.println("map offset: " + amap.getOffset());
+                    // System.out.println("map offset: " + amap.getOffset());
+                    System.out.println("key mid: " + key + " " + mid.pageNo + " " + mid.slotNo);
                     key = amap.getColumnLabel();
                     SystemDefs.JavabaseDB.indexStrat1.insert(new StringKey(key), mid);
                     break;

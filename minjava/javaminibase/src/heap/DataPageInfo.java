@@ -93,7 +93,7 @@ class DataPageInfo implements GlobalConst {
   public Map convertToMap() throws IOException {
 
     // 1) write availspace, recct, pageId into data []
-    System.out.println("In convertToMap() : Data = " + data + " availspace= "+availspace + " recct = " + recct + " pageId.pid = " +pageId.pid);
+    // System.out.println("In convertToMap() : Data = " + data + " availspace= "+availspace + " recct = " + recct + " pageId.pid = " +pageId.pid);
     Convert.setIntValue(availspace, offset, data);
     Convert.setIntValue(recct, offset + 4, data);
     Convert.setIntValue(pageId.pid, offset + 8, data);
