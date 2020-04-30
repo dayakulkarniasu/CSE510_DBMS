@@ -44,8 +44,17 @@ public class RowSort {
         String curRowLabel = "";
         String clusterRowLabel = "";
 
+        try
+        {
+            temp = stream.getNext();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
         // insert maps to two heapfiles
-        while((temp = stream.getNext()) != null)
+        while(temp != null)
         {
             try
             {
@@ -87,9 +96,18 @@ public class RowSort {
                     e.printStackTrace();
                 }
             }
+
+            try
+            {
+                temp = stream.getNext();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
         }
 
-        // stream.close();
+        stream.close();
 
         Heapfile hf3 = null;
         Heapfile hf4 = null;
@@ -535,10 +553,12 @@ public class RowSort {
 
         try
         {
-            // hf2.deleteFile();
-            // hf3.deleteFile();
-            // hf4.deleteFile();
-            // hf5.deleteFile();
+            hf2.deleteFile();
+            hf3.deleteFile();
+            hf4.deleteFile();
+            hf5.deleteFile();
+            hf_idx.deleteFile();
+            hf_idx_temp.deleteFile();
             _fscan = new FileScan(hf_out, attrType, attrSize, (short) 4, 4, schema, null);
         }
         catch(Exception e)

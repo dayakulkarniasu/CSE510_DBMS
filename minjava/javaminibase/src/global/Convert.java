@@ -118,7 +118,7 @@ public class Convert {
     try{
       value = instr.readUTF();
     } catch(Exception e){
-      e.printStackTrace();
+      // e.printStackTrace();
     }
     
     return value;
