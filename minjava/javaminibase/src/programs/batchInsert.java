@@ -82,10 +82,8 @@ public class batchInsert implements GlobalConst {
 
           if ((fd_rowLabel.equals(rec.rowlabname)) && (fd_columnLabel.equals(rec.collabname))) {
 
-            System.out.println();
             System.out.println("rec.row " + i + " :" + rec.rowlabname + " rec.col : " + rec.collabname
                 + " rec.timestamp : " + rec.timestampname + " rec.value : " + rec.valuename);
-            System.out.println();
 
             no_of_maps++;
 
@@ -222,6 +220,7 @@ public class batchInsert implements GlobalConst {
           temp.setColumnLabel(columnLabel);
           temp.setValue(value);
           temp.setTimeStamp(Integer.parseInt(timeStamp));
+
           try {
             rid = f.insertMap(temp.getMapByteArray());
             // }
@@ -289,7 +288,13 @@ public class batchInsert implements GlobalConst {
       temp = sort.get_next();
       while (temp != null) {
         Map amap = new Map(temp.getMapByteArray(), 0, GlobalConst.MAP_LEN);
-        mid = big.insertMap(amap.getMapByteArray());
+
+        found_delete_flag = batchInsert.found_delete(big.hf, amap.getRowLabel(), amap.getColumnLabel(),
+            amap.getTimeStamp(), amap.getValue());// shunchi
+        if (found_delete_flag /* found delete flag is false */ ) {
+          mid = big.insertMap(amap.getMapByteArray());
+        }
+
         switch (InputIndexType_1) {
         case OrderType.type1:
           break;

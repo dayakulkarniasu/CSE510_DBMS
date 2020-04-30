@@ -427,7 +427,8 @@ public class Heapfile implements Filetype, GlobalConst {
 		PageId nextDirPageId = new PageId(); // OK
 
 		// for (StackTraceElement b : Thread.currentThread().getStackTrace()) {
-		// 	System.out.println(b.getClassName() + "." + b.getMethodName());// shunchi added
+		// System.out.println(b.getClassName() + "." + b.getMethodName());// shunchi
+		// added
 		// }
 
 		System.out.println(
