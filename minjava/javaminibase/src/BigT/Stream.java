@@ -142,12 +142,9 @@ public class Stream implements GlobalConst {
     }
 
     public void close(){
-        try
-        {
+        try{
             QueryResultSet.close();
-        }
-        catch(Exception e)
-        {
+        } catch(Exception e){
             e.printStackTrace();
         }
     }

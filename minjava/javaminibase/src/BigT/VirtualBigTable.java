@@ -20,7 +20,7 @@ public class VirtualBigTable {
         // Create Temporary Heap File to store all maps in the bigT
         bigt temp = new bigt();
         for(bigt bigt : SystemDefs.JavabaseDB.table){
-            if(bigt.name.equalsIgnoreCase(btName)){
+            if(bigt.name.split("_")[0].equalsIgnoreCase(btName)){
                 Scan scan = bigt.hf.openScan();
                 Map map = new Map(GlobalConst.MAP_LEN);
                 map.setHdr((short) MapSchema.MapFldCount(),MapSchema.MapAttrType(), MapSchema.MapStrLengths());

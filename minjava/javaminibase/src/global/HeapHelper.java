@@ -9,7 +9,7 @@ import iterator.Iterator;
 public class HeapHelper {
     public static Heapfile BuildHeap(Iterator am)
         throws Exception{
-        Heapfile hf = new Heapfile("rowjoin");
+        Heapfile hf = new Heapfile(null);
         Map temp = new Map(GlobalConst.MAP_LEN);
         temp.setHdr((short) MapSchema.MapFldCount(), MapSchema.MapAttrType(), MapSchema.MapStrLengths());
         MID mid = new MID();
