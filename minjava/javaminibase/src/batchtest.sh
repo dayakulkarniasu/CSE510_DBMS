@@ -1,1 +1,1 @@
-cd programs && java -cp /Users/ychen745/Desktop/CSE510_p3/minjava/javaminibase/src programs.InsertTest
+cd programs && java -cp /Users/ychen745/Desktop/CSE510_DBMS/minjava/javaminibase/src programs.InsertTest
