@@ -93,11 +93,13 @@ public class RowSort {
 
         Heapfile hf3 = null;
         Heapfile hf4 = null;
+        Heapfile hf_idx_temp = null;
         
         try
         {
             hf3 = new Heapfile("rowsort_other");
             hf4 = new Heapfile("rowsort_match");
+            hf_idx_temp = new Heapfile("rowsort_idx_temp");
         }
         catch(Exception e)
         {
@@ -107,11 +109,46 @@ public class RowSort {
         AttrType[] attrType = MapSchema.MapAttrType();
         short[] attrSize = MapSchema.MapStrLengths();
         MapOrder sort_order = new MapOrder(MapOrder.Ascending);
+        FldSpec[] schema = MapSchema.OutputMapSchema();
 
-        // sort the first heapfile by rowlabel, insert into heapfile rowsort_sorted1
+        FileScan fscan = null;
         FileScan fscan1 = null;
         FileScan fscan2 = null;
-        FldSpec[] schema = MapSchema.OutputMapSchema();
+
+        try
+        {
+            fscan = new FileScan(hf2, attrType, attrSize, (short) 4, 4, schema, null);
+            temp = fscan.get_next();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        int clusterTs = Integer.MIN_VALUE;
+        int curTs = Integer.MIN_VALUE;
+        Map ts_map = null;
+        curRowLabel = "";
+        clusterRowLabel = "";
+
+        while(temp != null)
+        {
+            try
+            {
+                curRowLabel = temp.getRowLabel();
+                curTs = temp.getTimeStamp();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+            if(curTs > clusterTs)
+            {
+                clusterTs = curTs;
+                ts_map = new Map(temp);
+            }
+        }
+       
 
         try
         {
